@@ -1,0 +1,77 @@
+// WorkspaceWhiz.odl : type library source for WorkspaceWhiz.dll
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (WorkspaceWhiz.tlb).
+
+[	uuid(039FB627-6DD0-11D3-9B27-835709CADA52), version(1.0),
+	helpstring ("WORKSPACEWHIZ Developer Studio Add-in") ]
+library WorkspaceWhiz
+{
+	importlib("stdole32.tlb");
+	importlib("devshl.dll");
+	importlib("ide\devdbg.pkg");
+
+
+	//  Dual interface for CCommands
+	//
+	//  All commands that your add-in adds to DevStudio
+	//   must appear in this interface.  You may use the
+	//   ClassView to add methods to this interface, which
+	//   will cause stub implementations of those methods to
+	//   appear in your CCommands class.
+
+	[	uuid(039FB623-6DD0-11D3-9B27-835709CADA52),
+		oleautomation,
+		dual
+	]
+
+	interface ICommands : IDispatch
+	{
+		// methods
+		[id(1), helpstring("method WWFileOpen")] HRESULT WWFileOpen();
+		[id(2), helpstring("method WWFileGlobalOpen")] HRESULT WWFileGlobalOpen();
+		[id(3), helpstring("method WWHeaderFlip")] HRESULT WWHeaderFlip();
+		[id(4), helpstring("method WWFileFindPrev")] HRESULT WWFileFindPrev();
+		[id(5), helpstring("method WWFileFindNext")] HRESULT WWFileFindNext();
+		[id(6), helpstring("method WWHistoryBack")] HRESULT WWHistoryBack();
+		[id(7), helpstring("method WWHistoryForward")] HRESULT WWHistoryForward();
+		[id(8), helpstring("method WWHistoryDlg")] HRESULT WWHistoryDlg();
+		[id(9), helpstring("method WWTagFindDlg")] HRESULT WWTagFindDlg();
+		[id(10), helpstring("method WWTagFindSpecialDlg")] HRESULT WWTagFindSpecialDlg();
+		[id(11), helpstring("method WWTagFlip")] HRESULT WWTagFlip();
+		[id(12), helpstring("method WWTagFindAtCursor")] HRESULT WWTagFindAtCursor();
+		[id(13), helpstring("method WWTagFindAtCursorDlg")] HRESULT WWTagFindAtCursorDlg();
+		[id(14), helpstring("method WWTagFindPrev")] HRESULT WWTagFindPrev();
+		[id(15), helpstring("method WWTagFindNext")] HRESULT WWTagFindNext();
+		[id(16), helpstring("method WWTagCompletePrev")] HRESULT WWTagCompletePrev();
+		[id(17), helpstring("method WWTagCompleteNext")] HRESULT WWTagCompleteNext();
+		[id(18), helpstring("method WWTagCompleteRestore")] HRESULT WWTagCompleteRestore();
+		[id(19), helpstring("method WWTagCompleteDlg")] HRESULT WWTagCompleteDlg();
+		[id(20), helpstring("method WWTemplateSelect")] HRESULT WWTemplateSelect();
+		[id(21), helpstring("method WWTemplateComplete")] HRESULT WWTemplateComplete();
+		[id(22), helpstring("method WWPasteFix")] HRESULT WWPasteFix();
+	};
+
+	//  Class information for CCommands
+
+	[ uuid(039FB624-6DD0-11D3-9B27-835709CADA52) ]
+	coclass Commands
+	{
+		[default] interface ICommands;
+	};
+
+	[ hidden, uuid(039FB625-6DD0-11D3-9B27-835709CADA52) ]
+	coclass ApplicationEvents
+	{
+		[default] interface IApplicationEvents;
+	}
+
+	[ hidden, uuid(039FB626-6DD0-11D3-9B27-835709CADA52) ]
+	coclass DebuggerEvents
+	{
+		[default] interface IDebuggerEvents;
+	}
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

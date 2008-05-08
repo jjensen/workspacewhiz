@@ -1,0 +1,43 @@
+// ShowGroupsAddin.odl : type library source for ShowGroupsAddin.dll
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (ShowGroupsAddin.tlb).
+
+[	uuid(B9A8A40B-7B6A-42B3-8301-731F172D712B), version(1.0),
+	helpstring ("SHOWGROUPSADDIN Developer Studio Add-in") ]
+library ShowGroupsAddin
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Dual interface for CCommands
+	//
+	//  All commands that your add-in adds to DevStudio
+	//   must appear in this interface.  You may use the
+	//   ClassView to add methods to this interface, which
+	//   will cause stub implementations of those methods to
+	//   appear in your CCommands class.
+	
+	[	uuid(4B959838-0FA2-4167-A1A4-55D0588E097C),
+		oleautomation,
+		dual
+	]
+
+	interface ICommands : IDispatch
+	{
+		// methods
+		[id(1)]
+		HRESULT ShowGroupsAddinCommandMethod();
+	};
+
+	//  Class information for CCommands
+
+	[ uuid(01DB3E06-E255-4196-A0ED-1F4856CCD3C8) ]
+	coclass Commands
+	{
+		[default] interface ICommands;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

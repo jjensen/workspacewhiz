@@ -1,0 +1,11 @@
+; ShowGroupsAddin.def : Declares the module parameters for the DLL.
+
+LIBRARY      "SHOWGROUPSADDIN"
+DESCRIPTION  'SHOWGROUPSADDIN Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+	DllCanUnloadNow PRIVATE
+	DllGetClassObject PRIVATE
+	DllRegisterServer PRIVATE
+	DllUnregisterServer PRIVATE

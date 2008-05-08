@@ -1,0 +1,43 @@
+// BackupProjectsAddin.odl : type library source for BackupProjectsAddin.dll
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (BackupProjectsAddin.tlb).
+
+[	uuid(B4D42867-903F-490E-A33C-47185BCCBA9B), version(1.0),
+	helpstring ("BACKUPPROJECTSADDIN Developer Studio Add-in") ]
+library BackupProjectsAddin
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Dual interface for CCommands
+	//
+	//  All commands that your add-in adds to DevStudio
+	//   must appear in this interface.  You may use the
+	//   ClassView to add methods to this interface, which
+	//   will cause stub implementations of those methods to
+	//   appear in your CCommands class.
+	
+	[	uuid(EB8726CC-A719-470F-BF9D-C7DDE960049E),
+		oleautomation,
+		dual
+	]
+
+	interface ICommands : IDispatch
+	{
+		// methods
+		[id(1)]
+		HRESULT BackupProjectsAddinCommandMethod();
+	};
+
+	//  Class information for CCommands
+
+	[ uuid(D9C45E2F-9CCE-47E6-8A2F-4289461C73CA) ]
+	coclass Commands
+	{
+		[default] interface ICommands;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

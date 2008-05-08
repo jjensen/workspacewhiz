@@ -1,0 +1,8 @@
+There are few source code docs at this time.
+
+The WWhiz source requires the Internet header and Win32 SDK portion of the
+Platform SDK on Microsoft's site to compile.
+
+If I forgot to credit ANYBODY in the source, give me a holler.  I'll get it
+corrected pronto.
+
