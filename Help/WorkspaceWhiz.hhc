@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Welcome to Workspace Whiz!">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Introduction">
+			<param name="Local" value="Introduction.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="License">
+			<param name="Local" value="License.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="History">
+			<param name="Local" value="History.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Acknowledgements">
+			<param name="Local" value="Acknowledgements.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Known Bugs and Issues">
+			<param name="Local" value="Bugs.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Frequently Asked Questions">
+			<param name="Local" value="FAQ.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Ordering">
+			<param name="Local" value="Ordering.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Workspace Whiz! on the Web">
+			<param name="Local" value="http://workspacewhiz.com/">
+			<param name="WindowName" value="WebWin">
+			<param name="ImageNumber" value="15">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Commands">
+		<param name="Local" value="CommandSummary.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Workspace File Open">
+			<param name="Local" value="FileOpen.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dialog">
+				<param name="Local" value="FileOpenDialog.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Matching Files">
+				<param name="Local" value="FileOpenMatchingFiles.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Navigation">
+				<param name="Local" value="FileOpenNavigation.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="File Context Menu">
+				<param name="Local" value="FileContextMenu.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Global File Open">
+			<param name="Local" value="GlobalFileOpen.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dialog">
+				<param name="Local" value="GlobalFileOpenDialog.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Matching Files">
+				<param name="Local" value="GlobalFileOpenMatchingFiles.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Navigation">
+				<param name="Local" value="GlobalFileOpenNavigation.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="File Context Menu">
+				<param name="Local" value="FileContextMenu.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Header Flip">
+			<param name="Local" value="HeaderFlip.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="File History">
+			<param name="Local" value="FileHistory.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dialog">
+				<param name="Local" value="FileHistoryDialog.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Find Tag">
+			<param name="Local" value="FindTag.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dialog">
+				<param name="Local" value="FindTagDialog.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Matching Tags">
+				<param name="Local" value="FindTagMatchingTags.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Search Attributes">
+				<param name="Local" value="FindTagSearchAttributes.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Tag Display">
+				<param name="Local" value="FindTagDisplay.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Refreshing or Rebuilding">
+				<param name="Local" value="FindTagRefresh.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Navigation">
+				<param name="Local" value="FindTagNavigation.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Tag Context Menu">
+				<param name="Local" value="TagContextMenu.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tag Completion">
+			<param name="Local" value="TagComplete.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Usage">
+				<param name="Local" value="TagCompleteUsage.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Code Templates">
+			<param name="Local" value="CodeTemplates.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dialog">
+				<param name="Local" value="CodeTemplatesTemplateSelectDialog.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Template Group List Dialog">
+				<param name="Local" value="CodeTemplatesTemplateFileListDialog.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Autocompletion">
+				<param name="Local" value="CodeTemplatesKey.html">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Extra Files">
+		<param name="Local" value="ExtraFiles.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Dialog">
+			<param name="Local" value="ExtraFilesDialog.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Preferences">
+		<param name="Local" value="Preferences.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Key Bindings">
+			<param name="Local" value="PreferencesKeyBindings.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Header Flip">
+			<param name="Local" value="PreferencesHeaderFlip.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tags">
+			<param name="Local" value="PreferencesTags.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Template File Format">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Header">
+			<param name="Local" value="TF_Header.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Variables">
+			<param name="Local" value="TF_Variables.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Commands">
+			<param name="Local" value="TF_Commands.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Add">
+				<param name="Local" value="TFCAdd.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Call">
+				<param name="Local" value="TFCCall.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Caret">
+				<param name="Local" value="TFCCaret.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ConfigAddFileSettings.html">
+				<param name="Local" value="TFCConfigAddFileSettings.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ConfigAddToolSettings">
+				<param name="Local" value="TFCConfigAddToolSettings.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ConfigCount">
+				<param name="Local" value="TFCConfigCount.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ConfigGet">
+				<param name="Local" value="TFCConfigGet.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ConfigRemoveFileSettings">
+				<param name="Local" value="TFCConfigRemoveFileSettings.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ConfigRemoveToolSettings">
+				<param name="Local" value="TFCConfigRemoveToolSettings.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Date">
+				<param name="Local" value="TFCDate.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Env">
+				<param name="Local" value="TFCEnv.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ExecuteCommand">
+				<param name="Local" value="TFCExecuteCommand.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="FileExt">
+				<param name="Local" value="TFCFileExt.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="FileNew">
+				<param name="Local" value="TFCFileNew.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="FilePath">
+				<param name="Local" value="TFCFilePath.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="FileSave">
+				<param name="Local" value="TFCFileSave.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="FileTitle">
+				<param name="Local" value="TFCFileTitle.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Find">
+				<param name="Local" value="TFCFind.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="GetPos">
+				<param name="Local" value="TFCGetPos.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Goto">
+				<param name="Local" value="TFCGoto.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="GUID">
+				<param name="Local" value="TFCGUID.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Label">
+				<param name="Local" value="TFCLabel.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MakeDir">
+				<param name="Local" value="TFCMakeDir.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MessageBox">
+				<param name="Local" value="TFCMessageBox.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MoveTo">
+				<param name="Local" value="TFCMoveTo.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ProjectCount">
+				<param name="Local" value="TFCProjectCount.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ProjectFileAdd">
+				<param name="Local" value="TFCProjectFileAdd.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ProjectGet">
+				<param name="Local" value="TFCProjectGet.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ProjectName">
+				<param name="Local" value="TFCProjectName.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ProjectNew">
+				<param name="Local" value="TFCProjectNew.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ProjectPath">
+				<param name="Local" value="TFCProjectPath.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Return">
+				<param name="Local" value="TFCReturn.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Sel">
+				<param name="Local" value="TFCSel.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Set">
+				<param name="Local" value="TFCSet.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="StrFind">
+				<param name="Local" value="TFCStrFind.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="String">
+				<param name="Local" value="TFCString.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="StrLen">
+				<param name="Local" value="TFCStrLen.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="StrLower">
+				<param name="Local" value="TFCStrLower.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="StrSub">
+				<param name="Local" value="TFCStrSub.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="StrUpper">
+				<param name="Local" value="TFCStrUpper.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Sub">
+				<param name="Local" value="TFCSub.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Time">
+				<param name="Local" value="TFCTime.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Sections">
+			<param name="Local" value="TF_Sections.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Code">
+				<param name="Local" value="TFSCode.html">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Conditional Expressions">
+					<param name="Local" value="TFSCodeConditionalExpressions.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Loops">
+					<param name="Local" value="TFSCodeLoops.html">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dialog">
+				<param name="Local" value="TFSDialog.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Memo">
+				<param name="Local" value="TFSMemo.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Params">
+				<param name="Local" value="TFSParams.html">
+				</OBJECT>
+		</UL>
+	</UL>
+</UL>
+</BODY></HTML>

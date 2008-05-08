@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: WWhizInterface2.h $
 // $Archive: /WorkspaceWhiz/Src/Shared/WWhizInterface2.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 34   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #8 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -23,7 +23,7 @@ class WWhizConfig;
 class XmlData;
 
 /**
-	This is the base class for several Workspace Whiz! objects that allows
+	This is the base class for several Workspace Whiz objects that allows
 	reference counting.  It should look fairly similar to COM's IUnknown.
 **/
 class WWhizBase
@@ -340,7 +340,7 @@ public:
 		When in DevStudio, RefreshFileList() automatically adds any projects
 		in the open workspace.
 
-		If the Workspace Whiz! registration interface is available, ExtraFiles
+		If the Workspace Whiz registration interface is available, ExtraFiles
 		are added, also.
 
 		
@@ -361,8 +361,12 @@ public:
 	virtual void RemoveAllFiles(void) = 0;
 
 	/**
+		Adds a project to the list of WWhizInterface projects.  Projects (.dsp)
+		or workspaces (.dsw) are the only file types that can be added.
+
+		@param projectName The path to the project or workspace file to be added.
 	**/
-	virtual void Reserved1() = 0;
+	virtual void AddProject2(CString projectName, bool noRefresh) = 0;
 
 	///////////////////////////////////////////////////////////////////////////
 	// Tag support
@@ -498,7 +502,7 @@ public:
 	virtual CTime GetLastTagRefreshTime() const = 0;
 
 	/**
-		Sets a pointer to the Workspace Whiz! registration module.
+		Sets a pointer to the Workspace Whiz registration module.
 
 		@param wwhizReg The pointer to the WWhizReg.mod.
 	**/
@@ -582,17 +586,17 @@ public:
 	/**
 		\internal Removes a file extension.
 	**/
-	virtual void FilesExtRemove(int index) = 0;
+	virtual void FilesExtRemove(size_t index) = 0;
 
 	/**
 		\internal Gets a file extension from the list.
 	**/
-	virtual const CString& FilesExtGet(int index) = 0;
+	virtual const CString& FilesExtGet(size_t index) = 0;
 
 	/**
 		\internal Retrieves the number of registered file extensions.
 	**/
-	virtual int FilesExtGetCount() = 0;
+	virtual size_t FilesExtGetCount() = 0;
 
 	///////////////////////////////////////////////////////////////////////////
 	// Tags extension list.
@@ -620,18 +624,18 @@ public:
 	/**
 		Removes a tag file extension.
 	**/
-	virtual void TagsExtRemove(int index) = 0;
+	virtual void TagsExtRemove(size_t index) = 0;
 
 	/**
 		@return Retrieves the number of registered tag file extensions.
 	**/
-	virtual int TagsExtGetCount() = 0;
+	virtual size_t TagsExtGetCount() = 0;
 
 	/**
 		@param index The tag extension index to retrieve.
 		@return Retrieves a tag extension from the list.
 	**/
-	virtual const CString& TagsExtGet(int index) = 0;
+	virtual const CString& TagsExtGet(size_t index) = 0;
 
 	///////////////////////////////////////////////////////////////////////////
 	// Misc.
@@ -701,18 +705,18 @@ public:
 	/**
 		Removes a token to ignore.
 	**/
-	virtual void IgnoreTokensRemove(int index) = 0;
+	virtual void IgnoreTokensRemove(size_t index) = 0;
 
 	/**
 		@return Retrieves the number of registered tag file extensions.
 	**/
-	virtual int IgnoreTokensGetCount() = 0;
+	virtual size_t IgnoreTokensGetCount() = 0;
 
 	/**
 		@param index The tag extension index to retrieve.
 		@return Retrieves a tag extension from the list.
 	**/
-	virtual const CString& IgnoreTokensGet(int index) = 0;
+	virtual const CString& IgnoreTokensGet(size_t index) = 0;
 
 	///////////////////////////////////////////////////////////////////////////
 	// Misc.
@@ -815,6 +819,11 @@ public:
 		@return Returns a pointer to the XmlData object representing the project.
 	**/
 	virtual XmlData& GetXmlData() = 0;
+
+	/**
+		Only refreshes a project once per session.
+	**/
+	virtual void SetNoRefresh(bool noRefresh) = 0;
 };
 
 

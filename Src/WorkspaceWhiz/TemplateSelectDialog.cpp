@@ -1,26 +1,23 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TemplateSelectDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/TemplateSelectDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 20   $ $Author: Jjensen $
+// $Date: 2003/01/16 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "TemplateSelectDialog.h"
-#include "WorkspaceCommands.h"
 #include "TemplateFileListDialog.h"
 #include "TemplateWizardDialog.h"
 #include "AboutDialog.h"
-#include "PreferencesDialog.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -33,6 +30,11 @@ static char THIS_FILE[] = __FILE__;
 **/
 void CTemplateSelectDialog::DoDialog()
 {
+#ifdef WWHIZ_VSNET
+	CComPtr<EnvDTE::Document> document;
+	g_pDTE->get_ActiveDocument(&document);
+#endif WWHIZ_VSNET
+
 	while (g_wwhizTemplateManager->GetCount() == 0)
 	{
 		CTemplateFileListDialog dlg;
@@ -41,12 +43,24 @@ void CTemplateSelectDialog::DoDialog()
 	}
 
 	CTemplateSelectDialog dlg;
-	dlg.DoModal();
+	if (dlg.DoModal() == IDCANCEL)
+		return;
+
+	if (dlg.m_code)
+	{
+#ifdef WWHIZ_VSNET
+		if (document)
+			document->Activate();
+#endif WWHIZ_VSNET
+
+		WWhizCommands::PutTemplate(*dlg.m_code);
+	}
 }
 
 
 CTemplateSelectDialog::CTemplateSelectDialog(CWnd* pParent /*=NULL*/)
-	: TEMPLATE_SELECT_DIALOG(CTemplateSelectDialog::IDD, pParent)
+	: TEMPLATE_SELECT_DIALOG(CTemplateSelectDialog::IDD, pParent),
+	m_code(NULL)
 {
 	//{{AFX_DATA_INIT(CTemplateSelectDialog)
 		// NOTE: the ClassWizard will add member initialization here
@@ -60,7 +74,6 @@ void CTemplateSelectDialog::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CTemplateSelectDialog)
 	DDX_Control(pDX, IDOK, m_butOK);
 	DDX_Control(pDX, IDCANCEL, m_butCancel);
-	DDX_Control(pDX, IDC_COM_PREFERENCES, m_butPreferences);
 	DDX_Control(pDX, IDC_TS_FILELIST, m_butFileList);
 	DDX_Control(pDX, IDC_COM_ABOUT, m_butAbout);
 	DDX_Control(pDX, IDC_TS_MEMO, m_memo);
@@ -76,7 +89,6 @@ BEGIN_MESSAGE_MAP(CTemplateSelectDialog, TEMPLATE_SELECT_DIALOG)
 	ON_BN_CLICKED(IDC_TS_FILELIST, OnTfFilelist)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_COM_ABOUT, OnTsAbout)
-	ON_BN_CLICKED(IDC_COM_PREFERENCES, OnTsPreferences)
 	ON_NOTIFY(NM_RCLICK, IDC_TS_TREE, OnRclickTsTree)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -86,7 +98,6 @@ BEGIN_DYNAMIC_MAP(CTemplateSelectDialog, cdxCDynamicDialog)
 	DYNAMIC_MAP_ENTRY(IDCANCEL,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDHELP,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_ABOUT,		mdRepos,	mdNone)
-	DYNAMIC_MAP_ENTRY(IDC_COM_PREFERENCES,	mdRepos,	mdNone)
 
 	DYNAMIC_MAP_ENTRY(IDC_TS_FILELIST,		mdRepos,	mdNone)
 	
@@ -144,7 +155,7 @@ static void AddTreeItem(CTreeCursor cursor, UINT id, CString name)
 	while (true)
 	{
 		// See if there is a sub-tree.
-		nextPos = CStringFind(name, '|', curPos);
+		nextPos = name.Find('|', curPos);
 		if (nextPos == -1)
 			break;
 
@@ -267,11 +278,10 @@ void CTemplateSelectDialog::OnDblclkCtTree(NMHDR* pNMHDR, LRESULT* pResult)
 void CTemplateSelectDialog::OnOK() 
 {
 	// Get the template, if possible.
-	WWhizTemplate* code = NULL;
 	CTreeCursor cursor = m_tree.GetSelectedItem();
 	if (cursor != NULL)
 	{
-		code = (WWhizTemplate*)cursor.GetData();
+		m_code = (WWhizTemplate*)cursor.GetData();
 	}
 	
 	// Save the tree state.
@@ -281,21 +291,18 @@ void CTemplateSelectDialog::OnOK()
 	TEMPLATE_SELECT_DIALOG::OnOK();
 
 	// If there wasn't a template, exit.
-	if (!code)
+	if (!m_code)
 		return;
 
-	code->ResetDictionaryDefaults();
+	m_code->ResetDictionaryDefaults();
 
 	// If there are dialog wizard pages, then pop up the wizard dialog.
-	if (code->GetPageCount() > 0)
+	if (m_code->GetPageCount() > 0)
 	{
-		CTemplateWizardDialog dlg(*code);
+		CTemplateWizardDialog dlg(*m_code);
 		if (dlg.DoModal() == IDCANCEL)
 			return;
 	}
-
-	// Finally, put it into the text document.
-	WorkspaceCommands::PutTemplate(*code);
 }
 
 
@@ -337,15 +344,6 @@ void CTemplateSelectDialog::OnTsAbout()
 	GetDlgItem(IDC_TS_TREE)->SetFocus();
 }
 
-void CTemplateSelectDialog::OnTsPreferences() 
-{
-	CPreferencesDialog dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-	}
-	GetDlgItem(IDC_TS_TREE)->SetFocus();
-}
-
 void CTemplateSelectDialog::OnRclickTsTree(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	CTreeCursor cursor = m_tree.GetDropHilightItem();
@@ -361,10 +359,10 @@ void CTemplateSelectDialog::OnRclickTsTree(NMHDR* pNMHDR, LRESULT* pResult)
 		ObjModelHelper objModel;
 		if (objModel.OpenDocument(code->GetParent().GetFilename(), "Auto"))
 		{
-			objModel.PutLanguage(DS_CPP);
+			objModel.PutLanguage("cpp");
 
-			objModel.MoveTo(code->GetLineNumber(), 1, dsMove);
-			g_pApplication->ExecuteCommand(CComBSTR("WindowScrollToCenter"));
+			objModel.MoveTo(code->GetLineNumber(), 1, false);
+			objModel.ScrollToCenter();
 
 			OnCancel();
 		}

@@ -1,7 +1,6 @@
 // cdxCSizeIconCtrl.cpp : implementation file
 //
 
-#include "stdafx.h"
 #include "cdxCSizeIconCtrl.h"
 
 #include	<winuser.h>
@@ -14,7 +13,7 @@
 #endif
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif

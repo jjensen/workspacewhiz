@@ -16,13 +16,12 @@
 // below and judge for yourself.
 //
 
-#include "stdafx.h"
 #include "BCMenu.h"
 #include "ShellContextMenu.h"
 #include "ShellTools.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -220,7 +219,7 @@ void CShellContextMenu::SetMenu(BCMenu *pMenu, BCMenu *pMenu2)
                 if (str1 == str2)
                 {
                     // ok - found it.  now populate it
-                    m_pSendToMenu = new BCMenu();
+                    m_pSendToMenu = WNEW BCMenu();
                     m_pSendToMenu->CreateMenu();
                     pMenu->ModifyMenu(i, MF_BYPOSITION | MF_POPUP, 
                         (UINT)m_pSendToMenu->GetSafeHmenu(), str1);
@@ -283,7 +282,7 @@ void CShellContextMenu::FillSendToMenu(BCMenu *pMenu,
                         if (i == 0)
                         {
                             // create new submenu & recurse
-                            pSubMenu = new BCMenu();
+                            pSubMenu = WNEW BCMenu();
                             pSubMenu->CreateMenu();
                             pMenu->AppendODMenuA(str.cStr, 
                                 MF_ENABLED | MF_OWNERDRAW | MF_POPUP, 

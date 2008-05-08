@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>Template Files - Command: Call</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3>Command: Call</h3>
+<p><b>Format:</b> <span class="code">Call TemplateName [ArgName1 ArgValue1 ArgName2 
+  ArgValue2 ...]</span></p>
+<p><b>Returns:</b> The value specified by the command <a href="TFCReturn.html">Return</a>.</p>
+<p>Begins processing another code template at the current position. </p>
+<pre>
+[-Hello World]
+
+!!Params
+name Joe Bob
+!!End
+
+
+!!Code
+
+Hello World.  Hello @@name@@!
+!!End
+
+
+[Do Stuff]
+
+!!Code
+
+!!Call &quot;-Hello World&quot;
+!!Call &quot;-Hello World&quot; name &quot;Joshua Jensen&quot;
+!!End
+</pre>
+<p>Processing the template <span class="code">Do Stuff</span> yields the following 
+  output:</p>
+<pre>Hello World. Hello Joe Bob!
+Hello World. Hello Joshua Jensen!</pre>
+<p>The minus symbol at the start of the <span class="code">-Hello World</span> 
+  means the template won't show in the template selection tree. Private templates 
+  are good to use, but <span class="code">!!Call</span> can execute any template.</p>
+<p>While executing the called template, a variable called <span class="code">__Parent</span> 
+  exists. It is the name of the calling template.</p>
+<h3>&nbsp;</h3>
+</body>
+</html>

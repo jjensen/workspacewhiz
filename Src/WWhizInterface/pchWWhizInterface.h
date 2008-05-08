@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: pchWWhizInterface.h $
 // $Archive: /WorkspaceWhiz/Src/WWhizInterface/pchWWhizInterface.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 19   $ $Author: Jjensen $
+// $Date: 2003/06/23 $ $Revision: #13 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -14,103 +14,178 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
-#pragma warning (disable : 4786)
+#ifndef WINVER
+#define WINVER 0x0400
+#endif
 
-#include <afxwin.h>         // MFC core and standard components
-#include <afxdisp.h>
+#define _ATL_APARTMENT_THREADED
+#define _ATL_NO_AUTOMATIC_NAMESPACE
+
+// turns off ATL's hiding of some common and often safely ignored warning messages
+#define _ATL_ALL_WARNINGS
+
+#pragma warning( disable : 4244 )
+#pragma warning( disable : 4311 )
+#pragma warning( disable : 4312 )
+#include <afx.h>
 #include <afxcmn.h>
-#include <afxdlgs.h>
 #include <afxtempl.h>
-#include <mmsystem.h>
-#include "AfxTemplateEx.h"
-
 #include <atlbase.h>
-//You may derive a class from CComModule and use it if you want to override
-//something, but do not change the name of _Module
-//extern CComModule _Module;
-//#include <atlcom.h>
+#include <mmsystem.h>
+#include "WCollection.h"
+
+using namespace ATL;
+
+#ifdef WWHIZ_VC6
 
 // Developer Studio Object Model
 #include <ObjModel\appauto.h>
-extern IApplication* g_pApplication;
-#include "ObjModelHelper.h"
 
-/////////////////////////////////////////////////////////////////////////////
-// Debugging support
+#endif WWHIZ_VC6
 
-// Use VERIFY_OK around all calls to the Developer Studio objects which
-//  you expect to return S_OK.
-// In DEBUG builds of your add-in, VERIFY_OK displays an ASSERT dialog box
-//  if the expression returns an HRESULT other than S_OK.  If the HRESULT
-//  is a success code, the ASSERT box will display that HRESULT.  If it
-//  is a failure code, the ASSERT box will display that HRESULT plus the
-//  error description string provided by the object which raised the error.
-// In RETAIL builds of your add-in, VERIFY_OK just evaluates the expression
-//  and ignores the returned HRESULT.
+#ifdef WWHIZ_VSNET
 
-#ifdef _DEBUG
+#pragma warning( disable : 4278 )
+#pragma warning( disable : 4146 )
+	//The following #import imports MSO based on it's LIBID
+	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
 
-void GetLastErrorDescription(CComBSTR& bstr);		// Defined in WorkspaceWhiz.cpp
-#define VERIFY_OK(f) \
-	{ \
-		HRESULT hr = (f); \
-		if (hr != S_OK) \
-		{ \
-			if (FAILED(hr)) \
-			{ \
-				CComBSTR bstr; \
-				GetLastErrorDescription(bstr); \
-				_RPTF2(_CRT_ASSERT, "Object call returned %lx\n\n%S", hr, (BSTR) bstr); \
-			} \
-			else \
-				_RPTF1(_CRT_ASSERT, "Object call returned %lx", hr); \
-		} \
+	//The following #import imports DTE based on it's LIBID
+	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
+						
+	//The following imports the VCProjectEngine.
+	#include "VCProjectEngine70.tlh"
+	#include "VCProjectEngine71.tlh"
+#pragma warning( default : 4146 )
+#pragma warning( default : 4278 )
+
+#endif WWHIZ_VSNET
+
+#pragma warning(push, 3)
+#pragma warning(disable: 4035)
+__forceinline int PASCAL FastStrlen(LPCSTR lpsz)
+{
+	_asm
+	{
+		xor eax, eax
+		mov ebx, lpsz
+LoopTop:
+		cmp byte ptr [ebx + eax], 0
+		jz Done
+		cmp byte ptr [ebx + eax + 1], 0
+		jz Done1
+		cmp byte ptr [ebx + eax + 2], 0
+		jz Done2
+		cmp byte ptr [ebx + eax + 3], 0
+		jz Done3
+		add eax, 4
+		jmp LoopTop
+Done1:
+		inc eax
+		jmp Done
+Done2:
+		add eax, 2
+		jmp Done
+Done3:
+		add eax, 3
+Done:
+	}
+}
+
+__forceinline bool FastCompareExactString(LPCSTR s1, LPCSTR s2, DWORD len)
+{
+	_asm
+	{
+		push esi
+		mov eax, s2
+		mov ebx, s1
+		mov esi, len
+		xor ecx, ecx
+		shr esi, 2
+		jz Do1
+		shl esi, 2
+LoopTop4:
+		mov edx, [eax + ecx]
+		add ecx, 4
+		cmp [ebx + ecx - 4], edx
+		jnz Bad
+		cmp ecx, esi
+		jnz LoopTop4
+
+Do1:
+		mov esi, len
+		cmp ecx, esi
+		jz Good
+LoopTop1:
+		mov dl, [eax + ecx]
+		inc ecx
+		cmp [ebx + ecx - 1], dl
+		jnz Bad
+		cmp ecx, esi
+		jnz LoopTop1
+
+Good:
+		mov eax, 1
+		jmp Done
+
+Bad:
+		xor eax, eax
+
+Done:
+		pop esi
+
 	}
 
-#else //_DEBUG
-
-#define VERIFY_OK(f) (f);
-
-#endif //_DEBUG
-
-int CStringFind(const CString& str, LPCTSTR lpszSub, int nStart);
-int CStringFind(const CString& str, TCHAR ch, int nStart);
-
-template<> inline void AFXAPI ConstructElementsEx<CString> (CString* pElements, int nCount)
-{
-	for (; nCount--; ++pElements)
-		memcpy(pElements, &afxEmptyString, sizeof(*pElements));
 }
 
-template<> inline void AFXAPI DestructElementsEx<CString> (CString* pElements, int nCount)
+__forceinline bool FastCompareString(LPCSTR s1, LPCSTR s2, DWORD len)
 {
-	for (; nCount--; ++pElements)
-		pElements->~CString();
+	_asm
+	{
+		push esi
+		mov eax, s2
+		mov ebx, s1
+		mov esi, len
+		xor ecx, ecx
+		shr esi, 2
+		jz Do1
+		shl esi, 2
+LoopTop4:
+		mov edx, [eax + ecx]
+		add ecx, 4
+		cmp [ebx + ecx - 4], edx
+		jl Bad
+		cmp ecx, esi
+		jnz LoopTop4
+
+Do1:
+		mov esi, len
+		cmp ecx, esi
+		jz Good
+LoopTop1:
+		mov dl, [eax + ecx]
+		inc ecx
+		cmp [ebx + ecx - 1], dl
+		jl Bad
+		cmp ecx, esi
+		jnz LoopTop1
+
+Good:
+		mov eax, 1
+		jmp Done
+
+Bad:
+		xor eax, eax
+
+Done:
+		pop esi
+
+	}
+
 }
 
-template<> inline void AFXAPI CopyElementsEx<CString> (CString* pDest, const CString* pSrc, int nCount)
-{
-	for (; nCount--; ++pDest, ++pSrc)
-		*pDest = *pSrc;
-}
+#pragma warning(pop)
 
-template<> inline UINT AFXAPI HashKey<CString> (CString _key)
-{
-	LPCSTR key = _key;
-	UINT nHash = 0;
-	while (*key)
-		nHash = (nHash<<5) + nHash + *key++;
-	return nHash;
-}
-
-template<> inline UINT AFXAPI HashKey<const CString&> (const CString& _key)
-{
-	LPCSTR key = _key;
-	UINT nHash = 0;
-	while (*key)
-		nHash = (nHash<<5) + nHash + *key++;
-	return nHash;
-}
 
 // determine number of elements in an array (not bytes)
 #ifndef _countof
@@ -121,10 +196,13 @@ template<> inline UINT AFXAPI HashKey<const CString&> (const CString& _key)
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#ifdef WWHIZ_VC6
 typedef bool (*pfnGetWorkspaceName)(LPTSTR buffer, int bufSize);
+#endif WWHIZ_VC6
 
+#include "ObjModelHelper.h"
 #include "RCBase.h"
-#include "WWhizInterface2.h"
+#include "WWhizInterface3.h"
 #include "WWhizReg.h"
 #include "Auto.h"
 
@@ -132,4 +210,5 @@ extern WWhizInterface* g_wwhizInterface;
 extern WWhizReg* g_wwhizReg;
 extern HINSTANCE g_wwhizInterfaceInstance;
 
-//#include "AggressiveOptimize.h"
+
+

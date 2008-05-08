@@ -1,12 +1,11 @@
 // ChoiceWindowBtn.cpp : implementation file
 //
 
-#include "stdafx.h"
 #include "ChoiceWindowBtn.h"
 #include "ChoiceWindow.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -22,7 +21,7 @@ IMPLEMENT_DYNCREATE(CChoiceWindowBtn, CButton)
 
 CChoiceWindowBtn::CChoiceWindowBtn()
 {
-	m_pChoiceWindow = new CChoiceWindow;
+	m_pChoiceWindow = WNEW CChoiceWindow;
 	m_bDisableIfEmpty = TRUE;
 }
 
@@ -73,7 +72,7 @@ void CChoiceWindowBtn::OnButtonClicked()
 void CChoiceWindowBtn::AddChoice(LPCTSTR szText, BOOL bChecked)
 {
 	// Insert new text/check pair
-	CChoice* pChoice = new CChoice;
+	CChoice* pChoice = WNEW CChoice;
 	pChoice->bChecked = bChecked;
 	pChoice->strText = szText;
 	m_choiceArray.Add(pChoice);

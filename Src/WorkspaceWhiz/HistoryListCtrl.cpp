@@ -1,17 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: HistoryListCtrl.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/HistoryListCtrl.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 6    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "HistoryListCtrl.h"
 #include "HistoryDialog.h"
 #include "History.h"
@@ -39,9 +38,9 @@ void CHistoryListCtrl::OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult)
 
 	CString strField;
 	if (item->iSubItem == 0)
-		strField.Format("%d", info->m_x);
-	else if (item->iSubItem == 1)
 		strField.Format("%d", info->m_y);
+	else if (item->iSubItem == 1)
+		strField.Format("%d", info->m_x);
 	else if (item->iSubItem == 2)
 		strField = info->m_filename;
 

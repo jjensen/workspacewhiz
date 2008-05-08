@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: FindFileDialog.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/FindFileDialog.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 18   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #9 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -26,7 +26,7 @@ class CFindFileDialog : public FIND_FILE_DIALOG
 {
 // Construction
 public:
-	typedef enum { ScopeCurrentProject, ScopeEntireWorkspace } FileScope;
+	typedef enum { ScopeCurrentProject, ScopeEntireWorkspace, ScopeGlobal } FileScope;
 	static FileScope s_fileScope;
 
 	CFindFileDialog(CWnd* pParent = NULL);   // standard constructor
@@ -40,10 +40,10 @@ public:
 	CString m_oldPrefix;
 	int m_created;
 	WWhizFileList* m_fileList;
-	WWhizFileList* m_origFileList;
+//	WWhizFileList* m_origFileList;
 	WWhizProject* m_curProject;
-	bool m_workspaceOpen;
-	CArrayEx<int, int> m_foundFiles;
+//	bool m_workspaceOpen;
+	WArray<int> m_foundFiles;
 
 	void RefreshList(LPCTSTR filename);
 
@@ -55,16 +55,15 @@ public:
 	CButton	m_butCurrentFile;
 	CButton	m_butOK;
 	CButton	m_butCancel;
-	CButton	m_butRefresh;
-	CButton	m_butPreferences;
+//	CButton	m_butRefresh;
 	CButton	m_butHelp;
 	CButton	m_butExtraFiles;
 	CButton	m_butAbout;
 	//}}AFX_DATA
 
 	CListCtrl*		m_files;
-	CEdit*			m_edit;
-	CEdit*			m_prefixEdit;
+	CComboBoxEx*	m_edit;
+	CComboBoxEx*	m_prefixEdit;
 
 	CString m_saveOldFilename;
 	CString m_saveOldPrefix;
@@ -90,19 +89,21 @@ protected:
 	afx_msg void OnPfAbout();
 	afx_msg void OnDblclkFfFiles(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnFfExtraprojects();
-	afx_msg void OnFfPreferences();
 	virtual void OnCancel();
-	afx_msg void OnFfRefresh();
+//	afx_msg void OnFfRefresh();
 	afx_msg void OnDestroy();
 	afx_msg void OnRclickFfFiles(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnFfCurrentfile();
 	afx_msg void OnFfScopeProject();
 	afx_msg void OnFfScopeWorkspace();
+	afx_msg void OnFfScopeGlobal();
 	afx_msg void OnChangeFfFilename(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DYNAMIC_MAP()
+public:
+	afx_msg void OnCbnCloseupFfFilename();
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -5,7 +5,6 @@
 /* due credit is given.                                                    */
 /***************************************************************************/
 
-#include "stdafx.h"
 #include "ShellTools.h"
 
 
@@ -229,7 +228,7 @@ HICON GetFileIcon(LPCTSTR pszPath, UINT uFlags, RECEIVERFUNC pReceiver,
     }
     else
     {
-        pgfi_thread_data pData = new gfi_thread_data;
+        pgfi_thread_data pData = WNEW gfi_thread_data;
         pData->pReceiver = pReceiver;
         pData->pContext  = pContext;
         pData->pszPath   = pszPath;

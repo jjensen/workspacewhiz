@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizInterface.h" /FD /c
-# ADD CPP /nologo /G5 /MD /W3 /GX /Zi /O2 /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizInterface.h" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZINTERFACEBUILDDLL" /Yu"pchWWhizInterface.h" /FD /c
+# ADD CPP /nologo /G5 /MD /W3 /GX /Zi /O2 /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizInterface.h" /D "NDEBUG" /D "WWHIZINTERFACEBUILDDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"pchWWhizInterface.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizInterface.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizInterface.h" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZINTERFACEBUILDDLL" /Yu"pchWWhizInterface.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizInterface.h" /D "_DEBUG" /D "WWHIZINTERFACEBUILDDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"pchWWhizInterface.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -185,10 +185,6 @@ SOURCE=.\WorkspaceTags.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\3rdParty\AfxTemplateEx.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\3rdParty\AggressiveOptimize.h
 # End Source File
 # Begin Source File
@@ -201,12 +197,36 @@ SOURCE=..\3rdParty\MemFile.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\3rdParty\ObjModelGUID.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\3rdParty\ObjModelHelper.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\Shared\Timer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\3rdParty\WCollection.h
 # End Source File
 # End Group
 # Begin Group "Shared"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\Shared\FileGlobBase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\Shared\FileGlobBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\Shared\FileGlobList.h
+# End Source File
 # Begin Source File
 
 SOURCE=..\Shared\Node.cpp
@@ -241,7 +261,7 @@ SOURCE=..\Shared\VirtualFile.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\Shared\WWhizInterface2.h
+SOURCE=..\Shared\WWhizInterface3.h
 # End Source File
 # Begin Source File
 

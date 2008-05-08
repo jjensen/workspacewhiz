@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Template Files - Section: Dialog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files </h2>
+<h3>Template Section: Dialog</h3>
+<p>The <b>Dialog</b> section is not required.</p>
+<p>The <b>Dialog</b> section may contain one or more dialogs the end-user may 
+  read. The dialogs may also be used to solicit user input. The contents of the 
+  Dialog can be full HTML markup, including JavaScript or VBScript.</p>
+<pre>!!Dialog<br>&lt;p&gt;This is a paragraph test&lt;/p&gt;<br>&lt;p&gt;This is a &lt;b&gt;bold, &lt;i&gt;italic&lt;/i&gt;&lt;/b&gt; test.&lt;/p&gt;<br>!!End</pre>
+<p><b>Dialog</b> sections may contain multiple <i>Next</i> commands. A <i>Next 
+  </i>command exists on its own line and is preceded by two exclamation points.</p>
+<h4></h4>
+<pre>!!Dialog<br>This is page 1.
+!!Next<br>This is page 2.<br>!!Next<br>This is page 3.<br>!!End</pre>
+<p>The <b>id</b> parameter of an HTML tag determines the name of the template 
+  dictionary entry used to store the user input:</p>
+<pre>!!Dialog
+
+[input type=checkbox id=dothirdparam name="checkbox"]Display third parameter?
+!!End</pre>
+<p>In the above example, a dictionary entry called <b>dothirdparam</b> would be 
+  added to the dictionary.</p>
+<p>The following HTML user input types are supported:</p>
+<table width="100%" border="1">
+  <tr>
+    <td><b>HTML input type</b></td>
+    <td><b>Dictionary values</b></td>
+  </tr>
+  <tr> 
+    <td>text</td>
+    <td>A direct representation of the string typed.</td>
+  </tr>
+  <tr> 
+    <td>file</td>
+    <td>The full path name of the file selected.</td>
+  </tr>
+  <tr> 
+    <td>checkbox</td>
+    <td>&quot;1&quot; if the checkbox was checked, &quot;0&quot; if it wasn't.</td>
+  </tr>
+  <tr> 
+    <td>radio</td>
+    <td>&quot;1&quot; for the selected radio button, &quot;0&quot; for all others 
+      in the group.</td>
+  </tr>
+</table>
+<p>Any other user input types are not translated into the dictionary.</p>
+<p>Variable substitution may not be used in the <b>Dialog</b> section.</p>
+<pre>&nbsp;</pre>
+</body>
+</html>

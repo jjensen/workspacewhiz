@@ -1,75 +1,33 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: DSAddIn.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/DSAddIn.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 44   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #11 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "DSAddIn.h"
 #include "Commands.h"
 #include "AICLoader.h"
-#include "WWhizInterface2Loader.h"
+#include "WWhizInterfaceLoader.h"
 #include "WWhizRegLoader.h"
 #include "WWhizTemplateManagerLoader.h"
 #include "TemplateWizardDialog.h"
 #include "ToolbarWnd.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
-WWhizInterface* g_wwhizInterface;
-WWhizReg* g_wwhizReg;
-WWhizTemplateManager* g_wwhizTemplateManager;
-
 extern int AddinCallback200(LPCTSTR pCmd);
 
-static CommandInfo s_commandList[] =
-{
-	{ "WWFileOpen",						"Ctrl+O",				true,  false },
-	{ "WWFileGlobalOpen",				"Ctrl+Shift+O",			true,  false },
-	{ "WWHeaderFlip",					"Ctrl+H",				true,  false },
-	{ "WWFileFindPrev",					"",						true,  false },
-	{ "WWFileFindNext",					"",						true,  false },
-	{ "WWHistoryBack",					"Alt+Left Arrow",		true,  false },
-	{ "WWHistoryForward",				"Alt+Right Arrow",		true,  false },
-	{ "WWHistoryDlg",					"",						true,  false },
-	{ "WWTagFindDlg",					"Ctrl+D",				true,  false },
-	{ "WWTagFindSpecialDlg",			"Ctrl+Shift+D",			true,  false },
-	{ "WWTagFlip",						"Ctrl+Shift+Space",		true,  false },
-	{ "WWTagFindAtCursor",				"Ctrl+Space",			true,  false },
-	{ "WWTagFindAtCursorDlg",			"",						true,  false },
-	{ "WWTagFindPrev",					"Alt+Shift+Left Arrow",	true,  false },
-	{ "WWTagFindNext",					"Alt+Shift+Right Arrow",	true,  false },
-	{ "WWTagCompletePrev",				"Ctrl+Shift+Enter",		true,  false },
-	{ "WWTagCompleteNext",				"Ctrl+Enter",			true,  false },
-	{ "WWTagCompleteRestore",			"Ctrl+Alt+Enter",		true,  false },
-	{ "WWTagCompleteDlg",				"Ctrl+Alt+Shift+Enter",	true,  false },
-	{ "WWTemplateSelect",				"Ctrl+Shift+T",			true,  false },
-	{ "WWTemplateComplete",				"Ctrl+T",				true,  false },
-	{ "WWPasteFix",						"Ctrl+V",				false, true },
-};
-
-int GetCommandCount()
-{
-	return _countof(s_commandList);
-}
-
-const CommandInfo* GetCommandList()
-{
-	return s_commandList;
-}
-
-IApplication* g_pApplication;
 HWND g_devStudioWnd;
 HWND g_mdiWnd;
 static HINSTANCE s_aicModule;
@@ -103,7 +61,7 @@ void AddToolbar()
 
 		// Get DevStudio version.
 		CComBSTR bstrVersion;
-		g_pApplication->get_Version(&bstrVersion);
+		ObjModelHelper::GetInterface()->get_Version(&bstrVersion);
 		CString strVersion = bstrVersion;
 
 		// Open the proper DevStudio key.
@@ -150,12 +108,12 @@ void AddToolbar()
 					DWORD count = 0;
 					if (QueryValueBinary(devKey, name, NULL, count))
 					{
-						AutoBasic<BYTE> buf(new BYTE[count + 1]);
+						AutoBasic<BYTE> buf(WNEW BYTE[count + 1]);
 						buf[count] = 0;
 						if (QueryValueBinary(devKey, name, buf, count))
 						{
 							// Okay, we have the binary data.  Do a scan for
-							// Workspace Whiz! commands.
+							// Workspace Whiz commands.
 							BYTE* ptr = buf;
 							BYTE* ptrEnd = ptr + count;
 							while (ptr != ptrEnd)
@@ -163,7 +121,7 @@ void AddToolbar()
 								// "WWFileOpen"
 								if (ptr[0] == 'W'  &&  ptr[1] == 'W')
 								{
-									if (strcmp((LPCTSTR)ptr, "WWFileOpen") == 0)
+									if (strcmp((LPCTSTR)ptr, "WWOptions") == 0)
 									{
 										foundWWhizToolbar = true;
 										goto DoneSearch;
@@ -180,7 +138,7 @@ void AddToolbar()
 		}
 
 DoneSearch:
-		const DWORD thisToolbarVersion = 0x02000002;
+		const DWORD thisToolbarVersion = 0x02000003;
 
 		// Get the toolbar version.
 		DWORD curToolbarVersion = AfxGetApp()->GetProfileInt("Config", "Toolbar" + whichEnvironment + strVersion, 0);
@@ -195,8 +153,8 @@ DoneSearch:
 		if (foundWWhizToolbar)
 		{
 			if (AfxMessageBox("A toolbar (potentially turned off) was found which appears to contain "
-					"Workspace Whiz! commands.\n\nPress Yes to create a new Workspace "
-					"Whiz! toolbar.  Press No to keep the existing toolbar.", MB_YESNO) == IDNO)
+					"Workspace Whiz commands.\n\nPress Yes to create a new Workspace "
+					"Whiz toolbar.  Press No to keep the existing toolbar.", MB_YESNO) == IDNO)
 			{
 				buildToolbar = false;
 			}
@@ -204,17 +162,19 @@ DoneSearch:
 
 		if (buildToolbar)
 		{
-			for (int curCommand = 0; curCommand < GetCommandCount(); curCommand++)
+			for (int curCommand = 0; curCommand < WWhizCommands::GetCommandCount(); curCommand++)
 			{
+				const WWhizCommands::CommandInfo* commandInfo = WWhizCommands::GetCommand(curCommand);
+
 				// Add toolbar buttons only if this is the first time the add-in
 				//  is being loaded.  Toolbar buttons are automatically remembered
 				//  by Developer Studio from session to session, so we should only
 				//  add the toolbar buttons once.
-				if (s_commandList[curCommand].m_hasIcon)
+				if (commandInfo->m_hasIcon)
 				{
-					VERIFY_OK(g_pApplication->
+					ObjModelHelper::GetInterface()->
 						AddCommandBarButton(
-							dsGlyph, CComBSTR(s_commandList[curCommand].m_name), s_dwCookie));
+							dsGlyph, CComBSTR(commandInfo->m_name), s_dwCookie);
 				}
 			}
 
@@ -299,8 +259,8 @@ STDMETHODIMP CDSAddIn::OnConnection(IApplication* pApp, VARIANT_BOOL bFirstTime,
 	m_dwCookie = dwCookie;
 	s_dwCookie = dwCookie;
 
-	g_wwhizInterface = WWhizInterface2Create(AfxGetInstanceHandle(), pApplication);
-	g_wwhizReg = WWhizRegCreate(pApplication, g_wwhizInterface);
+	g_wwhizInterface = WWhizInterfaceCreate(AfxGetInstanceHandle(), pApplication);
+	g_wwhizReg = WWhizRegCreate(pApplication, AfxGetInstanceHandle(), g_wwhizInterface);
 	g_wwhizInterface->SetWWhizReg(g_wwhizReg);
 	g_wwhizTemplateManager = WWhizTemplateManagerCreate(pApplication, &s_templateDialogImpl);
 
@@ -323,22 +283,24 @@ STDMETHODIMP CDSAddIn::OnConnection(IApplication* pApp, VARIANT_BOOL bFirstTime,
 
 	// (see stdafx.h for the definition of VERIFY_OK)
 
-	VERIFY_OK(pApplication->SetAddInInfo((long) AfxGetInstanceHandle(),
-		(LPDISPATCH) m_pCommands, IDR_TOOLBAR_MEDIUM, IDR_TOOLBAR_LARGE, m_dwCookie));
+	pApplication->SetAddInInfo((long) AfxGetInstanceHandle(),
+		(LPDISPATCH) m_pCommands, IDR_TOOLBAR_MEDIUM, IDR_TOOLBAR_LARGE, m_dwCookie);
 
 	*OnConnection = VARIANT_TRUE;
-	for (int curCommand = 0; curCommand < GetCommandCount(); curCommand++)
+	for (int curCommand = 0; curCommand < WWhizCommands::GetCommandCount(); curCommand++)
 	{
+		const WWhizCommands::CommandInfo* commandInfo = WWhizCommands::GetCommand(curCommand);
+
 		CString desc;
-		desc.LoadString(IDS_CI_WWFILEOPEN + curCommand);
+		desc.LoadString(IDS_CI_WWOPTIONS + curCommand);
 
 		VARIANT_BOOL bRet;
-		VERIFY_OK(pApplication->AddCommand(
-			CComBSTR(s_commandList[curCommand].m_name + desc),
-			CComBSTR(s_commandList[curCommand].m_name),
+		pApplication->AddCommand(
+			CComBSTR(commandInfo->m_name + desc),
+			CComBSTR(commandInfo->m_name),
 			curCommand,
 			m_dwCookie,
-			&bRet));
+			&bRet);
 		if (bRet == VARIANT_FALSE)
 		{
 			// AddCommand failed because a command with this name already
@@ -354,11 +316,11 @@ STDMETHODIMP CDSAddIn::OnConnection(IApplication* pApp, VARIANT_BOOL bFirstTime,
 		//  add the toolbar buttons once.
 		if (bFirstTime == VARIANT_TRUE)
 		{
-			if (s_commandList[curCommand].m_hasIcon)
+			if (commandInfo->m_hasIcon)
 			{
-				VERIFY_OK(pApplication->
+				pApplication->
 					AddCommandBarButton(
-						dsGlyph, CComBSTR(s_commandList[curCommand].m_name), m_dwCookie));
+						dsGlyph, CComBSTR(commandInfo->m_name), m_dwCookie);
 			}
 		}
 	}
@@ -366,7 +328,7 @@ STDMETHODIMP CDSAddIn::OnConnection(IApplication* pApp, VARIANT_BOOL bFirstTime,
 	// Load the AddInComm module, if available.
 	aiclUseDebugLibrary(FALSE);
 	aiclLoadAICLibrary(AfxGetInstanceHandle());
-	s_aicAddinHandle = AICRegisterAddIn("WorkspaceWhiz", 2, 12, 1, AddinCallback200);
+	s_aicAddinHandle = AICRegisterAddIn("WorkspaceWhiz", 3, 00, 1012, AddinCallback200);
 
 	// Load the template stuff from the registry.
 	g_wwhizTemplateManager->LoadRegistry();
@@ -392,13 +354,7 @@ STDMETHODIMP CDSAddIn::OnDisconnection(VARIANT_BOOL bLastTime)
 	if (s_aicAddinHandle)
 		AICUnregisterAddIn(s_aicAddinHandle);
 
-	g_wwhizInterface->RemoveAllFiles();
-	g_wwhizInterface->RemoveAllTags();
-	g_wwhizTemplateManager->SaveRegistry();		// Save out the registry on shutdown.
-
-	WWhizTemplateManagerDestroy();
-	WWhizRegDestroy();
-	WWhizInterface2Destroy();
+	WWhizCommands::OnShutdown();
 
 	g_statusBar.Detach();
 	s_hiddenWnd.DestroyWindow();

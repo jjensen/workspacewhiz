@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: FunctionsDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/Samples/ShowFunctionsAddin/FunctionsDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 2    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -117,7 +117,7 @@ void CFunctionsDialog::OnSelchangeFunctionlist()
 	WWhizTag* tag = m_orderedTagList->Get(tagNumber);
 
 	// Move to the line number the selected tag starts at.
-	objModel.MoveTo(tag->GetLineNumber(), 1, dsMove);
+	objModel.MoveTo(tag->GetLineNumber(), 1, false);
 
 	// Now extend the selection to the top of the next tag.
 	WWhizTag* nextTag = NULL;
@@ -125,7 +125,7 @@ void CFunctionsDialog::OnSelchangeFunctionlist()
 	{
 		// There was another tag to go off.  Use it.
 		nextTag = m_orderedTagList->Get(tagNumber + 1);
-		objModel.MoveTo(nextTag->GetLineNumber(), 1, dsExtend);
+		objModel.MoveTo(nextTag->GetLineNumber(), 1, true);
 	}
 	else
 	{

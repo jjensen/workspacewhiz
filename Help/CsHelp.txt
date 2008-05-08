@@ -1,0 +1,382 @@
+.topic IDC_COM_ABOUT
+Open Workspace Whiz's About dialog.
+
+.topic IDC_COM_EXTRAFILES
+Manipulate extra files (including workspaces and projects) used in the
+workspace file list.  These extra files are usually not in the open
+Visual Studio workspace.  Extra files are very useful for external
+libraries the application uses.
+
+.topic IDC_COM_PREFERENCES
+Open the Preferences dialog.  From here, various parameters governing
+Workspace Whiz's operation may be manipulated.
+
+.topic IDC_COM_CURRENTFILE
+Perform various Visual Studio and shell operations from the File Context
+Menu on the current file.
+
+.topic IDHELP
+Open the context-sensitive help.
+
+.topic IDC_FF_FILES
+The list of files matching the search criteria.  Right-clicking or pressing
+the Windows Context Menu key on a file opens a context menu allowing various
+Visual Studio and shell operations to be performed on the file.
+
+.topic IDC_FF_FILENAME
+The filename being incrementally searched for. The search is not case
+sensitive, and symbols, such as underscores, are ignored.
+
+Enter a / or * at any point in the filename to begin a substring search.
+
+Enter a . at any point to begin an extension search.
+
+Enter a : or , at the end of the filename followed by a line number to go to
+that line.
+
+Use the arrow keys, Home, End, Page Up, and Page Down for navigation within
+the list of files.
+
+.topic IDC_FF_REFRESH
+Force a reload of the file list.
+
+.topic IDC_FF_SCOPE_PROJECT
+Change the scope of the file list to files within the current project.
+
+.topic IDC_FF_SCOPE_WORKSPACE
+Change the scope of the file list to files within the entire workspace
+(including extra projects).
+
+.topic IDC_FF_PREFIX
+A prefix, if any, to prepend to the filename being incrementally searched
+for.
+
+.topic IDC_EP_LIST
+The list of additional projects and workspaces to be added for searching.
+Those files starting with $(ENV) use an environment variable for
+directory name resolution.  This way, Extra Files may be shared
+among many users.
+
+.topic IDC_EP_ADD
+Add the specified project or workspace to the list.  If the beginning of the
+filename is matched against an environment variable, an option to replace the
+absolute path with the environment path will be presented.
+
+.topic IDC_EP_REMOVE
+Remove the selected project or workspace from the list.
+
+.topic IDC_EP_FILENAME
+The filename to be added to the list.  If the filename starts with $(ENV),
+where ENV is an environment variable name, then the path is an absolute
+environment path.  That is, the environment variable is used to resolve the
+path.  This makes it possible to share Extra Files with many users.
+
+Example: $(COOLLIB)\Project\CoolLib.dsw
+
+.topic IDC_EP_BROWSE
+Browse for an additional file, project, or workspace.
+
+.topic IDC_FT_TAGS
+The list of tags matching the search criteria.  Right-clicking or pressing
+the Windows Context Menu key on a tag opens a context menu.
+
+.topic IDC_FT_PARENT
+The parent of the tag being searched for, such as a class or enumeration.
+
+.topic IDC_FT_NAME
+The name of the tag being incrementally searched for. The search is, by
+default, not case sensitive and symbols such as underscores are ignored.
+
+The search string is broken into two parts: the tag name and the parent
+(i.e. the name of the class a member function belongs to).
+
+Enter a / or * at any point in the tag (and/or parent) to begin a substring
+search.  Multiple substrings may be found by specifying a / or * more than
+once.
+
+Enter a ; at any point to begin the parent search.
+
+Enter a + at any point to toggle case sensitivity on.  Alternatively, entering
+a capital letter turns case sensitivity on.
+
+Enter a - at any point to toggle case sensitivity off.
+
+Enter a \ (backslash) at any point to cause only tags of the same length to
+be matched.
+
+Enter a = at any point to cause an exact match to occur, case sensitive and
+same length.
+
+Enter a ' at any point to isolate tags of a certain type.
+
+Use the arrow keys, Home, End, Page Up, and Page Down for navigation within
+the list of tags.
+
+.topic IDC_FT_REBUILDTAGS
+Force a full rebuild of all tags.
+
+.topic IDC_FT_SCOPE_FILE
+Change the scope to the current file's tags.
+
+.topic IDC_FT_SCOPE_PROJECT
+Change the scope to the current project's tags.
+
+.topic IDC_FT_SCOPE_WORKSPACE
+Change the scope to all tags.
+
+.topic IDC_FT_INFO_FILENAME
+The filename of the file containing the tag.
+
+.topic IDC_FT_INFO_MISC
+Miscellaneous information about the tag.
+
+.topic IDC_FT_INFO_SEARCHSTRING
+The line containing the tag.
+
+.topic IDC_FT_SHOW
+Turn on/off tag categories.
+
+.topic IDC_FT_TYPECOMBO
+Show tags only of a specific type.
+
+.topic IDC_FT_REFRESHTAGS
+When the Auto Refresh tags option is turned off in the tags Preferences
+dialog, it is necessary to use this button to check for tag changes.
+
+.topic IDC_TS_TREE
+The list of all template groups and their templates.  Templates are selected
+from this tree.  The left and right arrow keys contract and expand the
+branches of the tree, respectively.  Right-clicking on a template opens
+the parent template group file and centers the cursor on the template
+definition.
+
+.topic IDC_TS_FILELIST
+Activate the template file dialog to add or remove template files.
+
+.topic IDC_TFL_LIST
+The list of active template files.
+
+.topic IDC_TFL_ADD
+Add a new template file to the template file list.
+
+.topic IDC_TFL_REMOVE
+Remove an active template file from the template file list.
+
+.topic IDC_TFL_EDIT
+Open the template file in Developer Studio for editing.
+
+.topic IDC_TW_NEXT
+Open the next template wizard page.
+
+.topic IDC_TW_PREVIOUS
+Open the previous template wizard page.
+
+.topic IDC_H_RESET
+Reset the file history.
+
+.topic IDC_H_FILES
+The files that have recently been accessed.
+
+.topic IDC_PKB_KEYCHECK1
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK2
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK3
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK4
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK5
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK6
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK7
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK8
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK9
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK10
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK11
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK12
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK13
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK14
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK15
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK16
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK17
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK18
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK19
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK20
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEYCHECK21
+Click the check to turn on/off the key binding assignment.
+
+.topic IDC_PKB_KEY1
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY2
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY3
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY4
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY5
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY6
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY7
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY8
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY9
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY10
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY11
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY12
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY13
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY14
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY15
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY16
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY17
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY18
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY19
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY20
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_KEY21
+Enter a new key assignment for this key binding.
+
+.topic IDC_PKB_ASSIGN
+Assign the key bindings as they appear above.
+
+.topic IDC_PKB_RESET
+Reset the key bindings to the defaults.
+
+.topic IDC_PHF_EXTLIST
+The list of extensions the header flip will use.  The extensions are searched
+in the order they appear in this dialog.
+
+.topic IDC_PHF_EXTEDIT
+A new extension to add to the list.
+
+.topic IDC_PHF_ADD
+Adds the extension in the extension edit field to the list.
+
+.topic IDC_PHF_REMOVE
+Removes the currently selected extension from the list.
+
+.topic IDC_PHF_RESET
+Resets the extension list to the defaults.
+
+.topic IDC_PC_EXTEDIT
+A new extension to add to the list.
+
+.topic IDC_PC_ADD
+Adds the extension in the extension edit field to the list.
+
+.topic IDC_PC_REMOVE
+Removes the currently selected extension from the list.
+
+.topic IDC_PC_RESET
+Reset the extension list to the defaults.
+
+.topic IDC_PC_EXTLIST
+The list of extensions the tag creation will consider.
+
+.topic IDC_PC_AUTOPACKCHANGES
+The number of tag changes allowed to happen before the tag files are packed to
+save space on disk.
+
+.topic IDC_PC_AUTOSAVECHANGES
+The number of tag changes allowed to happen before the tag files are packed to
+save space on disk.
+
+.topic IDC_PC_USETAGCURSORDIALOG
+When finding the tag under the cursor, checking this will show a dialog to
+resolve any tag ambiguities.  Tag ambiguities happen when there are more
+than one tag.  If this field is unchecked, the first tag found will be the
+one moved to.
+
+.topic IDC_PC_AUTOREFRESHTAGS
+When this is checked, files are automatically scanned for changes (date/time
+stamp).  For large number of files, this process can take a while.  If
+unchecked, tags are never refreshed unless the Refresh Tags button in the
+Find Tag dialog is pressed.
+
+.topic IDC_PC_AUTOSAVEALL
+Automatically issues a File->Save All command before each tag command.
+
+.topic IDC_PC_TOKENEDIT
+Enter a token to be ignored.  A special form of token, with an equals sign,
+allows a redefinition when parsing files for tags: CLASS=class
+
+.topic IDC_PC_TOKENADD
+Adds the token in the token edit field to the list.
+
+.topic IDC_PC_TOKENREMOVE
+Removes the currently selected token from the list.
+
+.topic IDC_PC_TOKENRESET
+Reset the token list to the defaults.
+
+.topic IDC_PC_TOKENLIST
+The list of tokens the tag creation will consider.
+
+

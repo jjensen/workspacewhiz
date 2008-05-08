@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: WorkspaceTags.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizInterface/WorkspaceTags.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 43   $ $Author: Jjensen $
+// $Date: 2003/06/24 $ $Revision: #19 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -12,11 +12,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "WorkspaceTags.h"
 #include "WorkspaceInfo.h"
-#include <ObjModel\addguid.h>
-#include <ObjModel\appguid.h>
-#include <ObjModel\bldguid.h>
-#include <ObjModel\textguid.h>
-#include <ObjModel\dbgguid.h>
 #include "MemFile.h"
 #include "Timer.h"
 #include "VirtualDrive.h"
@@ -32,9 +27,35 @@ LPCSTR s_emptyString = "";
 #define INLINE inline
 #endif
 
+#define CTL 1
+#define NUM 2
+#define LET 4
+#define REG 8
+#define NUL 0
 
-#define SLOW_TAG_READ
-//#define FAST_TAG_READ
+static const char s_charTypes[257] =
+{
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,  // 0
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,  // 16
+	NUL,NUL,NUL,NUL, NUL,NUL,NUL,NUL, REG,REG,REG,REG, NUL,NUL,REG,NUL,  // 32
+	NUM,NUM,NUM,NUM, NUM,NUM,NUM,NUM, NUM,NUM,NUL,NUL, NUL,NUL,NUL,NUL,	 // 48
+	NUL,LET,LET,LET, LET,LET,LET,LET, LET,LET,LET,LET, LET,LET,LET,LET,  // 64
+	LET,LET,LET,LET, LET,LET,LET,LET, LET,LET,LET,REG, NUL,REG,NUL,NUL,	 // 80
+	NUL,LET,LET,LET, LET,LET,LET,LET, LET,LET,LET,LET, LET,LET,LET,LET,	 // 96
+	LET,LET,LET,LET, LET,LET,LET,LET, LET,LET,LET,NUL, NUL,NUL,NUL,NUL,	 // 112
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 128
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 144
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 160
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 176
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 192
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 208
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 224
+	CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL, CTL,CTL,CTL,CTL,	 // 240
+};
+
+#define lex_isalnum(ch)			(s_charTypes[(ch)] & (LET | NUM))
+#define lex_isregexsymbol(ch)	(s_charTypes[(ch)] & REG)
+
 
 void ODS(LPCTSTR msg, ...)
 {
@@ -190,7 +211,7 @@ static int s_matchCount;
 
 static TagList s_tags;
 
-static CListEx<File*, File*> s_filenameList;
+static WList<File*> s_filenameList;
 static bool s_showTypes[WWhizTag::LAST_TYPE];
 
 static UINT s_numTagChanges = 0;
@@ -203,8 +224,8 @@ static void* s_tagRefreshUserData;
 static bool g_tagsRefreshed;
 CTime g_lastTagRefresh;
 
-static CMap<CString, LPCTSTR, int, int> s_tagsChangedFileMap;
-CMap<CString, LPCTSTR, int, int> g_filesChangedFileMap;
+static WMap<CString, int> s_tagsChangedFileMap;
+WMap<CString, int> g_filesChangedFileMap;
 static bool s_checkActiveFilesForChanges;
 
 void WorkspaceTags::AddChangedFile(CString filename)
@@ -218,7 +239,8 @@ void WorkspaceTags::AddChangedFile(CString filename)
 	{
 		CString ext = filename.Mid(dotPos + 1);
 		ext.MakeLower();
-		if (ext == "dsw"  ||  ext == "vcw"  ||  ext == "dsp"  ||  ext == "vcp")
+		if ( ext == "dsw"  ||  ext == "sln"  ||  ext == "dsp"  ||  ext == "vcproj"  ||
+			ext == "csproj"  ||  ext == "vbproj" )
 		{
 			g_filesChangedFileMap[filename] = 0;
 		}
@@ -294,6 +316,22 @@ static char* typesList[] =
 	"union",
 };
 
+static int typesLenList[] =
+{
+	6, // "access",
+	5, // "class",
+	4, // "enum",
+	4, // "file",
+	4, // "kind",
+	14, // "implementation",
+	8, // "inherits",
+	9, // "interface",
+	4, // "line",
+	9, // "namespace",
+	6, // "struct",
+	5, // "union",
+};
+
 inline WWhizTag::Type GetTagTypeFromLetter(char ch)
 {
 	WWhizTag::Type tagType;
@@ -347,7 +385,7 @@ int ReadTags(File* file, bool needSort = false)
 
 	tagList.SetSize(tagCount);
 	ASSERT(!file->m_tags);
-	file->m_tags = new Tag[tagCount];
+	file->m_tags = WNEW Tag[tagCount];
 	if (!file->m_tags)
 	{
 		file->ClearTags();
@@ -364,7 +402,7 @@ int ReadTags(File* file, bool needSort = false)
 
 		// Create a new tag.
 		Tag* tag = &file->m_tags[j];
-//		Tag* tag = new Tag;
+//		Tag* tag = WNEW Tag;
 		tag->m_parent = file;
 		tag->m_tagBuffer = ptr;
 		ptr += TAG_FLAG_OFFSET;
@@ -486,71 +524,165 @@ int ReadTags(File* file, bool needSort = false)
 }
 
 
+static BYTE* s_tagWriteBuffer = NULL;
+static DWORD s_tagWriteBufferSize = 0;
 
-void WriteTag(CFile& file, WWhizTag::Type type, int lineNumber, WWhizTag::Access access,
-			  WWhizTag::ImplementationType implementationType, LPCSTR shortIdent,
-			  LPCSTR ident, LPCSTR searchString, LPCSTR shortParentIdent, LPCSTR parentIdent,
-			  LPCSTR namespaceStr)
-{
-	file.Write(&type, sizeof(BYTE));
-	file.Write(&lineNumber, sizeof(lineNumber));
-	file.Write(&access, sizeof(BYTE));
-	file.Write(&implementationType, sizeof(BYTE));
 
-	BYTE shortIdentLen = strlen(shortIdent);
-	BYTE identLen = strlen(ident);
-	WORD searchStringLen = strlen(searchString);
-	BYTE shortParentIdentLen = strlen(shortParentIdent);
-	BYTE parentIdentLen = strlen(parentIdent);
-	BYTE namespaceLen = strlen(namespaceStr);
-
-	BYTE flags = 0;
-	if (shortIdentLen > 0)
-		flags |= TAGFLAG_SHORTIDENT;
-	if (identLen > 0)
-		flags |= TAGFLAG_IDENT;
-	if (searchStringLen > 0)
-		flags |= TAGFLAG_SEARCHSTRING;
-	if (shortParentIdentLen > 0)
-		flags |= TAGFLAG_SHORTPARENTIDENT;
-	if (parentIdentLen > 0)
-		flags |= TAGFLAG_PARENTIDENT;
-	if (namespaceLen > 0)
-		flags |= TAGFLAG_NAMESPACE;
-	file.Write(&flags, sizeof(BYTE));
-
-	if (shortIdentLen > 0)
-		file.Write(&shortIdentLen, sizeof(BYTE));
-	if (identLen > 0)
-		file.Write(&identLen, sizeof(BYTE));
-	if (searchStringLen > 0)
-		file.Write(&searchStringLen, sizeof(WORD));
-	if (shortParentIdentLen > 0)
-		file.Write(&shortParentIdentLen, sizeof(BYTE));
-	if (parentIdentLen > 0)
-		file.Write(&parentIdentLen, sizeof(BYTE));
-	if (namespaceLen > 0)
-		file.Write(&namespaceLen, sizeof(BYTE));
-
-	if (shortIdentLen > 0)
-		file.Write(shortIdent, shortIdentLen + 1);
-	if (identLen > 0)
-		file.Write(ident, identLen + 1);
-	if (searchStringLen > 0)
-		file.Write(searchString, searchStringLen + 1);
-	if (shortParentIdentLen > 0)
-		file.Write(shortParentIdent, shortParentIdentLen + 1);
-	if (parentIdentLen > 0)
-		file.Write(parentIdent, parentIdentLen + 1);
-	if (namespaceLen > 0)
-		file.Write(namespaceStr, namespaceLen + 1);
-}
+CTimer partsBreakdownTimer;
+CTimer searchFixupTimer;
 
 
 /**
 **/
+static char shortParentIdent[4096];
+static BYTE shortParentIdentLen;
+static char shortIdent[200];
+static BYTE shortIdentLen;
+static char searchString[4096];
+static WORD searchStringLen;
+static WWhizTag::Type type;
+static WWhizTag::Access accessType;
+static const char* ident;
+static BYTE identLen;
+static const char* parentIdent;
+static BYTE parentIdentLen;
+static int lineNumber;
+static const char* namespaceStr;
+static BYTE namespaceLen;
+WWhizTag::ImplementationType implementationType;
+
+inline int myToLower (int c)
+{
+	if ( (c >= 'A') && (c <= 'Z') )
+		c = c + ('a' - 'A');
+	return c;
+}
+
+CTimer tagWriteTimer;
+CTimer shortIdentFixupTimer;
+CTimer extensionFlagsTimer;
+
+void WriteTag(CFile& file)
+{
+	// Figure out the size.
+	DWORD tagSize = sizeof(BYTE) + sizeof(lineNumber) + sizeof(BYTE) + sizeof(BYTE) + sizeof(BYTE);
+
+	BYTE flags = 0;
+	if (shortIdentLen > 0)
+	{
+		flags |= TAGFLAG_SHORTIDENT;
+		tagSize += 1 + shortIdentLen + 1;
+	}
+	if (identLen > 0)
+	{
+		flags |= TAGFLAG_IDENT;
+		tagSize += 1 + identLen + 1;
+	}
+	if (searchStringLen > 0)
+	{
+		flags |= TAGFLAG_SEARCHSTRING;
+		tagSize += 2 + searchStringLen + 1;
+	}
+	if (shortParentIdentLen > 0)
+	{
+		flags |= TAGFLAG_SHORTPARENTIDENT;
+		tagSize += 1 + shortParentIdentLen + 1;
+	}
+	if (parentIdentLen > 0)
+	{
+		flags |= TAGFLAG_PARENTIDENT;
+		tagSize += 1 + parentIdentLen + 1;
+	}
+	if (namespaceLen > 0)
+	{
+		flags |= TAGFLAG_NAMESPACE;
+		tagSize += 1 + namespaceLen + 1;
+	}
+	
+//	file.SetLength(file.GetLength() + tagSize);
+	
+	if (s_tagWriteBufferSize < tagSize)
+	{
+		delete [] s_tagWriteBuffer;
+		s_tagWriteBuffer = NULL;
+	}
+	
+	if (!s_tagWriteBuffer)
+	{
+		s_tagWriteBufferSize = tagSize;
+		s_tagWriteBuffer = WNEW BYTE[s_tagWriteBufferSize];
+	}
+
+	BYTE* ptr = s_tagWriteBuffer;
+	*ptr++ = type;
+	*(int*)ptr = lineNumber;		ptr += sizeof(int);
+	*ptr++ = accessType;
+	*ptr++ = implementationType;
+	*ptr++ = flags;
+
+//	file.Write(&type, sizeof(BYTE));
+//	file.Write(&lineNumber, sizeof(lineNumber));
+//	file.Write(&access, sizeof(BYTE));
+//	file.Write(&implementationType, sizeof(BYTE));
+
+//	file.Write(&flags, sizeof(BYTE));
+
+	if (shortIdentLen > 0)
+		*ptr++ = shortIdentLen;
+//		file.Write(&shortIdentLen, sizeof(BYTE));
+	if (identLen > 0)
+		*ptr++ = identLen;
+//		file.Write(&identLen, sizeof(BYTE));
+	if (searchStringLen > 0)
+	{
+		*(WORD*)ptr = searchStringLen;		ptr += sizeof(WORD);
+	}
+
+	if (shortParentIdentLen > 0)
+		*ptr++ = shortParentIdentLen;
+	if (parentIdentLen > 0)
+		*ptr++ = parentIdentLen;
+	if (namespaceLen > 0)
+		*ptr++ = namespaceLen;
+
+	if (shortIdentLen > 0)
+	{
+		memcpy(ptr, shortIdent, shortIdentLen + 1);		ptr += shortIdentLen + 1;
+	}
+	if (identLen > 0)
+	{
+		memcpy(ptr, ident, identLen + 1);		ptr += identLen + 1;
+	}
+	if (searchStringLen > 0)
+	{
+		memcpy(ptr, searchString, searchStringLen + 1);		ptr += searchStringLen + 1;
+	}
+	if (shortParentIdentLen > 0)
+	{
+		memcpy(ptr, shortParentIdent, shortParentIdentLen + 1);		ptr += shortParentIdentLen + 1;
+	}
+	if (parentIdentLen > 0)
+	{
+		memcpy(ptr, parentIdent, parentIdentLen + 1);		ptr += parentIdentLen + 1;
+	}
+	if (namespaceLen > 0)
+	{
+		memcpy(ptr, namespaceStr, namespaceLen + 1);		ptr += namespaceLen + 1;
+	}
+
+	if ((int)tagSize != ptr - s_tagWriteBuffer)
+	{
+		OutputDebugString("WWhiz: Bad size.\n");
+	}
+	file.Write(s_tagWriteBuffer, tagSize);
+}
+
+
 bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 {
+	lineNumber = -1;
+
+//	partsBreakdownTimer.Start();
 	// Okay, split the tag line up by TAB characters.
 	char* parts[40];
 	memset(parts, 0, sizeof(parts));
@@ -571,10 +703,24 @@ bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 		}
 		else
 		{
-			partPtr = strchr(lastPtr, 9);
+			partPtr = lastPtr;
+			while (*partPtr  &&  *partPtr != '\t')
+				partPtr++;
+			if (*partPtr == 0)
+			{
+				parts[numParts + 1] = partPtr + 1;
+				partPtr = NULL;
+			}
+//			partPtr = strchr(lastPtr, '\t');
 		}
 
-		if (partPtr)
+		if (!partPtr)
+		{
+			numParts++;
+			break;
+		}
+
+		if (*partPtr)
 		{
 			*partPtr++ = 0;
 			lastPtr = partPtr;
@@ -583,88 +729,118 @@ bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 		numParts++;
 	} while (partPtr);
 
+//	partsBreakdownTimer.Stop();
+
 	if (numParts < 4)
 		return false;
 
 	// Create a new tag.
-	WWhizTag::Type type;
-	WWhizTag::Access access;
-	LPCSTR ident;
-	LPCSTR parentIdent;
-	int lineNumber;
 	
 	// Write the identifier.
 	type = GetTagTypeFromLetter(parts[3][0]);
 	ident = parts[0];
+	identLen = parts[1] - parts[0] - 1;
 
 	// Build the shortened identifier (no symbols).
-	char shortParentIdent[4096];
-	char shortIdent[200];
-	LPCSTR namespaceStr;
+//	shortIdentFixupTimer.Start();
 
 	int sLen = 0;
-	LPCTSTR ptr = (LPCTSTR)ident;
-	while (*ptr)
+	char* inPtr = (char*)ident;
+	char* outPtr = shortIdent;
+	char ch;
+	while (ch = *inPtr++)
 	{
-		if (isalnum(*ptr))
-			shortIdent[sLen++] = (char)tolower(*ptr);
-		else if (*ptr == '.')
-			shortIdent[sLen++] = '.';
-		ptr++;
+//		if (isalnum(ch))
+		if (lex_isalnum(ch))
+//			shortIdent[sLen++] = (char)myToLower(*ptr);
+			*outPtr++ = (char)myToLower(ch);
+//			*outPtr++ = (char)lex_tolower(ch);
+		else if (ch == '.')
+			*outPtr++ = ch;
 	}
-	shortIdent[sLen] = 0;
-
+	*outPtr = 0;
+//	shortIdent[sLen] = 0;
+	shortIdentLen = outPtr - shortIdent;
+//	shortIdentFixupTimer.Stop();
+	
 	// Skip parts[1], because it is the tag filename, and we don't need it.
 
+//	searchFixupTimer.Start();
 	// The next part is a little tougher...
-	char searchString[4096];
 	searchString[0] = 0;
+	searchStringLen = 0;
 	if (parts[2][0] == '/')
 	{
 		// Chances are, it's a search string.
 		//   Find the closing slash.
-		ptr = parts[2] + _tcslen(parts[2]) - 3;
-		int len = ptr - parts[2] - 1;
+//		ptr = parts[2] + _tcslen(parts[2]) - 3;
+		char* ptr = parts[2] + (parts[3] - parts[2]) - 4;
+		*ptr = 0;
+//		int len = ptr - parts[2] - 1;
 
 		// Find the fixup letters.
-		searchString[0] = 0;
-		int searchStringPos = 0;
-		for (int i = 0; i < len; i++)
+//		searchString[0] = 0;
+//		int searchStringPos = 0;
+//		memcpy(searchString, &parts[2][1], len);
+		char* inPtr = (char*)&parts[2][1];
+		outPtr = searchString;
+//		for (int i = 0; i < len; i++)
+		while (ch = *inPtr++)
 		{
-			char c = parts[2][i + 1];
-			if (c == '.'  ||  c == '*' ||  c == '['  ||  c == ']'  ||  c == '+')
-				searchString[searchStringPos++] = '\\';
-			searchString[searchStringPos++] = c;
+//			char c = parts[2][i + 1];
+//			char c = *in++;
+//			if (ch == '.'  ||  ch == '*' ||  ch == '['  ||  ch == ']'  ||  ch == '+')
+//			if (lex_isregexsymbol(ch))
+//				*outPtr++ = '\\';
+			// Get the character following the backslash.
+			if ( ch == '\\' )
+				ch = *inPtr++;
+
+			*outPtr++ = ch;
 		}
-		searchString[searchStringPos] = 0;
+
+		*outPtr = 0;
+		searchStringLen = outPtr - searchString;
+//		searchString[searchStringPos] = 0;
+//		searchString[len] = 0;
 	}
-/*	else
+//	searchFixupTimer.Stop();
+	else
 	{
-		ptr = strchr(parts[2], ';');
+		char* ptr = strchr(parts[2], ';');
 		*ptr = 0;
-		tagLineNumber = atoi(parts[2]);
+		lineNumber = atoi(parts[2]);
 	}
-*/
 
 	// Get the type.
-	WWhizTag::ImplementationType implementationType = WWhizTag::DEFAULT;
+	implementationType = WWhizTag::DEFAULT;
 
 	// Walk all extension flags.
+//	extensionFlagsTimer.Start();
 	shortParentIdent[0] = 0;
+	shortParentIdentLen = 0;
 	namespaceStr = s_emptyString;
 	parentIdent = s_emptyString;
+	parentIdentLen = 0;
+	namespaceLen = 0;
+
 	for (int whichPart = 4; whichPart < numParts; whichPart++)
 	{
 		char* label = parts[whichPart];
+		int labelLen;
 		char* value = strchr(parts[whichPart], ':');
 		if (value)
 		{
+			labelLen = value - label;
 			*value++ = 0;
 		}
+		else
+			labelLen = parts[whichPart + 1] - label - 1;
 
 		for (int i = 0; i < _countof(typesList); i++)
 		{
-			if (label[0] == typesList[i][0]  &&  strcmp(label, typesList[i]) == 0)
+			if (labelLen == typesLenList[i]  &&  label[0] == typesList[i][0]  &&
+				strcmp(label, typesList[i]) == 0)
 				break;
 		}
 
@@ -675,17 +851,17 @@ bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 		{
 			case TYPE_ACCESS:		// access
 				if (strcmp(value, "public") == 0)
-					access = WWhizTag::PUBLIC;
+					accessType = WWhizTag::PUBLIC;
 				else if (strcmp(value, "protected") == 0)
-					access = WWhizTag::PROTECTED;
+					accessType = WWhizTag::PROTECTED;
 				else if (strcmp(value, "private") == 0)
-					access = WWhizTag::PRIVATE;
+					accessType = WWhizTag::PRIVATE;
 				else if (strcmp(value, "?") == 0)
-					access = WWhizTag::PRIVATE;
+					accessType = WWhizTag::PRIVATE;
 				else if (strcmp(value, "default") == 0)
-					access = WWhizTag::PRIVATE;
+					accessType = WWhizTag::PRIVATE;
 				else if (strcmp(value, "friend") == 0)
-					access = WWhizTag::FRIEND;
+					accessType = WWhizTag::FRIEND;
 				break;
 
 			case TYPE_CLASS:		// class
@@ -694,19 +870,21 @@ bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 			case TYPE_STRUCT:		// struct
 			case TYPE_UNION:		// union
 				parentIdent = value;
+				parentIdentLen = parts[whichPart + 1] - value - 1;
 
 				if (parentIdent  &&  parentIdent[0] != 0)
 				{
 					// Build the shortened identifier (no symbols).
-					int sLen = 0;
-					LPCSTR ptr = (LPCSTR)parentIdent;
-					while (*ptr)
+					char* inPtr = (char*)parentIdent;
+					char* outPtr = shortParentIdent;
+					char ch;
+					while (ch = *inPtr++)
 					{
-						if (isalnum(*ptr))
-							shortParentIdent[sLen++] = (char)tolower(*ptr);
-						ptr++;
+						if (lex_isalnum(ch))
+							*outPtr++ = (char)myToLower(ch);
 					}
-					shortParentIdent[sLen] = 0;
+					*outPtr = 0;
+					shortParentIdentLen = outPtr - shortParentIdent;
 				}
 				break;
 
@@ -726,6 +904,7 @@ bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 				if (value[0] != 0)
 				{
 					namespaceStr = value;
+					namespaceLen = parts[whichPart + 1] - value - 1;
 				}
 				break;
 			case TYPE_LINE:
@@ -733,192 +912,15 @@ bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 				break;
 		}
 	}
-
-	WriteTag(file, type, lineNumber, access, implementationType, shortIdent,
-			ident, searchString, shortParentIdent, parentIdent, namespaceStr);
+//	extensionFlagsTimer.Stop();
+	
+//	tagWriteTimer.Start();
+	WriteTag(file);
+//	tagWriteTimer.Stop();
 
 	return true;
 }
 
-
-#ifdef FAST_TAG_READ
-
-namespace Ctags
-{
-#include "\ctags403\entry.h"
-
-void CtagsTagWriteCallback(const tagEntryInfo* const tag, const char* line)
-{
-	CString tagIdent;
-	CString tagShortIdent;
-	CString tagSearchString;
-	WWhizTag::Type tagType;
-	WWhizTag::Access tagAccess;
-	CString tagParentIdent;
-	CString tagShortParentIdent;
-	CString tagNamespace;
-	CString tagInherits;
-
-	tagIdent = tag->name;
-
-	// Build the shortened identifier (no symbols).
-	char shortIdent[200];
-	int sLen = 0;
-	LPCTSTR ptr = (LPCTSTR)tagIdent;
-	while (*ptr)
-	{
-		if (isalnum(*ptr))
-			shortIdent[sLen++] = tolower(*ptr);
-		ptr++;
-	}
-	shortIdent[sLen] = 0;
-	tagShortIdent = shortIdent;
-
-	char buf[4096];
-	char* bufPtr = buf;
-
-	// Find the fixup letters.
-	UINT len = strlen(line);
-	buf[0] = 0;
-	for (UINT i = 0; i < len; i++)
-	{
-		char c = line[i];
-		if (c == 13  ||  c == 10)
-			break;
-		if (c == '.'  ||  c == '*' ||  c == '['  ||  c == ']'  ||  c == '+')
-			*bufPtr++ = '\\';
-		*bufPtr++ = c;
-	}
-	*bufPtr = 0;
-	
-	tagSearchString = buf;
-
-	// Get the type.
-	switch (tag->kind)
-	{
-		case 'c':	tagType = WWhizTag::CLASS;		break;
-		case 'd':	tagType = WWhizTag::DEFINE;		break;
-		case 'e':	tagType = WWhizTag::ENUM;		break;
-		case 'f':	tagType = WWhizTag::FUNCTION;	break;
-		case 'g':	tagType = WWhizTag::ENUMMEMBER;	break;
-		case 'm':	tagType = WWhizTag::MEMBER;		break;
-		case 'n':	tagType = WWhizTag::NAMESPACE;	break;
-		case 's':	tagType = WWhizTag::STRUCTURE;	break;
-		case 't':	tagType = WWhizTag::TYPEDEF;	break;
-		case 'u':	tagType = WWhizTag::UNION;		break;
-		case 'v':	tagType = WWhizTag::VARIABLE;	break;
-		case 'F':	tagType = WWhizTag::FILE;		break;
-		default :	tagType = WWhizTag::LAST_TYPE;	break;
-	}
-
-	for (i = 0  ;  i < tag->otherFields.count  ;  ++i)
-	{
-	    const char *const label = tag->otherFields.label[i];
-	    const char *const value = tag->otherFields.value[i];
-
-	    if (!label)
-			continue;
-
-		for (int i = 0; i < _countof(typesList); i++)
-		{
-			if (label[0] == typesList[i][0]  &&  strcmp(label, typesList[i]) == 0)
-				break;
-		}
-
-		if (i == _countof(typesList))
-			continue;	// Unknown.
-
-		if (strcmp(value, "ATL") == 0)
-		{
-			int hi = 5;
-		}
-		
-		switch (i)
-		{
-			case 0:		// access
-				if (strcmp(value, "public") == 0)
-					tagAccess = WWhizTag::PUBLIC;
-				else if (strcmp(value, "protected") == 0)
-					tagAccess = WWhizTag::PROTECTED;
-				else if (strcmp(value, "private") == 0)
-					tagAccess = WWhizTag::PRIVATE;
-				else if (strcmp(value, "?") == 0)
-					tagAccess = WWhizTag::PRIVATE;
-				else if (strcmp(value, "default") == 0)
-					tagAccess = WWhizTag::PRIVATE;
-				break;
-
-			case 1:		// class
-			case 2:		// enum
-			case 3:		// file
-			case 9:		// struct
-			case 10:	// union
-				tagParentIdent = value;
-
-				if (tagParentIdent.GetLength() > 0)
-				{
-					// Build the shortened identifier (no symbols).
-					char shortIdent[4096];
-					int sLen = 0;
-					LPCTSTR ptr = (LPCTSTR)tagParentIdent;
-					while (*ptr)
-					{
-						if (isalnum(*ptr))
-							shortIdent[sLen++] = tolower(*ptr);
-						ptr++;
-					}
-					shortIdent[sLen] = 0;
-					tagShortParentIdent = shortIdent;
-				}
-				break;
-
-			case 4:		// kind
-				break;
-			case 5:		// implementation
-				break;
-			case 6:		// inherits
-				tagInherits = value;
-				break;
-			case 8:		// namespace
-				tagNamespace = value;
-				break;
-		}
-	}
-
-	// Create a new tag.
-	Tag* newTag = new Tag;
-	newTag->m_parent = s_iterFile;
-	newTag->m_type = tagType;
-	newTag->m_access = tagAccess;
-	newTag->m_shortIdent = tagShortIdent;
-	newTag->m_ident = tagIdent;
-	newTag->m_searchString = tagSearchString;
-	newTag->m_shortParentIdent = tagShortParentIdent;
-	newTag->m_parentIdent = tagParentIdent;
-	newTag->m_inherits = tagInherits;
-	newTag->m_namespace = tagNamespace;
-
-	s_iterTagList->Add(newTag);
-	s_numTags++;
-}
-
-};
-
-
-
-HINSTANCE s_ctagsLib;
-
-typedef int (*fnCtagsParse)(const char* commandLine);
-typedef void (*fnTagWriteCallback)(const Ctags::tagEntryInfo* const tag, const char* line);
-typedef void (*fnSetTagWriteCallback)(fnTagWriteCallback callback);
-typedef void (*fnCtagsFileCallback)(const char* filename);
-typedef void (*fnSetFileCallback)(fnCtagsFileCallback callback);
-
-fnSetFileCallback m_setFileCallback;
-fnCtagsParse m_ctagsParse;
-fnSetTagWriteCallback m_setTagWriteCallback;
-
-#endif FAST_TAG_READ
 
 /**
 **/
@@ -928,37 +930,6 @@ void WorkspaceTags::Initialize()
 
 	for (int i = 0; i < (int)WWhizTag::LAST_TYPE; i++)
 		s_showTypes[i] = true;
-#ifdef FAST_TAG_READ
-	// Try the add-in directory.
-	// Get the module name and strip the module filename from it, leaving the
-	// module path.
-	TCHAR modulePath[_MAX_PATH];
-	modulePath[0] = 0;
-	::GetModuleFileName(AfxGetInstanceHandle(), (TCHAR*)&modulePath, _MAX_PATH);
-	TCHAR* ptr = _tcsrchr(modulePath, '\\');
-	if (ptr)
-	{
-		ptr++;
-		*ptr = 0;
-	}
-
-	// Ctags DLL path.
-	CString ctagsPath = modulePath + CString("CTagsHelper.dll");
-	if (_access(ctagsPath, 00) == -1)
-	{
-		AfxMessageBox("Unable to find CTagsHelper.dll");
-		return;
-	}
-
-	s_ctagsLib = AfxLoadLibrary(ctagsPath);
-
-	m_setFileCallback = (fnSetFileCallback)GetProcAddress(s_ctagsLib, "SetFileCallback");
-
-	m_ctagsParse = (fnCtagsParse)GetProcAddress(s_ctagsLib, "CtagsParse");
-	m_setTagWriteCallback = (fnSetTagWriteCallback)GetProcAddress(s_ctagsLib, "SetTagWriteCallback");
-	(*m_setTagWriteCallback)(Ctags::CtagsTagWriteCallback);
-	(*m_setFileCallback)(CtagsFileCallback);
-#endif FAST_TAG_READ
 }
 
 
@@ -1025,8 +996,8 @@ const WWhizTag* WorkspaceTags::GetTagScope(const CString& filename, UINT y)
 	for (int i = 0; i < tagCount; i++)
 	{
 		Tag* tag = (Tag*)orderedTagList.Get(i);
-		UINT tagLineNumber = tag->GetLineNumber();
-		if (tagLineNumber <= y)
+		int tagLineNumber = tag->GetLineNumber();
+		if (tagLineNumber <= (int)y)
 			retTag = tag;
 		else
 			break;
@@ -1137,7 +1108,7 @@ static INLINE void MakeCopy(LPCTSTR& ptr, char*& outPtr, LPCTSTR slashStrings[],
 			if (doCase)
 				*outPtr++ = *ptr;
 			else
-				*outPtr++ = (char)tolower(*ptr);
+				*outPtr++ = (char)myToLower(*ptr);
 		}
 		else if (copySymbols  &&  (*ptr == '_'  ||  *ptr == '~'  ||  *ptr == ':'))
 		{
@@ -1189,7 +1160,7 @@ static INLINE int CompareTag(LPCTSTR searchName, int searchNameLen,
 			return 1;
 
 		// Are we past it alphabetically?
-		if (tolower(searchName[0]) < tolower(checkName[0])  &&
+		if (myToLower(searchName[0]) < myToLower(checkName[0])  &&
 			checkName[0] != '_'  &&  checkName[0] != '~')
 			return 0;
 
@@ -1207,7 +1178,7 @@ static INLINE int CompareTag(LPCTSTR searchName, int searchNameLen,
 			return 1;
 
 		// Are we past it alphabetically?
-		if (tolower(searchName[0]) < tolower(checkName[0])  &&
+		if (myToLower(searchName[0]) < myToLower(checkName[0])  &&
 			checkName[0] != '_'  &&  checkName[0] != '~')
 			return 0;
 
@@ -1243,7 +1214,7 @@ static char* __cdecl stristr(LPCTSTR str1, LPCTSTR str2)
         s1 = cp;
         s2 = (char *) str2;
 
-        while ( *s1 && *s2 && !(tolower(*s1)-tolower(*s2)) )
+        while ( *s1 && *s2 && !(myToLower(*s1)-myToLower(*s2)) )
             s1++, s2++;
 
         if (!*s2)
@@ -1496,113 +1467,128 @@ void WorkspaceTags::RemoveAll(void)
 	s_tags.RemoveAll();
 }
 
-#ifdef SLOW_TAG_READ
-
 CTimer tagCreateTimer;
+CTimer parseTextTimer;
+CTimer tagParseLoadTimer;
 
 //
 bool WorkspaceTags::ParseTextTags(BYTE* mem, DWORD memSize)
 {
-	CMemFile memFile(10 * 1024);
-
-	DWORD tagCount = 0;
-	DWORD tagCountPos = memFile.GetPosition();
-	memFile.Write(&tagCount, sizeof(DWORD));
-
-	CArrayEx<DWORD, DWORD> tagOffsets;
-	tagOffsets.SetSize(0, 10000);
-
-	CTimer parseTimer;
-
-	// Read the file.
 	BYTE* memEnd = mem + memSize;
-	while (true)
+	POSITION pos = s_filenameList.GetHeadPosition();
+	while (pos)
 	{
-		tagOffsets.Add(memFile.GetPosition());
-		parseTimer.Start();
+		MemFile memFile(10 * 1024);
 
-		TCHAR* line = (TCHAR*)mem;
+		DWORD tagCount = 0;
+		DWORD tagCountPos = memFile.GetPosition();
+		memFile.Write(&tagCount, sizeof(DWORD));
+
+		WArray<DWORD> tagOffsets;
+		tagOffsets.SetCount(0, 10000);
+
+		File* file = s_filenameList.GetNext(pos);
+		const CString& fullPath = file->GetFullName();
+
+		CtagsFileCallback(fullPath);
+
+		s_iterFile->ClearTags();
+
+		// Read the file.
 		while (true)
 		{
-			if (mem == memEnd)
-			{
-				*mem = 0;
+	//		parseTextTimer.Start();
+
+			if (memEnd - mem == NULL)
 				goto Done;
-			}
-			else if (*mem == '\n')
+			char* line = (char*)mem;
+			mem = (BYTE*)memchr(line, '\r', memEnd - mem);
+			if (!mem)
+				goto Done;
+			*mem = 0;
+			mem++;
+			if (*mem == '\n')
+				mem++;
+			int lineLen = mem - (BYTE*)line;
+
+			// If there is nothing there, exit.
+			if (lineLen == 0)
+				continue;
+
+			// If it's a tag comment line, skip it.
+			if (_tcsncmp(line, _T("!_TAG_"), 6) == 0)
+				continue;
+	//		parseTextTimer.Stop();
+			
+	//		tagCreateTimer.Start();
+			if (!stristr(line, fullPath))
 			{
-				*mem++ = 0;
+				*(mem - 2) = '\r';
+				*(mem - 1) = '\n';
+				mem = (BYTE*)line;
 				break;
 			}
-			else if (*mem == '\r')
+
+			tagOffsets.Add(memFile.GetPosition());
+			if (Tag::ConvertFromText(memFile, line))
 			{
-				*mem = 0;
+				tagCount++;
 			}
-
-			mem++;
+			else
+			{
+				tagOffsets.RemoveAt( tagOffsets.GetCount() - 1 );
+			}
+	//		tagCreateTimer.Stop();
 		}
-		int lineLen = mem - (BYTE*)line;
-
-		// If there is nothing there, exit.
-		if (lineLen == 0)
-			continue;
-
-		// If it's a tag comment line, skip it.
-		if (_tcsncmp(line, _T("!_TAG_"), 6) == 0)
-			continue;
-
-		tagCreateTimer.Start();
-		if (Tag::ConvertFromText(memFile, line))
-			tagCount++;
-		tagCreateTimer.Stop();
-		
-		parseTimer.Stop();
-	}
 
 Done:
-	tagOffsets.Add(memFile.GetPosition());
-	memFile.Seek(tagCountPos, CFile::begin);
-	memFile.Write(&tagCount, sizeof(DWORD));
+	//	tagParseLoadTimer.Start();
+		tagOffsets.Add(memFile.GetPosition());
+		memFile.Seek(tagCountPos, CFile::begin);
+		memFile.Write(&tagCount, sizeof(DWORD));
 
-	memFile.SeekToBegin();
+		memFile.SeekToBegin();
 
-	DWORD memFileSize = memFile.GetLength();
-	BYTE* memFileBuffer = memFile.Detach();
+		DWORD memFileSize = memFile.GetLength();
+		BYTE* memFileBuffer = memFile.Detach();
 
-	s_iterFile->m_tagBufferSize = memFileSize;
-	s_iterFile->m_tagBuffer = memFileBuffer;
+		s_iterFile->m_tagBufferSize = memFileSize;
+		s_iterFile->m_tagBuffer = memFileBuffer;
 
-	ReadTags(s_iterFile, true);
-	s_iterFile->m_tagBuffer.Detach();
+		ReadTags(s_iterFile, true);
+		s_iterFile->m_tagBuffer.Detach();
 
-	// Okay, the tags are sorted... now remake the buffer.
-	BYTE* newTagBuffer = new BYTE[memFileSize];
-	BYTE* newBufferPos = newTagBuffer;
-	memcpy(newBufferPos, memFileBuffer, sizeof(DWORD));
-	newBufferPos += sizeof(DWORD);
+		// Okay, the tags are sorted... now remake the buffer.
+		BYTE* newTagBuffer = WNEW BYTE[memFileSize];
+		BYTE* newBufferPos = newTagBuffer;
+		memcpy(newBufferPos, memFileBuffer, sizeof(DWORD));
+		newBufferPos += sizeof(DWORD);
 
-	TagList& tagList = (TagList&)s_iterFile->GetTagList();
-	for (UINT j = 0; j < tagCount; j++)
-	{
-		Tag* tag = (Tag*)tagList.Get(j);
-		int origPos = (int)tag->m_matchNext;
-		DWORD startPos = tagOffsets[origPos];
-		DWORD endPos = tagOffsets[origPos + 1];
+		TagList& tagList = (TagList&)s_iterFile->GetTagList();
+		for (UINT j = 0; j < tagCount; j++)
+		{
+			Tag* tag = (Tag*)tagList.Get(j);
+			int origPos = (int)tag->m_matchNext;
+			DWORD startPos = tagOffsets[origPos];
+			DWORD endPos = tagOffsets[origPos + 1];
 
-		DWORD count = endPos - startPos;
-		memcpy(newBufferPos, memFileBuffer + startPos, count);
-		newBufferPos += count;
-		ASSERT(newBufferPos - newTagBuffer <= (int)memFileSize);
+			DWORD count = endPos - startPos;
+			memcpy(newBufferPos, memFileBuffer + startPos, count);
+			newBufferPos += count;
+			ASSERT(newBufferPos - newTagBuffer <= (int)memFileSize);
+		}
+
+		free(memFileBuffer);
+
+		s_iterFile->ClearTags();
+
+		s_iterFile->m_tagBuffer = newTagBuffer;
+		s_iterFile->m_tagBufferSize = memFileSize;
+
+		ReadTags(s_iterFile);
+
+	//	tagParseLoadTimer.Stop();
 	}
-
-	free(memFileBuffer);
-
-	s_iterFile->ClearTags();
-
-	s_iterFile->m_tagBuffer = newTagBuffer;
-	s_iterFile->m_tagBufferSize = memFileSize;
-
-	ReadTags(s_iterFile);
 
 	return true;
 }
@@ -1616,7 +1602,8 @@ static BOOL CmdExec(LPCTSTR cmdLine, BOOL closeHandles, HANDLE *processHandle)
 	sinfo.dwFlags = STARTF_USESHOWWINDOW;
 	sinfo.wShowWindow = SW_HIDE;
 	PROCESS_INFORMATION pinfo;
-	BOOL ret = CreateProcess(NULL, (LPTSTR)cmdLine, NULL, NULL, FALSE, 0, NULL, NULL, &sinfo, &pinfo);
+	BOOL ret = CreateProcess(NULL, (LPTSTR)cmdLine, NULL, NULL, FALSE, CREATE_NO_WINDOW | DETACHED_PROCESS,
+			NULL, NULL, &sinfo, &pinfo);
 	if (closeHandles)
 	{
 		CloseHandle(pinfo.hProcess);
@@ -1705,9 +1692,6 @@ static int CreatePipeChild(HANDLE& child, HANDLE* inH, HANDLE* outH, HANDLE* err
     return 0;
 }
 
-#endif SLOW_TAG_READ
-
-
 
 void WorkspaceTags::Save(bool forceSave)
 {
@@ -1728,7 +1712,9 @@ void WorkspaceTags::Save(bool forceSave)
 		int dotPos = tagsFilename.ReverseFind('.');
 		if (dotPos != -1)
 		{
-			if (tagsFilename.Mid(dotPos + 1) == "dsw")
+			CString ext = tagsFilename.Mid(dotPos + 1);
+			ext.MakeLower();
+			if (ext == "dsw"  ||  ext == "sln")
 			{
 				continue;
 			}
@@ -1737,8 +1723,8 @@ void WorkspaceTags::Save(bool forceSave)
 		FileList& fileList = (FileList&)project->GetFileList();
 
 		fileArrayTimer.Start();
-		CArrayEx<File*, File*> fileArray;
-		fileArray.SetSize(0, fileList.GetCount());
+		WArray<File*> fileArray;
+		fileArray.SetCount(0, fileList.GetCount());
 
 		// Add files to the file array.
 		UINT fileListCount = fileList.GetCount();
@@ -1763,7 +1749,7 @@ void WorkspaceTags::Save(bool forceSave)
 			tagsFilename = tagsFilename.Left(dotPos);
 		tagsFilename += ".Tags.WW";
 
-		DWORD fileCount = fileArray.GetSize();
+		DWORD fileCount = fileArray.GetCount();
 		if (fileCount == 0)
 		{
 			_unlink(tagsFilename);
@@ -1792,14 +1778,23 @@ void WorkspaceTags::Save(bool forceSave)
 		VirtualDrive drive;
 		if (forceSave)
 		{
-			drive.Create(tagsFilename);
+			if (!drive.Create(tagsFilename))
+			{
+				continue;
+			}
 			createdDrive = true;
 		}
 		else if (!drive.Open(tagsFilename))
 		{
-			drive.Create(tagsFilename);
+			if (!drive.Create(tagsFilename))
+			{
+				continue;
+			}
 			createdDrive = true;
 		}
+
+		if (drive.IsReadOnly())
+			continue;
 		
 		UINT numChangedTags = drive.GetHeaderUserDataDWORD(0);
 
@@ -1894,29 +1889,48 @@ void MatchBuddies()
 	{
 		Tag* tag = (Tag*)tagList.Get(i);
 		Tag* closeMatchTag = NULL;
-		if (!tag->Tag::GetBuddy()  &&  tag->Tag::GetType() == WWhizTag::DECLARATION)
+		if (tag->Tag::GetType() == WWhizTag::DECLARATION  &&  !tag->Tag::GetBuddy())
 		{
 			bool isTagDestructor = tag->Tag::GetIdent()[0] == '~';
+
 			// Find the implementation.
 			for (int j = i + 1; j < tagCount; j++)
 			{
 				Tag* implTag = (Tag*)tagList.Get(j);
-				if (implTag->Tag::GetBuddy())
+				if (implTag->Tag::GetType() == WWhizTag::DECLARATION  ||  implTag->Tag::GetBuddy())
 					continue;
-				if (implTag->Tag::GetType() == WWhizTag::DECLARATION)
-					continue;
-				int ret = _tcscmp(implTag->Tag::GetIdent(), tag->Tag::GetIdent());
-				if (ret != 0)
+
+				bool ret;
+				int implLen = FastStrlen(implTag->Tag::GetIdent());
+				int tagLen = FastStrlen(tag->Tag::GetIdent());
+
+				if (implLen != tagLen)
+					break;
+
+				ret = FastCompareExactString(implTag->Tag::GetIdent(), tag->Tag::GetIdent(), implLen);
+				if (!ret)
 				{
 					if (implTag->Tag::GetIdent()[0] == '~'  ||  isTagDestructor)
 						continue;
 					break;
 				}
-				ret = _tcscmp(implTag->Tag::GetParentIdent(), tag->Tag::GetParentIdent());
-				if (ret != 0)
+
+				implLen = FastStrlen(implTag->Tag::GetParentIdent());
+				tagLen = FastStrlen(tag->Tag::GetParentIdent());
+				if (implLen != tagLen)
 					break;
-				ret = _tcscmp(implTag->Tag::GetNamespace(), tag->Tag::GetNamespace());
-				if (ret != 0)
+
+				ret = FastCompareExactString(implTag->Tag::GetParentIdent(), tag->Tag::GetParentIdent(), implLen);
+				if (!ret)
+					break;
+
+				implLen = FastStrlen(implTag->Tag::GetNamespace());
+				tagLen = FastStrlen(tag->Tag::GetNamespace());
+				if (implLen != tagLen)
+					break;
+
+				ret = FastCompareExactString(implTag->Tag::GetNamespace(), tag->Tag::GetNamespace(), implLen);
+				if (!ret)
 				{
 					closeMatchTag = implTag;
 					continue;
@@ -2031,7 +2045,7 @@ bool WorkspaceTags::LoadProjectTags(Project* project)
 {
 	bool autoRefreshTags = g_wwhizInterface->GetConfig().GetAutoRefreshTags();
 
-	CString tagsFilename = project->GetName();
+	CString tagsFilename = project->Project::GetName();
 	int dotPos = tagsFilename.ReverseFind('.');
 	if (dotPos != -1)
 	{
@@ -2057,10 +2071,10 @@ bool WorkspaceTags::LoadProjectTags(Project* project)
 		if (!drive.FileOpen(entry->GetFilename(), vFile))
 			continue;
 
-		s_loadFindTimer.Start();
+//		s_loadFindTimer.Start();
 		FileList& fileList = (FileList&)project->GetFileList();
 		File* file = (File*)fileList.Find(entry->GetFilename());
-		s_loadFindTimer.Stop();
+//		s_loadFindTimer.Stop();
 
 		if (!file)
 			continue;
@@ -2068,13 +2082,13 @@ bool WorkspaceTags::LoadProjectTags(Project* project)
 		if (autoRefreshTags)
 		{
 			// Check the time stamp.
-			s_loadStatTimer.Start();
+//			s_loadStatTimer.Start();
 			struct stat fileStatus;
 			if (stat(entry->GetFilename(), &fileStatus) == -1)
 				continue;
 			if (entry->GetTimeStamp() != fileStatus.st_mtime)
 				continue;
-			s_loadStatTimer.Stop();
+//			s_loadStatTimer.Stop();
 		}
 
 		file->ClearTags();
@@ -2109,7 +2123,7 @@ bool WorkspaceTags::LoadProjectTags(Project* project)
 
 		if (vFileSize > 0)
 		{
-			file->m_tagBuffer = new BYTE[vFileSize];
+			file->m_tagBuffer = WNEW BYTE[vFileSize];
 			vFile.Read(file->m_tagBuffer, vFileSize);
 			file->m_tagBufferSize = vFileSize;
 		}
@@ -2161,16 +2175,23 @@ void WorkspaceTags::CheckActiveFilesForChanges()
 
 void WorkspaceTags::CheckDateTimeStamps()
 {
-	// Build the tag file list.
-	FileList& fileList = WorkspaceInfo::GetActiveFileList();
-
-	for (int i = 0; i < fileList.GetCount(); i++)
+	ProjectList& projectList = WorkspaceInfo::GetProjectList();
+	for (int i = 0; i < projectList.GetProjectCount(); ++i)
 	{
-		// Write each file name.
-		File* file = (File*)fileList.Get(i);
+		// Build the tag file list.
+		Project* project = (Project*)projectList.GetProjectByIndex(i);
+		if ((project->m_noRefresh  &&  project->m_tagList.GetCount() > 0)  ||  !project->m_active)
+			continue;
 
-		// Pick up a couple aliases.
-		AddChangedFile(file->GetFullName());
+		FileList& fileList = (FileList&)project->GetFileList();
+		for (int j = 0; j < fileList.GetCount(); ++j)
+		{
+			// Write each file name.
+			File* file = (File*)fileList.Get(j);
+
+			// Pick up a couple aliases.
+			AddChangedFile(file->GetFullName());
+		}
 	}
 }
 
@@ -2241,7 +2262,7 @@ void WorkspaceTags::Refresh(bool forceRefresh, bool forceSave)
 					continue;
 				file->m_lastTagUpdateTime = s_currentTagUpdateTime;
 
-				// Only do certain extensions.
+/*				// Only do certain extensions.
 				const CString& ext = file->GetExt();
 				int numExts = config.TagsExtGetCount();
 				for (int j = 0; j < numExts; j++)
@@ -2249,7 +2270,7 @@ void WorkspaceTags::Refresh(bool forceRefresh, bool forceSave)
 						break;
 				if (j == numExts)
 					continue;
-
+*/
 				CFileStatus fileStatus;
 				if (!CFile::GetStatus(filename, fileStatus))
 				{
@@ -2305,37 +2326,21 @@ void WorkspaceTags::Refresh(bool forceRefresh, bool forceSave)
 			for (int i = 0; i < ignoreCount; i++)
 			{
 				const CString& token = g_wwhizInterface->GetConfig().IgnoreTokensGet(i);
-				temp.Format("-I %s ", token);
+				temp.Format("-I %s\n", token);
 				cmdLine += temp;
 			}
-			cmdLine += "--file-tags=yes --c-types=+A+p -h +.inl --langmap=default --langmap=c++:+";
-			int filesExtCount = g_wwhizInterface->GetConfig().FilesExtGetCount();
+			cmdLine += "--c-types=+p\n--fields=+afikmns\n";
+			cmdLine += "--file-tags=yes\n-h +.inl\n--langmap=default\n--langmap=c++:+";
+			int filesExtCount = g_wwhizInterface->GetConfig().TagsExtGetCount();
 			for (i = 0; i < filesExtCount; i++)
 			{
-				const CString& ext = g_wwhizInterface->GetConfig().FilesExtGet(i);
+				const CString& ext = g_wwhizInterface->GetConfig().TagsExtGet(i);
 				temp.Format(".%s", ext);
 				cmdLine += temp;
 			}
-			cmdLine += " --excmd=pattern --sort=no ";
+			cmdLine += "\n-N\n";
 
-#ifdef FAST_TAG_READ
-			POSITION pos = s_filenameList.GetHeadPosition();
-			while (pos)
-			{
-				File* file = s_filenameList.GetNext(pos);
-				cmdLine += "\"" + file->GetFullName() + "\" ";
-			}
-
-			tagsReadingTimer.Start();
-
-			(*m_ctagsParse)(cmdLine);
-			ODS("%d\n", s_numTags);
-
-			tagsReadingTimer.Stop();
-#endif FAST_TAG_READ
-
-#ifdef SLOW_TAG_READ			
-			cmdLine += " -u";
+			cmdLine += "-u\n";
 			
 			// Try the add-in directory.
 			// Get the module name and strip the module filename from it, leaving the
@@ -2358,13 +2363,8 @@ void WorkspaceTags::Refresh(bool forceRefresh, bool forceSave)
 				return;
 			}
 			
-			const int FILTER_CHARS = 1;
-			char filterTerminator[FILTER_CHARS + 1];
-			filterTerminator[0] = 0x01;
-			filterTerminator[1] = 0x00;
-
 			// Generate a unique temporary name.
-			char* asciiTempName = _tempnam(NULL, "WW210TAGRESP_");
+			char* asciiTempName = _tempnam(NULL, "WW300TAGRESP_");
 			CString asciiFilename = asciiTempName;
 			free(asciiTempName);
 
@@ -2377,8 +2377,39 @@ void WorkspaceTags::Refresh(bool forceRefresh, bool forceSave)
 			fprintf(f, "%s\n", cmdLine);
 			fclose(f);
 
-			cmdLine.Format("%s --options=\"%s\" --filter=yes --filter-terminator=%s", (LPCTSTR)ctagsPath, asciiFilename, filterTerminator);
+			// Generate a unique temporary name.
+			asciiTempName = _tempnam(NULL, "WW300TAGFILES_");
+			CString asciiFilename2 = asciiTempName;
+			free(asciiTempName);
 
+			// Generate a unique temporary output name.
+			asciiTempName = _tempnam(NULL, "WW300TAGS_");
+			CString tagsFileName = asciiTempName;
+			free(asciiTempName);
+
+			f = fopen(asciiFilename2, "wt");
+			if (!f)
+			{
+				AfxMessageBox("Unable to open ctags.exe");
+				return;
+			}
+
+			File* file = NULL;
+			POSITION pos = s_filenameList.GetHeadPosition();
+			while (pos)
+			{
+				file = s_filenameList.GetNext(pos);
+				const CString& fullPath = file->GetFullName();
+
+				fprintf(f, "%s\n", fullPath);
+			}
+			fclose(f);
+
+			cmdLine.Format("%s --options=\"%s\" -L \"%s\" -f \"%s\" --verbose=yes",
+					(LPCTSTR)ctagsPath, asciiFilename, asciiFilename2, tagsFileName);
+
+			CTimer shellTimer;
+			shellTimer.Start();
 			HANDLE child;
 			HANDLE hIn;
 			HANDLE hOut;
@@ -2390,99 +2421,121 @@ void WorkspaceTags::Refresh(bool forceRefresh, bool forceSave)
 				return;
 			}
 			
-			MemFile memFile(10 * 1024);
+//			HANDLE child;
+//			CmdExec(cmdLine, FALSE, &child);
 
-			tagCreateTimer.Reset();
-			char bufferOrig[10 * 1024];
-			char* buffer;
-			int bufLen = 10 * 1024;
-			CString lastFullPath;
+			pos = s_filenameList.GetHeadPosition();
 
-			POSITION pos = s_filenameList.GetHeadPosition();
+			FILE* errFile = fopen("c:\\wwhizerr.log", "wt");
+
+			CString fullPath;
+			const int BUF_SIZE = 1024;
+			char bufferStack[BUF_SIZE];
+			char* buffer = bufferStack;
+			char* bufferEnd = buffer + BUF_SIZE;
+			char* curBufPos = buffer;
 			while (pos)
 			{
-				buffer = bufferOrig;
-
-				// Write each file name.
-				File* file = s_filenameList.GetNext(pos);
-				const CString& fullPath = file->GetFullName();
-
-				CtagsFileCallback(fullPath);
-
-				tagsReadingTimer.Start();
-
-				DWORD written;
-				WriteFile(hIn, fullPath, fullPath.GetLength(), &written, NULL);
-				if (written != (DWORD)fullPath.GetLength())
+				DWORD used;
+				DWORD rc = ReadFile(hOut, curBufPos, bufferEnd - curBufPos, &used, NULL);
+				if (rc != TRUE)
 				{
-					// Early termination.
-					break;
-				}
-				WriteFile(hIn, "\n", 1, &written, NULL);
-				if (written != 1)
-				{
-					// Early termination.
+					used = 0;
 					break;
 				}
 
-				bool done = false;
-				while (!done)
+				used += curBufPos - buffer;
+				curBufPos = buffer;
+				while (pos)
 				{
-					DWORD used;
-					rc = ReadFile(hOut, buffer, bufLen, &used, NULL);
-					if (rc != TRUE)
+					char* ptr = (char*)memchr(curBufPos, '\n', used - (curBufPos - buffer));
+					if (ptr)
 					{
-						used = 0;
-						break;
-					}
+						*ptr = 0;
 
-					LPCTSTR ptr = buffer;
-					LPCTSTR ptrEnd = buffer + used;
-					while (ptr != ptrEnd)
-					{
-						if (*ptr == 0x01)
+						if (strncmp(curBufPos, "OPENING", 7) == 0)
 						{
-							used = ptr - buffer + 1;
-							done = true;
-							break;
+							file = s_filenameList.GetNext(pos);
+							fullPath = file->GetFullName();
+
+							CtagsFileCallback(fullPath);
+						}
+						else if (strncmp(curBufPos, "ignoring", 8) == 0)
+						{
+							file = s_filenameList.GetNext(pos);
+							fullPath = file->GetFullName();
 						}
 
-						ptr++;
+						fprintf(errFile, "%s\t\t%s\n", fullPath, curBufPos);
+						fflush(errFile);
+
+						curBufPos = ptr + 1;
 					}
-					
-					if (used)
-						memFile.Write(buffer, used);
+					else
+					{
+						DWORD leftSize = used - (curBufPos - buffer);
+						memcpy(buffer, curBufPos, leftSize);
+						curBufPos = buffer + leftSize;
+						used = leftSize;
+						break;
+					}
 				}
-
-				tagsReadingTimer.Stop();
-
-				DWORD memSize = memFile.GetLength() - FILTER_CHARS;
-				BYTE* mem = memFile.Detach();
-				s_iterFile->ClearTags();
-				ParseTextTags(mem, memSize);
-				free(mem);
 			}
-			
 
-			char c26 = 26;
-			DWORD written;
-			WriteFile(hIn, &c26, 1, &written, NULL);
-			if (written != 1)
-			{
-				// Early termination.
-			}
+			fclose(errFile);
+
+			WaitForSingleObject(child, INFINITE);
 
 			CloseHandle(hIn);
 			CloseHandle(hOut);
 			CloseHandle(hErr);
 
+			shellTimer.Stop();
+
+			s_fcWhichFile = 0;
+
+			MemFile memFile(10 * 1024);
+
+			tagWriteTimer.Reset();
+			partsBreakdownTimer.Reset();
+			tagCreateTimer.Reset();
+			shortIdentFixupTimer.Reset();
+			extensionFlagsTimer.Reset();
+			parseTextTimer.Reset();
+			searchFixupTimer.Reset();
+			tagParseLoadTimer.Reset();
+
+			CFile tagsFile;
+			CFileException fileException;
+			tagsFile.Open(tagsFileName, CFile::modeRead, &fileException);
+			int bufLen = tagsFile.GetLength();
+			BYTE* bufferOrig = WNEW BYTE[bufLen + 2];
+			tagsFile.Read(bufferOrig, bufLen);
+			bufferOrig[bufLen] = '\r';
+			bufferOrig[bufLen + 1] = '\n';
+			tagsFile.Close();
+
+			if (bufLen > 0)
+			{
+				ParseTextTags(bufferOrig, bufLen + 2);
+			}
+			
+			delete [] bufferOrig;
+
 			parseTimer.Stop();
 
 			_unlink(asciiFilename);
-#endif SLOW_TAG_READ
+			_unlink(asciiFilename2);
+			_unlink(tagsFileName);
 			
-			ODS("Total Parse Time: %0.2f  Reading time: %0.2f\n", //  Create time: %0.2f\n",
-				parseTimer.GetMillisecs(), tagsReadingTimer.GetMillisecs());
+			ODS("Shell Time: %0.2f  Total Parse Time: %0.2f  Parse Text: %0.2f  Reading time: %0.2f  Create time: %0.2f\n"
+				"Parts: %0.2f  SearchFixup: %0.2f\n"
+				"Short Ident Fixup: %0.2f  Extension Flags: %0.2f  Write: %0.2f  Load: %0.2f\n",
+				shellTimer.GetMillisecs(), parseTimer.GetMillisecs(), parseTextTimer.GetMillisecs(),
+				tagsReadingTimer.GetMillisecs(), tagCreateTimer.GetMillisecs(),
+				partsBreakdownTimer.GetMillisecs(), searchFixupTimer.GetMillisecs(),
+				shortIdentFixupTimer.GetMillisecs(), extensionFlagsTimer.GetMillisecs(),
+				tagWriteTimer.GetMillisecs(), tagParseLoadTimer.GetMillisecs());
 
 			buildGlobalList = true;
 		}
@@ -2515,15 +2568,17 @@ void WorkspaceTags::Refresh(bool forceRefresh, bool forceSave)
 		CTimer addTimer;
 		addTimer.Start();
 
-		for (i = 0; i < fileList.GetCount(); i++)
+		int fileListCount = fileList.GetCount();
+		for (i = 0; i < fileListCount; ++i)
 		{
 			File* file = (File*)fileList.Get(i);
 			TagList& tagList = (TagList&)file->GetTagList();
+			int tagListCount = tagList.GetCount();
 
-			for (int j = 0; j < tagList.GetCount(); j++)
+			for (int j = 0; j < tagListCount; ++j)
 			{
-				Tag* tag = (Tag*)tagList.Get(j);
-				s_tags.Add(tag);
+				Tag* tag = (Tag*)tagList.TagList::Get(j);
+				s_tags.TagList::Add(tag);
 			}
 		}
 

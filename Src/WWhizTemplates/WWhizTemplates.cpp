@@ -1,46 +1,32 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: WWhizTemplates.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplates/WWhizTemplates.cpp $
-// $Date:: 1/03/01 12:14a  $ $Revision:: 20   $ $Author: Jjensen $
+// $Date: 2003/01/16 $ $Revision: #10 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
 #include "pchWWhizTemplates.h"
+#include <direct.h>
+#include <io.h>
+
+#ifdef WWHIZ_VC6
 #include <initguid.h>
 #include "ObjModelGUID.h"
 #include <ObjModel\appguid.h>
 #include <ObjModel\bldguid.h>
-#include <direct.h>
-#include <io.h>
+#endif WWHIZ_VC6
 
-IApplication* g_pApplication;
 WWhizTemplateManager* g_templateManager;
+WWhizInterface* g_wwhizInterface;
 
 typedef WWhiz_TemplateException TException;
 
-/**
-	Stolen from the MFC 6.0 source.  See CString::Find().
-**/
-int CStringFind(const CString& str, LPCTSTR lpszSub, int nStart)
-{
-	ASSERT(AfxIsValidString(lpszSub));
-
-	int nLength = str.GetLength();
-	if (nStart > nLength)
-		return -1;
-
-	// find first matching substring
-	LPTSTR lpsz = _tcsstr((LPCTSTR)str + nStart, lpszSub);
-
-	// return -1 for not found, distance from beginning otherwise
-	return (lpsz == NULL) ? -1 : (int)(lpsz - (LPCTSTR)str);
-}
-
+#ifdef WWHIZ_VC6
 
 /**
 **/
@@ -49,24 +35,24 @@ static CComPtr<IGenericProject> FindProjectByName(LPCTSTR desiredProjectName)
 	// Try and retrieve a project by name.
 	// First, get a pointer to the dispatch for the Projects collection
 	CComPtr<IDispatch> pDispProjects;
-	VERIFY_OK(g_pApplication->get_Projects(&pDispProjects));
+	ObjModelHelper::GetInterface()->get_Projects(&pDispProjects);
 	CComQIPtr<IProjects, &IID_IProjects> pProjects(pDispProjects);
 
 	// Get the number of projects in the collection
 	long projectCount;
-	VERIFY_OK(pProjects->get_Count(&projectCount));
+	pProjects->get_Count(&projectCount);
 
 	// Iterate all the projects.
 	CComPtr<IGenericProject> pGenProject;
 	for (long i = 1; i <= projectCount; i++)
 	{
 		// Get the next project
-		VERIFY_OK(pProjects->Item(CComVariant(i), &pGenProject));
+		pProjects->Item(CComVariant(i), &pGenProject);
 		CComQIPtr<IGenericProject, &IID_IGenericProject> pProject(pGenProject);
 
 		// Get the project name.
 		CComBSTR bszStr;
-		VERIFY_OK(pProject->get_Name(&bszStr));
+		pProject->get_Name(&bszStr);
 		CString projectName = bszStr;
 
 		if (projectName == desiredProjectName)
@@ -89,6 +75,8 @@ public:
 
 	bool FindProject(const CString& projectName);
 	bool FindConfig(const CString& configName);
+	int GetNumConfigurations();
+	CString GetConfigName(int index);
 };
 
 
@@ -99,7 +87,7 @@ bool ProjectHelper::FindProject(const CString& projectName)
 	// Get the active project if there is no project name as a parameter.
 	if (projectName.IsEmpty())
 	{
-		g_pApplication->get_ActiveProject(&pDispGenericProject);
+		ObjModelHelper::GetInterface()->get_ActiveProject(&pDispGenericProject);
 		if (!pDispGenericProject)
 		{
 			throw TException(TException::NO_ACTIVE_PROJECT, "There is no active project.");
@@ -117,7 +105,7 @@ bool ProjectHelper::FindProject(const CString& projectName)
 
 	m_pBuildProject = pDispGenericProject;
 
-	VERIFY_OK(m_pBuildProject->get_Configurations(&m_pConfigurations));
+	m_pBuildProject->get_Configurations(&m_pConfigurations);
 
 	return true;
 }
@@ -129,7 +117,7 @@ bool ProjectHelper::FindConfig(const CString& configName)
 	if (configName.IsEmpty())
 	{
 		CComPtr<IDispatch> pDispConfig;
-		g_pApplication->get_ActiveConfiguration(&pDispConfig);
+		ObjModelHelper::GetInterface()->get_ActiveConfiguration(&pDispConfig);
 		if (!pDispConfig)
 		{
 			throw TException(TException::NO_ACTIVE_CONFIG, "There is no active configuration.");
@@ -143,17 +131,17 @@ bool ProjectHelper::FindConfig(const CString& configName)
 	{
 		// Try and retrieve a configuration by name.
 		long lNumConfigs;
-		VERIFY_OK(m_pConfigurations->get_Count(&lNumConfigs));
+		m_pConfigurations->get_Count(&lNumConfigs);
 		for (long j = 1 ; j < lNumConfigs+1 ; j++)
 		{
 			CComPtr<IDispatch> pDispConfig;
 			m_pConfig = pDispConfig;
 
 			// Get each individual configuration
-			VERIFY_OK(m_pConfigurations->Item(CComVariant(j), &m_pConfig));
+			m_pConfigurations->Item(CComVariant(j), &m_pConfig);
 
 			CComBSTR bszStr;
-			VERIFY_OK(m_pConfig->get_Name(&bszStr));
+			m_pConfig->get_Name(&bszStr);
 			CString foundName = bszStr;
 			if (configName == foundName)
 				return true;
@@ -164,6 +152,198 @@ bool ProjectHelper::FindConfig(const CString& configName)
 }
 
 
+int ProjectHelper::GetNumConfigurations()
+{
+	long lCount;
+	m_pConfigurations->get_Count(&lCount);
+	return (int)lCount;
+}
+
+
+CString ProjectHelper::GetConfigName(int index)
+{
+	// Get the configuration project.
+	CComPtr<IConfiguration> pConfig;
+	m_pConfigurations->Item(CComVariant(index), &pConfig);
+	if (!pConfig)
+	{
+		return "";
+	}
+
+	CComBSTR bszStr;
+	pConfig->get_Name(&bszStr);
+	CString configName = bszStr;
+	return configName;
+}
+
+#endif WWHIZ_VC6
+
+#ifdef WWHIZ_VSNET
+
+/**
+**/
+static CComPtr<EnvDTE::Project> FindProjectByName(LPCTSTR desiredProjectName)
+{
+	// Get the current project
+	CComPtr<EnvDTE::_Solution> pSolution;
+	g_pDTE->get_Solution(&pSolution);
+	if (!pSolution)
+		return NULL;
+
+	CComPtr<EnvDTE::Projects> pProjects;
+	pSolution->get_Projects(&pProjects);
+	if (!pProjects)
+		return NULL;
+
+	CComPtr<EnvDTE::Project> pProject;
+	pProjects->Item(CComVariant(desiredProjectName), &pProject);
+	return pProject;
+}
+
+
+class ProjectHelper
+{
+public:
+	CComPtr<EnvDTE::_Solution> m_pSolution;
+	CComPtr<EnvDTE::SolutionBuild> m_pSolutionBuild;
+	CComPtr<EnvDTE::SolutionConfiguration> m_pSolutionConfiguration;
+	CComPtr<EnvDTE::Project> m_pProject;
+	CComPtr<EnvDTE::ConfigurationManager> m_pConfigurationManager;
+	CComPtr<EnvDTE::Configuration> m_pConfiguration;
+//	CComQIPtr<IBuildProject, &IID_IBuildProject> m_pBuildProject;
+//	CComPtr<IConfigurations> m_pConfigurations;
+//	CComQIPtr<IConfiguration, &IID_IConfiguration> m_pConfig;	// The found configuration
+
+	bool FindProject(const CString& projectName);
+	bool FindConfig(const CString& configName);
+	int GetNumConfigurations();
+	CString GetConfigName(int index);
+};
+
+
+CComPtr<EnvDTE::Project> GetActiveProject()
+{
+	if (!g_pDTE)
+		return NULL;
+
+	// Get the current project
+	CComPtr<EnvDTE::_Solution> pSolution;
+	g_pDTE->get_Solution(&pSolution);
+	if (!pSolution)
+		return NULL;
+
+	CComBSTR bstrConfig;
+
+	CComPtr<IDispatch> pActiveProjectDisp;
+	CComPtr<EnvDTE::Project> pActiveProject;
+	CComVariant varActiveSolutionProjects;
+	g_pDTE->get_ActiveSolutionProjects(&varActiveSolutionProjects);
+	if(varActiveSolutionProjects.vt == (VT_ARRAY|VT_VARIANT))
+	{
+		CComVariant varProj;
+
+		LONG lLBound, lUBound;
+		SafeArrayGetLBound(varActiveSolutionProjects.parray, 1, &lLBound);
+		SafeArrayGetUBound(varActiveSolutionProjects.parray, 1, &lUBound);
+
+		if((lUBound - lLBound) != 0)
+		{
+			return NULL;
+		}
+
+		SafeArrayGetElement(varActiveSolutionProjects.parray, &lLBound, &varProj);
+		pActiveProjectDisp = varProj.pdispVal;
+		pActiveProject = pActiveProjectDisp;
+	}
+
+	return pActiveProject;
+}
+
+
+bool ProjectHelper::FindProject(const CString& projectName)
+{
+//	CComPtr<IDispatch> pDispGenericProject;
+	CComPtr<EnvDTE::Project> pProject;
+
+	// Get the active project if there is no project name as a parameter.
+	if (projectName.IsEmpty())
+	{
+		pProject = GetActiveProject();
+		if (!pProject)
+		{
+			throw TException(TException::NO_ACTIVE_PROJECT, "There is no active project.");
+		}
+	}
+	else
+	{
+		// Try and retrieve a project by name.
+		pProject = FindProjectByName(projectName);
+		if (!pProject)
+		{
+			throw TException(TException::INVALID_PROJECT_NAME, "There is no project in the workspace called [%s].", projectName);
+		}
+	}
+
+	m_pProject = pProject;
+	m_pProject->get_ConfigurationManager(&m_pConfigurationManager);
+
+	return true;
+}
+
+
+bool ProjectHelper::FindConfig(const CString& configName)
+{
+	CComPtr<EnvDTE::Configuration> pConfiguration;
+
+	// Get the active config if there is no project name as a parameter.
+	if (configName.IsEmpty())
+	{
+		m_pConfigurationManager->get_ActiveConfiguration(&pConfiguration);
+		if (!pConfiguration)
+		{
+			throw TException(TException::NO_ACTIVE_CONFIG, "There is no active configuration.");
+		}
+
+		m_pConfiguration = pConfiguration;
+
+		return true;
+	}
+	else
+	{
+		m_pConfigurationManager->Item(CComVariant(configName), CComBSTR(), &pConfiguration);
+		m_pConfiguration = pConfiguration;
+	}
+
+	return false;
+}
+
+
+int ProjectHelper::GetNumConfigurations()
+{
+	long lCount;
+	m_pConfigurationManager->get_Count(&lCount);
+	return (int)lCount;
+}
+
+
+CString ProjectHelper::GetConfigName(int index)
+{
+	// Get the configuration project.
+	CComPtr<EnvDTE::Configuration> pConfig;
+	m_pConfigurationManager->Item(CComVariant(index), CComBSTR(), &pConfig);
+	if (!pConfig)
+	{
+		return "";
+	}
+
+	CComBSTR bszStr;
+	pConfig->get_ConfigurationName(&bszStr);
+	CString configName = bszStr;
+	return configName;
+}
+
+
+#endif WWHIZ_VSNET
 			
 /**
 **/
@@ -387,7 +567,7 @@ public:
 			helper.GetPosition(m_curX, m_curY);
 
 			// Return a character to find.
-			args.Return("\254");
+			args.Return("~~~CARET~~~");
 		}
 	}
 
@@ -416,15 +596,14 @@ public:
 			}
 
 			helper.GetActiveDocument();
-			helper.MoveTo(m_curY, 1, dsMove);
-			helper.SelectLine();
-			if (!helper.FindText("\254", dsMatchForward))
+			helper.MoveTo(m_curY, 1, false);
+			if (!helper.FindText("~~~CARET~~~", "MatchForward"))
 			{
 				AfxMessageBox("Error returning to the requested caret position.");
 			}
 			else
 			{
-				g_pApplication->ExecuteCommand(CComBSTR("Delete"));
+				helper.Delete();
 			}
 		}
 	}
@@ -468,11 +647,16 @@ public:
 			throw TException(TException::FILENAME_REQUIRED, "File settings are required as parameter 4.");
 		}
 
+#ifdef WWHIZ_VSNET
+		CString err;
+		err.Format("Visual Studio .NET support for the ConfigAddFileSettings command "
+				"has not been implemented yet.");
+		AfxMessageBox(err);
+#endif WWHIZ_VSNET
+#ifdef WWHIZ_VC6
 		// Get DevStudio version.  Only DevStudio 6.0 can use this command.
-		CComBSTR bstrVersion;
-		g_pApplication->get_Version(&bstrVersion);
-		CString strVersion = bstrVersion;
-		if (strVersion != "5.0")
+		CString version = ObjModelHelper::GetVersion();
+		if (version != "6")
 		{
 			helper.m_pConfig->AddFileSettings(CComBSTR(filename), CComBSTR(settings), CComVariant());
 		}
@@ -485,6 +669,7 @@ public:
 					"Settings: [%s]", projectName, configName, filename, settings);
 			AfxMessageBox(err);
 		}
+#endif WWHIZ_VC6
 	}
 };
 
@@ -521,7 +706,15 @@ public:
 			throw TException(TException::FILENAME_REQUIRED, "File settings are required as parameter 4.");
 		}
 
+#ifdef WWHIZ_VC6
 		helper.m_pConfig->AddToolSettings(CComBSTR(filename), CComBSTR(settings), CComVariant());
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+		CString err;
+		err.Format("Visual Studio .NET support for the ConfigAddToolsSettings command "
+				"has not been implemented yet.");
+		AfxMessageBox(err);
+#endif WWHIZ_VSNET
 	}
 };
 
@@ -541,12 +734,8 @@ public:
 		ProjectHelper helper;
 		helper.FindProject(projectName);
 
-		// Get the configuration project.
-		long lNumConfigs;
-		VERIFY_OK(helper.m_pConfigurations->get_Count(&lNumConfigs));
-
 		// Return the count.
-		args.Return(lNumConfigs);
+		args.Return(helper.GetNumConfigurations());
 	}
 };
 
@@ -574,18 +763,7 @@ public:
 		}
 
 		// Get the configuration project.
-		CComPtr<IConfiguration> pConfig;
-		VERIFY_OK(helper.m_pConfigurations->Item(CComVariant(index), &pConfig));
-		if (!pConfig)
-		{
-			throw TException(TException::MISSING_VARIABLE, "No configuration at the given index was found.");
-		}
-
-		CComBSTR bszStr;
-		VERIFY_OK(pConfig->get_Name(&bszStr));
-		CString configName = bszStr;
-
-		args.Return(configName);
+		args.Return(helper.GetConfigName(index));
 	}
 };
 
@@ -622,11 +800,15 @@ public:
 			throw TException(TException::FILENAME_REQUIRED, "File settings are required as parameter 4.");
 		}
 
-		// Get DevStudio version.  Only DevStudio 6.0 can use this command.
-		CComBSTR bstrVersion;
-		g_pApplication->get_Version(&bstrVersion);
-		CString strVersion = bstrVersion;
-		if (strVersion != "5.0")
+#ifdef WWHIZ_VSNET
+		CString err;
+		err.Format("Visual Studio .NET support for the ConfigRemoveFileSettings command "
+				"has not been implemented yet.");
+		AfxMessageBox(err);
+#endif WWHIZ_VSNET
+#ifdef WWHIZ_VC6
+		CString version = ObjModelHelper::GetVersion();
+		if (version != "6")
 		{
 			helper.m_pConfig->RemoveFileSettings(CComBSTR(filename), CComBSTR(settings), CComVariant());
 		}
@@ -639,6 +821,7 @@ public:
 					"Settings: [%s]", projectName, configName, filename, settings);
 			AfxMessageBox(err);
 		}
+#endif WWHIZ_VC6
 	}
 };
 
@@ -675,7 +858,15 @@ public:
 			throw TException(TException::FILENAME_REQUIRED, "File settings are required as parameter 4.");
 		}
 
+#ifdef WWHIZ_VSNET
+		CString err;
+		err.Format("Visual Studio .NET support for the ConfigRemoveToolSettings command "
+				"has not been implemented yet.");
+		AfxMessageBox(err);
+#endif WWHIZ_VSNET
+#ifdef WWHIZ_VC6
 		helper.m_pConfig->RemoveToolSettings(CComBSTR(filename), CComBSTR(settings), CComVariant());
+#endif WWHIZ_VC6
 	}
 };
 
@@ -772,17 +963,12 @@ public:
 			throw TException(TException::MISSING_COMMAND, "Parameter 1 should be a DevStudio-known command.");
 		}
 
-		if (!command.IsEmpty())
+		CString arguments = args.Get(1);
+
+		curTemplate->FlushText();
+		if (!ObjModelHelper::ExecuteCommand(command, arguments))
 		{
-			curTemplate->FlushText();
-			if (SUCCEEDED(g_pApplication->ExecuteCommand(
-					CComBSTR(command))))
-			{
-			}
-			else
-			{
-				throw TException(TException::UNABLE_TO_EXECUTE_COMMAND, "Command [%s] is not a DevStudio-known command.", command);
-			}
+			throw TException(TException::UNABLE_TO_EXECUTE_COMMAND, "Command [%s] is not a known Visual Studio command.", command);
 		}
 	}
 };
@@ -836,9 +1022,10 @@ public:
 		// Is the filename relative to the current project's dsp file?
 		else if (status == "dsp")
 		{
+#ifdef WWHIZ_VC6
 			CComPtr<IDispatch> pDispProject;
 			CComQIPtr<IGenericProject, &IID_IGenericProject> pProject;
-			g_pApplication->get_ActiveProject(&pDispProject);
+			ObjModelHelper::GetInterface()->get_ActiveProject(&pDispProject);
 
 			if (!pDispProject)
 			{
@@ -846,24 +1033,30 @@ public:
 			}
 
 			pProject = pDispProject;
-
-			if (pProject)
+			if (!pProject)
 			{
-				// Get the project name.
-				CComBSTR bszStr;
-				VERIFY_OK(pProject->get_FullName(&bszStr));
-				CString projectName = bszStr;
-
-				// Get the project path.
-				int pos = projectName.ReverseFind('\\');
-				projectName = projectName.Left(pos + 1);
-
-				fullName = projectName + filename;
+				throw TException(TException::NO_ACTIVE_PROJECT, "There is no active project to create the file [%s] relative to.", filename);
 			}
-			else
+#endif WWHIZ_VC6
+
+#ifdef WWHIZ_VSNET
+			CComPtr<EnvDTE::Project> pProject = GetActiveProject();
+			if (!pProject)
 			{
-				AfxMessageBox("Error!");
+				throw TException(TException::NO_ACTIVE_PROJECT, "There is no active project to create the file [%s] relative to.", filename);
 			}
+#endif WWHIZ_VSNET
+
+			// Get the project name.
+			CComBSTR bszStr;
+			pProject->get_FullName(&bszStr);
+			CString projectName = bszStr;
+
+			// Get the project path.
+			int pos = projectName.ReverseFind('\\');
+			projectName = projectName.Left(pos + 1);
+
+			fullName = projectName + filename;
 		}
 
 		// Is the filename relative to the current working directory?
@@ -897,16 +1090,19 @@ public:
 				overwrite = false;
 		}
 		
+#ifdef WWHIZ_VC6
 		CComPtr<IDispatch> pDispDocument;
 		CComPtr<IDispatch> pDispDocuments;
 		CComQIPtr<IDocumentsVC, &IID_IDocumentsVC> pDocumentsVC;
 		CComQIPtr<IDocumentsEVC, &IID_IDocumentsEVC> pDocumentsEVC;
-		g_pApplication->get_Documents(&pDispDocuments);
+		ObjModelHelper::GetInterface()->get_Documents(&pDispDocuments);
 		pDocumentsVC = pDispDocuments;
 		pDocumentsEVC = pDispDocuments;
+#endif WWHIZ_VC6
 
 		if (overwrite)
 		{
+#ifdef WWHIZ_VC6
 			// Add the new document to the documents list.
 			if (pDocumentsVC)
 			{
@@ -922,6 +1118,17 @@ public:
 					throw TException(TException::UNABLE_TO_CREATE_NEW_FILE, "Unable to add the new file to the active document list.");
 				}
 			}
+#endif WWHIZ_VC6
+
+#ifdef WWHIZ_VSNET
+			CComPtr<EnvDTE::ItemOperations> pItemOperations;
+			if (FAILED(g_pDTE->get_ItemOperations(&pItemOperations)))
+				return;
+
+			EnvDTE::WindowPtr window;
+			pItemOperations->NewFile(CComBSTR("General\\Text File"), CComBSTR(fullName),
+				CComBSTR(EnvDTE::vsViewKindTextView), &window);
+#endif WWHIZ_VSNET
 
 			// Save the document.
 			ObjModelHelper objModel;
@@ -942,6 +1149,26 @@ public:
 		}
 
 //		curTemplate->RefreshFileInfo();
+	}
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+// FileNewText
+///////////////////////////////////////////////////////////////////////////////
+class FileNewTextCommand : public WWhizTemplateCommand
+{
+public:
+	virtual void Run(WWhizTemplate* curTemplate, WWhizTemplateCommandArgs& args)
+	{
+		ObjModelHelper objModel;
+#ifdef WWHIZ_VSNET
+		objModel.ExecuteCommand("File.NewFile", "/t:\"General\\Text File\"");
+#endif WWHIZ_VSNET
+
+#ifdef WWHIZ_VC6
+		objModel.ExecuteCommand("NewText", "");
+#endif WWHIZ_VC6
 	}
 };
 
@@ -1043,6 +1270,7 @@ public:
 				break;
 
 			flagStr.MakeLower();
+#ifdef WWHIZ_VC6
 			if (flagStr == "matchforward")
 				flags |= dsMatchForward;
 			else if (flagStr == "matchbackward")
@@ -1055,6 +1283,21 @@ public:
 				flags |= dsMatchCase;
 			else if (flagStr == "matchregexp")
 				flags |= dsMatchRegExp;
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+			if (flagStr == "matchforward")
+				flags |= 0;
+			else if (flagStr == "matchbackward")
+				flags |= EnvDTE::vsFindOptionsBackwards;
+			else if (flagStr == "matchfromstart")
+				flags |= EnvDTE::vsFindOptionsFromStart;
+			else if (flagStr == "matchword")
+				flags |= EnvDTE::vsFindOptionsMatchWholeWord;
+			else if (flagStr == "matchcase")
+				flags |= EnvDTE::vsFindOptionsMatchCase;
+			else if (flagStr == "matchregexp")
+				flags |= EnvDTE::vsFindOptionsRegularExpression;
+#endif WWHIZ_VSNET
 			else
 			{
 				throw TException(TException::INVALID_FIND_FLAG, "The specified flag [%s] is an invalid find flag.", flagStr);
@@ -1272,7 +1515,7 @@ protected:
 		CString m_label;
 		LPCTSTR m_codePtr;
 	};
-	CListEx<Info, Info&> m_labels;
+	WList<Info> m_labels;
 };
 
 		
@@ -1449,12 +1692,12 @@ public:
 			throw TException(TException::MISSING_VARIABLE, "A numeric Y coordinate is required as parameter 2.");
 		}
 
-		int flags = dsMove;
+		bool flags = false;
 		CString flagStr = args.Get(2);
 		flagStr.MakeLower();
 		if (flagStr == "extend")
 		{
-			flags = dsExtend;
+			flags = true;
 		}
 		else if (!flagStr.IsEmpty())
 		{
@@ -1482,17 +1725,36 @@ class ProjectCountCommand : public WWhizTemplateCommand
 public:
 	virtual void Run(WWhizTemplate* curTemplate, WWhizTemplateCommandArgs& args)
 	{
+#ifdef WWHIZ_VC6
 		// First, get a pointer to the dispatch for the Projects collection
 		CComPtr<IDispatch> pDispProjects;
-		VERIFY_OK(g_pApplication->get_Projects(&pDispProjects));
+		ObjModelHelper::GetInterface()->get_Projects(&pDispProjects);
 		CComQIPtr<IProjects, &IID_IProjects> pProjects(pDispProjects);
 
 		// Get the number of projects in the collection
 		long projectCount;
-		VERIFY_OK(pProjects->get_Count(&projectCount));
+		pProjects->get_Count(&projectCount);
 
 		// Return the count.
 		args.Return(projectCount);
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+		// Get the current project
+		CComPtr<EnvDTE::_Solution> pSolution;
+		g_pDTE->get_Solution(&pSolution);
+		if (!pSolution)
+			return;
+
+		CComPtr<EnvDTE::Projects> pProjects;
+		pSolution->get_Projects(&pProjects);
+		if (!pProjects)
+			return;
+
+		long count;
+		pProjects->get_Count(&count);
+
+		args.Return(count);
+#endif WWHIZ_VSNET
 	}
 };
 
@@ -1512,15 +1774,16 @@ public:
 			throw TException(TException::MISSING_VARIABLE, "A numeric index is required as parameter 1.");
 		}
 
+#ifdef WWHIZ_VC6
 		// Try and retrieve a project by name.
 		// First, get a pointer to the dispatch for the Projects collection
 		CComPtr<IDispatch> pDispProjects;
-		VERIFY_OK(g_pApplication->get_Projects(&pDispProjects));
+		ObjModelHelper::GetInterface()->get_Projects(&pDispProjects);
 		CComQIPtr<IProjects, &IID_IProjects> pProjects(pDispProjects);
 
 		// Get the number of projects in the collection
 		long projectCount;
-		VERIFY_OK(pProjects->get_Count(&projectCount));
+		pProjects->get_Count(&projectCount);
 		if (index < 1  ||  index > projectCount)
 		{
 			throw TException(TException::VALUE_OUT_OF_RANGE, "The index [%d] is greater than the project count [%d].",
@@ -1531,16 +1794,32 @@ public:
 		CComPtr<IGenericProject> pGenProject;
 
 		// Get the next project
-		VERIFY_OK(pProjects->Item(CComVariant(index), &pGenProject));
+		pProjects->Item(CComVariant(index), &pGenProject);
 		CComQIPtr<IGenericProject, &IID_IGenericProject> pProject(pGenProject);
 		if (!pProject)
 		{
 			return;
 		}
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+		// Get the current project
+		CComPtr<EnvDTE::_Solution> pSolution;
+		g_pDTE->get_Solution(&pSolution);
+		if (!pSolution)
+			return;
+
+		CComPtr<EnvDTE::Projects> pProjects;
+		pSolution->get_Projects(&pProjects);
+		if (!pProjects)
+			return;
+
+		CComPtr<EnvDTE::Project> pProject;
+		pProjects->Item(CComVariant(index), &pProject);
+#endif WWHIZ_VSNET
 
 		// Get the project name.
 		CComBSTR bszStr;
-		VERIFY_OK(pProject->get_Name(&bszStr));
+		pProject->get_Name(&bszStr);
 		CString projectName = bszStr;
 		
 		args.Return(projectName);
@@ -1572,9 +1851,10 @@ public:
 		ProjectHelper helper;
 		helper.FindProject(args.Get(0));
 
+#ifdef WWHIZ_VC6
 		// Get DevStudio version.  Only DevStudio 6.0 can use this command.
 		CComBSTR bstrVersion;
-		g_pApplication->get_Version(&bstrVersion);
+		ObjModelHelper::GetInterface()->get_Version(&bstrVersion);
 		CString strVersion = bstrVersion;
 		if (strVersion != "5.0")
 		{
@@ -1589,6 +1869,20 @@ public:
 				"to the project.  Please manually add the file [" + filename + 
 				"].");
 		}
+#endif WWHIZ_VC6
+
+#ifdef WWHIZ_VSNET
+		CComPtr<EnvDTE::Project> pProject = GetActiveProject();
+		if (pProject)
+		{
+			CComPtr<EnvDTE::ProjectItems> pProjectItems;
+			pProject->get_ProjectItems(&pProjectItems);
+
+			CComPtr<EnvDTE::ProjectItem> pProjectItem;
+			pProjectItems->AddFromFile(CComBSTR(bstrFilename), &pProjectItem);
+		}
+
+#endif WWHIZ_VSNET
 	}
 };
 
@@ -1601,9 +1895,10 @@ class ProjectNameCommand : public WWhizTemplateCommand
 public:
 	virtual void Run(WWhizTemplate* curTemplate, WWhizTemplateCommandArgs& args)
 	{
+#ifdef WWHIZ_VC6
 		// Get the current project
 		CComPtr<IDispatch> pActiveProject;
-		g_pApplication->get_ActiveProject(&pActiveProject);
+		ObjModelHelper::GetInterface()->get_ActiveProject(&pActiveProject);
 		if (pActiveProject)
 		{
 			CComQIPtr<IGenericProject, &IID_IGenericProject> pProject(pActiveProject);
@@ -1614,6 +1909,17 @@ public:
 				args.Return(CString(projectName));
 			}
 		}
+#endif WWHIZ_VC6
+
+#ifdef WWHIZ_VSNET
+		CComPtr<EnvDTE::Project> pProject = GetActiveProject();
+		if (pProject)
+		{
+			CComBSTR projectName;
+			pProject->get_Name(&projectName);
+			args.Return(CString(projectName));
+		}
+#endif WWHIZ_VSNET
 	}
 };
 
@@ -1648,6 +1954,7 @@ public:
 		}
 		typeStr.MakeLower();
 
+#ifdef WWHIZ_VC6
 		// See if this project exists, since AddProject() will
 		// overwrite it.
 		CString dspName = pathName + projectName + ".dsp";
@@ -1665,11 +1972,11 @@ public:
 		{
 			// Get DevStudio version.  Only DevStudio 6.0 can use this command.
 			CComBSTR bstrVersion;
-			g_pApplication->get_Version(&bstrVersion);
+			ObjModelHelper::GetInterface()->get_Version(&bstrVersion);
 			CString strVersion = bstrVersion;
 			if (strVersion != "5.0")
 			{
-				if (SUCCEEDED(g_pApplication->AddProject(
+				if (SUCCEEDED(ObjModelHelper::GetInterface()->AddProject(
 						CComBSTR(projectName), CComBSTR(pathName),
 						CComBSTR(typeStr), VARIANT_TRUE)))
 				{
@@ -1688,6 +1995,7 @@ public:
 				AfxMessageBox(err);
 			}
 		}
+#endif WWHIZ_VC6
 	}
 };
 
@@ -1703,10 +2011,11 @@ public:
 		// Get the project name, if any.
 		CString projectName = args.Get(0);
 
+#ifdef WWHIZ_VC6
 		// Get the current project
 		CComPtr<IDispatch> pDispProject;
 		if (projectName.IsEmpty())
-			g_pApplication->get_ActiveProject(&pDispProject);
+			ObjModelHelper::GetInterface()->get_ActiveProject(&pDispProject);
 		else
 			pDispProject = FindProjectByName(projectName);
 
@@ -1721,6 +2030,17 @@ public:
 				args.Return(CString(projectFullName));
 			}
 		}
+#endif WWHIZ_VC6
+
+#ifdef WWHIZ_VSNET
+		CComPtr<EnvDTE::Project> pProject = GetActiveProject();
+		if (pProject)
+		{
+			CComBSTR projectName;
+			pProject->get_FullName(&projectName);
+			args.Return(CString(projectName));
+		}
+#endif WWHIZ_VSNET
 	}
 };
 
@@ -1818,7 +2138,7 @@ public:
 			findStr.MakeLower();
 		}
 
-		index = CStringFind(string, findStr, startIndex);
+		index = string.Find(findStr, startIndex);
 		args.Return(index);
 	}
 };
@@ -2008,6 +2328,7 @@ static EnvCommand						s_envCommand;
 static ExecuteCommandCommand			s_executeCommandCommand;
 static FileExtCommand					s_fileExtCommand;
 static FileNewCommand					s_fileNewCommand;
+static FileNewTextCommand				s_fileNewTextCommand;
 static FilePathCommand					s_filePathCommand;
 static FileSaveCommand					s_fileSaveCommand;
 static FileTitleCommand					s_fileTitleCommand;
@@ -2041,11 +2362,20 @@ static TimeCommand						s_timeCommand;
 /////////////////////////////////////////////////////////////////////////////
 
 extern "C" __declspec(dllexport)
+#ifdef WWHIZ_VC6
 bool WWhizTemplateRegister(WWhizTemplateManager* templateManager,
 		IApplication* pApplication)
 {
-	g_templateManager = templateManager;
 	g_pApplication = pApplication;
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+bool WWhizTemplateRegister(WWhizInterface* wwhizInterface,
+						   WWhizTemplateManager* templateManager,
+						   void* pDTE)
+{
+	g_pDTE = (EnvDTE::_DTE*)pDTE;
+#endif WWHIZ_VSNET
+	g_templateManager = templateManager;
 
 	// Regular commands
 	g_templateManager->RegisterCommand("Add",						s_addCommand);
@@ -2063,6 +2393,7 @@ bool WWhizTemplateRegister(WWhizTemplateManager* templateManager,
 	g_templateManager->RegisterCommand("ExecuteCommand",			s_executeCommandCommand);
 	g_templateManager->RegisterCommand("FileExt",					s_fileExtCommand);
 	g_templateManager->RegisterCommand("FileNew",					s_fileNewCommand);
+	g_templateManager->RegisterCommand("FileNewText",				s_fileNewTextCommand);
 	g_templateManager->RegisterCommand("FilePath",					s_filePathCommand);
 	g_templateManager->RegisterCommand("FileSave",					s_fileSaveCommand);
 	g_templateManager->RegisterCommand("FileTitle",					s_fileTitleCommand);
@@ -2096,19 +2427,12 @@ bool WWhizTemplateRegister(WWhizTemplateManager* templateManager,
 }
 
 
-/////////////////////////////////////////////////////////////////////////////
-// Debugging support
-
-// GetLastErrorDescription is used in the implementation of the VERIFY_OK
-//  macro, defined in stdafx.h.
-
-#ifdef _DEBUG
-
-void GetLastErrorDescription(CComBSTR& bstr)
+extern "C" __declspec(dllexport)
+void WWhizTemplateDestroy()
 {
-	CComPtr<IErrorInfo> pErrorInfo;
-	if (GetErrorInfo(0, &pErrorInfo) == S_OK)
-		pErrorInfo->GetDescription(&bstr);
+#ifdef WWHIZ_VSNET
+	g_pDTE = NULL;
+#endif WWHIZ_VSNET
 }
 
-#endif //_DEBUG
+						   

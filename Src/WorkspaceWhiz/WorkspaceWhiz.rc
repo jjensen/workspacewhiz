@@ -27,18 +27,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE MOVEABLE PURE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE MOVEABLE PURE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE MOVEABLE PURE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -67,7 +67,7 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 338, 175
 STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION
-CAPTION "Workspace Whiz! - About"
+CAPTION "Workspace Whiz - About"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDCANCEL,274,151,62,14,WS_GROUP
@@ -79,11 +79,11 @@ IDD_FINDFILE DIALOGEX 0, 0, 346, 179
 STYLE DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | 
     WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Workspace Whiz! - File Open"
-FONT 8, "Arial", 0, 0, 0x1
+CAPTION "Workspace Whiz - File Open"
+FONT 8, "Arial"
 BEGIN
-    EDITTEXT        IDC_FF_FILENAME,48,10,183,14,ES_LOWERCASE | 
-                    ES_AUTOHSCROLL,WS_EX_STATICEDGE
+    COMBOBOX        IDC_FF_FILENAME,59,11,172,108,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_STATICEDGE
     CONTROL         "List1",IDC_FF_FILES,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | 
                     WS_TABSTOP,5,28,226,144,WS_EX_STATICEDGE
@@ -91,26 +91,26 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,288,19,52,14
     PUSHBUTTON      "&Help",IDHELP,288,35,52,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,288,50,52,14
-    PUSHBUTTON      "&Preferences",IDC_COM_PREFERENCES,288,66,52,14
     PUSHBUTTON      "&Extra Files",IDC_COM_EXTRAFILES,234,3,52,14,0,
                     WS_EX_TRANSPARENT
     PUSHBUTTON      "&Current File",IDC_COM_CURRENTFILE,234,19,52,14
-    PUSHBUTTON      "&Refresh",IDC_FF_REFRESH,234,35,52,14
     CONTROL         "Current P&roject",IDC_FF_SCOPE_PROJECT,"Button",
                     BS_AUTORADIOBUTTON,239,94,66,10
     CONTROL         "Entire &Workspace",IDC_FF_SCOPE_WORKSPACE,"Button",
                     BS_AUTORADIOBUTTON,239,105,88,10
-    EDITTEXT        IDC_FF_PREFIX,5,10,42,14,ES_LOWERCASE | ES_AUTOHSCROLL,
-                    WS_EX_STATICEDGE
-    LTEXT           "Filen&ame to match:",IDC_STATIC,50,0,60,8
-    GROUPBOX        "Scope",IDC_FF_SCOPE,234,85,105,34,0,WS_EX_TRANSPARENT
+    LTEXT           "Filen&ame to match:",IDC_STATIC,59,0,60,8
+    GROUPBOX        "Scope",IDC_FF_SCOPE,234,85,105,44,0,WS_EX_TRANSPARENT
     LTEXT           "Prefix:",IDC_STATIC,7,0,22,8
+    COMBOBOX        IDC_FF_PREFIX,5,11,52,109,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_STATICEDGE
+    CONTROL         "&Global Files",IDC_SCOPE_GLOBAL,"Button",
+                    BS_AUTORADIOBUTTON,239,116,88,10
 END
 
 IDD_EXTRAFILES DIALOGEX 0, 0, 328, 123
 STYLE WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Workspace Whiz! - Add/Remove Extra Files"
+CAPTION "Workspace Whiz - Add/Remove Extra Files"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EP_FILENAME,4,3,158,14,ES_AUTOHSCROLL,
@@ -123,20 +123,21 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,272,19,52,14
     PUSHBUTTON      "&Help",IDHELP,272,35,52,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,272,50,52,14
-    PUSHBUTTON      "&Preferences",IDC_COM_PREFERENCES,272,66,52,14
     PUSHBUTTON      "&Add",IDC_EP_ADD,220,3,50,14
     PUSHBUTTON      "&Remove",IDC_EP_REMOVE,220,19,50,14
+    CONTROL         "Never Refresh",IDC_EP_NEVERREFRESH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,220,113,63,9
 END
 
 IDD_FINDTAG DIALOGEX 0, 0, 388, 222
 STYLE WS_POPUP | WS_VISIBLE | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
     WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Workspace Whiz! - Find Tag"
+CAPTION "Workspace Whiz - Find Tag"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_FT_NAME,143,13,129,12,ES_AUTOHSCROLL,
-                    WS_EX_STATICEDGE
+    COMBOBOX        IDC_FT_NAME,143,13,130,110,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_STATICEDGE
     CONTROL         "List1",IDC_FT_TAGS,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | 
                     WS_TABSTOP,2,28,271,150,WS_EX_STATICEDGE
@@ -144,7 +145,6 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,334,18,50,14
     PUSHBUTTON      "&Help",IDHELP,334,34,50,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,334,50,50,14
-    PUSHBUTTON      "&Preferences",IDC_COM_PREFERENCES,334,66,50,14
     PUSHBUTTON      "&Extra Files",IDC_COM_EXTRAFILES,277,2,50,14
     PUSHBUTTON      "&Current File",IDC_COM_CURRENTFILE,277,18,50,14
     PUSHBUTTON      "Reb&uild Tags",IDC_FT_REBUILDTAGS,277,34,50,14
@@ -156,17 +156,17 @@ BEGIN
                     BS_AUTORADIOBUTTON,281,102,95,10
     CONTROL         "Entire &Workspace",IDC_FT_SCOPE_WORKSPACE,"Button",
                     BS_AUTORADIOBUTTON,281,113,96,10
-    GROUPBOX        "",IDC_FT_INFO_FRAME,2,176,382,44,0,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_FT_INFO_FILENAME,6,184,262,12,ES_AUTOHSCROLL | 
-                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_FT_INFO_MISC,6,195,261,12,ES_AUTOHSCROLL | 
-                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_FT_INFO_SEARCHSTRING,6,206,261,12,ES_AUTOHSCROLL | 
-                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
     COMBOBOX        IDC_FT_TYPECOMBO,3,13,53,138,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
-    EDITTEXT        IDC_FT_PARENT,60,13,80,12,ES_AUTOHSCROLL,
-                    WS_EX_STATICEDGE
+    COMBOBOX        IDC_FT_PARENT,60,13,80,110,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_STATICEDGE
+    EDITTEXT        IDC_FT_INFO_FILENAME,6,184,374,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_FT_INFO_MISC,6,195,374,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_FT_INFO_SEARCHSTRING,6,206,374,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    GROUPBOX        "",IDC_FT_INFO_FRAME,2,176,382,44,0,WS_EX_TRANSPARENT
     LTEXT           "T&ag to match:",IDC_STATIC,143,2,91,8
     LTEXT           "&Type:",IDC_STATIC,3,3,32,8
     LTEXT           "Pare&nt:",IDC_STATIC,61,2,55,8
@@ -176,7 +176,7 @@ END
 IDD_TEMPLATESELECT DIALOGEX 0, 0, 336, 207
 STYLE WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Workspace Whiz! - Code Templates"
+CAPTION "Workspace Whiz - Code Templates"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     CONTROL         "Tree1",IDC_TS_TREE,"SysTreeView32",TVS_HASBUTTONS | 
@@ -187,7 +187,6 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,279,19,52,14
     PUSHBUTTON      "&Help",IDHELP,279,35,52,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,279,50,52,14
-    PUSHBUTTON      "&Preferences",IDC_COM_PREFERENCES,279,66,52,14
     PUSHBUTTON      "&File List",IDC_TS_FILELIST,227,3,50,14
     LTEXT           "Select &Code Template from List:",IDC_STATIC,3,3,102,8
     LTEXT           "",IDC_TS_MEMO,3,163,222,41,0,WS_EX_CLIENTEDGE
@@ -196,7 +195,7 @@ END
 IDD_TEMPLATEFILELIST DIALOGEX 0, 0, 328, 143
 STYLE WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Workspace Whiz! - Template File List"
+CAPTION "Workspace Whiz - Template File List"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     LTEXT           "Loaded Template &Files:",IDC_STATIC,4,2,74,8
@@ -207,7 +206,6 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,272,18,52,14
     PUSHBUTTON      "&Help",IDHELP,272,34,52,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,272,50,52,14
-    PUSHBUTTON      "&Preferences",IDC_COM_PREFERENCES,272,66,52,14
     PUSHBUTTON      "&Add",IDC_TFL_ADD,220,2,50,14
     PUSHBUTTON      "&Remove",IDC_TFL_REMOVE,220,18,50,14
     PUSHBUTTON      "&Edit",IDC_TFL_EDIT,220,34,50,14
@@ -216,7 +214,7 @@ END
 IDD_TEMPLATEWIZARD DIALOGEX 0, 0, 310, 235
 STYLE WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Workspace Whiz! - Template Parameter Wizard"
+CAPTION "Workspace Whiz - Template Parameter Wizard"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "&Next",IDC_TW_NEXT,196,218,51,14,WS_GROUP
@@ -288,7 +286,7 @@ IDD_PREF_CTAGS DIALOGEX 0, 0, 259, 182
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CONTEXTHELP
 CAPTION "Tags"
-FONT 8, "Arial"
+FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     LISTBOX         IDC_PC_EXTLIST,59,14,40,66,LBS_NOINTEGRALHEIGHT | 
                     WS_VSCROLL | WS_TABSTOP
@@ -332,7 +330,7 @@ IDD_HISTORY DIALOGEX 0, 0, 342, 151
 STYLE DS_3DLOOK | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
     WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Workspace Whiz! - File History"
+CAPTION "Workspace Whiz - File History"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     CONTROL         "List1",IDC_H_FILES,"SysListView32",LVS_REPORT | 
@@ -342,19 +340,19 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,288,19,50,14
     PUSHBUTTON      "&Help",IDHELP,288,35,50,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,288,51,50,14
-    PUSHBUTTON      "&Preferences",IDC_COM_PREFERENCES,288,67,50,14
     PUSHBUTTON      "&Reset History",IDC_H_RESET,234,3,52,14
 END
 
-IDD_AUTOCOMPLETETAG DIALOGEX 0, 0, 200, 93
+IDD_AUTOCOMPLETETAG DIALOGEX 0, 0, 200, 101
 STYLE WS_POPUP | WS_CLIPCHILDREN | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_FT_NAME,4,4,192,12,ES_AUTOHSCROLL,WS_EX_STATICEDGE
+    COMBOBOX        IDC_FT_NAME,4,11,192,107,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_STATICEDGE
     CONTROL         "List1",IDC_FT_TAGS,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | 
-                    WS_TABSTOP,4,17,192,72,WS_EX_STATICEDGE
+                    WS_TABSTOP,4,26,192,72,WS_EX_STATICEDGE
 END
 
 IDD_PREF_KEYBINDINGS2 DIALOGEX 0, 0, 241, 146
@@ -429,10 +427,6 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,92,95,10
     CONTROL         "HotKey2",IDC_PKB_KEY21,"msctls_hotkey32",WS_BORDER | 
                     WS_TABSTOP,110,90,119,14
-    CONTROL         "Paste Fix:",IDC_PKB_KEYCHECK22,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,10,107,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY22,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,105,119,14
 END
 
 
@@ -451,8 +445,8 @@ IDR_TOOLBAR_LARGE       BITMAP  MOVEABLE PURE   "res\\TBarLrge.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,12,0,1
- PRODUCTVERSION 2,12,0,1
+ FILEVERSION 3,0,0,1026
+ PRODUCTVERSION 3,0,0,1026
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -470,14 +464,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "WORKSPACEWHIZ.DLL\0"
-            VALUE "FileVersion", "2, 12, 0, 1\0"
-            VALUE "InternalName", "Workspace Whiz!\0"
-            VALUE "LegalCopyright", "Copyright (C) 1997-2000  Joshua C. Jensen\0"
+            VALUE "FileVersion", "3, 0, 0, 1026\0"
+            VALUE "InternalName", "Workspace Whiz\0"
+            VALUE "LegalCopyright", "Copyright (C) 1997-2002  Joshua C. Jensen\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "WORKSPACEWHIZ.DLL\0"
             VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "Workspace Whiz! Developer Studio Add-in\0"
-            VALUE "ProductVersion", "2, 12, 0, 1\0"
+            VALUE "ProductName", "Workspace Whiz Visual Studio Add-in\0"
+            VALUE "ProductVersion", "3, 0, 0, 1026\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -535,9 +529,9 @@ END
 // HTML
 //
 
-ABOUT.HTML              HTML    DISCARDABLE     "res\\About.html"
-ABOUTTITLE.JPG          HTML    DISCARDABLE     "res\\AboutTitle.jpg"
-BACK.GIF                HTML    DISCARDABLE     "res\\Back.gif"
+ABOUT.HTML              HTML    MOVEABLE PURE   "res\\About.html"
+ABOUTTITLE.JPG          HTML    MOVEABLE PURE   "res\\AboutTitle.jpg"
+BACK.GIF                HTML    MOVEABLE PURE   "res\\Back.gif"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -554,7 +548,7 @@ BEGIN
 
     IDD_PREF_KEYBINDINGS3, DIALOG
     BEGIN
-        BOTTOMMARGIN, 94
+        BOTTOMMARGIN, 129
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -576,10 +570,20 @@ IDI_WWHIZ               ICON    DISCARDABLE     "res\\icon1.ico"
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz! 2.12"
+    IDS_PROJNAME            "Workspace Whiz 3.0 Beta Build 1026"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz 3.0 Beta Build 1026"
     IDS_WORKSPACEWHIZ_DESCRIPTION 
                             "Adds many useful workspace-related functions, such as an incremental file open, code templates, tag matching, etc."
-    IDS_PREFDLG_CAPTION     "Workspace Whiz! - Preferences"
+    IDS_PREFDLG_CAPTION     "Workspace Whiz - Options"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CI_WWOPTIONS        "\nWorkspace Whiz Options\nOpen the Workspace Whiz Options dialog\nWorkspace Whiz Options"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -621,7 +625,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    AFX_IDS_APP_TITLE       "Workspace Whiz! 2.12"
+    AFX_IDS_APP_TITLE       "Workspace Whiz 3.0 Beta Build 1026"
 END
 
 #endif    // English (U.S.) resources

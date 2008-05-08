@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>Workspace Find Tag Matching</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left"><img src="IconWWTagFindDlg.png" width="32" height="32"> Workspace 
+  Find Tag</h2>
+<h3>Matching Tags</h3>
+<p>As characters are typed in the <span class="field">Tag to match:</span><i> 
+  </i> field, tags are incrementally matched and displayed in the tag list. By 
+  default, the search is not case-sensitive and only alpha-numeric characters 
+  are counted. Non alpha-numeric characters can be typed, but they are ignored. 
+  (For example, if there is a tag called <code>__ABORT</code>, it is only necessary 
+  to type <code>abort</code>.)</p>
+<p>Alternatively, a mixed case tag may be typed in. At this point, the search 
+  becomes case-sensitive and all characters are counted.</p>
+<p>Use the slash key [<span class="code">/</span>] or asterisk [<span class="code">*</span>] 
+  at any point to perform a substring (wildcard) search. A substring search may 
+  be performed at any point. To match all tags that have the word <code>window</code> 
+  in them, type <code>/window</code> or <span class="code">*window</span>. Similarly, 
+  to match all tags that start with a <code>c</code> and have the word <code>window</code> 
+  in them, type <code>c/window</code>.</p>
+<p>Multiple substrings may be searched for by using more than one substring symbol. 
+  For example <span class="code">d/gra/man</span> would match a symbol called 
+  <span class="code">DirectXGraphicsManager</span>.</p>
+<p>To begin matching a tag's parent tag, insert a semicolon [<span class="code">;</span>] 
+  in the <span class="field">Tag to match:</span> field. Parent searching comes 
+  in the form <span class="code">[tag][;parent]</span>. That is, the <span class="code">tag</span> 
+  is optional (as is the <span class="code">;parent</span>). Both may be searched 
+  for to better isolate a tag. Tag parents also support a substring search.</p>
+<p></p>
+<p>The use of the <span class="field">Parent:</span> field has the same effect 
+  as typing <span class="code">;parent</span> in the <span class="field">Tag to 
+  match:</span> field.</p>
+<p>Additional <a href="FindTagSearchAttributes.html">search attributes</a> may 
+  be used.</p>
+<h3>&nbsp;</h3>
+</body>
+</html>

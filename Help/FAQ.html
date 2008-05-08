@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>FAQ</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Frequently Asked Questions</h2>
+<p><i><b>Why does my workspace open and close more slowly after using tags?</b></i></p>
+<p> For workspaces with very large number of tags, opening and closing the workspace 
+  can take longer. So the tags don't have to be rebuilt the next time the workspace 
+  is opened, Workspace Whiz saves the tag list to disk on workspace close. It 
+  reads those tags on workspace open.</p>
+<p>If the workspace open and close time appears to be taking exceedingly long, 
+  try turning Workspace Whiz off. If it still takes a long time to open the workspace, 
+  then the workspace.opt file has become corrupt. Delete it. (This is mentioned 
+  in the Microsoft Knowledge Base.)</p>
+<p>The status bar should show the tag loading and saving.</p>
+<p><b><i>Whenever I use a tag function, the title bar says &quot;Checking for 
+  updates...&quot; It sits there for a long time. What gives?</i></b></p>
+<p>Workspace Whiz is checking date/time stamps on all of the files tags are generated 
+  from. This is how it can automatically keep the tag list in sync with changes 
+  to your source files.</p>
+<p>You can perform the refresh manually. First, go to the <span class="field">Preferences</span>-&gt;<span class="field">Tags</span> 
+  dialog and uncheck the check box which reads &quot;<span class="field">Automatic 
+  refresh of tags per each tag command</span>.&quot; Now, the refresh won't automatically 
+  happen. Press the <span class="field">Refresh Tags</span> button to perform 
+  the sync yourself.</p>
+<p><b><i>How do I make a donation to Workspace Whiz's development?</i></b></p>
+<p>See the <a href="http://workspacewhiz.com/Ordering.html">Ordering</a> page.</p>
+</body>
+</html>

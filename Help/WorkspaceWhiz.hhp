@@ -1,0 +1,131 @@
+[OPTIONS]
+Auto Index=Yes
+Compatibility=1.1 or later
+Compiled file=..\Bin\WorkspaceWhiz.chm
+Contents file=WorkspaceWhiz.hhc
+Default Window=WorkspaceWhiz
+Default topic=Introduction.html
+Display compile progress=Yes
+Full-text search=Yes
+Index file=WorkspaceWhiz.hhk
+Language=0x409 English (United States)
+Title=Workspace Whiz! Help
+
+[WINDOWS]
+WorkspaceWhiz="Workspace Whiz!","WorkspaceWhiz.hhc","WorkspaceWhiz.hhk","Introduction.html",,,,,,0x2520,,0x384e,[0,0,500,0],0x1000000,,,,,,0
+CsPopup="Workspace Whiz!",,,,,,,,,,,0x0,[11,22,361,422],0x10800000,0x80,,,,,0
+WebWin="Workspace Whiz!",,,,,,,,,0x20,,0x303c,[10,10,790,590],0x10830000,,,,,,0
+
+
+[FILES]
+Acknowledgements.html
+Bugs.html
+CodeTemplates.html
+CodeTemplatesKey.html
+CodeTemplatesTemplateFileListDialog.html
+CodeTemplatesTemplateSelectDialog.html
+CommandSummary.html
+ExtraFiles.html
+ExtraFilesDialog.html
+FAQ.html
+FileContextMenu.html
+FileHistory.html
+FileHistoryDialog.html
+FileOpen.html
+FileOpenDialog.html
+FileOpenMatchingFiles.html
+FileOpenNavigation.html
+FindTag.html
+FindTagDialog.html
+FindTagDisplay.html
+FindTagMatchingTags.html
+FindTagNavigation.html
+FindTagRefresh.html
+FindTagSearchAttributes.html
+GlobalFileOpen.html
+GlobalFileOpenDialog.html
+GlobalFileOpenMatchingFiles.html
+GlobalFileOpenNavigation.html
+HeaderFlip.html
+History.html
+Introduction.html
+Ordering.html
+Preferences.html
+PreferencesHeaderFlip.html
+PreferencesKeyBindings.html
+PreferencesTags.html
+TagComplete.html
+TagCompleteUsage.html
+TagContextMenu.html
+TFCAdd.html
+TFCCall.html
+TFCCaret.html
+TFCConfigAddFileSettings.html
+TFCConfigAddToolSettings.html
+TFCConfigCount.html
+TFCConfigGet.html
+TFCConfigRemoveFileSettings.html
+TFCConfigRemoveToolSettings.html
+TFCDate.html
+TFCEnv.html
+TFCExecuteCommand.html
+TFCFileExt.html
+TFCFileNew.html
+TFCFilePath.html
+TFCFileSave.html
+TFCFileTitle.html
+TFCFind.html
+TFCGetPos.html
+TFCGoto.html
+TFCGUID.html
+TFCLabel.html
+TFCMakeDir.html
+TFCMessageBox.html
+TFCMoveTo.html
+TFCProjectCount.html
+TFCProjectFileAdd.html
+TFCProjectGet.html
+TFCProjectName.html
+TFCProjectNew.html
+TFCProjectPath.html
+TFCReturn.html
+TFCSet.html
+TFCStrFind.html
+TFCString.html
+TFCStrLen.html
+TFCStrLower.html
+TFCStrSub.html
+TFCStrUpper.html
+TFCSub.html
+TFCTime.html
+TFSCode.html
+TFSCodeConditionalExpressions.html
+TFSCodeLoops.html
+TFSDialog.html
+TFSMemo.html
+TFSParams.html
+TF_Commands.html
+TF_Header.html
+TF_Sections.html
+TF_Variables.html
+License.html
+TFCSel.html
+History200.html
+
+[ALIAS]
+IDD_EXTRAFILES=ExtraFilesDialog.html
+IDD_FINDFILE=FileOpen.html
+IDD_FINDTAG=FindTag.html
+IDD_HISTORY=FileHistory.html
+IDD_TEMPLATEFILELIST=CodeTemplatesTemplateFileListDialog.html
+IDD_TEMPLATESELECT=CodeTemplates.html
+
+[MAP]
+#include HelpIDs.h
+
+[TEXT POPUPS]
+HelpIDs.h
+CsHelp.txt
+
+[INFOTYPES]
+

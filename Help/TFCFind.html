@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Template Files - Command: Find</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3> Command: Find</h3>
+<p><b>Format:</b> <span class="code">Find ResultVariable SearchString [Flags ...]</span></p>
+<p><b>Returns:</b> Nothing.</p>
+<p>Searches for <span class="code">SearchString</span> using <span class="code">Flags</span> 
+  as the search criteria. If <span class="code">SearchString</span> is found, 
+  &quot;1&quot; is stored in <span class="code">ResultVariable</span>. If not, 
+  &quot;0&quot; is stored in <span class="code">ResultVariable</span>.</p>
+<table width="100%" border="1">
+  <tr> 
+    <td width="20%"><b>Find Flag</b></td>
+    <td width="80%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="20%">MatchForward</td>
+    <td width="80%">From the current caret position, a forward match is performed.</td>
+  </tr>
+  <tr> 
+    <td width="20%">MatchBackward</td>
+    <td width="80%">From the current caret position, a backward match is performed.</td>
+  </tr>
+  <tr> 
+    <td width="20%">MatchFromStart</td>
+    <td width="80%">The match is performed from the start of the file.</td>
+  </tr>
+  <tr> 
+    <td width="20%">MatchWord</td>
+    <td width="80%">Whole words only.</td>
+  </tr>
+  <tr> 
+    <td width="20%">MatchCase</td>
+    <td width="80%">Case-sensitive.</td>
+  </tr>
+  <tr> 
+    <td width="20%">MatchRegExp</td>
+    <td width="80%">Regular expression.</td>
+  </tr>
+</table>
+<pre>!!Find DidFind &quot;Else&quot; MatchWord MatchCase</pre>
+<h3>&nbsp;</h3>
+</body>
+</html>

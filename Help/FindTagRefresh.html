@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>Workspace Find Tag Refresh</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left"><img src="IconWWTagFindDlg.png" width="32" height="32"> Workspace 
+  Find Tag</h2>
+<h3>Refreshing or Rebuilding Tags</h3>
+<p></p>
+<p>In its default behavior, <span class="wwhiz">Workspace Whiz</span> will automatically 
+  sense when a file has changed and update the tag list accordingly. Unfortunately, 
+  if the workspace contains hundreds of files, this detection process can be somewhat 
+  slow.</p>
+<p>The <span class="field"><a href="PreferencesTags.html">Preferences Tags</a></span> 
+  dialog offers a way to turn off the automatic refresh of tags. When a <span class="wwhiz">Workspace 
+  Whiz!</span> tag command is issued, the tag command will potentially execute 
+  a lot faster.</p>
+<p>The Find Tag dialog offers a <span class="field">Refresh Tags</span> button. 
+  The <span class="field">Refresh Tags </span> button does the same thing as the 
+  automatic refresh, but the operation is performed at user discretion. Tags generally 
+  don't need to be refreshed every time a file is saved, unless the changes made 
+  to the file alter attributes such as function signatures or global variables 
+  (or other items pertaining to the tag type in question). Pressing this button 
+  causes a Save All to be performed.</p>
+<p>Although it should be rarely used, a <span class="field">Rebuild Tags</span> 
+  button is also provided. Using it will completely rebuild the entire tags database.</p>
+</body>
+</html>

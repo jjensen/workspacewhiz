@@ -1,22 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: History.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/History.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 7    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "StdAfx.h"
 #include "History.h"
-#include <ObjModel\addguid.h>
-#include <ObjModel\appguid.h>
-#include <ObjModel\bldguid.h>
-#include <ObjModel\textguid.h>
-#include <ObjModel\dbgguid.h>
 
 History::Stack History::s_stack;
 POSITION History::s_curPos;
@@ -62,11 +56,6 @@ void History::UndoAdd()
 **/
 bool History::Add()
 {
-	CComPtr<IDispatch> pDispDocument;
-	g_pApplication->get_ActiveDocument(&pDispDocument);
-	if (!pDispDocument)
-		return false;
-
 	ObjModelHelper objModel;
 	if (!objModel.GetActiveDocument())
 		return false;
@@ -175,7 +164,7 @@ bool History::Goto(Info* info)
 
 	if (objModel.IsTextDocument())
 	{
-		objModel.MoveTo(info->m_y, info->m_x, dsMove);
+		objModel.MoveTo(info->m_y, info->m_x, false);
 		return true;
 	}
 

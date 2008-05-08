@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>Template Files - Command: ConfigRemoveToolSettings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3>Command: ConfigRemoveToolSettings</h3>
+<p><b>Format:</b> <span class="code">ConfigRemoveToolSettings ProjectName ConfigName 
+  ToolName Settings</span></p>
+<p><b>Returns:</b> Nothing.</p>
+<p>Removes custom compilation settings to all files executed by <span class="code">ToolName</span>. 
+  <span class="code">ToolName</span> is most often <span class="code">CL.EXE</span> 
+  or <span class="code">LINK.EXE</span>. The settings are removed from the configuration 
+  called <span class="code">ConfigName</span> existing in the project <span class="code">ProjectName</span>. 
+  To select the active project, use the <span class="code">~</span> symbol for 
+  <span class="code">ProjectName</span>.</p>
+<pre>
+!!ConfigRemoveToolSettings ~ &quot;@@(ProjectName)@@ - Win32 Debug&quot; &quot;cl.exe&quot; &quot;/Yu&quot;
+</pre>
+<h3>&nbsp;</h3>
+</body>
+</html>

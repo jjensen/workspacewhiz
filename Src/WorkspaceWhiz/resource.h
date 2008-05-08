@@ -6,6 +6,9 @@
 #define IDS_WORKSPACEWHIZ_DESCRIPTION   2
 #define IDS_CMD_STRING                  3
 #define IDS_PREFDLG_CAPTION             3
+#define IDS_PROJNAME                    100
+#define IDR_ADDIN                       101
+#define IDR_CONNECT                     102
 #define IDR_TOOLBAR_MEDIUM              128
 #define IDR_TOOLBAR_LARGE               129
 #define IDD_ABOUTBOX                    130
@@ -31,9 +34,30 @@
 #define IDR_AB_HTML                     147
 #define IDD_AUTOCOMPLETETAG             149
 #define IDI_WWHIZ                       151
+#define IDB_CI_WWOPTIONS                179
+#define IDB_CI_WWFILEOPEN               180
+#define IDB_CI_WWFILEGLOBALOPEN         181
+#define IDB_CI_WWHEADERFLIP             182
+#define IDB_CI_WWFILEFINDPREV           183
+#define IDB_CI_WWFILEFINDNEXT           184
+#define IDB_CI_WWHISTORYBACK            185
+#define IDB_CI_WWHISTORYFORWARD         186
+#define IDB_CI_WWHISTORYDLG             187
+#define IDB_CI_WWTAGFINDDLG             188
+#define IDB_CI_WWTAGFINDSPECIALDLG      189
+#define IDB_CI_WWTAGFLIP                190
+#define IDB_CI_WWTAGFINDATCURSOR        191
+#define IDB_CI_WWTAGFINDATCURSORDLG     192
+#define IDB_CI_WWTAGFINDPREV            193
+#define IDB_CI_WWTAGFINDNEXT            194
+#define IDB_CI_WWTAGCOMPLETEPREV        195
+#define IDB_CI_WWTAGCOMPLETENEXT        196
+#define IDB_CI_WWTAGCOMPLETERESTORE     197
+#define IDB_CI_WWTAGCOMPLETEDLG         198
+#define IDB_CI_WWTEMPLATESELECT         199
+#define IDB_CI_WWTEMPLATECOMPLETE       200
 #define IDC_COM_ABOUT                   1000
 #define IDC_COM_EXTRAFILES              1001
-#define IDC_COM_PREFERENCES             1002
 #define IDC_COM_CURRENTFILE             1003
 #define IDC_FF_FILES                    1020
 #define IDC_FF_FILENAME                 1021
@@ -41,7 +65,9 @@
 #define IDC_FF_SCOPE                    1023
 #define IDC_FF_SCOPE_PROJECT            1024
 #define IDC_FF_SCOPE_WORKSPACE          1025
-#define IDC_FF_PREFIX                   1026
+#define IDC_FF_SCOPE_GLOBAL             1026
+#define IDC_SCOPE_GLOBAL                1026
+#define IDC_FF_PREFIX                   1027
 #define IDC_EP_LIST                     1040
 #define IDC_EP_ADD                      1041
 #define IDC_EP_REMOVE                   1042
@@ -98,7 +124,6 @@
 #define IDC_PKB_KEYCHECK19              1218
 #define IDC_PKB_KEYCHECK20              1219
 #define IDC_PKB_KEYCHECK21              1220
-#define IDC_PKB_KEYCHECK22              1221
 #define IDC_PKB_KEY1                    1230
 #define IDC_PKB_KEY2                    1231
 #define IDC_PKB_KEY3                    1232
@@ -120,9 +145,9 @@
 #define IDC_PKB_KEY19                   1248
 #define IDC_PKB_KEY20                   1249
 #define IDC_PKB_KEY21                   1250
-#define IDC_PKB_KEY22                   1251
 #define IDC_PKB_ASSIGN                  1260
 #define IDC_PKB_RESET                   1261
+#define IDC_PKB_ASSIGNALLPAGES          1262
 #define IDC_PHF_EXTLIST                 1270
 #define IDC_PHF_EXTEDIT                 1271
 #define IDC_PHF_ADD                     1272
@@ -145,6 +170,9 @@
 #define IDC_PC_TOKENRESET               1294
 #define IDC_AB_HTML                     1300
 #define IDC_PC_TOKENLIST                1310
+#define IDC_EP_NEVERREFRESH             1312
+#define IDS_MISSINGTOOLBARCONTENTS      9000
+#define IDS_CI_WWOPTIONS                9999
 #define IDS_CI_WWFILEOPEN               10000
 #define IDS_CI_WWFILEGLOBALOPEN         10001
 #define IDS_CI_WWHEADERFLIP             10002
@@ -185,9 +213,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        152
-#define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1312
+#define _APS_NEXT_RESOURCE_VALUE        201
+#define _APS_NEXT_COMMAND_VALUE         32799
+#define _APS_NEXT_CONTROL_VALUE         1318
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

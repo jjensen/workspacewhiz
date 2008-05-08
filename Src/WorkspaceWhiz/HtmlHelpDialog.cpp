@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: HtmlHelpDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/HtmlHelpDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 19   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -16,14 +16,13 @@
 /* use is allowed, as long as this document is not altered in any way, and */
 /* due credit is given.                                                    */
 /***************************************************************************/
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "HtmlHelpDialog.h"
 #include "HtmlHelp.h"
 #include <io.h>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -32,7 +31,6 @@ static DWORD s_tooltipHelpList[] =
 {
 	IDC_COM_ABOUT,
 	IDC_COM_EXTRAFILES,
-	IDC_COM_PREFERENCES,
 	IDHELP,
 	IDC_COM_CURRENTFILE,
 	IDC_FF_FILES,

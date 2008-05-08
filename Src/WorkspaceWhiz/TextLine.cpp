@@ -1,17 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TextLine.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/TextLine.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 14   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "StdAfx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "TextLine.h"
 
 bool TextLine::GetLine()
@@ -74,7 +73,7 @@ bool TextLine::GetLine()
 	}
 	m_line.ReleaseBuffer(newLineWidth);
 
-	m_objModel.MoveTo(m_curY, m_curX, dsMove);
+	m_objModel.MoveTo(m_curY, m_curX, false);
 
 	return true;
 }
@@ -140,8 +139,8 @@ CString TextLine::GetIdent(bool getExtraChars, bool lookRight, bool addExtraTags
 	leftX = m_curX - 1;
 
 	// Check for a space.
-	if (leftX < line.GetLength()  &&  line[leftX] == ' ')
-		goto Done; 
+//	if (leftX - 1 < line.GetLength()  &&  line[leftX - 1] == ' ')
+//		goto Done; 
 	
 	while (leftX - 1 >= 0  &&  (isalnum(line[leftX - 1])  ||  line[leftX - 1] == '_'  ||
 			(getExtraChars  &&  (line[leftX - 1] == '~'  ||  line[leftX - 1] == '/'))))

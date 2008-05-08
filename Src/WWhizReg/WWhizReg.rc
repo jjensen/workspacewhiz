@@ -1,0 +1,183 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,0,0,1026
+ PRODUCTVERSION 3,0,0,1026
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", " \0"
+            VALUE "FileDescription", "Workspace Whiz Registration Module\0"
+            VALUE "FileVersion", "3, 0, 0, 1026\0"
+            VALUE "InternalName", "Workspace Whiz Registration Module\0"
+            VALUE "LegalCopyright", "Copyright © 2000-2002 Joshua C. Jensen\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "WWhizReg.mod\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Workspace Whiz Registration Module\0"
+            VALUE "ProductVersion", "3, 0, 0, 1026\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_WWR_EXPIRED DIALOG DISCARDABLE  0, 0, 208, 118
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Workspace Whiz Unregistered Version"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Enter Code",IDC_WWRE_ENTERCODE,78,97,50,14
+    PUSHBUTTON      "Evaluate",IDC_WWRE_EVALUATE,140,97,50,14
+    LTEXT           "Thank you for trying Workspace Whiz\n\nThis is the unregistered, fully functional evaluation version of Workspace Whiz  You have 21 days to fully evaluate the product.  At the end of 21 days, you must order it.",
+                    IDC_WWRE_TEXT,7,7,193,43
+    LTEXT           "Temp",IDC_WWRE_TIMELEFT,7,57,194,8
+    CONTROL         "Progress1",IDC_WWRE_TIMELEFTBAR,"msctls_progress32",
+                    PBS_SMOOTH | WS_BORDER,7,74,194,11
+    PUSHBUTTON      "&Order",IDC_WWRE_REGISTER,16,97,50,14
+END
+
+IDD_WWR_ENTERREG DIALOG DISCARDABLE  0, 0, 205, 118
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Workspace Whiz Enter Registration Code"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_WWRR_USERNAME,7,18,189,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WWRR_REGCODE,7,46,190,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WWRR_CHECKCODE,7,76,191,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,36,96,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,120,96,50,14
+    LTEXT           "Enter the registration name:",IDC_STATIC,7,7,87,8
+    LTEXT           "Enter the registration code:",IDC_STATIC,7,36,86,8
+    LTEXT           "Enter the check code:",IDC_STATIC,7,66,72,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_WWR_EXPIRED, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 201
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_WWR_ENTERREG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 198
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_WWR_TIMELEFT        "You are on day %d of your 21-day trial."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

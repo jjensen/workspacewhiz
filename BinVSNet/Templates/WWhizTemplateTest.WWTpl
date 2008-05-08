@@ -1,0 +1,863 @@
+Workspace Whiz! Template Test Suite
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[!Dialog URL Test]
+!!Dialog
+http://workspacewhiz.com/
+!!End
+
+!!Code
+!!End
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[!Empty if check]
+!!Code
+!!Set var "Hello"
+!!If @@var@@ != ""
+!!MessageBox "Not blank"
+!!Endif
+!!End
+
+
+[!Empty if check2]
+!!Code
+!!Set var "Hello"
+!!Set var ""
+!!If @@var@@ == ""
+!!MessageBox "Blank"
+!!Endif
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[!Movement Key Test]
+!!Key
+testmove
+
+!!Code
+!!ExecuteCommand "Edit.LineDown" ""
+!!ExecuteCommand Edit.LineDown
+!!ExecuteCommand Edit.CharRight
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[!Caret Test]
+!!Code
+!!ExecuteCommand File.NewFile "/t:\"General\\Text File\""
+            if (@@(Caret)@@)
+			{
+				printf("Hi");
+			}
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[!Date & Time Test]
+!!Code
+!!ExecuteCommand File.NewFile "/t:\"General\\Text File\""
+@@(Date)@@
+@@(Time)@@
+@@(Date "ddd',' MMM dd yyyy")@@
+@@(Time "hh':'mm':'ss tt")@@
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[!GUID Test]
+!!Code
+!!ExecuteCommand File.NewFile "/t:\"General\\Text File\""
+@@(GUID)@@
+@@(GUID 1)@@
+@@(GUID 2)@@
+@@(GUID 3)@@
+@@(GUID 4)@@
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Test colon in substitution command]
+!!Code
+@@(String "Hello: What's: your: name:":U)@@
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Test two badly formatted colon in substitution command]
+!!Code
+@@(String "Hello: What's: your: name:":U:l40)@@
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Dialog Tag]
+!!Code
+Hello!
+//!! Ask for user input.
+!!Dialog "This is some text. <input id=text>"
+The text entered was: @@text@@
+!!End
+
+
+[Dialog Tag Finish]
+!!Code
+//!! Ask for user input.
+!!Set buttonPressed @@(Dialog "This is some text. <input id=text>" 1 1 1)@@
+The text entered was: @@text@@
+You pressed: @@buttonPressed@@
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Print Projects]
+!!Code
+Number of projects in workspace: @@(ProjectCount)@@
+Last project (test) = @@(ProjectGet @@(ProjectCount)@@)@@
+!!Set projectCount @@(ProjectCount)@@
+!!Set counter 1
+!!Label ProjectTop
+@@(ProjectGet @@counter@@)@@
+!!Add counter 1
+!!if @@counter@@ <= @@projectCount@@
+!!Goto ProjectTop
+!!endif
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Print configurations for current project]
+!!Code
+Number of configurations in project: @@(ConfigCount ~)@@
+Last config (test) = @@(ConfigGet ~ @@(ConfigCount ~)@@)@@
+!!Set configCount @@(ConfigCount ~)@@
+!!Set counter 1
+!!Label ConfigTop
+@@(ConfigGet ~ @@counter@@)@@
+!!Add counter 1
+!!if @@counter@@ <= @@configCount@@
+!!Goto ConfigTop
+!!endif
+!!End
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Strings|Test 1]
+!!Code
+!!Set str "Hello, world!"
+The length of @@str@@ is: @@(StrLen @@str@@)@@
+Make the w uppercase: @@(StrUpper @@str@@ @@(StrFind @@str@@ "w")@@)@@
+Make the H lowercase: @@(StrLower @@str@@ 0)@@
+Uppercase @@str@@: @@(StrUpper @@str@@)@@
+Lowercase @@str@@: @@(StrLower @@str@@)@@
+!!Set wIndex @@(StrFind @@str@@ "W")@@
+Index of capital W: @@wIndex@@
+!!Set wIndex @@(StrFind @@str@@ "W" 0 0)@@
+Index of w, non-case sensitive: @@wIndex@@
+!!Set wIndex @@(StrFind @@str@@ "w")@@
+Index of w, case sensitive: @@wIndex@@
+!!Add wIndex 1
+!!Set wIndex @@(StrFind @@str@@ "w" @@wIndex@@)@@
+Index of next w, case sensitive: @@wIndex@@
+!!Set wIndex @@(StrFind @@str@@ "w")@@
+Found a w.  Substring: @@(StrSub @@str@@ @@wIndex@@)@@
+Found a w.  Substring (3 letters max): @@(StrSub @@str@@ @@wIndex@@ 3)@@
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Append|Test 1]
+!!Code
+Line 1 -- @@\
+This line should be appended to the last.
+The cursor should be at the end of this line @@\
+!!End
+
+[Caret|Test 1]
+!!Key
+an
+
+!!Code
+Hel@@(Caret)@@lo!
+
+Yo!
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Params|Test 1]
+!!Params
+text1 @@(ProjectName)@@_TestClass
+text2 @@(Env Path)@@Hello
+text3 a@@text1@@bc
+!!End
+
+!!Code
+@@text1@@
+@@text2@@
+@@text3@@
+!!End
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Goto Test|Test 1]
+!!Code
+!!Goto label2
+!!///////////////////////////////////////////////
+!!Label label1
+Hello
+!!///////////////////////////////////////////////
+!!Label label2
+Hi
+!!Goto label3
+!!///////////////////////////////////////////////
+!!Label label4
+Label 4
+!!Goto label5
+!!///////////////////////////////////////////////
+!!Label label3
+Whatever
+!!Goto label4
+!!///////////////////////////////////////////////
+!!Label label5
+!!///////////////////////////////////////////////
+!!End
+
+[Goto Test|Test 2]
+!!Code
+!!Set number 10
+!!///////////////////////////////////////////////
+!!Label loopTop
+Hello @@number@@
+!!Sub number 1
+!!if @@number@@ > 0
+!!Goto loopTop
+!!endif
+!!End
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+[Add File To Project|Different Project]
+!!Code
+!!Call "-CreateNewTestFile"
+!!ProjectFileAdd "3"
+!!End
+
+
+[Add File To Project|Current Project]
+!!Code
+!!Call "-CreateNewTestFile"
+!!ProjectFileAdd
+!!End
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+[Insert Copyright Header]
+!!Memo
+This is the standard copyright header attached to all Workspace Whiz! source files.
+!!End
+
+!!Code
+///////////////////////////////////////////////////////////////////////////////
+// $Workfile: $
+// $Archive: $
+// $Date::                 $ $Revision::      $ $Author:         $
+//
+// This source file [@@(FileTitle)@@.@@(FileExt)@@]
+// is Copyright 1997-2000 by Joshua C. Jensen.
+//
+// Unauthorized use of this source file, by modification, copying, or
+// distribution is strictly prohibited unless prior consent has
+// been given by Joshua C. Jensen.
+///////////////////////////////////////////////////////////////////////////////
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Parameter Selection Test]
+!!Memo
+This is a test of the parameter substitution dialogs.
+!!End
+
+!!Dialog
+<p>This is a test of the parameter substitution system.  It is based on an
+IWebBrowser2, allowing <i><b>full</b></i> HTML support.</p>
+<input type=file id=myfile accept="*">
+<select name="select" size="5" id=testy>
+    <option>Value 1</option>
+    <option>Value2</option>
+    <option>Hello</option>
+  </select>
+<input type=checkbox id=dothirdparam>Display third parameter?
+<input type=radio id=parm1 name=group1>One
+<input type=radio id=parm2 name=group1>Two
+<input type=radio id=parm3 name=group1>Three
+<p>Stuff</p>
+<input type=radio id=parm4 name=group2>One
+<input type=radio id=parm5 name=group2>Two
+<input type=radio id=parm6 name=group2>Three
+<p>Please enter parameter 1.</p>
+<input id=text1>
+<p>Please enter another parameter.</p>
+<input id=text3>
+!!Next
+Thank you for participating in this test!
+<input id=text2>
+!!End
+
+!!Code
+!!//
+!!// If the checkbox, whose id is dothirdparam is unchecked then:
+!!//
+!!IF !@@dothirdparam@@
+The parameter you entered is: @@text1@@
+!!//
+!!// The checkbox was checked.  Is the first radio button checked?
+!!//
+!!ELIF @@parm1@@
+Hidiho!
+!!//
+!!// Neither the checkbox or the first radio button was checked.
+!!//
+!!ELSE
+This is a cool little test...
+!!ENDIF
+The second parameter is: @@text2:U@@
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Menu Test|Create New Class Files]
+!!Memo
+This is a test of the file creation routines.
+!!End
+
+!!Params
+text1 @@(ProjectName)@@_TestClass
+!!End
+
+!!Dialog
+<html><body>
+<p>Enter the class name.</p>
+<input id=text1>
+</body></html>
+!!End
+
+!!Code
+!!FileNew @@text1@@.h rel
+#pragma once
+#ifndef @@(FileTitle:U)@@_@@(FileExt:U)@@
+#define @@(FileTitle:U)@@_@@(FileExt:U)@@
+
+/**
+    This class was inserted by Workspace Whiz!
+**/
+class @@text1@@
+{
+public:
+    @@text1@@();
+    virtual ~@@text1@@();
+
+protected:
+
+private:
+};
+
+#endif //@@(FileTitle:U)@@_@@(FileExt:U)@@
+!!FileSave
+!!ProjectFileAdd
+!!FileNew @@text1@@.cpp rel
+#include "@@text1@@.h"
+
+/**
+    The constructor.
+**/
+@@text1@@::@@text1@@()
+{
+}
+
+
+/**
+    The destructor.
+**/
+@@text1@@::~@@text1@@()
+{
+}
+
+!!FileSave
+!!ProjectFileAdd
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Insert Various Tags]
+!!Code
+/*********************************************************************/
+/* @@sel@@ @@(Date)@@ @@(Time)@@ @@(FilePath)@@ */
+/* @@(FileTitle)@@ @@(FileExt)@@ @@:c70@@*/
+/* @@(ProjectName)@@    @@(ProjectPath)@@ @@(ProjectPath ProjectFileAdd)@@ */
+/*********************************************************************/
+!!End
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Insert a Header File Block]
+!!Code
+#pragma once
+#ifndef @@(FileTitle:U)@@_@@(FileExt:U)@@
+#define @@(FileTitle:U)@@_@@(FileExt:U)@@
+
+// Insert header here.
+
+#endif //@@(FileTitle:U)@@_@@(FileExt:U)@@
+!!End
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Justification Command Test]
+!!Code
+/*
+@@(FileTitle:Ur20)@@--
+@@(FileTitle:Ul20)@@--
+@@(:Ul20)@@--
+@@(String Hello, World!!:r20)@@--
+abcd @@:c40@@my text
+*/
+!!End
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Create Java Project]
+!!Dialog
+<p>Choose the directory to store the project.</p>
+<input type=file id=dir accept="*">
+!!End
+
+!!Code
+!!ProjectNew JavaProject @@dir@@ "Console Application"
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Test Conditionals]
+!!Dialog
+!!End
+
+!!Code
+!!Set var1 Test
+!!Set var2 Test2
+!!Set var3 @@var1@@
+!!if @@var1@@ != @@var3@@
+Hello!
+!!else
+Yo, baby!
+!!endif
+!!Find tempvar "baby" MatchFromStart MatchCase
+!!Find tempvar2 "Baby" MatchCase
+!!End
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[Error Check|Broken @@]
+!!Code
+@@var
+Hello
+!!End
+
+
+[Error Check|Commands|Set|Test 1]
+!!Code
+!!Set
+!!End
+
+
+[Error Check|Commands|FileNew|Test 1]
+!!Code
+!!FileNew
+!!End
+
+
+[Error Check|Commands|FileNew|Test 2]
+!!Code
+!!FileNew test.txt aabs
+!!End
+
+
+[Error Check|Commands|FileNew|Test 3]
+!!Code
+!!// Can't reproduce.
+!!End
+
+
+[Error Check|Commands|FileNew|Test 4]
+!!Code
+!!// y:\ is intended to be a bogus path.
+!!FileNew y:\test.txt
+!!End
+
+
+[Error Check|Commands|FileSave|Test 1]
+!!Code
+!!// y:\ is intended to be a bogus path.
+!!FileNew y:\test.txt
+!!FileSave
+!!End
+
+
+[Error Check|Commands|FileSave|Test 2]
+!!Dialog
+<p>Make sure all windows are closed for this test.</p>
+!!End
+
+!!Code
+!!FileSave
+!!End
+
+[Error Check|Commands|ProjectFileAdd|Test 1]
+!!Dialog
+<p>Make sure all windows are closed for this test.</p>
+!!End
+
+!!Code
+!!ProjectFileAdd
+!!End
+
+
+[Error Check|Commands|ProjectFileAdd|Test 2]
+!!Dialog
+<p>Make sure there is no workspace open for this test.</p>
+!!End
+
+!!Code
+!!FileNew test.txt
+!!ProjectFileAdd
+!!End
+
+
+[Error Check|Commands|ProjectFileAdd|Test 3]
+!!Dialog
+<p>Figure out how !!ProjectFileAdd can fail if the above two tests work.</p>
+!!End
+
+!!Code
+!!ProjectFileAdd
+!!End
+
+
+[Error Check|Commands|ProjectNew|Test 1]
+!!Code
+!!// No name check.
+!!ProjectNew
+!!End
+
+
+[Error Check|Commands|ProjectNew|Test 2]
+!!Code
+!!// No path
+!!ProjectNew WWhizTestProject
+!!End
+
+
+[Error Check|Commands|ProjectNew|Test 3]
+!!Code
+!!// No type
+!!ProjectNew WWhizTestProject c:\
+!!End
+
+
+[Error Check|Commands|ProjectNew|Test 4]
+!!Dialog
+<p>Figure out how !!ProjectNew can fail if the above three tests work.</p>
+!!End
+
+!!Code
+!!ProjectNew
+!!End
+
+
+[Error Check|Commands|ExecuteCommand|Test 1]
+!!Code
+!!// Missing command
+!!ExecuteCommand
+!!End
+
+
+[Error Check|Commands|ExecuteCommand|Test 2]
+!!Code
+!!ExecuteCommand BogusCommand
+!!End
+
+
+[Error Check|Commands|ExecuteCommand|Test 3]
+!!Code
+!!// Should work
+!!ExecuteCommand Edit.LineStart
+!!End
+
+
+[Error Check|Commands|Find|Test 1]
+!!Code
+!!// No variable name
+!!Find
+!!End
+
+
+[Error Check|Commands|Find|Test 2]
+!!Code
+!!// No find string
+!!Find var1
+!!End
+
+
+[Error Check|Commands|Find|Test 3]
+!!Code
+!!// Bogus flag
+!!Find var1 "Hello" BogusFlag
+!!End
+
+
+[Error Check|Commands|Find|Test 4]
+!!Dialog
+<p>Make sure all windows are closed for this test.</p>
+!!End
+
+!!Code
+!!// Bogus flag
+!!Find var1 "Hello"
+!!End
+
+
+[Error Check|Conditional|Test 1]
+!!Code
+!!elif
+!!End
+
+
+[Error Check|Conditional|Test 2]
+!!Code
+!!if
+!!End
+
+
+[Error Check|Conditional|Test 3]
+!!Code
+!!if var1
+!!End
+
+
+[Error Check|Conditional|Test 4]
+!!Code
+!!if var1 ==
+!!End
+
+
+[Error Check|Conditional|Test 5]
+!!Code
+!!if var1 ~= "This"
+!!End
+
+
+[Error Check|Conditional|Test 6]
+!!Code
+!!else
+!!End
+
+
+[Error Check|Conditional|Test 7]
+!!Code
+!!endif
+!!End
+
+
+[Error Check|String Test]
+!!Code
+!!Set var1 "Hello open string
+!!End
+
+
+[Error Check|Conditional|Nested]
+!!Memo
+!!End
+
+!!Params
+projectName Common
+headerPrefix 0
+folderName foo
+className Bar
+!!End
+
+!!Code
+!!if @@projectName@@ == "goe"
+!!if @@headerPrefix@@
+!!FileNew D:/goe/include/goe@@className@@.h
+!!else
+!!FileNew D:/goe/src/@@folderName@@/@@className@@.h
+!!endif
+!!elif @@projectName@@ == "Common"
+!!FileNew gogames/common/@@folderName@@/@@className@@.h dsp
+!!endif
+!!End
+
+[Error Check|Conditional|Test Elif]
+!!Code
+!!IF !0
+Should get here.
+!!ELIF 1
+Should not get here. #1
+!!ELSE
+Should not get here. #2
+!!ENDIF
+Should get here #2
+!!End
+
+[Error Check|Conditional|Nested 2]
+!!Code
+!!If !0
+L1: Should get here #1
+!!If 0
+L2: Should not get here #1
+!!Elif 0
+L2: Should not get here #2
+!!// Level 2 in a false conditional.
+!!If 0
+L3: Should not get here #3
+!!Else
+L3: Should not get here either.  The level 1 conditional was false.
+!!If 1
+L4: Should not get here either 2.  The level 1 conditional was false.
+!!Endif
+//!!L3
+!!Endif
+//!!L2
+!!Else
+L2: Should get here #2
+!!Endif
+L1: All done!
+!!Elif 0
+!!Endif
+!!End
+
+
+[-PrintTwoParams]
+!!Code
+@@param1@@ -- @@param2@@
+!!End
+
+
+[Call Test|No Params]
+!!Code
+!!Call "Insert Various Tags"
+// This is some test code.
+!!Call "Insert Various Tags"
+!!End
+
+[Call Test|With Params]
+!!Code
+!!Call "Insert Various Tags"
+// This is some test code.
+!!Call "-PrintTwoParams" param1 "Hello, this is a test" param2 Yo!
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[-Hello World]
+!!Params
+name Joe Bob
+!!End
+
+!!Code
+Hello World.  Hello @@name@@!
+!!End
+
+[Call Test|Documentation Example]
+!!Code
+!!Call "-Hello World"
+!!Call "-Hello World" name "Joshua Jensen"
+!!End
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+[-CreateNewTestFile]
+!!Code
+!!FileNew c:\test.h abs
+#pragma once
+#ifndef @@(FileTitle:U)@@_@@(FileExt:U)@@
+#define @@(FileTitle:U)@@_@@(FileExt:U)@@
+
+/**
+    This class was inserted by Workspace Whiz!
+**/
+
+#endif //@@(FileTitle:U)@@_@@(FileExt:U)@@
+!!FileSave
+!!End
+
+
+[Test Environment Variables]
+!!Code
+@@(env EAGLE)@@
+!!Set myVariable @@(env EAGLE)@@
+@@myVariable@@
+!!Set myVariable2 @@myVariable@@\Prj\Win32-VC6\Eagle.dsw
+@@myVariable2@@
+!!End
+
+
+[Message Boxes|Test 1]
+!!Code
+!!MessageBox "This is my first message box."
+!!MessageBox "This is an OK/Cancel message box." OKCANCEL retCode
+!!MessageBox "You entered @@retCode@@."
+!!End
+
+
+[Pick Dir]
+!!Code
+@@(PickDir "Choose a directory.")@@
+!!End
+
+

@@ -3,7 +3,7 @@
 // $Archive: /WorkspaceWhiz/Src/Samples/BackupProjectsAddin/BackupProjectsAddin.cpp $
 // $Date:: 1/03/01 12:13a  $ $Revision:: 2    $ $Author: Jjensen $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
+// This source file is part of the Workspace Whiz source distribution and
 // is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all

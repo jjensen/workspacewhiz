@@ -1,0 +1,26 @@
+HKCR
+{
+	WWhizNet.Connect.1 = s 'Connect Class'
+	{
+		CLSID = s '{8DB555AF-8FC6-417C-A28C-FB7C7B871EB2}'
+	}
+	WWhizNet.Connect = s 'Connect Class'
+	{
+		CLSID = s '{8DB555AF-8FC6-417C-A28C-FB7C7B871EB2}'
+		CurVer = s 'WWhizNet.Connect.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove '{8DB555AF-8FC6-417C-A28C-FB7C7B871EB2}' = s 'Connect Class'
+		{
+			ProgID = s 'WWhizNet.Connect.1'
+			VersionIndependentProgID = s 'WWhizNet.Connect'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{8FB04AFE-EB33-4C47-9E1C-D90C6273DEE1}'
+		}
+	}
+}

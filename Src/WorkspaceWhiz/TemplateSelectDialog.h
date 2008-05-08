@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TemplateSelectDialog.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/TemplateSelectDialog.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 10   $ $Author: Jjensen $
+// $Date: 2003/01/16 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -37,13 +37,13 @@ public:
 	enum { IDD = IDD_TEMPLATESELECT };
 	CButton	m_butOK;
 	CButton	m_butCancel;
-	CButton	m_butPreferences;
 	CButton	m_butFileList;
 	CButton	m_butAbout;
 	CStatic	m_memo;
 	CTreeCtrlEx	m_tree;
 	//}}AFX_DATA
 
+	WWhizTemplate* m_code;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -66,7 +66,6 @@ protected:
 	afx_msg void OnTfFilelist();
 	afx_msg void OnDestroy();
 	afx_msg void OnTsAbout();
-	afx_msg void OnTsPreferences();
 	afx_msg void OnRclickTsTree(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

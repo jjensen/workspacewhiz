@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>Template Files - Variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files </h2>
+<h3>Template Variables and Substitution Expressions</h3>
+<p>The terms variable and dictionary entries are interchangeable. Both refer to 
+  the list of key-value pairs each template contains. Variables are used for counters, 
+  conditional statements, or as a substitution facility.</p>
+<p>The substitution expression form is started with a <span class="code">@@</span> 
+  and ended with a <span class="code">@@</span>. A simple substitution expression 
+  may appear as <span class="code">@@expression@@</span>. The contained expression 
+  can be a variable or a <a href="TF_Commands.html">template command call</a>. 
+  The entire body, <span class="code">@@expression@@</span>, is replaced with 
+  the result of <span class="code">expression</span>'s evaluation.</p>
+<p>All variable expressions come in the substitution form:</p>
+<pre>@@MyVariable@@</pre>
+<p>When specified as above, the contents of <span class="code">MyVariable</span> 
+  are inserted into the code in place of <span class="code">@@MyVariable@@</span>.</p>
+<p>Substitution expressions can be formatted in a variety of ways. To specify 
+  formatting, the expression looks like:</p>
+<pre>@@expression:[flags]@@</pre>
+<p>Flags are case sensitive and can be any of the following:</p>
+<table width="100%" border="1">
+  <tr> 
+    <td width="20%"><b>Flag</b></td>
+    <td width="80%"><b>Meaning</b></td>
+  </tr>
+  <tr> 
+    <td width="20%">U</td>
+    <td width="80%">Make the expression result uppercase.</td>
+  </tr>
+  <tr> 
+    <td width="20%">L</td>
+    <td width="80%">Make the expression result lowercase.</td>
+  </tr>
+  <tr> 
+    <td width="20%">l</td>
+    <td width="80%"> 
+      <p>Left justify the expression result. A number, specifying the number of 
+        columns to justify the expression result within, must follow the flag.</p>
+      <pre>@@expression:l##@@</pre>
+      <p>If <span class="code">##</span> is less than the length of the result 
+        of <span class="code">expression</span>, the result is truncated to <span class="code">##</span> 
+        characters.</p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="20%">r</td>
+    <td width="80%"> 
+      <p>Right justify the expression result. A number, specifying the number 
+        of columns to justify the expression result within, must follow the flag.</p>
+      <pre>@@expression:r##@@</pre>
+      <p>If <span class="code">##</span> is less than the length of the result 
+        of <span class="code">expression</span>, the result is truncated to the 
+        right <span class="code">##</span> characters.</p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="20%">c</td>
+    <td width="80%"> 
+      <p>Align the expression result to the specified column.</p>
+      <pre>@@expression:c##@@</pre>
+      <p>For this flag, it isn't necessary to specify a variable or command in 
+        the expression:</p>
+      <pre>@@:c70@@</pre>
+    </td>
+  </tr>
+</table>
+<p>It is entirely possible to combine two flags together:</p>
+<pre>@@expression:Ur60@@</pre>
+<p>This inserts the result of <span class="code">expression </span> in uppercase, 
+  right justified within 60 spaces.</p>
+<p>A specialized <span class="code">@@</span> command is the line continuation 
+  expression:</p>
+<pre>This is the first line -- @@\ this test is ignored.
+this is continued on the first line.</pre>
+<p>The line continuation expression ignores the rest of the text on the current 
+  line, including the carriage return.<br>
+</p>
+<h3>Predefined Variables</h3>
+<p>There are a couple predefined variables which may be used:</p>
+<table width="100%" border="1">
+  <tr> 
+    <td width="24%"><b>Variable</b></td>
+    <td width="76%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="24%">sel</td>
+    <td width="76%">Set to the current text selection.</td>
+  </tr>
+  <tr> 
+    <td width="24%">__Parent</td>
+    <td width="76%">When the <a href="TFCCall.html">Call</a> command is issued, 
+      __Parent of the callee is assigned to the caller.</td>
+  </tr>
+  <tr> 
+    <td width="24%">__Return</td>
+    <td width="76%">When the <a href="TFCCall.html">Call</a> command is issued, 
+      using a <a href="TFCReturn.html">Return</a> command sets the callee variable 
+      __Return. The caller uses this variable to retrieve the return value.</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p></p>
+<pre>&nbsp;</pre>
+</body>
+</html>

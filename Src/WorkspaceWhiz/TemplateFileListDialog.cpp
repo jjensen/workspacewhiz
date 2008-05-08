@@ -1,25 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TemplateFileListDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/TemplateFileListDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 18   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "TemplateFileListDialog.h"
-#include "WorkspaceCommands.h"
 #include "History.h"
 #include "AboutDialog.h"
-#include "PreferencesDialog.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -62,7 +59,6 @@ BEGIN_MESSAGE_MAP(CTemplateFileListDialog, TEMPLATE_FILE_LIST_DIALOG)
 	ON_NOTIFY(NM_DBLCLK, IDC_TFL_LIST, OnDblclkTflList)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_COM_ABOUT, OnComAbout)
-	ON_BN_CLICKED(IDC_COM_PREFERENCES, OnComPreferences)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -71,7 +67,6 @@ BEGIN_DYNAMIC_MAP(CTemplateFileListDialog, cdxCDynamicDialog)
 	DYNAMIC_MAP_ENTRY(IDCANCEL,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDHELP,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_ABOUT,		mdRepos,	mdNone)
-	DYNAMIC_MAP_ENTRY(IDC_COM_PREFERENCES,	mdRepos,	mdNone)
 
 	DYNAMIC_MAP_ENTRY(IDC_TFL_ADD,			mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_TFL_REMOVE,		mdRepos,	mdNone)
@@ -132,7 +127,7 @@ void CTemplateFileListDialog::OnTflEdit()
 	{
 		History::Add();
 
-		objModel.PutLanguage(DS_CPP);
+		objModel.PutLanguage("cpp");
 	}
 
 	s_autoCloseParent = true;
@@ -233,10 +228,3 @@ void CTemplateFileListDialog::OnComAbout()
 	dlg.DoModal();
 }
 
-void CTemplateFileListDialog::OnComPreferences() 
-{
-	CPreferencesDialog dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-	}
-}

@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: FileList.h $
 // $Archive: /WorkspaceWhiz/Src/WWhizInterface/FileList.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 16   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -96,7 +96,7 @@ public:
 	void InitHashTable(DWORD hashSize);
 
 protected:
-	CMapEx<CString, const CString&, File*, File*> m_fileMap;
+	WMap<CString, File*> m_fileMap;
 };
 
 
@@ -125,7 +125,7 @@ public:
 protected:	
 	void BuildArray(void);
 
-	CArrayEx<File*, File*> m_files;
+	WArray<File*> m_files;
 	FileMap m_fileMap;
 };
 
@@ -272,7 +272,7 @@ inline bool File::IsWorkspaceFile(void) const
 **/
 inline int FileList::GetCount(void) const
 {
-	return m_files.GetSize();
+	return m_files.GetCount();
 }
 
 

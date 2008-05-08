@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TagList.h $
 // $Archive: /WorkspaceWhiz/Src/WWhizInterface/TagList.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 13   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -112,7 +112,7 @@ public:
 	void SetSize(int size);
 
 protected:
-	CArrayEx<Tag*, Tag*> m_tags;
+	WArray<Tag*> m_tags;
 	bool m_changed;
 };
 
@@ -203,7 +203,7 @@ inline WWhizTag* Tag::GetMatchPrev(void) const
 **/
 inline int TagList::GetCount(void) const
 {
-	return m_tags.GetSize();
+	return m_tags.GetCount();
 }
 
 
@@ -214,3 +214,14 @@ inline WWhizTag* TagList::Get(int index) const
 	return m_tags[index];
 }
 
+
+/**
+	Add file to the end of the file list.
+**/
+inline void TagList::Add(Tag* tag)
+{
+	m_tags.Add(tag);
+	m_changed = true;
+}
+
+	

@@ -1,24 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: HistoryDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/HistoryDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 15   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "workspacewhiz.h"
+#include "resource.h"
 #include "HistoryDialog.h"
 #include "AboutDialog.h"
-#include "PreferencesDialog.h"
 #include "History.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -44,7 +42,6 @@ void CHistoryDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_butOK);
 	DDX_Control(pDX, IDCANCEL, m_butCancel);
 	DDX_Control(pDX, IDC_H_RESET, m_butReset);
-	DDX_Control(pDX, IDC_COM_PREFERENCES, m_butPreferences);
 	DDX_Control(pDX, IDHELP, m_butHelp);
 	DDX_Control(pDX, IDC_COM_ABOUT, m_butAbout);
 	//}}AFX_DATA_MAP
@@ -54,7 +51,6 @@ void CHistoryDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CHistoryDialog, HISTORY_DIALOG)
 	//{{AFX_MSG_MAP(CHistoryDialog)
 	ON_BN_CLICKED(IDC_COM_ABOUT, OnHAbout)
-	ON_BN_CLICKED(IDC_COM_PREFERENCES, OnHPreferences)
 	ON_BN_CLICKED(IDC_H_RESET, OnHReset)
 	ON_WM_DESTROY()
 	ON_WM_SIZE()
@@ -67,7 +63,6 @@ BEGIN_DYNAMIC_MAP(CHistoryDialog, cdxCDynamicDialog)
 	DYNAMIC_MAP_ENTRY(IDCANCEL,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDHELP,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_ABOUT,		mdRepos,	mdNone)
-	DYNAMIC_MAP_ENTRY(IDC_COM_PREFERENCES,	mdRepos,	mdNone)
 
 	DYNAMIC_MAP_ENTRY(IDC_H_RESET,			mdRepos,	mdNone)
 	
@@ -92,7 +87,7 @@ BOOL CHistoryDialog::OnInitDialog()
 	dwStyle = m_files.SendMessage(LVM_GETEXTENDEDLISTVIEWSTYLE, 0 ,0);
 	dwStyle |= LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES ;
 	m_files.SendMessage( LVM_SETEXTENDEDLISTVIEWSTYLE, 0,dwStyle );
-	CListCtrl_SetItemCountEx(m_files, History::GetCount());
+	m_files.SetItemCountEx(History::GetCount());
 	m_files.GetClientRect(&rect);
 	m_files.InsertColumn(0, "Row", LVCFMT_LEFT, (int)(rect.Width() * 0.12), 0);
 	m_files.InsertColumn(1, "Col", LVCFMT_LEFT, (int)(rect.Width() * 0.12), 1);
@@ -110,12 +105,6 @@ void CHistoryDialog::OnHAbout()
 	dlg.DoModal();
 }
 
-void CHistoryDialog::OnHPreferences() 
-{
-	CPreferencesDialog dlg;
-	dlg.DoModal();
-}
-
 void CHistoryDialog::OnHReset() 
 {
 	History::Reset();
@@ -128,12 +117,12 @@ void CHistoryDialog::OnOK()
 	{
 		CString filename;
 		if (m_files.GetSelectedCount() == 0)
-			CListCtrl_SetItemState(m_files, 0, 0, LVIS_SELECTED | LVIS_FOCUSED);
+			m_files.SetItemState(0, 0, LVIS_SELECTED | LVIS_FOCUSED);
 
 		int curSel = m_files.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
 
 		History::Info info = *History::GetAt(curSel);
-		History::PreAdd();
+//		History::PreAdd();
 
 		History::s_curPos = History::s_stack.FindIndex(curSel);
 		History::Goto(&info);
@@ -160,7 +149,7 @@ void CHistoryDialog::RefreshList()
 	// Remove all items from the list.
 	m_files.DeleteAllItems();
 
-	CListCtrl_SetItemCountEx(m_files, History::GetCount());
+	m_files.SetItemCountEx(History::GetCount());
 	if (History::GetCount() > 0)
 	{
 		// Find start index.
@@ -172,7 +161,7 @@ void CHistoryDialog::RefreshList()
 			index++;
 		}
 
-		CListCtrl_SetItemState(m_files, index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		m_files.SetItemState(index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	}
 
 	m_files.SetRedraw(TRUE);

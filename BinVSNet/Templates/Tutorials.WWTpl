@@ -1,0 +1,1262 @@
+Workspace Whiz! Template Tutorials
+
+-------------------------------------------------------------------------------
+Text outside of a template section is ignored.  The first line of a template
+file must me the title of the group.
+-------------------------------------------------------------------------------
+Below is the line reading [01. Template title format].  The square brackets indicate the
+start of a new template.  The text between the square brackets is the name of
+the template.  The 01. portion of the title is still a part of the template
+name.  It is there to preserve alphabetical ordering, which is how templates
+are grouped in the template tree.
+-------------------------------------------------------------------------------
+[01. Template title format]
+!!Memo
+This tutorial illustrates the !!Memo section and the !!Code section.  The !!Code
+section contains a command to create a new text file.  The !!Code section is
+always required.  The !!Memo section optional.  Click on a template, and then
+right-click on the template to view the code.
+!!End
+
+-- Template sections always end with a !!End (with one exception, which will
+-- be described later).
+
+!!Code
+!!ExecuteCommand NewText
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[02. Advanced template title format|Menu 1]
+!!Memo
+This tutorial illustrates how template titles are broken into tree branches.
+For each | (pipe) symbol in the title, an additional tree branch is created.
+!!End
+
+!!Code
+!!End
+
+
+[02. Advanced template title format|Menu 2]
+!!Memo
+This tutorial illustrates how template titles are broken into tree branches.
+!!End
+
+!!Code
+!!End
+
+
+[+02. Advanced template title format|A branch|Automatically opens]
+!!Memo
+This tutorial illustrates how to force a tree to automatically expand to a
+given item.  Inserting a + symbol right after the opening [ accomplishes this.
+!!End
+
+!!Code
+!!End
+
+[-02. Private template]
+!!Memo
+Inserting a - symbol right after the opening [ hides the template.
+!!End
+
+!!Code
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[03. Inserting basic text|Tutorial 1]
+!!Memo
+Inserts the text "Insert this text.".
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Insert this text.
+!!End
+
+
+[03. Inserting basic text|Tutorial 2]
+!!Memo
+Text is inserted into the source file exactly as it appears in the !!Code
+block.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Insert this text.
+This text is on the second line.
+Third line.
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[04. Variables|01. Using the !!Set command]
+!!Memo
+The !!Set command may be used within the !!Code block.  This tutorial assigns
+the string "Hello" to a variable called str.
+!!End
+
+!!Code
+!!Set str Hello
+!!End
+
+
+[04. Variables|02. Using the !!Set command #2]
+!!Memo
+This tutorial assigns the string "Hello, world" to a variable called str.
+Because there is a space in the string, it must be enclosed in quotes.
+!!End
+
+!!Code
+!!Set str "Hello, world!"
+!!End
+
+
+[04. Variables|03. Printing the variable]
+!!Memo
+This tutorial assigns the string "Hello, world" to a variable called str.
+It then inserts the variable in the text.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str@@
+!!End
+
+
+[04. Variables|04. What is the @@var@@ command?]
+!!Memo
+The @@var@@ syntax performs a substitution of the contents of var into the
+position held by the @@var@@ command.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set var "Hello, world!"
+var = @@var@@
+!!End
+
+
+[04. Variables|05. Substitutions anywhere]
+!!Memo
+Using the @@var@@ syntax performs a substitution of the contents of var
+ANYWHERE in the !!Code block.  We assign to var1 "Hello, world!" and
+copy it to var2.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set var1 "Hello, world!"
+!!Set var2 @@var1@@
+var1 = @@var1@@
+var2 = @@var2@@
+!!Set var2 var1
+No substitution performed on the above !!Set: @@var2@@
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[05. Template sections|01. Memo]
+!!Memo
+The !!Memo section shows some descriptive text which describes the template.  The
+text is shown in a pane at the bottom of the template selection tree.  NOTE:
+!!Code sections are ALWAYS required.  !!Memo sections are not.
+!!End
+
+!!Code
+!!End
+
+
+-------------------------------------------------------------------------------
+[05. Template sections|02. Code]
+!!Memo
+The !!Code section contains text to be inserted into a source file.
+Additionally, it may contain commands to do more complex tasks, such as
+allowing the user to select a directory.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+This is some text.
+!!// This is a comment.
+!!// This is a code command.
+!!Set var 10
+!!// This is a variable expression command.
+@@(Date)@@
+!!// This is a substitution for var.
+@@var@@
+!!End
+
+
+-------------------------------------------------------------------------------
+[05. Template sections|03. Dialog|01. Overview]
+!!Memo
+The !!Dialog section may be used to inform the user of various tasks or to ask
+the user for input.  The !!Dialog section is run before the !!Code section is
+executed.
+!!End
+
+!!Dialog
+This template really does nothing.  Press the Finish button to continue.
+!!End
+
+!!Code
+!!End
+
+
+[05. Template sections|03. Dialog|02. Multiple pages]
+!!Memo
+This template demonstrates the use of multiple dialog pages.
+!!End
+
+!!Dialog
+This is page #1.
+!!Next
+This is page #2.
+!!End
+
+!!Code
+!!End
+
+
+[05. Template sections|03. Dialog|03. HTML Markup]
+!!Memo
+This template demonstrates the use of HTML Markup in the !!Dialog section.
+!!End
+
+!!Dialog
+<html><body>
+<p>The !!Dialog section is capable of <b>full</b> HTML markup, including Javascript.</p>
+<p><i>This is italicized text.</i></p>
+<p>This template does nothing.</p>
+</body></html>
+!!End
+
+!!Code
+!!End
+
+
+[05. Template sections|03. Dialog|04. HTML Input Tags]
+!!Memo
+Demonstrates the use of the <input> HTML tag.
+!!End
+
+!!Dialog
+<html><body>
+<p>Additionally, HTML input tags may be used to ask the user for input.</p>
+<p>The ID of this HTML input tag is 'name'.  User input is entered into a
+variable called 'name' and may be used as a regular variable.</p>
+<p>Enter your name: <input id=name></p>
+</body></html>
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Your name is @@name@@.
+!!End
+
+
+[05. Template sections|03. Dialog|05. Additional HTML Input Tags]
+!!Memo
+Demonstrates additional dialog input tags.
+!!End
+
+!!Dialog
+<html><body>
+Browse for a file: <input type=file id=filename accept="*">
+<select name="select" size="5" id=listbox>
+    <option>Value 1</option>
+    <option>Line 2</option>
+    <option>Selection 3</option>
+  </select>
+<input type=checkbox id=theCheckbox>This is a check box.
+<input type=radio id=radio1 name=group1>One
+<input type=radio id=radio2 name=group1>Two
+<input type=radio id=radio3 name=group1>Three
+</body></html>
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+The file browsed for is @@filename@@.
+The list index chosen is @@listbox@@.
+theCheckbox is @@theCheckbox@@.
+Radio 1 is @@radio1@@.
+Radio 2 is @@radio2@@.
+Radio 3 is @@radio3@@.
+!!End
+
+
+[05. Template sections|04. Params]
+!!Memo
+Demonstrates the use of default parameters (variables).  The first word of a
+parameter line is the name of the variable.  The text following will be assigned
+to the variable.  Note that any substitution command @@sub@@ may be used.
+!!End
+
+!!Params
+name Default name
+defaultDate @@(Date)@@
+!!End
+
+!!Dialog
+What is your name? <input id=name>
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Your name is @@name@@.
+The date today is: @@defaultDate@@
+!!End
+
+
+[05. Template sections|05. Key]
+!!Memo
+The !!Key section allows use of the template autocompletion feature.  The
+!!Key section contains a single user-defined word that the user will type
+to autocomplete the template.  The !!Key section does NOT end in !!End.
+!!End
+
+!!Key
+my
+
+!!Dialog
+Type 'my' (w/o the quotes) and press the template autocomplete button.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+My autocompleted text.
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[06. Basic formatting|01. Using the @@\ command|Tutorial 1]
+!!Memo
+Inserts the text "Insert this text." into the current source file.  This time,
+the cursor is kept at the end of the line, one space after the period, instead
+of being put on the next line.  The @@\ command accomplishes this.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Insert this text. @@\
+!!End
+
+
+[06. Basic formatting|01. Using the @@\ command|Tutorial 2]
+!!Memo
+The @@\ command is used to keep two lines together.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Insert this text.
+This text is on the second line.@@\
+  So is this text.
+Third line.
+!!End
+
+
+[06. Basic formatting|01. Using the @@\ command|Tutorial 3]
+!!Memo
+Text following the @@\ command is ignored.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Insert this text.
+This text is on the second line.@@\ This text is ignored.
+  So is this text.
+Third line.
+!!End
+
+
+[06. Basic formatting|02. Putting text at a specific column]
+!!Memo
+Any @@var@@ command may contain optional formatting arguments.  This is done
+by extending it to @@var:optional arguments@@.  For the 'c' formatting argument,
+no variable is required.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Insert this text.
+@@:c40@@This text appears at column 40.
+Third line.
+!!End
+
+
+[06. Basic formatting|03. Putting a variable at a specific column]
+!!Memo
+This time, a variable is put at column 40.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+The text "Hello, world!" is at column 40.
+@@str:c40@@
+This one works, too.
+@@:c40@@@@str@@
+!!End
+
+
+[06. Basic formatting|04. Making text uppercase]
+!!Memo
+Makes the text "Hello, world!" uppercase.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str:U@@
+!!End
+
+
+[06. Basic formatting|05. Making text lowercase]
+!!Memo
+Makes the text "Hello, world!" lowercase.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str:L@@
+!!End
+
+
+[06. Basic formatting|06. Left justifying]
+!!Memo
+Left justifies "Hello, world!" while padding it to 40 spaces.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str:l40@@This starts at column 41.
+!!End
+
+
+[06. Basic formatting|07. Right justifying]
+!!Memo
+Right justifies "Hello, world!" to 40 spaces.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str:r40@@
+!!End
+
+
+[06. Basic formatting|08. Combining flags]
+!!Memo
+Right justifies "Hello, world!" to 40 spaces and makes it uppercase.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str:r40U@@
+Order doesn't matter.
+@@str:Lr40@@
+!!End
+
+
+[06. Basic formatting|09. Extracting the left part of a string]
+!!Memo
+The left justification command may be used to extract the first characters of a
+string.  If the number of spaces to left justify within is less than the
+length of the string, the string is truncated.  This tutorial extracts the
+"Hello" part of "Hello, world!".
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str:l5@@
+!!End
+
+
+[06. Basic formatting|10. Extracting the right part of a string]
+!!Memo
+The right justification command may be used to extract the last characters of a
+string.  If the number of spaces to right justify within is less than the
+length of the string, the string is right-truncated.  This tutorial extracts the
+"world!" part of "Hello, world!".
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+@@str:r6@@
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[07. Commands|01-1. Using commands|01. Assigning variables]
+!!Memo
+Code commands are placed at the beginning of a line and begin with a !!.  The
+!!Set command is a code command.  Arguments are separated with a space.  If an
+argument contains a space, it must be enclosed in quotes.
+!!End
+
+!!Code
+!!Set str "Hello, world"
+!!Set str Hello
+!!End
+
+
+[07. Commands|01-1. Using commands|02. Inserting quotation marks into an argument]
+!!Memo
+Sometimes, it is necessary to insert a quotation mark into a quoted argument.
+This is accomplished by using the %" syntax, as seen in the !!Code section.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world"
+!!Set str2 "%"Hello, world%""
+No quotes: @@str@@
+Quotes   : @@str2@@
+!!End
+
+
+[07. Commands|01-1. Using commands|03. Simple concatenation]
+!!Memo
+Concatenating two variables into a single argument is done by surrounding the
+variables to be concatenated in quotes.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world"
+!!Set str2 "!"
+!!Set strConcat "@@str@@@@str2@@"
+@@strConcat@@
+!!End
+
+
+[07. Commands|01-1. Using commands|04. Comments]
+!!Memo
+Create a comment is code by using the !!// syntax.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!// This is a comment
+This isn't a comment.
+!!End
+
+
+[07. Commands|01-1. Using commands|05. Executing DevStudio commands]
+!!Memo
+Executes a DevStudio command called BookmarkToggle.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Hello
+Hi @@\
+!!ExecuteCommand BookmarkToggle
+
+Another line.
+Okey Dokey.
+Moving to the line which reads "Hi"
+!!ExecuteCommand BookmarkNext
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[07. Commands|01-2. Using commands with a return value|01. Overview]
+!!Memo
+Command substitution expressions use the substitution syntax @@(Command)@@.
+This means that most command substitution expressions return a value to be
+inserted into the code.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+@@(Date)@@
+!!End
+
+
+[07. Commands|01-2. Using commands with a return value|02. Substitution anywhere]
+!!Memo
+The @@sub@@ commands can be substituted anywhere.  Since a command substitution
+expression is a derivative of the normal substitution expression @@sub@@, it
+may be inserted anywhere in the !!Code or !!Params section.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set currentDate @@(Date)@@
+!!Set currentTime @@(Time)@@
+The date is @@currentDate@@.
+The time is @@currentTime@@.
+!!End
+
+
+[07. Commands|01-2. Using commands with a return value|03. Ignoring the return value]
+!!Memo
+A command of the form @@(!!Command)@@ ignores the return value.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+This date doesn't show up: @@(!!Date)@@
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|02. Simple Math Expressions|Adding numbers #1]
+!!Memo
+The !!Add command takes two parameters, a variable name and an integer, and adds
+them together.  The variable name must be an integer.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set MyVariable 10
+!!Add MyVariable 100
+!!// MyVariable is now 110
+@@MyVariable@@
+!!End
+
+
+[07. Commands|02. Simple Math Expressions|Adding numbers #2]
+!!Memo
+The integer may be inserted via substitution.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set MyVariable 10
+!!Set MyVariable2 20
+!!Add MyVariable @@MyVariable2@@
+@@MyVariable@@
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|02. Simple Math Expressions|Subtracting numbers]
+!!Memo
+The !!Add command takes two parameters, a variable name and an integer, and subtracts
+them.  The variable name must be an integer.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set MyVariable 10
+!!Sub MyVariable 100
+!!// MyVariable is now -90
+@@MyVariable@@
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|03. Conditional Expressions|01. Using !!If to test for not 0]
+!!Memo
+Conditional expressions are used to test if certain conditions are true.  They
+are implemented through the !!If, !!ElIf, !!Else, and !!Endif commands.  Every
+conditional expression must end in an !!Endif.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set Value 0
+!!If @@Value@@
+Value is not 0.
+!!Endif
+!!//
+!!Set Value2 1
+!!If @@Value2@@
+Value2 is not 0.
+!!Endif
+!!End
+
+
+[07. Commands|03. Conditional Expressions|02. Using !!If: The ! (not) symbol]
+!!Memo
+To test if a condition is false, use the ! symbol.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set Value 0
+!!If !@@Value@@
+Value is 0.
+!!Endif
+!!//
+!!Set Value2 1
+!!If !@@Value2@@
+Value2 is 0.
+!!Endif
+!!End
+
+
+[07. Commands|03. Conditional Expressions|03. Test for integer equality]
+!!Memo
+Using the !!If command to test a value.  Demonstrates the use of the conditional
+operator ==.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set Value 10
+!!If @@Value@@ == 9
+Value is 9
+!!Elif @@Value@@ == 10
+Value is 10
+!!Endif
+!!End
+
+
+[07. Commands|03. Conditional Expressions|04. Test for integer inequality]
+!!Memo
+Using the !!If command to test a value.  Demonstrates the use of the conditional
+operator !=.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set Value 9
+!!If @@Value@@ != 9
+Value is not equal to 9
+!!Else
+Value is 9
+!!Endif
+!!End
+
+
+[07. Commands|03. Conditional Expressions|05. Test for string equality]
+!!Memo
+Testing for string equality is really no different than testing for integer
+equality.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set Str "Hello"
+!!If @@Str@@ == "Hello"
+Str == Hello
+!!Endif
+!!End
+
+
+[07. Commands|03. Conditional Expressions|05. Test two strings for equality]
+!!Memo
+Testing two strings for equality is a matter of simple substitution.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set Str1 "Hello"
+!!Set Str2 "HellO"
+!!If @@Str1@@ == @@Str2@@
+Str1 == Str2
+!!Else
+Str1 != Str2
+!!Endif
+!!End
+
+
+[07. Commands|03. Conditional Expressions|06. Other tests]
+!!Memo
+Other tests may be performed.  Those are > (greater than), < (less than), >=
+(greater than or equal to), and <= (less than or equal to).  When comparing
+integers, the tests compare numbers sequentially.  When comparing strings,
+the tests compare strings alphabetically.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set Value1 9
+!!Set Value2 12
+!!If @@Value1@@ > @@Value2@@
+@@Value1@@ > @@Value2@@
+!!Else
+@@Value1@@ <= @@Value2@@
+!!Endif
+!!//
+!!Set Str1 "String"
+!!Set Str2 "ABC"
+!!If @@Str1@@ > @@Str2@@
+@@Str1@@ > @@Str2@@
+!!Else
+@@Str1@@ <= @@Str2@@
+!!Endif
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|04. Labels and Gotos|01. A basic Goto]
+!!Memo
+Using the !!Goto command will move the parser to the next line following the
+label.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+This gets printed.
+!!Goto SkipText
+This doesn't.
+!!Label SkipText
+This does.
+!!End
+
+
+[07. Commands|04. Labels and Gotos|02. A simple loop]
+!!Memo
+The following tutorial simulates a loop by counting from 1 to 10.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set counter 1
+!!///////////////////////////////////////////////
+!!Label LoopTop
+Counter: @@counter@@
+!!Add counter 1
+!!If @@counter@@ < 11
+!!Goto LoopTop
+!!Endif
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|05. Message boxes|01. A basic message box]
+!!Memo
+Shows a simple message box.
+!!End
+
+!!Code
+!!MessageBox "This is a simple message box."
+!!End
+
+
+[07. Commands|05. Message boxes|02. A Yes/No/Cancel message box]
+!!Memo
+Shows a Yes/No/Cancel message box.
+!!End
+
+!!Code
+!!MessageBox "This is a message box with Yes/No/Cancel buttons." YesNoCancel
+!!End
+
+
+[07. Commands|05. Message boxes|03. Returning the result in a variable]
+!!Memo
+Shows a Yes/No/Cancel message box.  Returns the result in a variable called
+@@Result@@.
+!!End
+
+!!Code
+!!MessageBox "This is a message box with Yes/No/Cancel buttons." YesNoCancel Result
+!!MessageBox "You selected @@Result@@."
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|06. Files|01. Creating a new text file]
+!!Memo
+Creates a new unnamed text file.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+This is my new text file.
+!!End
+
+
+[07. Commands|06. Files|02. Creating a new named text file]
+!!Memo
+Creates a new named text file called c:\MyTestFile.h.
+!!End
+
+!!Code
+!!FileNew c:\MyTestFile.h abs
+!!End
+
+
+[07. Commands|06. Files|03. Saving the current file]
+!!Memo
+Creates a new named text file called c:\MyTestFile.h, modifies it, and saves it.
+!!End
+
+!!Code
+!!FileNew c:\MyTestFile.h abs
+Modification
+!!FileSave
+!!End
+
+
+[07. Commands|06. Files|04. Parts of the current filename]
+!!Memo
+Retrieves parts of the current filename.
+!!End
+
+!!Code
+!!FileNew c:\MyTestFile.h abs
+The file path is: @@(FilePath)@@
+The file title is: @@(FileTitle)@@
+The file extension is: @@(FileExt)@@
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|07. Executing other templates|01. Simple call]
+!!Memo
+Calls a private template called HelloWorld1.
+!!End
+
+!!Code
+!!Call -HelloWorld1
+!!End
+
+
+[-HelloWorld1]
+!!Code
+!!ExecuteCommand NewText
+Hello, world!
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|07. Executing other templates|02. Call with parameters]
+!!Memo
+Calls a private template called HelloWorld2 with a parameter called name.
+!!End
+
+!!Code
+!!Call -HelloWorld2 name "MyName"
+!!End
+
+
+[-HelloWorld2]
+!!Code
+!!ExecuteCommand NewText
+Hello, @@name@@ world!
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|07. Executing other templates|03. Call with return code]
+!!Memo
+Calls a private template called HelloWorld3 expecting a return value.
+!!End
+
+!!Code
+The return value is: @@(Call -HelloWorld3)@@
+!!End
+
+
+[-HelloWorld3]
+!!Code
+!!ExecuteCommand NewText
+Hello, world!
+!!Return "Done Now!"
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|07. Executing other templates|04. Manipulating the parent template]
+!!Memo
+Calls a private template called SetValues to manipulate some values in the
+caller.  The variable __Parent is defined as the parent template.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Call -SetValues
+@@HelloWorld@@
+@@HelloWorld2@@
+!!End
+
+
+[-SetValues]
+!!Code
+!!Set HelloWorld "Hello, world!" @@__Parent@@
+!!Set HelloWorld2 "Hello, world! 2" @@__Parent@@
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|08. Caret positioning|01. Caret command]
+!!Memo
+Moves the caret to the position denoted by @@(Caret)@@ after the template is
+done executing.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+The cursor will appear between the two brackets: [@@(Caret)@@ ]
+The cursor won't appear at the end.
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|08. Caret positioning|02. Absolute position]
+!!Memo
+Retrieves the absolute position of the caret at a given point and restores
+that position as the last command while extending the block.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+The cursor will appear between the two brackets: [@@\
+!!GetPos X Y
+ ]
+The cursor won't appear at the end.
+!!MoveTo @@X@@ @@Y@@ extend
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|09. String manipulation|01. String length]
+!!Memo
+Retrieves the length of the string "Hello, world!"
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+The length of "@@str@@" is: @@(StrLen @@str@@)@@
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|09. String manipulation|02. Finding substrings]
+!!Memo
+Finds substrings within a larger string.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+!!Set wIndex @@(StrFind @@str@@ "W")@@
+Index of capital W: @@wIndex@@
+!!Set wIndex @@(StrFind @@str@@ "W" 0 0)@@
+Index of w, non-case sensitive: @@wIndex@@
+!!Set wIndex @@(StrFind @@str@@ "w")@@
+Index of w, case sensitive: @@wIndex@@
+!!Add wIndex 1
+!!Set wIndex @@(StrFind @@str@@ "w" @@wIndex@@)@@
+Index of next w, case sensitive: @@wIndex@@
+!!Set wIndex @@(StrFind @@str@@ "w")@@
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|09. String manipulation|03. Changing case]
+!!Memo
+Performs a variety of case changing operations.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+Make the w uppercase: @@(StrUpper @@str@@ @@(StrFind @@str@@ "w")@@)@@
+Make the H lowercase: @@(StrLower @@str@@ 0)@@
+Uppercase "@@str@@": @@(StrUpper @@str@@)@@
+Lowercase "@@str@@": @@(StrLower @@str@@)@@
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|09. String manipulation|04. Substrings]
+!!Memo
+Retrieves the length of the string "Hello, world!"
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Set str "Hello, world!"
+!!Set worldIndex @@(StrFind @@str@@ "world")@@
+Substring to end of string: @@(StrSub @@str@@ @@worldIndex@@)@@
+Substring from start of "world!" (3 letters max): @@(StrSub @@str@@ @@worldIndex@@ 3)@@
+!!End
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[07. Commands|10. Getting the current selection]
+!!Memo
+Retrieves the current selection.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+Hello, world!
+!!ExecuteCommand "DocumentStartExtend"
+!!Set str @@(Sel)@@
+!!ExecuteCommand "LineDown"
+@@str@@
+!!End
+
+
+-------------------------------------------------------------------------------
+[07. Commands|99. See the Help for additional commands]
+!!Memo
+See the Help for additional commands.
+!!End
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+[08. Obtaining user input|01. Informing the user]
+!!Memo
+While processing a !!Code section, the Dialog command can inform the user of
+the tasks that are happening.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Dialog "About to print Hello, world!"
+Hello, world!
+!!End
+
+
+[08. Obtaining user input|02. Full HTML markup]
+!!Memo
+The simplest form of the Dialog command takes a string as input.  The string
+can be full HTML markup, just like the !!Dialog template section.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Dialog "About to print <pre>Hello, world!</pre>"
+Hello, world!
+!!End
+
+
+[08. Obtaining user input|03. Obtaining input]
+!!Memo
+Obtaining input through the Dialog command is identical to the !!Dialog
+template section.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Dialog "What is your name?  <input id=name>"
+Your name is @@name@@.
+!!End
+
+
+[08. Obtaining user input|04. Why have a Dialog command?]
+!!Memo
+Why have a Dialog command?
+!!End
+
+!!Dialog
+<p>This is the pre-Code section dialog.
+<p>It is useful to have a Dialog command so user input may be requested based
+on current conditions.  When the !!Dialog section runs, there are no current
+conditions.  The user may move forward and backward through the provided dialog
+pages.  Input may also occur.  But until the !!Code section runs, there can be
+no input validation.
+<p>!!Dialog sections are still useful.  They provide a convenient method of
+representing multiple dialog pages which may be moved between.
+!!End
+
+!!Code
+!!ExecuteCommand NewText
+!!Dialog "This is the post-Dialog section dialog.<p>Enter the number 1: <input id=number>"
+!!If @@number@@ != 1
+!!MessageBox "You didn't enter 1!"
+!!Else
+!!MessageBox "You did enter 1!"
+!!Endif
+!!End
+
+
+[08. Obtaining user input|05. Turning on/off dialog page buttons]
+!!Memo
+The more advanced version of the Dialog command allows dialog buttons to be
+turned on/off.  There are three buttons, Next, Previous, and (replacing Next) Finish.
+!!End
+
+!!Code
+!!// Parameter 2 is the Next button (1 is enabled).
+!!// Parameter 3 is the Previous button (1 is enabled).
+!!// Parameter 4 is the Finish button (1 is enabled).  If this is enabled, it replaces the Next button.
+!!Dialog "This dialog has a Finish button." 0 0 1
+!!Dialog "This dialog has a Previous and Next button." 1 1
+!!End
+
+
+[08. Obtaining user input|06. Return codes]
+!!Memo
+The Dialog command is actually a variable expression command.  It offers a
+return code describing the button pressed by the user.  The return code
+can be 'next', 'previous', 'finish', or 'cancel' (w/o the quotes).
+!!End
+
+!!Code
+!!Set buttonPressed @@(Dialog "This dialog has a Previous and Finish button." 0 1 1)@@
+!!MessageBox "You pressed @@buttonPressed@@."
+!!End
+
+
+[08. Obtaining user input|07. Simulating the Dialog section]
+!!Memo
+To simulate the !!Dialog section, the template must handle the Next and Previous
+buttons and do the appropriate branching.
+!!End
+
+!!Code
+!!Label Page1
+!!Set button @@(Dialog "This is page #1" 1 0)@@
+!!// Only the Cancel button needs to be handled here.  The Next button is the
+!!// only other active button.
+!!If @@button@@ == "cancel"
+!!Goto Done
+!!Endif
+!!/////////////////////////////////////////////////////////////////////////////
+!!Label Page2
+!!Set button @@(Dialog "This is page #2" 1 1)@@
+!!If @@button@@ == "cancel"
+!!Goto Done
+!!Elif @@button@@ == "previous"
+!!Goto Page1
+!!Endif
+!!/////////////////////////////////////////////////////////////////////////////
+!!Label Page3
+!!Set button @@(Dialog "This is page #3" 0 1 1)@@
+!!If @@button@@ == "cancel"
+!!Goto Done
+!!Elif @@button@@ == "previous"
+!!Goto Page2
+!!Endif
+!!Label Done
+!!End
+
+

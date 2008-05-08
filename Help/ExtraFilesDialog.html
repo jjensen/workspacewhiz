@@ -1,0 +1,226 @@
+<html>
+<head>
+<title>Extra Files Dialog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left"><img src="IconWWFileOpen.png" width="32" height="32"> Extra Files</h2>
+<h3>Dialog</h3>
+<h3 align="center"><img src="ExtraFiles.png" width="500" height="242"></h3>
+<p>The path to the filename may be entered in the edit field (top left). Alternatively, 
+  use the <span class="field">Browse</span> button to find additional files. The 
+  file browser allows multiple files to be selected, if desired.</p>
+<p>Choose <span class="field">Add</span> to add the project to the Extra Files 
+  list. If <span class="wwhiz">Workspace Whiz</span> is able to match the file 
+  against a portion of an environment variable, it will ask the user if they want 
+  to substitute the environment variable into the path.</p>
+<p>Selecting a file in the Extra Files list and clicking <span class="field">Remove</span> 
+  will remove the file from the list.</p>
+<p>Press <span class="field">OK</span> to accept the changes to the Extra Files 
+  list. Press <span class="field">Cancel</span> to reject the changes.</p>
+<h3>File Globbing</h3>
+<p><em>Workspace Whiz</em> takes advantage of the file globbing code available 
+  at <a href="http://www.codeproject.com/file/FileGlob.asp">http://www.codeproject.com/file/FileGlob.asp</a>. 
+  A portion of the globbing documentation is reproduced here.</p>
+<h3>Patterns and Wildcards</h3>
+<p>Without a path specified, globbing of files starts in the current directory.</p>
+<table border="1" cellpadding="1" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="75%" id="AutoNumber2" align="center">
+  <tr> 
+    <td width="25%"><b>Wildcard</b></td>
+    <td width="75%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>?</code></td>
+    <td width="75%">Matches any single character of the file name or directory 
+      name.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>*</code></td>
+    <td width="75%">Matches 0 or more characters of the file name or directory 
+      name.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>/</code> at end of pattern</td>
+    <td width="75%">Any pattern with a closing slash will start a directory search, 
+      instead of the default file search.</td>
+  </tr>
+  <tr> 
+    <td width="25%">**</td>
+    <td width="75%">Contrary to my wanting to use a Perforce-style '<code>...</code>' 
+      recursive syntax, Matthias brought up an important point.&nbsp; Those individuals 
+      using 4DOS (<a href="http://www.jpsoft.com/">http://www.jpsoft.com/</a>) 
+      are used to '<code>...</code>' meaning '<code>..\..\</code>'.&nbsp; After 
+      some thought, I believe Matthias's original '<code>**</code>' syntax for 
+      recursion is a far better solution.</td>
+  </tr>
+</table>
+<p>Some examples follow:</p>
+<table border="1" cellpadding="1" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="75%" id="AutoNumber1" align="center">
+  <tr> 
+    <td width="25%"><b>Example Pattern</b></td>
+    <td width="75%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>File.txt</code></td>
+    <td width="75%">Matches a file or directory called <code>File.txt</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>File*.txt</code></td>
+    <td width="75%">Matches any file or directory starting with <code>File</code> 
+      and ending with a <code>.txt</code> extension.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>File?.txt</code></td>
+    <td width="75%">Matches any file or directory starting with <code>File</code> 
+      and containing one more character.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>F??e*.txt</code></td>
+    <td width="75%">Matches a file or directory starting with <code>F</code>, 
+      followed by any two characters, followed by <code>e</code>, then any number 
+      of characters up to the extension <code>.txt</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>File*</code></td>
+    <td width="75%">Matches a file or directory starting with <code>File</code> 
+      and ending with or without an extension.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>*</code></td>
+    <td width="75%">Matches all files (non-recursive).</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>*/</code></td>
+    <td width="75%">Matches all directories (non-recursive).</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>A*/</code></td>
+    <td width="75%">Matches any directory starting with <code>A</code> (non-recursive).</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>**/*</code></td>
+    <td width="75%">Matches all files (recursive).</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>**</code></td>
+    <td width="75%">Shortened form of above.&nbsp; Matches all files (recursive).&nbsp; 
+      Internally, expands to <code>**/*</code></td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>**/</code></td>
+    <td width="75%">Matches all directories (recursive).</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>**{filename chars}</code></td>
+    <td width="75%">Matches {filename chars} recursively.&nbsp; Internally, expands 
+      to <code>**/*{filename chars}</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>{dirname chars}**</code></td>
+    <td width="75%">Expands to <code>{dirname chars}*/**</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>{dirname chars}**{filename chars}</code></td>
+    <td width="75%">Expands to <code>{dirname chars}*/**/*{filename chars}</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>**.h</code></td>
+    <td width="75%">Matches all <code>*.h</code> files recursively.&nbsp; Expands 
+      to <code>**/*.h</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>**resource.h</code></td>
+    <td width="75%">Matches all <code>*resource.h</code> files recursively.&nbsp; 
+      Expands to <code>**/*resource.h</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>BK**</code></td>
+    <td width="75%">Matches all files in any directory starting with <code>BK</code>, 
+      recursively.&nbsp; Expands to <code>BK*/**</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>BK**.h</code></td>
+    <td width="75%">Matches all <code>*.h</code> files in any directory starting 
+      with <code>BK</code>, recursively.&nbsp; Expands to <code>BK*/**/*.h</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>c:/Src/**/*.h</code></td>
+    <td width="75%">Matches all <code>*.h</code> files recursively, starting at 
+      <code>c:/Src/</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>c:/Src/**/*Grid/</code></td>
+    <td width="75%">Recursively matches all directories under <code>c:/Src/</code> 
+      that end with <code>Grid</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>c:/Src/**/*Grid*/</code></td>
+    <td width="75%">Recursively matches all directories under <code>c:/Src/</code> 
+      that contain <code>Grid</code>.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>c:/Src/**/*Grid*/**/ABC/**/Readme.txt</code></td>
+    <td width="75%">Recursively matches all directories under <code>c:/Src/</code> 
+      that contain <code>Grid</code>.&nbsp; From the found directory, recursively 
+      matches directories until <code>ABC/</code> is found.&nbsp; From there, 
+      the file <code>Readme.txt</code> is searched for recursively. </td>
+  </tr>
+</table>
+<p>Finally, a couple flags are available.&nbsp; Flags are appended at the end 
+  of the pattern line.&nbsp; Each flag begins with an @ character.&nbsp; Spaces 
+  should not be inserted between flags unless they are intended as part of the 
+  string literal.</p>
+<table border="1" cellpadding="1" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="75%" id="AutoNumber1" align="center">
+  <tr> 
+    <td width="25%"><b>Flags and Other Expansions</b></td>
+    <td width="75%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>@-pattern</code></td>
+    <td width="75%">Adds <code>pattern</code> to the ignore list.&nbsp; Any file 
+      matching a pattern in the ignore list is discounted from the search.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>@=pattern</code></td>
+    <td width="75%">Adds <code>pattern</code> to the exclusive file list.&nbsp; 
+      Any file not matching a pattern in the exclusive file list is automatically 
+      removed from the search.</td>
+  </tr>
+  <tr> 
+    <td width="25%">More than two periods for going up parent directories.</td>
+    <td width="75%">Similar to 4DOS, each period exceeding two periods goes up 
+      one additional parent directory.&nbsp; So, a 4 period path expands to <code> 
+      ../../../.</code></td>
+  </tr>
+</table>
+<p>And a few examples:</p>
+<table border="1" cellpadding="1" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="75%" id="AutoNumber1" align="center">
+  <tr> 
+    <td width="25%"><b>Example Pattern</b></td>
+    <td width="75%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>Src/**/@-SCCS/@-BitKeeper/</code></td>
+    <td width="75%">Recursively lists all directories under <code>Src/</code>, 
+      but directories called <code>SCCS/</code> and <code>BitKeeper/</code> are 
+      filtered.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>Src/**@=*.lua@=README</code></td>
+    <td width="75%">Recursively lists all files under Src/ which match *.lua or 
+      README.&nbsp; All other files are ignored.</td>
+  </tr>
+  <tr> 
+    <td width="25%"><code>Src/**/@-SCCS/@-BitKeeper/@=*.lua@=README</code></td>
+    <td width="75%">Recursively lists all files under Src/ which match *.lua or 
+      README.&nbsp; The versions of those files that may exist in <code>SCCS/</code> 
+      or <code>BitKeeper/</code> are ignored.</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h3 align="center">&nbsp; </h3>
+</body>
+</html>

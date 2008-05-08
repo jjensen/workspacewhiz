@@ -1,21 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: AboutDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/AboutDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 11   $ $Author: Jjensen $
+// $Date: 2003/01/07 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "AboutDialog.h"
+#include <exdisp.h>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -134,6 +135,16 @@ int CAboutDialog::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CAboutDialog::OnAbRegister()
 {
-	if (g_wwhizReg)
-		g_wwhizReg->RegistrationDialog();
+//	if (g_wwhizReg)
+//		g_wwhizReg->RegistrationDialog();
+	if (AfxMessageBox("If you wish to contribute to the further development of Workspace Whiz "
+			"press OK to connect to PayPal and send a donation to 'sales@workspacewhiz.com'.  Any amount "
+			"would be appreciated.\nPress Cancel to continue using Workspace Whiz.\n",
+			MB_OKCANCEL) == IDCANCEL)
+	{
+		return;
+	}
+
+	ShellExecute(NULL, "open", "http://www.paypal.com/", NULL, NULL, SW_SHOW);
+
 }

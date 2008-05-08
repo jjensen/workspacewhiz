@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: Config.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/Config.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 14   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -22,7 +22,7 @@ public:
 		bool m_assignKey;
 	};
 
-	CArray<Keys, Keys&> m_keys;
+	WArray<Keys> m_keys;
 
 	bool m_dsFirstTime;
 	bool m_useFindTagAtCursorDialog;

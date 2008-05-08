@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: Template.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplateManager/Template.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 23   $ $Author: Jjensen $
+// $Date: 2003/01/08 $ $Revision: #8 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -13,16 +13,9 @@
 #include "pchWWhizTemplateManager.h"
 #include "Template.h"
 #include <io.h>
-#include <ObjModel\addguid.h>
-#include <ObjModel\appguid.h>
-#include <ObjModel\bldguid.h>
-#include <ObjModel\textguid.h>
-#include <ObjModel\dbgguid.h>
 #include <direct.h>
 #include "TemplateGroup.h"
 #include "TemplateManager.h"
-
-extern TemplateManager g_templateManager;
 
 typedef WWhiz_TemplateException TException;
 
@@ -35,12 +28,12 @@ class TemplateCommandArgs : public WWhizTemplateCommandArgs
 public:
 	virtual int GetCount() const
 	{
-		return m_argList.GetSize();
+		return m_argList.GetCount();
 	}
 
 	virtual CString Get(int index) const
 	{
-		if (index >= m_argList.GetSize())
+		if (index >= (int)m_argList.GetCount())
 			return s_emptyString;
 		else
 			return m_argList.GetAt(index);
@@ -56,7 +49,7 @@ public:
 		m_returnValue.Format("%d", returnValue);
 	}
 
-	CArrayEx<CString, CString&> m_argList;
+	WArray<CString> m_argList;
 	CString m_returnValue;
 };
 
@@ -77,7 +70,7 @@ public:
 
 	Template* m_parent;
 
-	CMapEx<WWhizTemplateCommand*, WWhizTemplateCommand*, bool, bool> m_commandsUsed;
+	WMap<WWhizTemplateCommand*, bool> m_commandsUsed;
 
 	TemplateHelper() : m_parent(NULL) { }
 	TemplateHelper(Template* parent);
@@ -115,7 +108,7 @@ void TemplateHelper::Refresh()
 
 WWhizTemplateCommand* TemplateHelper::GetCommand(CString command)
 {
-	WWhizTemplateCommand* commandObject = g_templateManager.GetCommand(command);
+	WWhizTemplateCommand* commandObject = TemplateManager::GetInstance()->GetCommand(command);
 	if (!commandObject)
 		return NULL;
 	bool reserved;
@@ -236,6 +229,15 @@ CString ParseToken(LPCTSTR& codePtr, TokenHelper* helper)
 			{
 				buffer.Add(*codePtr++);
 			}
+		}
+		else if (*codePtr == '\\')
+		{
+			if (inQuote)
+			{
+				codePtr++;
+			}
+
+			buffer.Add(*codePtr++);
 		}
 		else if (*codePtr == ' ')
 		{
@@ -601,7 +603,7 @@ CString Template::ParseCode(LPCTSTR codePtr, LPCTSTR bolPtr, WWhizTemplate* file
 	helper.m_tabSize = 4;
 	helper.m_outBolPtr = bolPtr;
 	helper.m_file = file;
-	helper.m_helper = new TemplateHelper(NULL);
+	helper.m_helper = WNEW TemplateHelper(NULL);
 	
 	// Get the parameter.
 	while (*codePtr != 0)
@@ -641,7 +643,7 @@ void Template::SkipToEol(LPCTSTR& codePtr, CharArray* buffer)
 		{
 			codePtr++;
 			if (buffer)
-				m_helper->m_outBolPos = buffer->GetSize() + 1;
+				m_helper->m_outBolPos = buffer->GetCount() + 1;
 			m_helper->m_codeBolPtr = codePtr;
 			break;
 		}
@@ -676,7 +678,7 @@ public:
 bool Template::Parse()
 {
 	Auto<TemplateHelper> autoTemplateHelper;
-	autoTemplateHelper = new TemplateHelper(this);
+	autoTemplateHelper = WNEW TemplateHelper(this);
 	m_helper = autoTemplateHelper;
 	
 	try
@@ -688,10 +690,10 @@ bool Template::Parse()
 		int lineNumber = -1;
 		DWORD offset = m_helper->m_codePtr - (LPCTSTR)m_code;
 
-		if (m_codeOffsets.GetSize() > 1)
+		if (m_codeOffsets.GetCount() > 1)
 		{
 			OffsetInfo* info = NULL;
-			for (int i = 0; i < m_codeOffsets.GetSize() - 1; i++)
+			for (size_t i = 0; i < m_codeOffsets.GetCount() - 1; i++)
 			{
 				info = &m_codeOffsets[i];
 				OffsetInfo& info2 = m_codeOffsets[i + 1];
@@ -701,7 +703,7 @@ bool Template::Parse()
 			if (info)
 				lineNumber = m_codeOffsets[i].m_line;
 		}
-		else if (m_codeOffsets.GetSize() == 1)
+		else if (m_codeOffsets.GetCount() == 1)
 		{
 			lineNumber = m_codeOffsets[0].m_line;
 		}
@@ -715,9 +717,9 @@ bool Template::Parse()
 			ObjModelHelper objModel;
 			if (objModel.OpenDocument(m_parent.GetFilename(), "Auto"))
 			{
-				objModel.PutLanguage(DS_CPP);
+				objModel.PutLanguage("cpp");
 
-				objModel.MoveTo(lineNumber, 1, dsMove);
+				objModel.MoveTo(lineNumber, 1, false);
 			}
 		}
 
@@ -811,7 +813,7 @@ struct CondInfo
 bool Template::ParseHelper()
 {
 	// Build our master string.
-	m_helper->m_buffer.SetSize(0, 1024);
+	m_helper->m_buffer.SetCount(0, 1024);
 	m_helper->m_outBolPos = 0;
 
 	// Start copying the string in.
@@ -1100,7 +1102,7 @@ bool Template::ParseHelper()
 
 			// Ugly, but we need that \0 in there.
 			buffer.Add(0);
-			buffer.RemoveAt(buffer.GetSize() - 1);
+			buffer.RemoveAt(buffer.GetCount() - 1);
 
 			if (ParseTag(codePtr, out, &helper))
 			{
@@ -1114,7 +1116,7 @@ bool Template::ParseHelper()
 			// See if it is an EOL.
 			if (*codePtr == '\n')
 			{
-				m_helper->m_outBolPos = buffer.GetSize() + 1;
+				m_helper->m_outBolPos = buffer.GetCount() + 1;
 				m_helper->m_codeBolPtr = codePtr + 1;
 			}
 
@@ -1146,9 +1148,11 @@ void Template::FlushText()
 
 	// Only put the text if there is a current document.
 	if (m_helper->m_objModel.IsTextDocument()  &&  !str.IsEmpty())
+	{
 		m_helper->m_objModel.PutText(str);
+	}
 
-	m_helper->m_buffer.SetSize(0, 1024);
+	m_helper->m_buffer.SetCount(0, 1024);
 }
 
 	
@@ -1187,7 +1191,7 @@ void Template::SetEntry(const CString& entry, CString value)
 
 WWhizTemplateCommandArgs* Template::CreateArgs()
 {
-	return new TemplateCommandArgs;
+	return WNEW TemplateCommandArgs;
 }
 
 

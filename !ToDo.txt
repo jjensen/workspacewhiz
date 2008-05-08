@@ -6,20 +6,14 @@ Before ship:
 Additions:
 ==========
 * Fix @ template support.
-* Allow .t extension for tags.
-* Make an Options/Preferences command.
 * Template: Add !!Include.
 * Template: Add Replace.
 * Template: Add SetActiveProject.
 * Better resolve tag context.
-* DevStudio Line Mode Paste...
-* Add custom DSP file parser/writer.
 * Template hotkeys.
-* Compress project.
 * Exclude certain extensions in File Open.
 * Multiple header flip groups.
 * Preserve Scope setting.
-* Find JACCore problem.
 
 
 Bugs:

@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: FindTagDialog.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/FindTagDialog.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 21   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -61,7 +61,6 @@ public:
 	CButton	m_butOK;
 	CButton	m_butCancel;
 	CButton	m_butRebuildTags;
-	CButton	m_butPreferences;
 	CButton	m_butHelp;
 	CButton	m_butAbout;
 	CStatic			m_infoSearchString;
@@ -69,8 +68,8 @@ public:
 	//}}AFX_DATA
 	afx_msg void OnFtRebuildTags();
 
-	CEdit*			m_tagParent;
-	CEdit*			m_edit;
+	CComboBoxEx*	m_tagParent;
+	CComboBoxEx*	m_edit;
 	CListCtrl*		m_tagListCtrl;
 	int m_saveLastPosition;
 	CString m_saveOldFunction;
@@ -95,7 +94,6 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CFindTagDialog)
 	afx_msg void OnFtAbout();
-	afx_msg void OnFtPreferences();
 	afx_msg void OnDblclkFtTags(NMHDR* pNMHDR, LRESULT* pResult);
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

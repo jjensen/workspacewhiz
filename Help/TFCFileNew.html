@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Template Files - Command: FileNew</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3>Command: FileNew</h3>
+<p><b>Format:</b> <span class="code">FileNew Filename [CreationType]</span></p>
+<p><b>Returns:</b> Nothing.</p>
+<p>Creates a new file called <span class="code">Filename</span>. <span class="code">CreationType</span> 
+  specifies more information about where the file should be created. </p>
+<table width="100%" border="1">
+  <tr> 
+    <td width="19%"><b>Creation Type</b></td>
+    <td width="81%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="19%">abs (or empty)</td>
+    <td width="81%">Assumes <span class="code">Filename</span> is an absolute 
+      path. </td>
+  </tr>
+  <tr> 
+    <td width="19%">dsp</td>
+    <td width="81%">Assumes <span class="code">Filename</span> is a relative path 
+      that will be placed relative to the current project's .dsp file.</td>
+  </tr>
+  <tr> 
+    <td width="19%">rel</td>
+    <td width="81%">Assumes <span class="code">Filename</span> is a relative path.</td>
+  </tr>
+</table>
+<pre>!!FileNew MyNewFile.h dsp</pre>
+<h3>&nbsp;</h3>
+</body>
+</html>

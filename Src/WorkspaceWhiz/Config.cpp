@@ -1,58 +1,46 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: Config.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/Config.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 18   $ $Author: Jjensen $
+// $Date: 2003/02/08 $ $Revision: #8 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "StdAfx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "Config.h"
 
 Config::Config()
 {
-	m_keys.SetSize(GetCommandCount());
+	m_keys.SetCount(WWhizCommands::GetCommandCount());
 }
 
 
 void Config::LoadRegistry()
 {
-	// Get DevStudio version.
-	HMODULE hModule = GetModuleHandle("MSDEV.EXE");
-	if (hModule)
-	{
-		CComBSTR bstrVersion;
-		g_pApplication->get_Version(&bstrVersion);
-		CString strVersion = bstrVersion;
-		if (strVersion != "5.0")
-		{
-			m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "DS6FirstTime", true) != 0;
-		}
-		else
-		{
-			m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "DS5FirstTime", true) != 0;
-		}
-	}
-	else
-	{
-		hModule = GetModuleHandle("EVC.EXE");
-		if (hModule)
-		{
-			m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "EVC3FirstTime", true) != 0;
-		}
-	}
-	
-	const CommandInfo* comList = GetCommandList();
-	int comCount = GetCommandCount();
+	// Get first time variable.
+	CString version = ObjModelHelper::GetVersion();
+	if (version == "7.10")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS710FirstTime", true) != 0;
+	else if (version == "7.00")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS700FirstTime", true) != 0;
+	else if (version == "6")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "DS6FirstTime", true) != 0;
+	else if (version == "5")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "DS5FirstTime", true) != 0;
+	else if (version == "EVC")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "EVC3FirstTime", true) != 0;
 
-	for (int i = 0; i < comCount; i++)
+	const WWhizCommands::CommandInfo* comList = WWhizCommands::GetCommandList();
+	int comCount = WWhizCommands::GetCommandCount();
+
+	for (int i = 1; i < comCount; i++)
 	{
-		CString keyStr = AfxGetApp()->GetProfileString("Config\\Keys", comList[i].m_name, "");
+		CString keyStr = AfxGetApp()->GetProfileString(
+				"Config\\Keys", CString(comList[i].m_name), "");
 		if (keyStr.IsEmpty())
 		{
 			// Grab the default.
@@ -95,7 +83,7 @@ void Config::LoadRegistry()
 		while (true)
 		{
 			// See if there is a comma.
-			nextPos = CStringFind(extStr, ',', curPos);
+			nextPos = extStr.Find(',', curPos);
 			if (nextPos == -1)
 				break;
 
@@ -124,7 +112,7 @@ void Config::LoadRegistry()
 		while (true)
 		{
 			// See if there is a comma.
-			nextPos = CStringFind(extStr, ',', curPos);
+			nextPos = extStr.Find(',', curPos);
 			if (nextPos == -1)
 				break;
 
@@ -153,7 +141,7 @@ void Config::LoadRegistry()
 		while (true)
 		{
 			// See if there is a comma.
-			nextPos = CStringFind(tokenStr, ',', curPos);
+			nextPos = tokenStr.Find(',', curPos);
 			if (nextPos == -1)
 				break;
 
@@ -179,17 +167,17 @@ void Config::SaveRegistry()
 {
 	int i;
 	
-	const CommandInfo* comList = GetCommandList();
-	int comCount = GetCommandCount();
+	const WWhizCommands::CommandInfo* comList = WWhizCommands::GetCommandList();
+	int comCount = WWhizCommands::GetCommandCount();
 
-	for (i = 0; i < comCount; i++)
+	for (i = 1; i < comCount; i++)
 	{
 		CString writeStr = m_keys[i].m_keyStr;
 		if (m_keys[i].m_assignKey)
 			writeStr += "|1";
 		else
 			writeStr += "|0";
-		AfxGetApp()->WriteProfileString("Config\\Keys", comList[i].m_name, writeStr);
+		AfxGetApp()->WriteProfileString("Config\\Keys", CString(comList[i].m_name), writeStr);
 	}
 
 	AfxGetApp()->WriteProfileInt("Config", "UseFindTagAtCursorDialog", m_useFindTagAtCursorDialog);
@@ -235,30 +223,18 @@ void Config::SaveRegistry()
 
 void Config::SaveRegistry_FirstTime()
 {
-	// Get DevStudio version.
-	HMODULE hModule = GetModuleHandle("MSDEV.EXE");
-	if (hModule)
-	{
-		CComBSTR bstrVersion;
-		g_pApplication->get_Version(&bstrVersion);
-		CString strVersion = bstrVersion;
-		if (strVersion != "5.0")
-		{
-			AfxGetApp()->WriteProfileInt("Config", "DS6FirstTime", m_dsFirstTime);
-		}
-		else
-		{
-			AfxGetApp()->WriteProfileInt("Config", "DS5FirstTime", m_dsFirstTime);
-		}
-	}
-	else
-	{
-		hModule = GetModuleHandle("EVC.EXE");
-		if (hModule)
-		{
-			AfxGetApp()->WriteProfileInt("Config", "EVC3FirstTime", m_dsFirstTime);
-		}
-	}
+	// Save first time variable.
+	CString version = ObjModelHelper::GetVersion();
+	if (version == "7.10")
+		AfxGetApp()->WriteProfileInt("Config", "VS710FirstTime", m_dsFirstTime);
+	else if (version == "7.00")
+		AfxGetApp()->WriteProfileInt("Config", "VS700FirstTime", m_dsFirstTime);
+	else if (version == "6")
+		AfxGetApp()->WriteProfileInt("Config", "DS6FirstTime", m_dsFirstTime);
+	else if (version == "5")
+		AfxGetApp()->WriteProfileInt("Config", "DS5FirstTime", m_dsFirstTime);
+	else if (version == "EVC")
+		AfxGetApp()->WriteProfileInt("Config", "EVC3FirstTime", m_dsFirstTime);
 }
 	
 

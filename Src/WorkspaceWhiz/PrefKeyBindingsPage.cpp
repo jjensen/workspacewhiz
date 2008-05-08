@@ -1,25 +1,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: PrefKeyBindingsPage.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/PrefKeyBindingsPage.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 17   $ $Author: Jjensen $
+// $Date: 2003/01/08 $ $Revision: #12 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "workspacewhiz.h"
-#include "Commands.h"
-#include "DSAddin.h"
+#include "resource.h"
 #include "PrefKeyBindingsPage.h"
 #include "PrefKeyBindingsHotKeyCtrl.h"
-#include "WorkspaceCommands.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -31,7 +27,7 @@ IMPLEMENT_DYNCREATE(CPrefKeyBindingsPage, CPropertyPage)
 
 CPrefKeyBindingsPage::CPrefKeyBindingsPage()
 {
-	m_subclassedHotKeys.SetSize(GetCommandCount());
+	m_subclassedHotKeys.SetCount(WWhizCommands::GetCommandCount());
 }
 
 CPrefKeyBindingsPage::CPrefKeyBindingsPage(int which) :
@@ -41,7 +37,7 @@ CPrefKeyBindingsPage::CPrefKeyBindingsPage(int which) :
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 
-	m_subclassedHotKeys.SetSize(GetCommandCount());
+	m_subclassedHotKeys.SetCount(WWhizCommands::GetCommandCount());
 }
 
 CPrefKeyBindingsPage::~CPrefKeyBindingsPage()
@@ -63,7 +59,8 @@ BEGIN_MESSAGE_MAP(CPrefKeyBindingsPage, CHtmlHelpPropPage)
 	ON_BN_CLICKED(IDC_PKB_ASSIGN, OnPkbAssign)
 	ON_BN_CLICKED(IDC_PKB_RESET, OnPkbReset)
 	//}}AFX_MSG_MAP
-	ON_CONTROL_RANGE(BN_CLICKED, IDC_PKB_KEYCHECK1, IDC_PKB_KEYCHECK22, OnPkbKeycheck)
+	ON_CONTROL_RANGE(BN_CLICKED, IDC_PKB_KEYCHECK1, IDC_PKB_KEYCHECK21, OnPkbKeycheck)
+	ON_BN_CLICKED(IDC_PKB_ASSIGNALLPAGES, OnBnClickedPkbAssignallpages)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -73,11 +70,11 @@ BOOL CPrefKeyBindingsPage::OnInitDialog()
 {
 	CHtmlHelpPropPage::OnInitDialog();
 	
-	m_firstItem = -1;
+	m_firstItem = 0;
 	m_lastItem = -1;
-	for (int i = 0; i < GetCommandCount(); i++)
+	for (int i = 1; i < WWhizCommands::GetCommandCount(); i++)
 	{
-		CWnd* wnd = GetDlgItem(IDC_PKB_KEY1 + i);
+		CWnd* wnd = GetDlgItem(IDC_PKB_KEY1 + i - 1);
 		if (wnd)
 		{
 			m_firstItem = i;
@@ -85,9 +82,9 @@ BOOL CPrefKeyBindingsPage::OnInitDialog()
 		}
 	}
 	
-	for (i = m_firstItem + 1; i < GetCommandCount(); i++)
+	for (i = m_firstItem + 1; i < WWhizCommands::GetCommandCount(); i++)
 	{
-		CWnd* wnd = GetDlgItem(IDC_PKB_KEY1 + i);
+		CWnd* wnd = GetDlgItem(IDC_PKB_KEY1 + i - 1);
 		if (!wnd)
 		{
 			m_lastItem = i;
@@ -95,11 +92,11 @@ BOOL CPrefKeyBindingsPage::OnInitDialog()
 		}
 	}
 	if (m_lastItem == -1)
-		m_lastItem = GetCommandCount();
+		m_lastItem = WWhizCommands::GetCommandCount();
 
 	for (i = m_firstItem; i < m_lastItem; i++)
 	{
-		m_subclassedHotKeys[i].SubclassDlgItem(IDC_PKB_KEY1 + i, this);
+		m_subclassedHotKeys[i].SubclassDlgItem(IDC_PKB_KEY1 + i - 1, this);
 	}
 		
 	FillInControls();
@@ -115,9 +112,9 @@ void CPrefKeyBindingsPage::FillInControls()
 	{
 		bool assignKey = g_config.m_keys[i].m_assignKey;
 
-		((CButton*)GetDlgItem(IDC_PKB_KEYCHECK1 + i))->SetCheck(assignKey);
+		((CButton*)GetDlgItem(IDC_PKB_KEYCHECK1 + i - 1))->SetCheck(assignKey);
 
-		CHotKeyCtrl* hkCtrl = (CHotKeyCtrl*)GetDlgItem(IDC_PKB_KEY1 + i);
+		CHotKeyCtrl* hkCtrl = (CHotKeyCtrl*)GetDlgItem(IDC_PKB_KEY1 + i - 1);
 		hkCtrl->EnableWindow(assignKey);
 
 		WORD vk;
@@ -281,7 +278,7 @@ void CPrefKeyBindingsPage::TranslateDSToHK(CString keyStr, WORD& vk, WORD& mod)
 	
 	// Build the modifier by cycling through the + symbols.
 	int lastPlusPos = 0;
-	int plusPos = CStringFind(keyStr, '+', lastPlusPos);
+	int plusPos = keyStr.Find('+', lastPlusPos);
 	while (plusPos != -1)
 	{
 		CString str = keyStr.Mid(lastPlusPos, plusPos - lastPlusPos);
@@ -294,7 +291,7 @@ void CPrefKeyBindingsPage::TranslateDSToHK(CString keyStr, WORD& vk, WORD& mod)
 			mod |= HOTKEYF_SHIFT;
 		
 		lastPlusPos = plusPos + 1;
-		plusPos = CStringFind(keyStr, '+', lastPlusPos);
+		plusPos = keyStr.Find('+', lastPlusPos);
 	}
     
 	// Now, build the virtual key code.
@@ -337,10 +334,10 @@ void CPrefKeyBindingsPage::TranslateDSToHK(CString keyStr, WORD& vk, WORD& mod)
 
 void CPrefKeyBindingsPage::OnPkbAssign() 
 {
-	const CommandInfo* comInfo = GetCommandList();
+	const WWhizCommands::CommandInfo* comInfo = WWhizCommands::GetCommandList();
 	for (int i = m_firstItem; i < m_lastItem; i++)
 	{
-		BOOL checked = ((CButton*)GetDlgItem(IDC_PKB_KEYCHECK1 + i))->GetCheck();
+		BOOL checked = ((CButton*)GetDlgItem(IDC_PKB_KEYCHECK1 + i - 1))->GetCheck();
 		g_config.m_keys[i].m_assignKey = (checked != FALSE);
 
 		if (g_config.m_keys[i].m_assignKey)
@@ -363,13 +360,14 @@ void CPrefKeyBindingsPage::OnPkbAssign()
 		CString keyStr = g_config.m_keys[i].m_keyStr;
 		int plusPos = keyStr.ReverseFind('+');
 		CString endPart = keyStr.Mid(plusPos + 1);
+#ifdef WWHIZ_VC6
 		if (endPart.GetLength() == 1)
 		{
 			// DevStudio only supports alphanumeric for some oddball reason.
 			if (!isalnum(endPart[0]))
 			{
 				AfxMessageBox(
-					"Unfortunately, Workspace Whiz! is not able to add the "
+					"Unfortunately, Workspace Whiz is not able to add the "
 					"key binding [ " + keyStr + " ] for command " + comInfo[i].m_name +
 					" due to a bug in Developer Studio.  Please assign this key "
 					"by hand through the Tools menu->Customize->Keyboard dialog.");
@@ -377,14 +375,9 @@ void CPrefKeyBindingsPage::OnPkbAssign()
 				continue;
 			}
 		}
+#endif WWHIZ_VC6
 
-		if (!comInfo[i].m_justText)
-		{
-			VERIFY_OK(g_pApplication->AddKeyBinding(
-				CComBSTR(keyStr), CComBSTR(comInfo[i].m_name), CComBSTR("Main")));
-		}
-	    VERIFY_OK(g_pApplication->AddKeyBinding(
-	        CComBSTR(keyStr), CComBSTR(comInfo[i].m_name), CComBSTR("Text")));
+		ObjModelHelper::SetKeyBinding(comInfo[i].m_justText, CString(comInfo[i].m_name), keyStr);
 	}
 
 	// Save the new configuration.
@@ -393,10 +386,10 @@ void CPrefKeyBindingsPage::OnPkbAssign()
 
 void CPrefKeyBindingsPage::OnPkbReset() 
 {
-	const CommandInfo* comList = GetCommandList();
-	int comCount = GetCommandCount();
+	const WWhizCommands::CommandInfo* comList = WWhizCommands::GetCommandList();
+	int comCount = WWhizCommands::GetCommandCount();
 
-	for (int i = 0; i < comCount; i++)
+	for (int i = 1; i < comCount; i++)
 	{
 		// Grab the default.
 		g_config.m_keys[i].m_keyStr = comList[i].m_keyStr;
@@ -404,4 +397,65 @@ void CPrefKeyBindingsPage::OnPkbReset()
 	}
 
 	FillInControls();
+}
+
+void CPrefKeyBindingsPage::OnBnClickedPkbAssignallpages()
+{
+	const WWhizCommands::CommandInfo* comInfo = WWhizCommands::GetCommandList();
+	for (int i = m_firstItem; i < m_lastItem; i++)
+	{
+		BOOL checked = ((CButton*)GetDlgItem(IDC_PKB_KEYCHECK1 + i - 1))->GetCheck();
+		g_config.m_keys[i].m_assignKey = (checked != FALSE);
+		if (g_config.m_keys[i].m_assignKey)
+		{
+			WORD vk;
+			WORD mod;
+			m_subclassedHotKeys[i].GetHotKey(vk, mod);
+
+			CString keyStr;
+			TranslateHKToDS(keyStr, vk, mod);
+
+			g_config.m_keys[i].m_keyStr = keyStr;
+		}
+	}
+
+	for ( i = 1; i < (int)g_config.m_keys.GetCount(); ++i )
+	{
+		if (!g_config.m_keys[i].m_assignKey)
+			continue;
+		CString keyStr = g_config.m_keys[i].m_keyStr;
+		int plusPos = keyStr.ReverseFind('+');
+		CString endPart = keyStr.Mid(plusPos + 1);
+#ifdef WWHIZ_VC6
+		if (endPart.GetLength() == 1)
+		{
+			// DevStudio only supports alphanumeric for some oddball reason.
+			if (!isalnum(endPart[0]))
+			{
+				AfxMessageBox(
+					"Unfortunately, Workspace Whiz is not able to add the "
+					"key binding [ " + keyStr + " ] for command " + comInfo[i].m_name +
+					" due to a bug in Developer Studio.  Please assign this key "
+					"by hand through the Tools menu->Customize->Keyboard dialog.");
+
+				continue;
+			}
+		}
+#endif WWHIZ_VC6
+
+		if (!ObjModelHelper::SetKeyBinding(comInfo[i].m_justText, CString(comInfo[i].m_name), keyStr))
+		{
+#ifdef WWHIZ_VSNET			
+			AfxMessageBox("Workspace Whiz is unable to add the key binding [ " + keyStr + " ] "
+					"for command " + comInfo[i].m_name + ".  The most likely reason for this "
+					"is Visual Studio .NET maintains a set of read-only default key bindings.  "
+					"Go to the Tools menu->Options->Keyboard and press the Save As button to "
+					"generate a set of editable key bindings.");
+			break;
+#endif WWHIZ_VSNET
+		}
+	}
+
+	// Save the new configuration.
+	g_config.SaveRegistry();
 }

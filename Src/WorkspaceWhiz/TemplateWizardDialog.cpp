@@ -1,22 +1,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TemplateWizardDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/TemplateWizardDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 14   $ $Author: Jjensen $
+// $Date: 2003/01/16 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "TemplateWizardDialog.h"
 #include <MsHtml.h>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -122,7 +121,7 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
     if (str == "about:blank")
 	{
 		// The string is about:blank.  This means load the correct page.
-		LONG len = m_htmlFile.GetLength();
+		LONG len = (LONG)m_htmlFile.GetLength();
 		BYTE* data = m_htmlFile.Detach();
 		hHTMLText = GlobalAlloc(GPTR, len + 1);
 		if (!hHTMLText)
@@ -150,7 +149,7 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 	::SetFocus(ieWnd);
 */
 	// Set to the first available input field.
-	VERIFY_OK(m_pBrowserApp->get_Document(&pDispDocument));
+	m_pBrowserApp->get_Document(&pDispDocument);
 
 	if (pDispDocument)
 	{
@@ -158,14 +157,14 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 
 		// Get all of the HTML elements.
 		CComPtr<IHTMLElementCollection> pElements;
-		VERIFY_OK(pDocument->get_all(&pElements));
+		pDocument->get_all(&pElements);
 
 		CComVariant nullVariant;
 		CComPtr<IDispatch> pDispFirstElement;
 
 		// Now get the INPUT elements.
 		CComPtr<IDispatch> pDispInputElements;
-		VERIFY_OK(pElements->tags(CComVariant("INPUT"), &pDispInputElements));
+		pElements->tags(CComVariant("INPUT"), &pDispInputElements);
 		if (pDispInputElements)
 		{
 			CComQIPtr<IHTMLElementCollection, &IID_IHTMLElementCollection> pInputElements(pDispInputElements);
@@ -178,7 +177,7 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 				{
 					// Get the element, if it exists.
 					CComPtr<IDispatch> pDispElement;
-					VERIFY_OK(pInputElements->item(CComVariant(i), nullVariant, &pDispElement));
+					pInputElements->item(CComVariant(i), nullVariant, &pDispElement);
 					if (!pDispElement)
 						continue;
 
@@ -196,9 +195,9 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 					// Get the type.
 					CComBSTR bstrType;
 					pInputElement->get_type(&bstrType);
-					CString strType = bstrType;
+					CString strType(bstrType);
 					
-					CString id = bstrID;
+					CString id(bstrID);
 					CString value;
 					if (!m_params.Lookup(id, value))
 					{
@@ -240,7 +239,7 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 
 		// Now get the SELECT elements.
 		CComPtr<IDispatch> pDispSelectElements;
-		VERIFY_OK(pElements->tags(CComVariant("SELECT"), &pDispSelectElements));
+		pElements->tags(CComVariant("SELECT"), &pDispSelectElements);
 		if (pDispSelectElements)
 		{
 			CComQIPtr<IHTMLElementCollection, &IID_IHTMLElementCollection> pSelectElements(pDispSelectElements);
@@ -253,7 +252,7 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 				{
 					// Get the element, if it exists.
 					CComPtr<IDispatch> pDispElement;
-					VERIFY_OK(pSelectElements->item(CComVariant(i), nullVariant, &pDispElement));
+					pSelectElements->item(CComVariant(i), nullVariant, &pDispElement);
 					if (!pDispElement)
 						continue;
 
@@ -271,9 +270,9 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 					// Get the type.
 					CComBSTR bstrType;
 					pSelectElement->get_type(&bstrType);
-					CString strType = bstrType;
+					CString strType(bstrType);
 					
-					CString id = bstrID;
+					CString id(bstrID);
 					CString value;
 					if (!m_params.Lookup(id, value))
 					{
@@ -284,22 +283,22 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 
 					// Match the name.
 					long optionCount;
-					VERIFY_OK(pSelectElement->get_length(&optionCount));
+					pSelectElement->get_length(&optionCount);
 					for (int j = 0; j < optionCount; j++)
 					{
 						// Get the item at the index.
 						CComPtr<IDispatch> pDispOptionElement;
-						VERIFY_OK(pSelectElement->item(CComVariant(j), nullVariant, &pDispOptionElement));
+						pSelectElement->item(CComVariant(j), nullVariant, &pDispOptionElement);
 						if (pDispOptionElement)
 						{
 							CComQIPtr<IHTMLOptionElement, &IID_IHTMLOptionElement> pOptionElement(pDispOptionElement);
 
 							CComBSTR bstrItem;
-							VERIFY_OK(pOptionElement->get_text(&bstrItem));
-							CString strItem = bstrItem;
+							pOptionElement->get_text(&bstrItem);
+							CString strItem(bstrItem);
 							if (value == strItem)
 							{
-								VERIFY_OK(pSelectElement->put_selectedIndex(j));
+								pSelectElement->put_selectedIndex(j);
 								break;
 							}
 						}
@@ -307,7 +306,7 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 
 					if (j == optionCount)
 					{
-						VERIFY_OK(pSelectElement->put_selectedIndex(0));
+						pSelectElement->put_selectedIndex(0);
 					}
 				}
 			}
@@ -451,17 +450,20 @@ void CTemplateWizardDialog::GreyButtons()
 void CTemplateWizardDialog::UpdateFromHtml()
 {
 	CComPtr<IDispatch> pDispDocument;
-	VERIFY_OK(m_pBrowserApp->get_Document(&pDispDocument));
+	m_pBrowserApp->get_Document(&pDispDocument);
+	if (!pDispDocument)
+		return;
+
 	CComQIPtr<IHTMLDocument2, &IID_IHTMLDocument2> pDocument(pDispDocument);
 
 	CComPtr<IHTMLElementCollection> pElements;
-	VERIFY_OK(pDocument->get_all(&pElements));
+	pDocument->get_all(&pElements);
 
 	CComVariant nullVariant;
 
 	// Now get the INPUT elements.
 	CComPtr<IDispatch> pDispInputElements;
-	VERIFY_OK(pElements->tags(CComVariant("INPUT"), &pDispInputElements));
+	pElements->tags(CComVariant("INPUT"), &pDispInputElements);
 	if (pDispInputElements)
 	{
 		CComQIPtr<IHTMLElementCollection, &IID_IHTMLElementCollection> pInputElements(pDispInputElements);
@@ -474,7 +476,7 @@ void CTemplateWizardDialog::UpdateFromHtml()
 			{
 				// Get the element, if it exists.
 				CComPtr<IDispatch> pDispElement;
-				VERIFY_OK(pInputElements->item(CComVariant(i), nullVariant, &pDispElement));
+				pInputElements->item(CComVariant(i), nullVariant, &pDispElement);
 				if (!pDispElement)
 					continue;
 
@@ -492,14 +494,14 @@ void CTemplateWizardDialog::UpdateFromHtml()
 				// Get the type.
 				CComBSTR bstrType;
 				pInputElement->get_type(&bstrType);
-				CString strType = bstrType;
+				CString strType(bstrType);
 
-				CString id = bstrID;
+				CString id(bstrID);
 				if (strType == "text"  ||  strType == "file")
 				{
 					CComBSTR bstrValue;
-					VERIFY_OK(pInputElement->get_value(&bstrValue));
-					CString value = bstrValue;
+					pInputElement->get_value(&bstrValue);
+					CString value(bstrValue);
 					value = g_wwhizTemplateManager->ParseCode(value, NULL, &m_code);
 
 					m_params[id] = value;
@@ -528,7 +530,7 @@ void CTemplateWizardDialog::UpdateFromHtml()
 
 	// Now get the SELECT elements.
 	CComPtr<IDispatch> pDispSelectElements;
-	VERIFY_OK(pElements->tags(CComVariant("SELECT"), &pDispSelectElements));
+	pElements->tags(CComVariant("SELECT"), &pDispSelectElements);
 	if (pDispSelectElements)
 	{
 		CComQIPtr<IHTMLElementCollection, &IID_IHTMLElementCollection> pSelectElements(pDispSelectElements);
@@ -541,7 +543,7 @@ void CTemplateWizardDialog::UpdateFromHtml()
 			{
 				// Get the element, if it exists.
 				CComPtr<IDispatch> pDispElement;
-				VERIFY_OK(pSelectElements->item(CComVariant(i), nullVariant, &pDispElement));
+				pSelectElements->item(CComVariant(i), nullVariant, &pDispElement);
 				if (!pDispElement)
 					continue;
 
@@ -551,7 +553,7 @@ void CTemplateWizardDialog::UpdateFromHtml()
 
 				CComBSTR bstrID;
 				pElement->get_id(&bstrID);
-				CString id = bstrID;
+				CString id(bstrID);
 				if (id.IsEmpty())
 					continue;
 
@@ -562,21 +564,21 @@ void CTemplateWizardDialog::UpdateFromHtml()
 				// Get the type.
 				CComBSTR bstrType;
 				pSelectElement->get_type(&bstrType);
-				CString strType = bstrType;
+				CString strType(bstrType);
 				
 				// Get the current selection index.
 				long curSel;
-				VERIFY_OK(pSelectElement->get_selectedIndex(&curSel));
+				pSelectElement->get_selectedIndex(&curSel);
 
 				// Get the item at the index.
 				CComPtr<IDispatch> pDispOptionElement;
-				VERIFY_OK(pSelectElement->item(CComVariant(curSel), nullVariant, &pDispOptionElement));
+				pSelectElement->item(CComVariant(curSel), nullVariant, &pDispOptionElement);
 				if (pDispOptionElement)
 				{
 					CComQIPtr<IHTMLOptionElement, &IID_IHTMLOptionElement> pOptionElement(pDispOptionElement);
 
 					CComBSTR bstrItem;
-					VERIFY_OK(pOptionElement->get_text(&bstrItem));
+					pOptionElement->get_text(&bstrItem);
 					m_params[id] = bstrItem;
 				}
 			}
@@ -698,7 +700,7 @@ void CTemplateWizardDialog::Render()
 	// Set the new title.
 	CString title;
 	GetWindowText(title);
-	int parenPos = CStringFind(title, " (", 0);
+	int parenPos = title.Find(" (", 0);
 	if (parenPos != -1)
 		title = title.Left(parenPos);
 	CString newTitle;
@@ -768,7 +770,7 @@ void CTemplateWizardDialog::Render()
 		m_asciiFilename = CString(asciiTempName);
 		free(asciiTempName);
 
-		DWORD size = m_htmlFile.GetLength();
+		DWORD size = (DWORD)m_htmlFile.GetLength();
 		BYTE* mem = m_htmlFile.Detach();
 		CFile asciiFile;
 		asciiFile.Open(m_asciiFilename, CFile::modeCreate | CFile::modeWrite);

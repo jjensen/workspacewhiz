@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TemplateGroup.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplateManager/TemplateGroup.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 5    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -28,7 +28,7 @@ TemplateGroup::TemplateGroup(TemplateManager& manager, CString filename) :
 **/
 TemplateGroup::~TemplateGroup()
 {
-	for (int i = 0; i < m_templates.GetSize(); i++)
+	for (size_t i = 0; i < m_templates.GetCount(); i++)
 	{
 		delete m_templates[i];
 	}
@@ -55,7 +55,7 @@ bool TemplateGroup::Refresh()
 	}
 
 	// Destroy the old stuff.
-	for (int i = 0; i < m_templates.GetSize(); i++)
+	for (size_t i = 0; i < m_templates.GetCount(); i++)
 		delete m_templates[i];
 	m_templates.RemoveAll();
 
@@ -110,7 +110,7 @@ TopState:
 				{
 					state = PARSETEMPLATE;
 
-					curTemplate = new Template(*this);
+					curTemplate = WNEW Template(*this);
 					curTemplate->m_lineNumber = lineNumber;
 					m_templates.Add(curTemplate);
 					curTemplate->m_name = line.Mid(1, line.GetLength() - 2);
@@ -292,7 +292,7 @@ WWhizTemplate* TemplateGroup::Get(int index)
 **/
 int TemplateGroup::Find(LPCTSTR name)
 {
-	for (int i = 0; i < m_templates.GetSize(); i++)
+	for (size_t i = 0; i < m_templates.GetCount(); i++)
 	{
 		CString curName = m_templates[i]->GetName();
 		LPCTSTR curNamePtr = curName;

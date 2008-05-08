@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: FileList.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizInterface/FileList.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 15   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -12,9 +12,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "FileList.h"
 #include "WorkspaceInfo.h"
+#include <algorithm>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -172,7 +173,7 @@ File* File::Create(const CString& filename)
 		return file;
 
 	// Create a new file.
-	file = new File;
+	file = WNEW File;
 	File::Create(*file, filename);
 
 	// Add to map.
@@ -218,7 +219,7 @@ void File::ClearTags()
 
 FileList::FileList()
 {
-	m_files.SetSize(0, 100);
+	m_files.SetCount(0, 100);
 }
 
 
@@ -240,13 +241,14 @@ void FileList::RemoveAll()
 
 WWhizFile& FileList::Create(const CString& filename)
 {
-	File* file = new File;
+	File* file = WNEW File;
 	File::Create(*file, filename);
 	file->AddRef();
 	return *file;
 }
 
 
+/*
 static int __cdecl CompareArray(const void* elem1, const void* elem2)
 {
 	File* file1 = *(File**)elem1;
@@ -265,12 +267,32 @@ static int __cdecl CompareArray(const void* elem1, const void* elem2)
 	}
 	return ret;
 }
-	
+*/	
+
+// Return whether first element is greater than the second
+static bool CompareElements( File* file1, File* file2 )
+{
+	int ret = file1->GetShortName().Compare(file2->GetShortName());
+	if (ret == 0)
+	{
+		// If the names match, compare against the file extensions.
+		ret = file1->GetExt().Compare(file2->GetExt());
+		if (ret == 0)
+		{
+			// If the extensions match, compare against the path.
+			ret = file1->GetPath().CompareNoCase(file2->GetPath());
+		}
+	}
+
+	return ret < 0;
+}
+
 
 void FileList::Sort()
 {
 	// Sort the file array.
-	qsort(m_files.GetData(), m_files.GetSize(), sizeof(File*), CompareArray);
+	std::sort(m_files.GetData(), m_files.GetData() + m_files.GetCount(), CompareElements);
+//	qsort(m_files.GetData(), m_files.GetCount(), sizeof(File*), CompareArray);
 }
 
 // Find exact file index.

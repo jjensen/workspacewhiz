@@ -1,33 +1,19 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: AddInInt.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/AddInInt.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 12   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceCommands.h"
+#include "WWhizCommands.h"
 #include "History.h"
 
 #define ERR_SUCCESS             0
-
-extern int HeaderFlip(LPCTSTR fullNameStr);
-
-int OnHeaderFlip(LPCTSTR pParams)
-{
-	bool didAdd = History::PreAdd();
-	int ret = HeaderFlip(pParams);
-	if (ret == 0)
-		History::Add();
-	else if (didAdd)
-		History::UndoAdd();
-	return ret;
-}
 
 /**
 **/
@@ -44,8 +30,8 @@ struct command_t
 
 static command_t commands[] = 
 {
-    { "HeaderFlip",			OnHeaderFlip },
-    { "HF",					OnHeaderFlip },
+    { "HeaderFlip",			WWhizCommands::OnHeaderFlip },
+    { "HF",					WWhizCommands::OnHeaderFlip },
 	{ "GetWWhizInterface2",	OnGetWWhizInterface2 },
 };
 

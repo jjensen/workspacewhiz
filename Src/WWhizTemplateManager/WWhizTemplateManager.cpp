@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: WWhizTemplateManager.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplateManager/WWhizTemplateManager.cpp $
-// $Date:: 1/03/01 12:14a  $ $Revision:: 4    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -22,31 +22,47 @@
 //#include <ObjModel\dbgguid.h>
 #pragma warning (disable : 4355)
 #include <afxtempl.h>
-#include "AfxTemplateEx.h"
 #include <process.h>
 #include "TemplateManager.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 
-IApplication* g_pApplication;
-extern TemplateManager g_templateManager;
+WWhizInterface* g_wwhizInterface;
 HINSTANCE g_instance;
 CString g_modulePath;
 
 extern "C" __declspec(dllexport)
+#ifdef WWHIZ_VC6
 WWhizTemplateManager* WWhizTemplateManagerCreate(IApplication* pApplication)
 {
 	g_pApplication = pApplication;
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+WWhizTemplateManager* WWhizTemplateManagerCreate(void* pDTE)
+{
+	g_pDTE = (EnvDTE::_DTE*)pDTE;
+#endif WWHIZ_VSNET
 
-	g_templateManager.Create();
+	WNEW TemplateManager;
+	TemplateManager::GetInstance()->Create();
 
-	return &g_templateManager;
+	return TemplateManager::GetInstance();
+}
+
+
+extern "C" __declspec(dllexport)
+void WWhizTemplateManagerDestroy()
+{
+	delete TemplateManager::GetInstance();
+#ifdef WWHIZ_VSNET
+	g_pDTE = NULL;
+#endif WWHIZ_VSNET
 }
 
 
@@ -88,3 +104,9 @@ void GetLastErrorDescription(CComBSTR& bstr)
 }
 
 #endif //_DEBUG
+
+
+
+
+
+

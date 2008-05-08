@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: Commands.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/Commands.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 12   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -12,6 +12,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #if !defined(AFX_COMMANDS_H__039FB637_6DD0_11D3_9B27_835709CADA52__INCLUDED_)
 #define AFX_COMMANDS_H__039FB637_6DD0_11D3_9B27_835709CADA52__INCLUDED_
+
+#include <ObjModel\addguid.h>
+#include <ObjModel\appguid.h>
+#include <ObjModel\dbgguid.h>
 
 #include "WorkspaceWhizTypes.h"
 
@@ -99,32 +103,31 @@ protected:
 	typedef CComObject<XDebuggerEvents> XDebuggerEventsObj;
 	XDebuggerEventsObj* m_pDebuggerEventsObj;
 
-	CListEx<WWhizTag*, WWhizTag*> m_matchedTagList;
-
 public:
-// ICommands methods
-	STDMETHOD(WWFileOpen)(THIS);
-	STDMETHOD(WWFileGlobalOpen)(THIS);
-	STDMETHOD(WWHeaderFlip)(THIS);
-	STDMETHOD(WWFileFindPrev)(THIS);
-	STDMETHOD(WWFileFindNext)(THIS);
-	STDMETHOD(WWHistoryBack)(THIS);
-	STDMETHOD(WWHistoryForward)(THIS);
-	STDMETHOD(WWHistoryDlg)(THIS);
-	STDMETHOD(WWTagFindDlg)(THIS);
-	STDMETHOD(WWTagFindSpecialDlg)(THIS);
+	STDMETHOD(WWOptions)();
+	STDMETHOD(WWFileOpen)();
+	STDMETHOD(WWFileGlobalOpen)();
+	STDMETHOD(WWHeaderFlip)();
+	STDMETHOD(WWFileFindPrev)();
+	STDMETHOD(WWFileFindNext)();
+	STDMETHOD(WWHistoryBack)();
+	STDMETHOD(WWHistoryForward)();
+	STDMETHOD(WWHistoryDlg)();
+	STDMETHOD(WWTagFindDlg)();
+	STDMETHOD(WWTagFindSpecialDlg)();
 	STDMETHOD(WWTagFlip)();
-	STDMETHOD(WWTagFindAtCursor)(THIS);
-	STDMETHOD(WWTagFindAtCursorDlg)(THIS);
-	STDMETHOD(WWTagFindPrev)(THIS);
-	STDMETHOD(WWTagFindNext)(THIS);
-	STDMETHOD(WWTagCompletePrev)(THIS);
-	STDMETHOD(WWTagCompleteNext)(THIS);
-	STDMETHOD(WWTagCompleteRestore)(THIS);
-	STDMETHOD(WWTagCompleteDlg)(THIS);
-	STDMETHOD(WWTemplateSelect)(THIS);
+	STDMETHOD(WWTagFindAtCursor)();
+	STDMETHOD(WWTagFindAtCursorDlg)();
+	STDMETHOD(WWTagFindPrev)();
+	STDMETHOD(WWTagFindNext)();
+	STDMETHOD(WWTagCompletePrev)();
+	STDMETHOD(WWTagCompleteNext)();
+	STDMETHOD(WWTagCompleteRestore)();
+	STDMETHOD(WWTagCompleteDlg)();
+	STDMETHOD(WWTemplateSelect)();
 	STDMETHOD(WWTemplateComplete)();
 	STDMETHOD(WWPasteFix)();
+// ICommands methods
 };
 
 typedef CComObject<CCommands> CCommandsObj;

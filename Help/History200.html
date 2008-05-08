@@ -1,0 +1,587 @@
+<html>
+<head>
+<title>History - Version 2.00</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css"></head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2>6/10/2000 - Workspace Whiz 2.00 Final Release!</h2>
+<h3>General</h3>
+<ul>
+  <li>If the Tags.WW file was write protected, bad things happened. Fixed.</li>
+</ul>
+<hr>
+<h2>6/8/2000 - Gold Master Candidate #1</h2>
+<h3>General</h3>
+<ul>
+  <li><b>Templates:</b> When executing a movement command immediately after the 
+    template begin, the Template Complete functionality didn't destroy the template 
+    key in the text file.</li>
+  <li><b>Templates:</b> Conditional statements like !!If @@var@@ == &quot;&quot; 
+    properly handled now.</li>
+</ul>
+<hr>
+<h2>6/6/2000 - Release Candidate 2</h2>
+<h3>General</h3>
+<ul>
+  <li><font color="#0000FF">Paste bug not fixed but has an acceptable workaround 
+    solution. Assign WWPasteFix to Ctrl-V.</font></li>
+  <li>Broke the keyboard assignments preference dialogs into 3 parts.</li>
+  <li><b>Tags:</b> When autocompleting a tag, the / substring search symbol can 
+    be used.</li>
+  <li><b>Templates:</b> @@blah:U:l40@@ -- Two colons hung DevStudio. Fixed.</li>
+  <li><b>Templates:</b> Caret command should work 100% of the time now.</li>
+  <li><b>Templates:</b> Date command accepts a parameter as a formatting string 
+    as described in the GetDateFormat() MSDN Help.</li>
+  <li><b>Templates:</b> Time command accepts a parameter as a formatting string 
+    as described in the GetTimeFormat() MSDN Help.</li>
+</ul>
+<hr>
+<h2>6/5/2000 - Release Candidate 1</h2>
+<h3>General</h3>
+<ul>
+  <li>Find File and Find Tag's context menus take keypresses again.</li>
+  <li><b>Tags:</b> Fixed an obscure bug where inherits lists were super long. 
+    Exuberant Ctags still parses them incorrectly, but Workspace Whiz tries to 
+    make up for it.</li>
+  <li><b>Templates:</b> !!Goto went to the correct place in the code, but wouldn't 
+    execute a !! command if it existed at the goto location.</li>
+  <li><b>Templates:</b> Integer != comparison for !!If and !!ElseIf was broken.</li>
+  <li><b>Templates:</b> StrFind command added.</li>
+  <li><b>Templates:</b> StrLen command added.</li>
+  <li><b>Templates:</b> StrLower command added.</li>
+  <li><b>Templates:</b> StrSub command added.</li>
+  <li><b>Templates:</b> StrUpper command added.</li>
+  <li><b>Templates:</b> Any .WWTpl files in the Workspace Whiz/Templates directory 
+    are automatically read.</li>
+  <li><b>Templates:</b> Dialog command added.</li>
+  <li><b>Templates:</b> Right-clicking on a template in the template selection 
+    tree now goes to the file properly (without left clicking first).</li>
+  <li><b>Templates:</b> If a colon is used inside a substitution command @@sub 
+    &quot;:&quot;:U@@ inside quotes, it is parsed properly.</li>
+  <li><b>Templates:</b> If a !! is used inside a substitution command before the 
+    command name, the return value is ignored: @@(!!command)@@</li>
+  <li><b>Templates:</b> Support enabled for extracting the left and right parts 
+    of a string through the substitution command flag 'l' and 'r', the normal 
+    left and right justification commands.</li>
+  <li><b>Templates:</b> @@var:c##@@ command fixed.</li>
+  <li><b>Templates:</b> The Call command can accept a return value through the 
+    Return command. </li>
+  <li><b>Templates:</b> While executing the called template through !!Call, a 
+    variable called <span class="code">__Parent</span> exists. It is the name 
+    of the calling template.</li>
+  <li><b>Templates:</b> Added GUID command.</li>
+</ul>
+<h3>Programming Interface</h3>
+<ul>
+  <li>WWhizTemplateCommandArgs::Return() added which takes an integer argument.</li>
+</ul>
+<hr>
+<h2></h2>
+<h2>5/26/2000 - Beta 4e</h2>
+<h3>General</h3>
+<ul>
+  <li><b>Tags:</b> The tag and parent edit fields in the Find Tag dialog now accept 
+    mixed case. When mixed case is used, a case sensitive match is automatically 
+    performed. The case sensitive match may be toggled off by inserting a dash 
+    <span class="code">-</span> in the tag.</li>
+  <li><b>Tags:</b> Special characters may be inserted at any point in the tag 
+    and parent edit fields of the Find Tag dialog. The <span class="code">+</span> 
+    symbol turns case sensitive matching on. The <span class="code">\</span> symbol 
+    forces an exact length match of the tag. The <span class="code">=</span> symbol 
+    forces an exact length match <i>and</i> case sensitive match. The <span class="code">-</span> 
+    symbol turns case sensitive matching off.</li>
+  <li><b>Tags:</b> Fixed the Find Tag title bar and status bar refresh problem 
+    after adding a new Extra Files project.</li>
+  <li><b>Templates:</b> Inserting a <span class="code">%&quot;</span> will cause 
+    a quote mark to appear in the outputted text. <span class="code">%&quot;</span> 
+    should only be necessary when using quotation marks to surround large strings 
+    with spaces. See <span class="code">UsefulSamples.WWTpl</span> for an example.</li>
+  <li><font color="#CC0000"><b>Templates:</b></font><b><font color="#CC0000"> 
+    I made a huge error when implementing expression tags. Regrettably, any instances 
+    of <span class="code">@@!!Command@@</span> in your code must be changed to 
+    <span class="code">@@(Command)@@</span>. The new syntax allows embedded tag 
+    parameters, whereas the old syntax couldn't allow it. The example below runs 
+    a command called <span class="code">Command</span> with two arguments: the 
+    contents of <span class="code">variable</span> and the return code from <span class="code">AnotherCommand</span>.</font></b></li>
+  <blockquote> 
+    <p><font color="#CC0000"><b><span class="code">@@(Command @@variable@@ @@(AnotherCommand)@@)@@</span></b></font></p>
+  </blockquote>
+  <li><b>Templates:</b> When using the old <span class="code">@@!!Command@@</span> 
+    syntax, Workspace Whiz will report an error.</li>
+  <li><b>Templates:</b> When an error occurs in a template, the line number is 
+    made available. Additionally, Workspace Whiz will open the <span class="code">.WWTpl</span> 
+    file with the error and position the cursor on the line causing the problem.</li>
+  <li><b>Templates:</b> ConfigAddFileSettings command added.</li>
+  <li><b>Templates:</b> ConfigRemoveFileSettings command added.</li>
+  <li><b>Templates:</b> ConfigAddToolSettings command added.</li>
+  <li><b>Templates:</b> ConfigRemoveToolSettings command added.</li>
+  <li><b>Templates:</b> ConfigCount tag command added.</li>
+  <li><b>Templates:</b> ConfigGet tag command added.</li>
+  <li><b>Templates:</b> ProjectCount tag command added.</li>
+  <li><b>Templates:</b> ProjectGet tag command added.</li>
+  <li><b>Templates:</b> WWhizTemplateTest.WWTpl: Print Projects and Print configurations 
+    samples added.</li>
+  <li><b>Templates:</b> UsefulSamples.WWTpl: Create a Custom Template Command 
+    added.</li>
+  <li><b>Templates:</b> Right clicking on a template in the template tree view 
+    will open the appropriate .WWTpl file to that template for editing. (Bug: 
+    You must first left click on the template and THEN right click.)</li>
+  <li>Tries to autodetect the Workspace Whiz toolbar.</li>
+  <li>Fixed the Preferences-&gt;Key Bindings pages to allow the Enter key to be 
+    pressed.</li>
+  <li>Fixed the DevStudio 5 first time registry key from the installer.</li>
+  <li>Fixed read-only toggling.</li>
+  <li>Shows &quot;Checking for updates...&quot; in the status bar.</li>
+</ul>
+<h3>Programming Interface</h3>
+<ul>
+  <li>WWhizTemplate::GetLineNumber() added.</li>
+</ul>
+<hr>
+<h2></h2>
+<h2>5/15/2000 - Beta 4d</h2>
+<h3>General</h3>
+<ul>
+  <li>When Tools-&gt;Options-&gt;Workspace-&gt;Reload last workspace at startup 
+    was on, Beta 4c crashed.</li>
+</ul>
+<hr>
+<h2>5/15/2000 - Beta 4c</h2>
+<h3>General</h3>
+<ul>
+  <li>Avoids the WndTabs splash screen clashing problem by moving the registration 
+    dialog further into the startup process.</li>
+  <li>Fixed an issue where some variants of registration keys didn't work.</li>
+  <li>Temporarily uses a custom version of Exuberant Ctags 3.5.2. Do not upgrade 
+    to another version manually at this time.</li>
+  <li>No longer searches #defines by line number.</li>
+  <li>Fixes first time Workspace File Open list column sizing.</li>
+</ul>
+<hr>
+<h2>5/9/2000 - Beta 4b</h2>
+<h3>General</h3>
+<ul>
+  <li>Fixed an installer bug where the directory was stored as the short filename.Added 
+    support for ignoring tokens when processing tags (see Preferences-&gt;Tags).</li>
+  <li>Added a bunch of IgnoreTokens*() support functions to WWhizConfig.</li>
+  <li>Added a wait cursor when finding the tag under the cursor.</li>
+  <li>Fixed a crash in WWTagFindAtCursor.</li>
+  <li>Temporarily uses a custom version of Exuberant Ctags 3.5.2. Do not upgrade 
+    to another version manually at this time.</li>
+</ul>
+<hr>
+<h2>5/5/2000 - Beta 4</h2>
+<h3>General</h3>
+<ul>
+  <li>Tag-related items are logged to the status bar.</li>
+  <li>Time tracking and registration dialogs set up.</li>
+  <li>Find Tag at Cursor Dialog will automatically display the dialog if no file 
+    is open.</li>
+  <li>Added a Register button to the About dialog.</li>
+  <li>Switched to Exuberant Ctags 3.5.2.</li>
+</ul>
+<hr>
+<h2>4/15/2000 - Beta 3</h2>
+<h3>General</h3>
+<ul>
+  <li>Column widths for the Find File and Find Tag dialogs are saved and restored 
+    now. The History dialog will follow next time.</li>
+  <li>Fixed weird window sliding problem when Start menu was docked on the left 
+    side of the screen.</li>
+  <li>Projects and workspaces as Extra Files are allowed to be turned on and off 
+    through checkboxes in the Extra Files dialog.</li>
+  <li>Initial defaults are added to identify the two template files that ship 
+    Workspace Whiz (WWhizTemplateTest.WWTpl and UsefulSamples.WWTpl)</li>
+  <li>Uninstallation is smarter and will allow the user to save their custom settings 
+    (from Beta 3 on).</li>
+  <li>Tags are saved on shutdown.</li>
+  <li>Added a UsefulSamples.WWTpl file.</li>
+  <li>When changing a .WWTpl file, the cursor in the template selection tree didn't 
+    position itself properly.</li>
+  <li>Added new command WWTemplateComplete.</li>
+  <li>New !!Key added to template file format.</li>
+  <li>New !!GetPos command added.</li>
+  <li>New !!MoveTo command added.</li>
+  <li>New @@!!Caret@@ tag command added for positioning the caret when the template 
+    code is parsed.</li>
+  <li>@@\ allows line continuations.</li>
+  <li>@@!!Env VAR@@ fixed.</li>
+  <li>Most help is hooked up.</li>
+  <li> Fixed a bunch of sizing dialog issues.</li>
+  <li>Fixed the Cancel button on the Find File and Find Tag dialogs to work better.</li>
+</ul>
+<h3>Programming Interface</h3>
+<ul>
+  <li>Added WWhizTemplate::GetKey(). Returns the key phrase needed to autocomplete 
+    the code template.</li>
+  <li>WWhizInterface::GetFileList() returns the list of <i>all</i> files, including 
+    those in inactive projects. WWhizInterface::GetActiveFileList() returns just 
+    the files existing in active projects.</li>
+  <li>WWhizProjectList::Find() added.</li>
+  <li>WWhizProject::SetActive() added.</li>
+</ul>
+<hr>
+<h2>3/28/2000 - Beta 2</h2>
+<ul>
+  <li> Fixed About dialog to point support@workspacewhiz.com to the correct email 
+    address.</li>
+  <li>Added the option to perform an automatic Save All before each tag command. 
+    Togglable via preferences.</li>
+  <li>Made WWhizFileList::FindExact, FindNext, and FindPrevious all work off the 
+    file title, not the short filename.</li>
+  <li>Header flip properly toggles between SObject.cpp<->SObject.h and _SObject.cpp<->_SObject.h 
+    when in the same directory.</li>
+  <li>Recursively adds .dsp and .dsw files embedded in another project.</li>
+  <li>Broke out ExtraFiles.WW into the registration module.</li>
+  <li>WWhizInterface is now usable outside of DevStudio.</li>
+  <li>New function: WWhizInterface::SetWWhizReg().</li>
+  <li>Upgraded to AddInComm 1.3.0.</li>
+  <li>WWhizInterfaceLoader's WWhizCreate() function has an additional parameter. 
+    The first parameter is the HINSTANCE (usually AfxGetInstanceHandle()) and 
+    the second parameter is a pointer to IApplication.</li>
+  <li>The Extra Projects dialog has been renamed to Extra Files.</li>
+  <li>The Extra Files dialog will accept ANY type of file now, not just projects 
+    or workspaces.</li>
+  <li>Moved the Header Flip to the registration module.</li>
+  <li>Fixed a bug when using the substring tag match where matches of the exact 
+    length were removed from the list. (i.e. CString and string. Typing /string 
+    only showed CString) </li>
+  <li>WWFindTagAtCursorDialog, WWFindTagAtCursor, WWTagCompleteNext, WWTagCompletePrev, 
+    WWTagCompleteRestore, and WWTagCompleteDlg have been fixed to not run when 
+    there isn't an open document.</li>
+  <li>WWFindTagAtCursorDialog will pull up a dialog when the cursor isn't on any 
+    text.</li>
+  <li>The last item inserted into a Template tree branch was not getting sorted 
+    properly. Fixed.</li>
+  <li>Templates that start with the minus symbol (-) are considered private and 
+    won't show up in the template tree.</li>
+  <li>When performing the !!FileNew command and the directory specified doesn't 
+    exist, WWhiz creates it.</li>
+  <li>Improperly terminated template variables @@var (no closing @@) are properly 
+    detected.</li>
+  <li>Templates make access environment variables through the @@!!env ENVIRONMENT_VARIABLE_NAME@@ 
+    function.</li>
+  <li>The template @@!!ProjectPath@@ function has been extended to allow inclusion 
+    of an optional project name: @@!!ProjectPath MyProject@@</li>
+  <li>Nested conditionals in a false conditional are properly dealt with.</li>
+  <li>New !!Call template function allows calling of another template. !!Call 
+    "Template Name" param1 "param1Value" param2 "param2Value"</li>
+  <li>New !!MessageBox template function.</li>
+  <li>If the !!FileNew template function was called with the 'dsp' parameter and 
+    no project was open, WWhiz crashed. Fixed.</li>
+  <li>!!ProjectFileAdd now takes an optional project name: !!ProjectFileAdd MyProject</li>
+  <li>Fixed a crash when the template file was deleted and DevStudio was loaded. 
+  </li>
+  <li>Documented every function in WWhizInterface.h.</li>
+  <li>Moved GotoTag to WWhizReg.</li>
+  <li>New WWhizTemplateManager public interface.</li>
+  <li>Upgraded to Hans Buehler's latest cdxCSizingDialog interfaces.</li>
+  <li>Autocomplete tags now handles matching all tags.</li>
+  <li>WWhizInterface::ResolveFilename better handles relative paths.</li>
+  <li>Properly supports saving a Tags.WW file with no tags.</li>
+  <li>When CTags.exe isn't present, the WWhiz no longer hangs.</li>
+  <li>When going to a tag where the source file was deleted from disk, WWhiz no 
+    longer crashes.</li>
+  <li>Conditionals in the templates accept ==, !=, &gt;=, &lt;=, &gt;, or &lt;.</li>
+  <li>!!Add and !!Sub commands added.</li>
+  <li>!!Label and !!Goto commands added.</li>
+  <li>Variables in the !!Params section can now resolve embedded variables.</li>
+  <li>When using the Find Next and Find Previous File commands, .dsp and .dsw 
+    files are opened as text.</li>
+</ul>
+<hr>
+<h2>3/2/2000 - Beta 1</h2>
+<ul>
+  <li> Fixed a key bindings bug that caused all keys to assign, including unchecked 
+    keys.</li>
+  <li>Fixed the Toggle Read-Only Attribute for Current File.</li>
+  <li>Made Extra Projects work when there is no workspace open.</li>
+  <li>Fixed an Extra Projects environment variable resolution bug.</li>
+  <li> Fixed so Workspace Whiz will autoinstall into Visual C++ 5.0 AND Visual 
+    C++ 6.0 on the same machine.</li>
+  <li>When closing the Find File or Find Tag dialogs with Current Project selected, 
+    it was impossible to show the Entire Workspace. Fixed. </li>
+</ul>
+<hr>
+<h2>2/16/2000 - Internal Alpha 7</h2>
+<ul>
+  <li> Reworked the icons (thanks to David Brady).</li>
+  <li>Readded F5 Refresh key to Find Tag dialog.</li>
+  <li>Forced the installer to put the First Time variable in the registry.</li>
+  <li>Began work on the Workspace Whiz registration module.</li>
+  <li>Removed Prefix and Extension fields from Find File dialog. If there is sufficient 
+    demand, they can be replaced.</li>
+  <li>Removed the skins. They were too much of a hassle to maintain.</li>
+  <li>Fixed Window Blinds compatibility.</li>
+  <li>Added a version resource to the WWhizInterface.mod file.</li>
+  <li>Renamed WWhizInterface.dll to WWhizInterface.mod so it can be installed 
+    in the DevStudio addins directory without problem.</li>
+  <li>Used the AggressiveOptimize.h file on WWhizInterface.mod.</li>
+  <li>Fixed a crash bug when tags were built and a new file was added to the project 
+    and the tags were accessed.</li>
+  <li>Find File and Find Tag dialogs size the initial list controls properly.</li>
+  <li>Freed the environment strings in the Extra Projects dialog.</li>
+  <li>Ensured that the environment variable resolution didn't pick up "partial" 
+    matches in the Extra Projects dialog.</li>
+  <li>Removed environment variable resolution from Extra Projects dialog when 
+    loading the ExtraProjects.WW file.</li>
+  <li>Added tag autocomplete dialog.</li>
+  <li>Added AddInComm loading support to WWhizInterfaceLoader.cpp.</li>
+  <li>Strips spaces after the SOURCE= token in .dsp files.</li>
+  <li>Made two key bindings dialogs.</li>
+  <li>Tags are right-clickable in the Find Tag dialog. The option to Goto the 
+    tag, copy the tag identifier to the clipboard, and copy the tag parent identifier 
+    to the clipboard exist.</li>
+  <li>Fixed display of Line number: ## in the Find Tag dialog.</li>
+  <li>Holding down Shift while pressing Enter or clicking OK in the Find Tag dialog 
+    pastes the currently selected.</li>
+  <li>Removed WWFixMultiplePrecompiledHeaders.</li>
+  <li>Made Find Tag dialog truly modal.</li>
+  <li>Added tag autocomplete.</li>
+  <li>Added WWhizInterface::GetLastTagRefreshTime().</li>
+  <li>Added WWhizInterface::GetLastFileRefreshTime().</li>
+  <li>Can copy from Find Tag dialog.</li>
+  <li>A major crash occurred if the length of the CTags generated line was greater 
+    than 512 characters. Now, lines may not exceed 4096 characters, which is greater 
+    than the limit of a DevStudio 5 &amp; 6 line.</li>
+  <li>After adding a new project to the DevStudio workspace, the File Open and 
+    Find Tag command didn't properly update the list and crashed. Fixed.</li>
+  <li>Added IsWorkspaceProject() command to WWhizProject.</li>
+  <li>When using the Context Menu for files on a file that doesn't exist on the 
+    hard drive, Workspace Whiz crashed. Fixed.</li>
+  <li>When using the Header Flip command from the Context Menu for files, flipping 
+    from a .h to a .cpp didn't work. Fixed.</li>
+  <li>When a header flip was performed on a file not in the project (when no workspace 
+    was open at all), Workspace Whiz crashed. Fixed.</li>
+  <li>When a file that wasn't in the workspace was open and the Find Tag's Current 
+    Project option is set, Workspace Whiz crashed. Fixed.</li>
+  <li>Fixed a crash bug using COMCTL32.DLL version 4.72.3612.1702 in the Find 
+    Tag dialog.</li>
+  <li>All dialog fields have keyboard shortcuts.</li>
+  <li>The Auto-Refresh Tags option was broken.</li>
+</ul>
+<hr>
+<h2>1/17/2000 - Internal Alpha 6</h2>
+<ul>
+  <li> Fixed disappearing header flip extensions and tag extensions in the Preferences 
+    dialog. Also fixed Rebuild All tags problem where they all disappeared, which 
+    was related.</li>
+  <li>When the header flip can't find the proper file to flip to, it displays 
+    the File Open dialog with the current file synced up.</li>
+  <li>When a project was removed via the Extra Projects dialog or by hand through 
+    the DevStudio workspace, it (and its files and tags) weren't removed properly. 
+    Fixed.</li>
+  <li> The Find Tag dialog shows the current number of tags matched.</li>
+  <li>Wait cursors now appear during tag refreshes.</li>
+  <li>When a file that wasn't in the workspace was open and the Find Tag command 
+    is used, Workspace Whiz crashed. Fixed.</li>
+  <li>The Find Tag title bar shows the file title and extension before the path.</li>
+  <li>Current File buttons disables itself when there is no active file (like 
+    it used to).</li>
+  <li>Made all dialogs have the same five buttons: OK, Cancel, Help, About, and 
+    Preferences.</li>
+  <li>Upgraded to CTags 3.4.</li>
+  <li>Auto-starts when DevStudio is opened.</li>
+  <li>New tooltips available by hitting F1.</li>
+</ul>
+<hr>
+<h2>1/13/2000 - Internal Alpha 5</h2>
+<ul>
+  <li> DevStudio now shows up in the Alt-Tab menu when a Workspace Whiz dialog 
+    is opened.</li>
+  <li>Sped up tag creation/loading considerably.</li>
+  <li>Fixed an obscure tag matching bug (when there were no matched tags) that 
+    could cause long delays in the list refresh.</li>
+  <li>When a template dialog was displayed without any editable fields, a crash 
+    occurred. Fixed.</li>
+  <li>Initial HtmlHelp integration.</li>
+  <li>Scripts now have comprehensive error detection.</li>
+</ul>
+<hr>
+<h2>12/16 - Internal Alpha 4</h2>
+<ul>
+  <li> Icons donated by Jim Rittenhouse.</li>
+  <li>Fixed an NT ATL registration bug where the add-in long name didn't show 
+    up.</li>
+  <li> Fixed the keyboard preferences dialog so only pressing Assign will assign 
+    the keyboard keys.</li>
+  <li>Remapped a bunch of key bindings so the default Workspace Whiz configuration 
+    wouldn't make DevStudio complain.</li>
+  <li>Replaced WWHeaderFlipDlg with WWOpenFileAtCursorDlg. Complain if you don't 
+    like it! :)</li>
+  <li>Added new WWFindTagSpecialDlg that will ultimately allow the user to assign 
+    custom permanent settings to the Find Tag Special dialog. For now, it just 
+    pulls up all the functions in the current file.</li>
+  <li>Made release build work with both DevStudio 5.0 and DevStudio 6.0.</li>
+  <li>Reorganized code to be able to release a large bulk of the source to the 
+    public.</li>
+  <li> New method of reading tags allows the title bar to be updated much more 
+    often.</li>
+  <li> For tags without a parent, the Find Tag dialog fills in the filename.</li>
+  <li>Find Tag at Cursor tries to resolve ClassName::Member.</li>
+  <li> Find Tag at Cursor does an EXACT tag search.</li>
+  <li>WWhizInterface.h contains all external interfaces for accessing Workspace 
+    Whiz information.</li>
+  <li>New AIC GetWWhizInterface command returns a pointer to an instance of WWhizInterface.</li>
+  <li>Upgraded to AIC 1.2.0. </li>
+  <li>Fixed a bug where Workspace Whiz didn't remember the template tree state 
+    between sessions. </li>
+  <li>Opens groups of files in reverse order for better behavior in the new Window 
+    Tabs 2.50. </li>
+  <li>Use a '+' (plus) symbol at the start of the menu item: [+Menu 1|Submenu|Item] 
+    <- Expands this one. [Menu 2|Submenu|Submenu|Item] <- Doesn't expand. </li>
+  <li>The Find File dialog was crashing when a resource dialog was being edited. 
+    Fixed. </li>
+  <li>.dsp and .dsw files now insert themselves into the file list. </li>
+  <li>Added ability, through the Tags Preferences, to toggle the automatic refresh 
+    of tags on/off. </li>
+  <li>Fixed a bug where the tags extension list kept growing and growing. </li>
+  <li>Added new Refresh Tags button in Find Tag dialog to force a refresh. </li>
+  <li>Fixed a tag refresh bug where files with no tags caused CTags to run every 
+    access. </li>
+  <li>Added Current Project matching to the Find Tag Dialog (in addition to the 
+    Current File and Entire Workspace matching). </li>
+  <li>When there is more than one tag in the FindTagAtCursor command, the user 
+    can now select an Emacs-like approach or a dialog. </li>
+  <li>More accurate "context-sensitive" header flip (a matching header in the 
+    same project is considered first, then a workspace-wide search is done). </li>
+  <li>During an uninstall, the user is asked whether Workspace Whiz custom key 
+    bindings should be removed. </li>
+  <li>Fixed uninstall so it doesn't remove both the VC6 AND VC5 versions. </li>
+  <li>Templates: Add command: Find<var>.</var></li>
+  <li>Templates: Handles quoted strings.</li>
+  <li>Templates: For an !!if or !!elif, the variable must now be in variable notation 
+    @@var@@. </li>
+  <li>Templates: Added conditional comparison operators (== and !=). </li>
+  <li>Templates: Add command: ExecuteCommand. </li>
+  <li>Templates: Add command: ProjectNew <project name> <project directory> <typestr>. 
+  </li>
+  <li>Templates: Handles output sizes >64k without crashing. </li>
+  <li>Templates: Fixed preprocessor elif. </li>
+  <li>Templates: Default parameters with commands embedded in them are not saved 
+    to the registry. </li>
+  <li>Templates: Command !!Next in the Dialog section was broken. </li>
+  <li>More tooltips finished. </li>
+  <li>Added a tags autosave amount to the preferences dialog. </li>
+  <li>Changed the Find Tag dialog's Refresh button to a Rebuild Tags button. </li>
+  <li>Made the Extra Projects dialog resizable. </li>
+  <li>Fixed a header flip return code problem for AIC. </li>
+  <li>Fixed a resizing problem in the Template Wizard dialog. </li>
+  <li>Fixed the Find Tag dialog so you couldn't go to the file scope without having 
+    a file open. </li>
+  <li>Allows default parameters to use !! commands. </li>
+  <li>FileNew dsp portion was broken. Fixed. </li>
+  <li>Tags are sorted on a per project basis after running ctags. </li>
+  <li>DevStudio autoinstallation now properly #ifdef'ed for VS6 and VS97 versions. 
+  </li>
+</ul>
+<hr>
+<h2>11/12 - Internal Alpha 3</h2>
+<ul>
+  <li>When there are no items in the tag list, the display is properly cleared.</li>
+  <li> A custom version of CTags with these two fixes is included in this release 
+    of Workspace Whiz until Darren Hiebert can integrate the changes into the 
+    main code base. </li>
+  <li>Fixed CTags to allow spaces in filenames. Thanks go to Lee Hillman. </li>
+  <li>Fixed CTags to allow "class MY_EXPORT TestClass". </li>
+  <li>Auto-install to the Visual Studio addins registry entry. </li>
+  <li>Added tooltips to Extra Projects, Find Tag, and finished up Find File. </li>
+  <li>CTags.exe is searched for in the add-in's directory first. </li>
+  <li>Added skins preferences dialog. </li>
+  <li>Ability to affix a bitmap to each dialog. </li>
+  <li>Cool round buttons are turned off for now. </li>
+  <li>In the Find File dialog, the Extension: static text now resizes properly. 
+  </li>
+  <li>Crash bug in the History Dialog fixed. </li>
+  <li>Fixed the Global File Dialog from leaking memory. </li>
+  <li>Current project/entire workspace scoping in the Find File Dialog. </li>
+  <li>Right-clicking when there are no files in the Find File dialog's file list 
+    doesn't crash anymore. </li>
+  <li>Fixed Extra Projects OK button to do an automatic add. </li>
+  <li>Fixed WWFindNextFile, WWFindPrevFile, WWHeaderFlip, and WWHeaderFlipDlg 
+    to not clear out the last typed filename. </li>
+  <li>Templates: All @ commands have been changed to @@ </li>
+  <li>Templates: All ! commands have been changed to !! </li>
+  <li>Templates: The ASSERT was removed when adding a file to the project failed. 
+  </li>
+  <li>Template Dialog: A crash was fixed when the user inserted a template, changed 
+    the template file, and reopened the dialog. </li>
+  <li>Templates: New command syntax for parameters: @@param@@ </li>
+  <li>Templates: New command syntax for commands: @@!!date@@ </li>
+  <li>Template Wizard Dialog: Better enumeration of HTML types. </li>
+  <li>Templates: @0@ changed to @@sel@@. </li>
+  <li>Template Wizard: Supports HTML INPUT tag types text, checkbox, and radio. 
+    Supports HTML SELECT type.</li>
+  <li>Templates: Added !!if, !!elif, !!else, and !!endif. </li>
+  <li>Templates: Added !!// for a comment in the !!Code section.</li>
+</ul>
+<hr>
+<h2>10/28 - Internal Alpha 2</h2>
+<ul>
+  <li> Fixed history dialog to highlight the current position first.</li>
+  <li> Registry now uninstalls when unregistering the add-in. </li>
+  <li>New web address for Exuberant CTags (it's what the http://darren.hiebert.com 
+    resolves to). </li>
+  <li>The Find Tag Dialog now behaves more like a normal modal dialog and also 
+    restores its position properly. </li>
+  <li>Made all dialogs popup without a workspace open. </li>
+  <li>Added a new button in the Find File and Find Tag dialogs called Current 
+    File, which pops up a context menu for the current file. </li>
+  <li>Removed Select from file context menu. </li>
+  <li>If CTags.exe is not found, a dialog is popped up (soon to be replaced with 
+    the Tags Preferences property sheet). </li>
+  <li>If CTags.exe is not found the first time, the files will correctly generate 
+    tags when it is found. </li>
+  <li>Added Extra Projects button to the Find Tag dialog. </li>
+  <li>Made Preferences button work in the Find Tag dialog. </li>
+  <li>Removing projects from the Extra Projects dialog should now properly remove 
+    unneeded files.</li>
+</ul>
+<hr>
+<h2>10/27 - Internal Alpha 1</h2>
+<ul>
+  <li> New look!</li>
+  <li>Fixed the Visual Studio 97 support. </li>
+  <li>Most dialogs are now resizable, through Hans Buhler's dynamic controls interface. 
+  </li>
+  <li>Fixed NT non-administrator registration (Thanks Oz!). </li>
+  <li>The About dialog contains clickable hyperlinks to various useful information. 
+    Thanks to Giancarlo Iovino's HyperLink code! </li>
+  <li>New add-in communication module allows external add-ins to call Workspace 
+    Whiz! functions. (Thanks Oz!) </li>
+  <li>A new WorkspaceCommands interface has been added to support external add-in 
+    communication. </li>
+  <li>ExcludeFiles.WU has been removed. There is no support for this anymore. 
+  </li>
+  <li>The File Open dialog's filenames are right-clickable. (Thanks Oz for the 
+    Send To menu code!) </li>
+  <li>Added file prefix and extension support to the file open dialog. </li>
+  <li>Fixed beginning of line GetWord() routine. </li>
+  <li>The Find Tag dialog shows the type of the tag in the list control. </li>
+  <li>The Find Tag dialog shows the filename and search string (or line number) 
+    of the tag in some text fields at the bottom of the dialog. </li>
+  <li>Added project/file scoping in the tags dialog (Thanks to Michael Sullivan.). 
+  </li>
+  <li>The Find Tag dialog will now display more than 1,000 items... and much more 
+    quickly than before. </li>
+  <li>The entire tag system has been rewritten. File changes are automatically 
+    detected on dialog entry, and the update time is very quick. In other words, 
+    the tag support should never fall out of sync with your workspace. In addition, 
+    a file is written to the workspace directory called Tags.WW, containing a 
+    binary representation of the CTags text output. MORE SPEED! Hooray! </li>
+  <li>Added .cxx header flipping support. </li>
+  <li>New header flip dialog matches all files that the header flipper will match 
+    to. </li>
+  <li>Checks are made for ExtraFiles.WW being read-only. </li>
+  <li>New code template support. </li>
+  <li>Added Multiple Precompiled Header support to VS97 (and revised it for VS6). 
+  </li>
+  <li>Added key binding support from a special preferences dialog. </li>
+  <li>Added a header flip preferences dialog. </li>
+  <li>Added a tags preferences dialog. </li>
+  <li>Added file history support.</li>
+</ul>
+</body>
+</html>

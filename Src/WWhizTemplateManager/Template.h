@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: Template.h $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplateManager/Template.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 9    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -70,7 +70,7 @@ protected:
 	CString m_name;
 	CString m_code;
 	CString m_memo;
-	CArrayEx<CString, CString&> m_pages;
+	WArray<CString> m_pages;
 	CString m_key;
 
 	// Template parameters.
@@ -81,14 +81,14 @@ protected:
 		CString m_entry;
 		CString m_value;
 	};
-	CListEx<DefaultInfo, DefaultInfo&> m_defaults;
+	WList<DefaultInfo> m_defaults;
 
 	struct OffsetInfo
 	{
 		DWORD m_offset;
 		DWORD m_line;
 	};
-	CArrayEx<OffsetInfo, OffsetInfo&> m_codeOffsets;
+	WArray<OffsetInfo> m_codeOffsets;
 
 	TemplateGroup& m_parent;
 
@@ -142,7 +142,7 @@ inline const CString& Template::GetPage(int page)
 **/
 inline int Template::GetPageCount() const
 {
-	return m_pages.GetSize();
+	return m_pages.GetCount();
 }
 
 

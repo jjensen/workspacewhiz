@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>Template Files - Section: Code</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files </h2>
+<h3>Template Section: Code</h3>
+<p>The <b>Code</b> section is required.</p>
+<h2></h2>
+<p>The text within the <b>Code</b> section is the actual code to be pasted into 
+  the source file. There are special formatting symbols which may be used, but 
+  in its simplest form, it just needs to be a block of code.</p>
+<pre>!!Code
+#include &lt;stdio.h&gt;
+   
+main()
+{
+    printf(&quot;Hello, world!\n&quot;);
+}<br>!!End</pre>
+<p>Note that the text contained within the <b>Code</b> section is transferred 
+  directly to the source file. This means all formatting conventions, including 
+  tabs, go with that transfer.</p>
+<p>Variables may be used at any point:</p>
+<pre>#define @@(FileTitle:U)@@_@@(FileExt:U)@@</pre>
+<p>The above code executes the variable command expressions <span class="code">!!FileTitle</span> 
+  and <span class="code">!!FileExt</span>. If the currently open file is <span class="code">Test.h</span>, 
+  the result outputted to the Developer Studio source file is:</p>
+<pre>#define TEST_H
+</pre>
+<h3>&nbsp;</h3>
+</body>
+</html>

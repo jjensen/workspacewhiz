@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by WWhizInterface.rc
+// Microsoft Visual C++ generated include file.
+// Used by WWhizInterfaceNet.rc
 //
 
 // Next default values for new objects

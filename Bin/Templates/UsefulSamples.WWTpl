@@ -1,0 +1,372 @@
+Useful Template Samples
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Create Class]
+!!Key
+class
+
+!!Dialog
+<html><body>
+<p>Enter the class name.<input id=name></p>
+<input type=checkbox id=DoHeader>Create header #ifdef block?
+</body></html>
+!!End
+
+!!Code
+!!if @@DoHeader@@
+#pragma once
+#ifndef @@name:U@@_H
+#define @@name:U@@_H
+
+!!endif
+class @@name@@
+{
+public:
+// Constructors
+	@@name@@();
+	virtual ~@@name@@();
+
+protected:
+
+private:
+	@@name@@(const @@name@@& src);					// Not implemented
+	const @@name@@& operator=(const @@name@@& src); // Not implemented
+};
+!!if @@DoHeader@@
+
+#endif @@name:U@@_H
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Create Class - New Files]
+!!Memo
+!!End
+
+!!Dialog
+<html><body>
+<p>Enter the class name.<input id=name></p>
+<input type=checkbox id=DoHeader>Create header #ifdef block?
+</body></html>
+!!End
+
+!!Code
+!!FileNew @@name@@.h rel
+#pragma once
+#ifndef @@(FileTitle:U)@@_@@(FileExt:U)@@
+#define @@(FileTitle:U)@@_@@(FileExt:U)@@
+
+/**
+**/
+class @@name@@
+{
+public:
+	// Nested types
+
+	// Constructors
+	@@name@@();
+	virtual ~@@name@@();
+
+	// Attributes
+
+	// Operations
+
+protected:
+
+private:
+	@@name@@(const @@name@@& src);
+	const @@name@@& operator=(const @@name@@& src);
+};
+
+#endif @@(FileTitle:U)@@_@@(FileExt:U)@@
+!!FileSave
+!!ProjectFileAdd
+!!/////////////////////////////////////////////////////////////////////////////
+!!FileNew @@name@@.cpp rel
+#include "@@name@@.h"
+
+/**
+    The constructor.
+**/
+@@name@@::@@name@@()
+{
+}
+
+
+/**
+    The destructor.
+**/
+@@name@@::~@@name@@()
+{
+}
+
+!!FileSave
+!!ProjectFileAdd
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[If Statement]
+!!Key
+if
+
+!!Code
+!!GetPos x y
+if (@@(Caret)@@)
+{
+}@@\ No return wanted.
+!!MoveTo @@x@@ @@y@@ extend
+!!ExecuteCommand "SelectionFormat"
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[For Statement]
+!!Key
+for
+
+!!Code
+!!GetPos x y
+for (@@(Caret)@@; ; )
+{
+}@@\ No return wanted.
+!!MoveTo @@x@@ @@y@@ extend
+!!ExecuteCommand "SelectionFormat"
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[While Statement]
+!!Key
+while
+
+!!Code
+!!GetPos x y
+while (@@(Caret)@@)
+{
+}@@\ No return wanted.
+!!MoveTo @@x@@ @@y@@ extend
+!!ExecuteCommand "SelectionFormat"
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Do-While Statement]
+!!Key
+do
+
+!!Code
+!!GetPos x y
+do
+{
+}
+while (@@(Caret)@@);@@\ No return wanted.
+!!MoveTo @@x@@ @@y@@ extend
+!!ExecuteCommand "SelectionFormat"
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Switch-Case Statement]
+!!Key
+sw
+
+!!Code
+!!GetPos x y
+switch (@@(Caret)@@)
+{
+	case 0:
+		break;
+}
+!!MoveTo @@x@@ @@y@@ extend
+!!ExecuteCommand "SelectionFormat"
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[Make Variable and Accessors]
+!!Dialog
+<html><body>
+<p>Enter the variable type.<input id=type></p>
+<p>Enter the variable name.<input id=name></p>
+</body></html>
+!!End
+
+!!Code
+	@@type@@ @@name@@;
+
+!!Set AccName @@(StrUpper @@(StrSub @@name@@ 2)@@ 0)@@
+	@@type@@ Get@@AccName@@() const		{  return @@name@@;  }
+!!Set ParamName @@(StrLower @@AccName@@ 0)@@
+	void Set@@AccName@@(@@type@@ @@ParamName@@)		{  @@name@@ = @@ParamName@@;  }
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+// Parameters:
+//   Name - Name of the project.
+//   Ext - Extension of the project name.
+//   ExtDebug - Extension of the debug project name.  Optional.
+//   IncludeDir - The directory to add to the project include paths.  Optional.
+//   LibPath - Extra library search path.  Optional.
+//   Defines - Extra defines
+[-AssignProjectSettings]
+!!Code
+!!// Now adjust parameters...
+!!// There are two configurations, by default.
+!!Set whichConfig 1
+!!Label ConfigTop
+!!Set configName @@(ConfigGet ~ @@whichConfig@@)@@
+!!// ----- Force include the precompiled header file and add the precompiled header file.
+!!ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/FI%"pch@@Name@@.h%" /Yu%"pch@@Name@@.h%""
+!!// ----- Add the include directory if one is specified.
+!!if @@IncludeDir@@ != ""
+!!ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/I%"@@IncludeDir@@%""
+!!endif
+!!// ----- Add the defines if one is specified.
+!!if @@Defines@@ != ""
+!!ConfigAddToolSettings ~ @@configName@@ "cl.exe" @@Defines@@
+!!endif
+!!// ----- Assign the .cpp file for Create Precompiled Header.
+!!ConfigAddFileSettings ~ @@configName@@ "pch@@Name@@.cpp" "/Yc%"pch@@Name@@.h%""
+!!if @@LibPath@@ != ""
+!!ConfigAddToolSettings ~ @@configName@@ "link.exe" "/libpath:%"@@LibPath@@%""
+!!endif
+!!// ----- Is it is Win32 Release build?
+!!If @@(StrFind @@configName@@ "Win32 Release")@@ != -1
+!!// ------- Set to Multithreaded DLL.
+!!ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/MD"
+!!// ------- Set to output a file named name+.ext.
+!!ConfigAddToolSettings ~ @@configName@@ "link.exe" "/out:%"@@Name@@.@@Ext@@%""
+!!/////////////////////////////////////
+!!// ----- Is it is Win32 Debug build?
+!!Elif @@(StrFind @@configName@@ "Win32 Debug")@@ != -1
+!!// ------- Set to Debug Multithreaded DLL.
+!!ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/MDd"
+!!// ------- Set to output a file named name+D+.ext.
+!!If @@ExtDebug@@ != ""
+!!ConfigAddToolSettings ~ @@configName@@ "link.exe" "/out:%"@@Name@@.@@ExtDebug@@%""
+!!Else
+!!ConfigAddToolSettings ~ @@configName@@ "link.exe" "/out:%"@@Name@@D.@@Ext@@%""
+!!Endif 
+!!Endif
+!!// Go to the next config.
+!!Add whichConfig 1
+!!if @@whichConfig@@ <= @@(ConfigCount)@@
+!!Goto ConfigTop
+!!endif
+!!End
+
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+[!Custom Template Commands|Create a Custom Template Command]
+!!Dialog
+<html><body>
+<p>This creates a project for a custom template command.</p>
+<p>Enter the template command name.<input id=command></p>
+<p>Browse to the WorkspaceWhiz/Src/Shared directory: <input type=file id=sharedDir accept="*"></p>
+</body></html>
+!!End
+
+!!Code
+!!Set dir @@(PickDir "Choose directory for custom template command:")@@
+!!Set dir @@dir@@/@@command@@
+!!MakeDir @@dir@@
+!!ProjectNew @@command@@ @@dir@@ DLL
+!!FileNew pch@@command@@.h dsp
+#pragma once
+#include <afx.h>
+#include <afxwin.h>
+#include "WWhizTemplateManager.h"
+!!FileSave
+!!ProjectFileAdd
+!!FileNew pch@@command@@.cpp dsp
+!!FileSave
+!!ProjectFileAdd
+!!FileNew @@command@@.cpp dsp
+class @@command@@Command : public WWhizTemplateCommand
+{
+public:
+	virtual void Run(WWhizTemplate* curTemplate, WWhizTemplateCommandArgs& args)
+	{
+		AfxMessageBox(args.Get(0));
+    // Uncomment this if this is command returns a value.
+		// args.Return("Return value");
+	}
+};
+
+// Regular commands.
+static @@command@@Command			s_@@command@@Command;
+
+/////////////////////////////////////////////////////////////////////////////
+
+struct IApplication;
+extern "C" __declspec(dllexport)
+bool WWhizTemplateRegister(WWhizTemplateManager* templateManager,
+		IApplication* pApplication)
+{
+	templateManager->RegisterCommand("@@command@@",		s_@@command@@Command);
+
+	return true;
+}
+!!FileSave
+!!ProjectFileAdd
+!!Call -AssignProjectSettings Name @@command@@ Ext "tpl" ExtDebug "dtpl" IncludeDir @@sharedDir@@ Defines "/D %"_WINDLL%" /D %"_AFXDLL%" /D %"_USRDLL%""
+!!// Now adjust parameters...
+!!// There are two configurations, by default... get the Win32 Release config first.
+!!//Set configName @@(ConfigGet ~ 1)@@
+!!//ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/FI%"pch@@command@@.h%" /Yu%"pch@@command@@.h%""
+!!//ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/I%"@@sharedDir@@%" /D %"_WINDLL%" /D %"_AFXDLL%" /D %"_USRDLL%" /MD"
+!!//ConfigAddFileSettings ~ @@configName@@ "pch@@command@@.cpp" "/Yc%"pch@@command@@.h%""
+!!//ConfigAddToolSettings ~ @@configName@@ "link.exe" "/out:Release\@@command@@.tpl"
+!!//// Set the Win32 Debug config.
+!!//Set configName @@(ConfigGet ~ 2)@@
+!!//ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/FI%"pch@@command@@.h%" /Yu%"pch@@command@@.h%""
+!!//ConfigAddToolSettings ~ @@configName@@ "cl.exe" "/I%"@@sharedDir@@%" /D %"_WINDLL%" /D %"_AFXDLL%" /D %"_USRDLL%" /MDd"
+!!//ConfigAddFileSettings ~ @@configName@@ "pch@@command@@.cpp" "/Yc%"pch@@command@@.h%""
+!!//ConfigAddToolSettings ~ @@configName@@ "link.exe" "/out:Debug\@@command@@.dtpl"
+!!ExecuteCommand "FileSaveAll"
+!!End
+
+
+[!Custom Template Commands|!Test MyCommand]
+!!Dialog
+To test this sample:
+
+<ol>
+  <li>Run the Create Custom Template Command template.
+  <li>Choose MyCommand for the name.
+  <li>Find the WorkspaceWhiz/Src/Shared directory.  The browser is a file
+    browser, so be sure to remove the filename from the end of the directory.
+  <li>Build the Debug and Release builds of the MyCommand project.
+  <li>Copy the Debug/MyCommand.dtpl and Release/MyCommand.tpl files to the
+    Program Files/Workspace Whiz!/TemplateCommands directory.
+  <li>Close Visual C++.
+  <li>Reopen Visual C++.
+  <li>Re-run the Test a custom template command sample.
+!!End
+
+!!Code
+!!MyCommand "Hello, world"
+!!MyCommand "Woo hoo!"
+!!End

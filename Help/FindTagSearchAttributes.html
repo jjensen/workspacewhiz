@@ -1,0 +1,152 @@
+<html>
+<head>
+<title>Workspace Find Tag Matching</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left"><img src="IconWWTagFindDlg.png" width="32" height="32"> Workspace 
+  Find Tag</h2>
+<h3>Toggling Search Attributes</h3>
+<p>While typing a tag, special symbols may be entered. The symbols, which may 
+  be entered anytime, are evaluated left to right. So if the leftmost symbol turns 
+  on case sensitivity and a later one turns it off, case sensitivity will be off 
+  for the entire search.</p>
+<table width="100%" border="1">
+  <tr> 
+    <td width="16%" valign="middle"> 
+      <div align="center"><b>Symbol</b></div>
+    </td>
+    <td width="84%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="16%" valign="middle"> 
+      <div align="center" class="code">+</div>
+    </td>
+    <td width="84%">Toggles case sensitivity on. Normally, this symbol doesn't 
+      need to be used, as typing a capital letter will turn case sensitivity on 
+      automatically. The <span class="code">+</span> symbol may be useful, however, 
+      when searching for an all lowercase tag.</td>
+  </tr>
+  <tr> 
+    <td width="16%" valign="middle"> 
+      <div align="center" class="code">-</div>
+    </td>
+    <td width="84%">Toggles case sensitivity off.</td>
+  </tr>
+  <tr> 
+    <td width="16%" valign="middle"> 
+      <div align="center" class="code">\</div>
+    </td>
+    <td width="84%">Performs a search for tags of the same length only. Therefore, 
+      if <span class="code">cfile</span> is the tag being searched for, <span class="code">CFileFind</span> 
+      is not found.</td>
+  </tr>
+  <tr> 
+    <td width="16%" valign="middle"> 
+      <div align="center" class="code">=</div>
+    </td>
+    <td width="84%">The equivalent of combining the <span class="code">+</span> 
+      and <span class="code">\</span> symbols. Only tags matching the search tag 
+      <i>exactly</i> are found.</td>
+  </tr>
+  <tr> 
+    <td width="16%" valign="middle"> 
+      <div align="center" class="code">' (apostrophe)</div>
+    </td>
+    <td width="84%">
+      <p>Without any further specification, the apostrophe cancels all tag types 
+        being shown. The letters following the apostrophe identify tag types to 
+        be turned on. To continue typing a tag after specifying an apostrophe, 
+        insert a second apostrophe.</p>
+      <table width="75%" border="1" cellspacing="0" cellpadding="1" align="center">
+        <tr bgcolor="#00FFFF"> 
+          <td width="19%"> 
+            <div align="center"><b>Letter</b></div>
+          </td>
+          <td width="81%"> 
+            <div align="center"><b>Tag Type to Toggle On</b></div>
+          </td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">c</div>
+          </td>
+          <td width="81%">Classes</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">d</div>
+          </td>
+          <td width="81%">Defines</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">e</div>
+          </td>
+          <td width="81%">Enumerations</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">f</div>
+          </td>
+          <td width="81%">Functions</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">g</div>
+          </td>
+          <td width="81%">Enumeration Members</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">m</div>
+          </td>
+          <td width="81%">Class or Structure Members</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">n</div>
+          </td>
+          <td width="81%">Namespace</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">p</div>
+          </td>
+          <td width="81%">Declaration</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">s</div>
+          </td>
+          <td width="81%">Structures</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">t</div>
+          </td>
+          <td width="81%">Typedefs</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">u</div>
+          </td>
+          <td width="81%">Unions</td>
+        </tr>
+        <tr> 
+          <td width="19%"> 
+            <div align="center">v</div>
+          </td>
+          <td width="81%">Variables</td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+    </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>

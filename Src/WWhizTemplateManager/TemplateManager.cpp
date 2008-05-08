@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TemplateManager.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplateManager/TemplateManager.cpp $
-// $Date:: 1/03/01 12:14a  $ $Revision:: 8    $ $Author: Jjensen $
+// $Date: 2003/01/16 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -16,9 +16,7 @@
 #include "TemplateGroup.h"
 #include "Template.h"
 
-// The only instance.
-TemplateManager g_templateManager;
-
+TemplateManager* TemplateManager::s_instance;
 
 /**
 **/
@@ -28,8 +26,17 @@ TemplateManager::Info::~Info()
 }
 
 
+#ifdef WWHIZ_VC6
 typedef bool (*pfnWWhizTemplateRegister)(WWhizTemplateManager* templateManager,
 		IApplication* pApplication);
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+typedef bool (*pfnWWhizTemplateRegister)(WWhizInterface* wwhizInterface,
+										 WWhizTemplateManager* templateManager,
+										 void* pDTE);
+#endif WWHIZ_VSNET
+
+typedef void (*pfnWWhizTemplateDestroy)();
 
 		
 /**
@@ -37,6 +44,7 @@ typedef bool (*pfnWWhizTemplateRegister)(WWhizTemplateManager* templateManager,
 TemplateManager::TemplateManager() :
 	m_changed(false)
 {
+	s_instance = this;
 }
 
 
@@ -44,13 +52,17 @@ TemplateManager::TemplateManager() :
 **/
 TemplateManager::~TemplateManager()
 {
-	for (int i = 0; i < m_files.GetSize(); i++)
+	for (size_t i = 0; i < m_files.GetCount(); i++)
 	{
 		delete m_files[i];
 	}
 
-	for (i = 0; i < m_loadedCommandModules.GetSize(); i++)
+	for (i = 0; i < m_loadedCommandModules.GetCount(); i++)
 	{
+		HINSTANCE module = m_loadedCommandModules[i];
+		pfnWWhizTemplateDestroy wwhizTemplateDestroy =
+			(pfnWWhizTemplateDestroy)::GetProcAddress(module, "WWhizTemplateDestroy");
+		(*wwhizTemplateDestroy)();
 		AfxFreeLibrary(m_loadedCommandModules[i]);
 	}
 }
@@ -77,7 +89,12 @@ bool TemplateManager::LoadTplFile(const CString& filename)
 		else
 		{
 			m_loadedCommandModules.Add(module);
-			(*wwhizTemplateRegister)(this, g_pApplication);
+#ifdef WWHIZ_VC6
+			(*wwhizTemplateRegister)(this, ObjModelHelper::GetInterface());
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+			(*wwhizTemplateRegister)(g_wwhizInterface, this, g_pDTE);
+#endif WWHIZ_VSNET
 			return true;
 		}
 	}
@@ -129,7 +146,7 @@ int TemplateManager::Add(CString filename)
 
 	// See if it is in our list.
 	bool found = false;
-	for (int i = 0; i < m_files.GetSize(); i++)
+	for (size_t i = 0; i < m_files.GetCount(); i++)
 	{
 		Info* info = m_files[i];
 		if (info->m_file->GetFilename().CompareNoCase(filename) == 0)
@@ -148,8 +165,8 @@ int TemplateManager::Add(CString filename)
 	if (index == -1)
 	{
 		// Nope.  Make a new one.
-		Info* info = new Info;
-		info->m_file = new TemplateGroup(*this, filename);
+		Info* info = WNEW Info;
+		info->m_file = WNEW TemplateGroup(*this, filename);
 		info->m_found = true;
 		info->m_file->Refresh();			
 		index = m_files.Add(info);
@@ -192,7 +209,7 @@ bool TemplateManager::Refresh()
 
 				// See if it is in our list.
 				bool found = false;
-				for (int i = 0; i < m_files.GetSize(); i++)
+				for (size_t i = 0; i < m_files.GetCount(); i++)
 				{
 					Info* info = m_files[i];
 					if (info->m_file->GetFilename().CompareNoCase(filename) == 0)
@@ -233,7 +250,7 @@ bool TemplateManager::Refresh()
 **/
 int TemplateManager::GetCount()
 {
-	return m_files.GetSize();
+	return m_files.GetCount();
 }
 
 
@@ -274,7 +291,7 @@ static inline void ReadTimeStamp(CFile& file, CTime& timeStamp)
 **/
 void TemplateManager::LoadRegistry()
 {
-	for (int i = 0; i < m_files.GetSize(); i++)
+	for (size_t i = 0; i < m_files.GetCount(); i++)
 	{
 		delete m_files[i];
 	}
@@ -284,7 +301,7 @@ void TemplateManager::LoadRegistry()
 	BYTE* mem;
 
 	// Read in the filename file.
-	if (AfxGetApp()->GetProfileBinary("Templates", "FileList2", &mem, &size))
+	if (AfxGetApp()->GetProfileBinary("Templates", "FileList2", &mem, &size)  &&  size != 0)
 	{
 		MemFile filenameFile;
 		filenameFile.Write(mem, size);
@@ -382,7 +399,7 @@ void TemplateManager::LoadRegistry()
 		if (size > 0)
 		{
 			// The saved parameters SHOULD be in the same order.
-			for (i = 0; i < GetCount(); i++)
+			for (i = 0; i < (size_t)GetCount(); i++)
 			{
 				WWhizTemplateGroup* file = GetTemplateGroup(i);
 
@@ -678,5 +695,10 @@ WWhizTemplateCommand* TemplateManager::GetCommand(CString name)
 	else
 		return NULL;
 }
+
+
+
+
+
 
 

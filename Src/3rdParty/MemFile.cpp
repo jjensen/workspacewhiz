@@ -67,6 +67,8 @@ MemFile::~MemFile()
 	m_nFileSize = 0;
 }
 
+#ifdef WWHIZ_VC6
+
 BYTE* MemFile::Alloc(DWORD nBytes)
 {
 	return (BYTE*)malloc((UINT)nBytes);
@@ -87,13 +89,6 @@ BYTE* MemFile::Memcpy(BYTE* lpMemTarget, const BYTE* lpMemSource,
 	return (BYTE*)memcpy(lpMemTarget, lpMemSource, nBytes);
 }
 #pragma function(memcpy)
-
-void MemFile::Free(BYTE* lpMem)
-{
-	ASSERT(lpMem != NULL);
-
-	free(lpMem);
-}
 
 DWORD MemFile::GetPosition() const
 {
@@ -149,57 +144,11 @@ void MemFile::SetLength(DWORD dwNewLen)
 	ASSERT_VALID(this);
 }
 
-UINT MemFile::Read(void* lpBuf, UINT nCount)
+DWORD MemFile::GetLength() const
 {
-	ASSERT_VALID(this);
+   ASSERT_VALID(this);
 
-	if (nCount == 0)
-		return 0;
-
-	ASSERT(lpBuf != NULL);
-
-	//JJ Bug fix...
-	if (m_nPosition >= m_nFileSize)
-		return 0;
-
-	UINT nRead;
-	if (m_nPosition + nCount > m_nFileSize)
-		nRead = (UINT)(m_nFileSize - m_nPosition);
-	else
-		nRead = nCount;
-
-	memcpy(lpBuf, m_lpBuffer + m_nPosition, nRead);
-//	Memcpy((BYTE*)lpBuf, (BYTE*)m_lpBuffer + m_nPosition, nRead);
-	m_nPosition += nRead;
-
-	ASSERT_VALID(this);
-
-	return nRead;
-}
-
-void MemFile::Write(const void* lpBuf, UINT nCount)
-{
-	ASSERT_VALID(this);
-
-	if (nCount == 0)
-		return;
-
-	ASSERT(lpBuf != NULL);
-
-	if (m_nPosition + nCount > m_nBufferSize)
-		GrowFile(m_nPosition + nCount);
-
-	ASSERT(m_nPosition + nCount <= m_nBufferSize);
-
-//	Memcpy((BYTE*)m_lpBuffer + m_nPosition, (BYTE*)lpBuf, nCount);
-	memcpy(m_lpBuffer + m_nPosition, lpBuf, nCount);
-
-	m_nPosition += nCount;
-
-	if (m_nPosition > m_nFileSize)
-		m_nFileSize = m_nPosition;
-
-	ASSERT_VALID(this);
+   return m_nFileSize;
 }
 
 LONG MemFile::Seek(LONG lOff, UINT nFrom)
@@ -227,6 +176,179 @@ LONG MemFile::Seek(LONG lOff, UINT nFrom)
 	return m_nPosition;
 }
 
+#endif WWHIZ_VC6
+#ifdef WWHIZ_VSNET
+
+BYTE* MemFile::Alloc(SIZE_T nBytes)
+{
+	return (BYTE*)malloc(nBytes);
+}
+
+BYTE* MemFile::Realloc(BYTE* lpMem, SIZE_T nBytes)
+{
+	return (BYTE*)realloc(lpMem, nBytes);
+}
+
+#pragma intrinsic(memcpy)
+BYTE* MemFile::Memcpy(BYTE* lpMemTarget, const BYTE* lpMemSource,
+	SIZE_T nBytes)
+{
+	ASSERT(lpMemTarget != NULL);
+	ASSERT(lpMemSource != NULL);
+
+	return (BYTE*)memcpy(lpMemTarget, lpMemSource, nBytes);
+}
+#pragma function(memcpy)
+
+ULONGLONG MemFile::GetPosition() const
+{
+	ASSERT_VALID(this);
+	return m_nPosition;
+}
+
+void MemFile::GrowFile(SIZE_T dwNewLen)
+{
+	ASSERT_VALID(this);
+
+	if (dwNewLen > m_nBufferSize)
+	{
+		// grow the buffer
+		SIZE_T dwNewBufferSize = m_nBufferSize;
+
+		// watch out for buffers which cannot be grown!
+		ASSERT(m_nGrowBytes != 0);
+		if (m_nGrowBytes == 0)
+			AfxThrowMemoryException();
+
+		// determine new buffer size
+		while (dwNewBufferSize < dwNewLen)
+			dwNewBufferSize += m_nGrowBytes;
+
+		// allocate new buffer
+		BYTE* lpNew;
+		if (m_lpBuffer == NULL)
+			lpNew = Alloc(dwNewBufferSize);
+		else
+			lpNew = Realloc(m_lpBuffer, dwNewBufferSize);
+
+		if (lpNew == NULL)
+			AfxThrowMemoryException();
+
+		m_lpBuffer = lpNew;
+		m_nBufferSize = dwNewBufferSize;
+	}
+	ASSERT_VALID(this);
+}
+
+ULONGLONG MemFile::GetLength() const
+{
+   ASSERT_VALID(this);
+
+   return m_nFileSize;
+}
+
+void MemFile::SetLength(ULONGLONG dwNewLen)
+{
+	ASSERT_VALID(this);
+
+#ifdef WIN32
+   if (dwNewLen > ULONG_MAX)
+	  AfxThrowMemoryException();
+#endif  // WIN32
+	if (dwNewLen > m_nBufferSize)
+		GrowFile((SIZE_T)dwNewLen);
+
+	if (dwNewLen < m_nPosition)
+		m_nPosition = (SIZE_T)dwNewLen;
+
+	m_nFileSize = (SIZE_T)dwNewLen;
+	ASSERT_VALID(this);
+}
+
+ULONGLONG MemFile::Seek(LONGLONG lOff, UINT nFrom)
+{
+	ASSERT_VALID(this);
+	ASSERT(nFrom == begin || nFrom == end || nFrom == current);
+
+	LONGLONG lNewPos = m_nPosition;
+
+	if (nFrom == begin)
+		lNewPos = lOff;
+	else if (nFrom == current)
+		lNewPos += lOff;
+	else if (nFrom == end)
+		lNewPos = m_nFileSize + lOff;
+	else
+		return m_nPosition;
+
+	if ((lNewPos < 0) || (lNewPos > LONG_MAX))
+		AfxThrowFileException(CFileException::badSeek);
+
+	m_nPosition = (SIZE_T)lNewPos;
+
+	ASSERT_VALID(this);
+	return m_nPosition;
+}
+
+#endif WWHIZ_VSNET
+
+void MemFile::Free(BYTE* lpMem)
+{
+	ASSERT(lpMem != NULL);
+
+	free(lpMem);
+}
+
+UINT MemFile::Read(void* lpBuf, UINT nCount)
+{
+	ASSERT_VALID(this);
+
+	if (nCount == 0)
+		return 0;
+
+	ASSERT(lpBuf != NULL);
+	
+	if (m_nPosition > m_nFileSize)
+		return 0;
+
+	UINT nRead;
+	if (m_nPosition + nCount > m_nFileSize)
+		nRead = (UINT)(m_nFileSize - m_nPosition);
+	else
+		nRead = nCount;
+
+	Memcpy((BYTE*)lpBuf, (BYTE*)m_lpBuffer + m_nPosition, nRead);
+	m_nPosition += nRead;
+
+	ASSERT_VALID(this);
+
+	return nRead;
+}
+
+void MemFile::Write(const void* lpBuf, UINT nCount)
+{
+	ASSERT_VALID(this);
+
+	if (nCount == 0)
+		return;
+
+	ASSERT(lpBuf != NULL);
+	
+	if (m_nPosition + nCount > m_nBufferSize)
+		GrowFile(m_nPosition + nCount);
+
+	ASSERT(m_nPosition + nCount <= m_nBufferSize);
+
+	Memcpy((BYTE*)m_lpBuffer + m_nPosition, (BYTE*)lpBuf, nCount);
+
+	m_nPosition += nCount;
+
+	if (m_nPosition > m_nFileSize)
+		m_nFileSize = m_nPosition;
+
+	ASSERT_VALID(this);
+}
+
 void MemFile::Flush()
 {
 	ASSERT_VALID(this);
@@ -234,8 +356,6 @@ void MemFile::Flush()
 
 void MemFile::Close()
 {
-	ASSERT(m_nFileSize <= m_nBufferSize);
-
 	m_nGrowBytes = 0;
 	m_nPosition = 0;
 	m_nBufferSize = 0;
@@ -252,71 +372,5 @@ void MemFile::Abort()
 	Close();
 }
 
-void MemFile::LockRange(DWORD /* dwPos */, DWORD /* dwCount */)
-{
-	ASSERT_VALID(this);
-	AfxThrowNotSupportedException();
-}
-
-
-void MemFile::UnlockRange(DWORD /* dwPos */, DWORD /* dwCount */)
-{
-	ASSERT_VALID(this);
-	AfxThrowNotSupportedException();
-}
-
-CFile* MemFile::Duplicate() const
-{
-	ASSERT_VALID(this);
-	AfxThrowNotSupportedException();
-	return NULL;
-}
-
-// only MemFile supports "direct buffering" interaction with CArchive
-UINT MemFile::GetBufferPtr(UINT nCommand, UINT nCount,
-	void** ppBufStart, void**ppBufMax)
-{
-	ASSERT(nCommand == bufferCheck || nCommand == bufferCommit ||
-		nCommand == bufferRead || nCommand == bufferWrite);
-
-	if (nCommand == bufferCheck)
-		return 1;   // just a check for direct buffer support
-
-	if (nCommand == bufferCommit)
-	{
-		// commit buffer
-		ASSERT(ppBufStart == NULL);
-		ASSERT(ppBufMax == NULL);
-		m_nPosition += nCount;
-		if (m_nPosition > m_nFileSize)
-			m_nFileSize = m_nPosition;
-		return 0;
-	}
-
-	ASSERT(nCommand == bufferWrite || nCommand == bufferRead);
-	ASSERT(ppBufStart != NULL);
-	ASSERT(ppBufMax != NULL);
-
-	// when storing, grow file as necessary to satisfy buffer request
-	if (nCommand == bufferWrite && m_nPosition + nCount > m_nBufferSize)
-		GrowFile(m_nPosition + nCount);
-
-	// store buffer max and min
-	*ppBufStart = m_lpBuffer + m_nPosition;
-
-	// end of buffer depends on whether you are reading or writing
-	if (nCommand == bufferWrite)
-		*ppBufMax = m_lpBuffer + min(m_nBufferSize, m_nPosition + nCount);
-	else
-	{
-		if (nCount == (UINT)-1)
-			nCount = m_nBufferSize - m_nPosition;
-		*ppBufMax = m_lpBuffer + min(m_nFileSize, m_nPosition + nCount);
-		m_nPosition += LPBYTE(*ppBufMax) - LPBYTE(*ppBufStart);
-	}
-
-	// return number of bytes in returned buffer space (may be <= nCount)
-	return LPBYTE(*ppBufMax) - LPBYTE(*ppBufStart);
-}
 
 

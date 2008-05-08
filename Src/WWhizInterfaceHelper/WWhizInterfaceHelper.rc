@@ -66,8 +66,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,12,0,1
- PRODUCTVERSION 2,12,0,1
+ FILEVERSION 3,0,0,1026
+ PRODUCTVERSION 3,0,0,1026
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -85,14 +85,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "WWhizInterfaceHelper DLL\0"
-            VALUE "FileVersion", "2, 12, 0, 1\0"
+            VALUE "FileVersion", "3, 0, 0, 1026\0"
             VALUE "InternalName", "WWhizInterfaceHelper\0"
-            VALUE "LegalCopyright", "Copyright (C) 2000\0"
+            VALUE "LegalCopyright", "Copyright (C) 2000-2002 Joshua C. Jensen\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "WWhizInterfaceHelper.DLL\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "WWhizInterfaceHelper Dynamic Link Library\0"
-            VALUE "ProductVersion", "2, 12, 0, 1\0"
+            VALUE "ProductVersion", "3, 0, 0, 1026\0"
             VALUE "SpecialBuild", "\0"
         END
     END

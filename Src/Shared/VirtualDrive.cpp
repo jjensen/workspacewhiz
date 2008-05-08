@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: VirtualDrive.cpp $
 // $Archive: /WorkspaceWhiz/Src/Shared/VirtualDrive.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 6    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #10 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -14,7 +14,7 @@
 #include "VirtualFile.h"
 
 const LPCTSTR DRIVE_ID = "VRTDRIVE";		//!< The header ID of a virtual drive.
-const WORD DRIVE_VERSION = 0x0200;			//!< The virtual drive version.
+const WORD DRIVE_VERSION = 0x0203;			//!< The virtual drive version.
 const LPCTSTR DIR_ID = "VDRIVDIR";			//!< The directory ID of a virtual drive.
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,8 @@ VirtualDrive::VirtualDrive() :
 	m_ownParentFile(false),
 	m_parentFile(NULL),
 	m_changed(false),
-	m_curWriteFile(NULL)
+	m_curWriteFile(NULL),
+	m_readOnly(false)
 {
 	m_header.Reset();
 } // VirtualDrive()
@@ -170,7 +171,7 @@ bool VirtualDrive::Create(const CString& filename)
 
 	// Create the virtual drive disk file.
 	m_ownParentFile = true;
-	m_parentFile = new CFile();
+	m_parentFile = WNEW CFile();
 	if (!m_parentFile->Open(m_filename, CFile::modeCreate | CFile::modeReadWrite))
 	{
 		// Couldn't create!
@@ -178,6 +179,8 @@ bool VirtualDrive::Create(const CString& filename)
 
 		return false;
 	}
+
+	m_readOnly = false;
 
 	// Write the header.
 	m_header.Reset();
@@ -209,14 +212,18 @@ bool VirtualDrive::Open(const CString& filename)
 
 	// Open the file.
 	m_ownParentFile = true;
-	m_parentFile = new CFile();
-	if (!m_parentFile->Open(m_filename, CFile::modeReadWrite)  &&
-		!m_parentFile->Open(m_filename, CFile::modeRead))
+	m_parentFile = WNEW CFile();
+	if (!m_parentFile->Open(m_filename, CFile::modeReadWrite))
 	{
-		// Couldn't open the file!
-		Close();
+		if (!m_parentFile->Open(m_filename, CFile::modeRead))
+		{
+			// Couldn't open the file!
+			Close();
 
-		return false;
+			return false;
+		}
+		
+		m_readOnly = true;
 	}
 
 	// Read the header.
@@ -253,12 +260,12 @@ bool VirtualDrive::Open(const CString& filename)
 		}
 
 		// Allocate memory for the directory.
-		CArray<BYTE, BYTE> dirBuffer;
-		dirBuffer.SetSize(m_header.m_dirSize);
+		WArray<BYTE> dirBuffer;
+		dirBuffer.SetCount(m_header.m_dirSize);
 		m_parentFile->Read(dirBuffer.GetData(), m_header.m_dirSize);
 
 		// Now, process the directory.
-		m_dir.SetSize(m_header.m_fileEntryCount, 100);
+		m_dir.SetCount(m_header.m_fileEntryCount, 100);
 
 		// Read in the directory..
 		BYTE* ptr = dirBuffer.GetData();
@@ -342,6 +349,14 @@ bool VirtualDrive::Flush()
 	{
 		qsort(m_dir.GetData(), m_header.m_fileEntryCount, sizeof(FileEntry),
 			  (int (__cdecl *)(const void *, const void *)) Compare );
+
+		m_filenameMap.RemoveAll();
+		for (UINT i = 0; i < m_header.m_fileEntryCount; ++i)
+		{
+			FileEntry& entry = m_dir[i];
+
+			m_filenameMap[entry.m_filename] = i;
+		}
 	}
 
 	// Write the directory header id.
@@ -365,6 +380,7 @@ bool VirtualDrive::Flush()
 	// Write the file entry count at the end of the file for debug purposes.
 	m_parentFile->Write(&m_header.m_fileEntryCount, sizeof(m_header.m_fileEntryCount));
 
+	m_parentFile->SetLength(m_parentFile->GetPosition());
 	m_header.m_dirSize = m_parentFile->GetPosition() - curPos;
 
 	// Write the drive header.
@@ -399,7 +415,11 @@ bool VirtualDrive::Flush()
 **/
 bool VirtualDrive::FileCreate(const CString& filename, VirtualFile& virtualFile,
 							  const CTime* fileTime)
-{
+{	
+	// If the drive is read-only, then exit.
+	if (m_readOnly)
+		return false;
+
 	// If there is a file currently being written to, then it must be closed
 	// first.  Abort the file creation.
 	if (m_curWriteFile)
@@ -417,7 +437,7 @@ bool VirtualDrive::FileCreate(const CString& filename, VirtualFile& virtualFile,
 	{
 		// No. It needs to be added.  Increase the file entry count by 1.
 		m_header.m_fileEntryCount++;
-		m_dir.SetSize(m_header.m_fileEntryCount);
+		m_dir.SetCount(m_header.m_fileEntryCount);
 		index = m_header.m_fileEntryCount - 1;
 
 		// Add the filename to the filename map.
@@ -574,6 +594,9 @@ void VirtualDrive::FileCloseAll()
 **/
 bool VirtualDrive::FileErase(const CString& filename)
 {
+	if (m_readOnly)
+		return false;
+
 	// Retrieve the index of the file entry called filename.
 	UINT index = GetFileEntryIndex(filename);
 
@@ -625,6 +648,9 @@ bool VirtualDrive::FileErase(const CString& filename)
 **/
 bool VirtualDrive::FileRename(const CString& oldFilename, const CString& newFilename)
 {
+	if (m_readOnly)
+		return false;
+
 	// Retrieve the index of the file entry called oldFilename.
 	UINT index = GetFileEntryIndex(oldFilename);
 
@@ -665,6 +691,9 @@ bool VirtualDrive::FileRename(const CString& oldFilename, const CString& newFile
 **/	
 bool VirtualDrive::FileCopy(CFile& srcFile, const CString& destFilename, const CTime* fileTime)
 {
+	if (m_readOnly)
+		return false;
+
 	// Operate in 16k buffers.
 	const DWORD BUFFER_SIZE = 16 * 1024;
 
@@ -684,10 +713,15 @@ bool VirtualDrive::FileCopy(CFile& srcFile, const CString& destFilename, const C
 			// Yes.  So open the file.
 			if (FileOpen(destFilename, destFile))
 			{
+				// Set the time stamp.
+				if (fileTime)
+					destFile.m_fileEntry->SetTimeStamp(*fileTime);
+
 				// If we're filling less than the size available, then set
 				// the pack flag.
 				if (fileSize < fileEntry->m_size)
 				{
+					destFile.SetLength(fileSize);
 					m_header.m_needPack = true;
 				}
 
@@ -705,7 +739,7 @@ bool VirtualDrive::FileCopy(CFile& srcFile, const CString& destFilename, const C
 	}
 
 	// Allocate the buffer space.
-	BYTE* buffer = new BYTE[BUFFER_SIZE];
+	BYTE* buffer = WNEW BYTE[BUFFER_SIZE];
 
 	// Go to the beginning of the source file.
 	srcFile.SeekToBegin();
@@ -735,7 +769,10 @@ bool VirtualDrive::FileCopy(CFile& srcFile, const CString& destFilename, const C
 	Packs a virtual drive, removing all unused space.
 **/	
 bool VirtualDrive::Pack()
-{
+{	
+	if (m_readOnly)
+		return false;
+
 	// Do we need to pack it?
 	if (!m_header.m_needPack)
 		return true;
@@ -795,6 +832,8 @@ bool VirtualDrive::Pack()
 
 	// Copy the packed drive.
 	::CopyFile(newFile, oldDriveName, FALSE);
+
+	_unlink(newFile);
 
 	// Open it with the new 
 	if (!Open(oldDriveName))

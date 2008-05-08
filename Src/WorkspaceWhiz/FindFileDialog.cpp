@@ -1,22 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: FindFileDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/FindFileDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 34   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #10 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "FindFileDialog.h"
 #include "History.h"
 #include "AboutDialog.h"
 #include "ExtraFilesDialog.h"
-#include "PreferencesDialog.h"
 #include "ShellContextMenu.h"
 #include "BCMenu.h"
 #include "ShellTools.h"
@@ -24,12 +22,10 @@
 #include <sys/stat.h>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-extern int OnHeaderFlip(LPCTSTR pParams);
 
 static CString s_windowTitle;
 
@@ -60,8 +56,7 @@ void CFindFileDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COM_CURRENTFILE, m_butCurrentFile);
 	DDX_Control(pDX, IDOK, m_butOK);
 	DDX_Control(pDX, IDCANCEL, m_butCancel);
-	DDX_Control(pDX, IDC_FF_REFRESH, m_butRefresh);
-	DDX_Control(pDX, IDC_COM_PREFERENCES, m_butPreferences);
+//	DDX_Control(pDX, IDC_FF_REFRESH, m_butRefresh);
 	DDX_Control(pDX, IDHELP, m_butHelp);
 	DDX_Control(pDX, IDC_COM_EXTRAFILES, m_butExtraFiles);
 	DDX_Control(pDX, IDC_COM_ABOUT, m_butAbout);
@@ -74,13 +69,13 @@ BEGIN_MESSAGE_MAP(CFindFileDialog, FIND_FILE_DIALOG)
 	ON_BN_CLICKED(IDC_COM_ABOUT, OnPfAbout)
 	ON_NOTIFY(NM_DBLCLK, IDC_FF_FILES, OnDblclkFfFiles)
 	ON_BN_CLICKED(IDC_COM_EXTRAFILES, OnFfExtraprojects)
-	ON_BN_CLICKED(IDC_COM_PREFERENCES, OnFfPreferences)
-	ON_BN_CLICKED(IDC_FF_REFRESH, OnFfRefresh)
+//	ON_BN_CLICKED(IDC_FF_REFRESH, OnFfRefresh)
 	ON_WM_DESTROY()
 	ON_NOTIFY(NM_RCLICK, IDC_FF_FILES, OnRclickFfFiles)
 	ON_BN_CLICKED(IDC_COM_CURRENTFILE, OnFfCurrentfile)
 	ON_BN_CLICKED(IDC_FF_SCOPE_PROJECT, OnFfScopeProject)
 	ON_BN_CLICKED(IDC_FF_SCOPE_WORKSPACE, OnFfScopeWorkspace)
+	ON_BN_CLICKED(IDC_FF_SCOPE_GLOBAL, OnFfScopeGlobal)
 	ON_NOTIFY(NM_CHAR, IDC_FF_FILENAME, OnChangeFfFilename)
 	ON_WM_DRAWITEM()
 	ON_WM_ERASEBKGND()
@@ -89,21 +84,22 @@ BEGIN_MESSAGE_MAP(CFindFileDialog, FIND_FILE_DIALOG)
 	ON_NOTIFY(NM_CHAR, IDC_FF_PREFIX, OnChangeFfFilename)
 	ON_WM_CONTEXTMENU()
 	//}}AFX_MSG_MAP
+	ON_CBN_CLOSEUP(IDC_FF_FILENAME, OnCbnCloseupFfFilename)
 END_MESSAGE_MAP()
 
 BEGIN_DYNAMIC_MAP(CFindFileDialog, cdxCDynamicDialog)
 	DYNAMIC_MAP_ENTRY(IDC_COM_EXTRAFILES,	mdRepos,	mdNone)
-	DYNAMIC_MAP_ENTRY(IDC_FF_REFRESH,		mdRepos,	mdNone)
+//	DYNAMIC_MAP_ENTRY(IDC_FF_REFRESH,		mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_CURRENTFILE,	mdRepos,	mdNone)
 	
 	DYNAMIC_MAP_ENTRY(IDOK,					mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDCANCEL,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDHELP,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_ABOUT,		mdRepos,	mdNone)
-	DYNAMIC_MAP_ENTRY(IDC_COM_PREFERENCES,	mdRepos,	mdNone)
 
 	DYNAMIC_MAP_ENTRY(IDC_FF_SCOPE_PROJECT,	mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_FF_SCOPE_WORKSPACE,mdRepos,	mdNone)
+	DYNAMIC_MAP_ENTRY(IDC_FF_SCOPE_GLOBAL,	mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_FF_SCOPE,			mdRepos,	mdNone)
 	
 	DYNAMIC_MAP_ENTRY(IDC_FF_FILENAME,		mdResize,	mdNone)
@@ -130,40 +126,11 @@ BOOL CFindFileDialog::OnInitDialog()
 	// Subclass the edit with our own.
     m_prefixEdit->SetWindowText(m_lastPrefix);
     m_edit->SetWindowText(m_lastFilename);
-	m_edit->SetSel(0, -1, FALSE);
-
-	CListCtrl_SetItemCountEx(*m_files, m_fileList->GetCount());
+	m_edit->CComboBox::SetEditSel(0, -1);
 
 	// Hide some stuff.
-	m_origFileList = m_fileList;
-	if (m_workspaceOpen)
-	{
-		GetDlgItem(IDC_FF_REFRESH)->ShowWindow(SW_HIDE);
+//	m_origFileList = m_fileList;
 
-		m_curProject = g_wwhizInterface->GetCurrentProject();
-		if (m_curProject)
-		{
-			// Set the proper scope.
-			if (s_fileScope == ScopeCurrentProject)
-				((CButton*)GetDlgItem(IDC_FF_SCOPE_PROJECT))->SetCheck(1);
-			else
-				((CButton*)GetDlgItem(IDC_FF_SCOPE_WORKSPACE))->SetCheck(1);
-		}
-		else
-		{
-			GetDlgItem(IDC_FF_SCOPE_PROJECT)->EnableWindow(FALSE);
-			((CButton*)GetDlgItem(IDC_FF_SCOPE_WORKSPACE))->SetCheck(1);
-		}
-	}
-	else
-	{
-		GetDlgItem(IDC_FF_SCOPE_PROJECT)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_FF_SCOPE_WORKSPACE)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_FF_SCOPE)->ShowWindow(SW_HIDE);
-	}
-
-	m_created = true;
-	
 	if (m_lastPosition != -1)
 	{
 		m_oldFilename = m_lastFilename;
@@ -172,10 +139,30 @@ BOOL CFindFileDialog::OnInitDialog()
 	m_saveOldFilename = m_oldFilename;
 	m_saveOldPrefix = m_oldPrefix;
 	m_saveLastPosition = m_lastPosition;
-	RefreshList(m_lastPrefix + m_lastFilename);
+//	RefreshList(m_lastPrefix + m_lastFilename);
+
+	m_created = true;
+
+	m_curProject = g_wwhizInterface->GetCurrentProject();
+	if (!m_curProject)
+	{
+		GetDlgItem(IDC_FF_SCOPE_PROJECT)->EnableWindow(FALSE);
+		if (s_fileScope == ScopeCurrentProject)
+			s_fileScope = ScopeEntireWorkspace;
+	}
+	if (s_fileScope == ScopeCurrentProject)
+		OnFfScopeProject();
+	else if (s_fileScope == ScopeEntireWorkspace)
+		OnFfScopeWorkspace();
+	else if (s_fileScope == ScopeGlobal)
+		OnFfScopeGlobal();
+
 	if (m_files->GetItemCount() > 0  &&  m_lastPosition != -1)
 	{
-		CListCtrl_SetItemState(*m_files, m_lastPosition, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		if (m_lastPosition > m_files->GetItemCount())
+			m_lastPosition = 0;
+		m_files->SetItemState(m_lastPosition, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		m_files->SetItemState(m_lastPosition, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 		m_files->EnsureVisible(m_lastPosition, FALSE);
 	}
 
@@ -236,7 +223,7 @@ void CFindFileDialog::RefreshList(LPCTSTR name)
 	{
 		if (isalnum(filename[i]))
 			filename[pLen++] = tolower(filename[i]);
-		else if (filename[i] == '/')
+		else if (filename[i] == '/'  ||  filename[i] == '*')
 			splitPos = pLen;
 	}
 	filename[pLen] = 0;
@@ -256,12 +243,8 @@ void CFindFileDialog::RefreshList(LPCTSTR name)
 	int topOne = -1;
 	int curPos = 0;
 	
-	// Set based on scope.
-	m_fileList = m_origFileList;
-	if (s_fileScope == ScopeCurrentProject)
-		m_fileList = &m_curProject->GetFileList();
 	m_foundFiles.RemoveAll();
-	m_foundFiles.SetSize(m_fileList->GetCount());
+	m_foundFiles.SetCount(m_fileList->GetCount());
 
 	const WWhizFileList& fileList = *m_fileList;
 	int fileListCount = fileList.GetCount();
@@ -313,13 +296,13 @@ void CFindFileDialog::RefreshList(LPCTSTR name)
 		}
 	}
 
-	CListCtrl_SetItemCountEx(*m_files, curPos);
+	m_files->SetItemCountEx(curPos);
 
 	if (topOne == -1)
 		topOne = 0;
 
 	if ((m_files->GetItemCount() > 0  &&  m_lastPosition == -1)  ||  m_oldFilename != name)
-		CListCtrl_SetItemState(*m_files, topOne, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		m_files->SetItemState(topOne, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 
 	m_files->SetRedraw(TRUE);
 
@@ -349,16 +332,23 @@ void CFindFileDialog::OnChangeFfFilename(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CFindFileDialog::OnOK() 
 {
+	CString string;
+	m_edit->GetWindowText(string);
+	g_wwhizReg->WFOAddEditString(string);
+	
+	m_prefixEdit->GetWindowText(string);
+	g_wwhizReg->WFOAddPrefixEditString(string);
+	
 	if (m_files->GetItemCount() != 0)
 	{
 		History::PreAdd();
 
 		CString filename;
 		if (m_files->GetSelectedCount() == 0)
-			CListCtrl_SetItemState(*m_files, 0, 0, LVIS_SELECTED | LVIS_FOCUSED);
+			m_files->SetItemState(0, 0, LVIS_SELECTED | LVIS_FOCUSED);
 		int nCount = m_files->GetSelectedCount();
 
-		CArray<WWhizFile*, WWhizFile*> toOpenList;
+		WArray<WWhizFile*> toOpenList;
 		
 		int lineNumber = -1;
 		CString typedFilename;
@@ -380,7 +370,7 @@ void CFindFileDialog::OnOK()
 			curSel = m_files->GetNextItem(curSel, LVNI_ALL | LVNI_SELECTED);
 		}
 
-		for (int i = toOpenList.GetSize() - 1; i >= 0; --i)
+		for (int i = toOpenList.GetCount() - 1; i >= 0; --i)
 		{
 			WWhizFile& file = *toOpenList[i];
 			CString filename = file.GetPath() + file.GetTitle() + "." + file.GetExt();
@@ -391,8 +381,8 @@ void CFindFileDialog::OnOK()
 
 			if (lineNumber > 0)
 			{
-				objModel.MoveTo(lineNumber, 1, dsMove);
-				g_pApplication->ExecuteCommand(CComBSTR("WindowScrollToCenter"));
+				objModel.MoveTo(lineNumber, 1, false);
+				objModel.ScrollToCenter();
 			}
 		}
 	}
@@ -441,22 +431,14 @@ void CFindFileDialog::OnFfExtraprojects()
 	GetDlgItem(IDC_FF_FILENAME)->SetFocus();
 }
 
-void CFindFileDialog::OnFfPreferences() 
-{
-	CPreferencesDialog dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-	}
-	GetDlgItem(IDC_FF_FILENAME)->SetFocus();
-}
 
-
-void CFindFileDialog::OnFfRefresh() 
+/*void CFindFileDialog::OnFfRefresh() 
 {
 	g_wwhizInterface->RefreshGlobalFileList();
 	RefreshFromFilename();
 	GetDlgItem(IDC_FF_FILENAME)->SetFocus();
 }
+*/
 
 void CFindFileDialog::OnDestroy() 
 {
@@ -528,7 +510,7 @@ int CFindFileDialog::FilePopup(const CString& fullName, CWnd* thisWnd, CPoint* i
 	{
 		case IDC_FFP_HEADERFLIP:
 		{
-			OnHeaderFlip(fullName);
+			WWhizCommands::OnHeaderFlip(fullName);
 			return 1;
 		}
 
@@ -648,13 +630,40 @@ void CFindFileDialog::OnFfCurrentfile()
 void CFindFileDialog::OnFfScopeProject() 
 {
 	s_fileScope = ScopeCurrentProject;
+	m_fileList = &m_curProject->GetFileList();
+	m_files->SetItemCountEx(m_fileList->GetCount());
+
+	GetDlgItem(IDC_FF_FILENAME)->SetFocus();
+	((CButton*)GetDlgItem(IDC_FF_SCOPE_PROJECT))->SetCheck(1);
 	RefreshFromFilename();
+//	GetDlgItem(IDC_FF_REFRESH)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_FF_FILENAME)->SetFocus();
 }
+
 
 void CFindFileDialog::OnFfScopeWorkspace() 
 {
 	s_fileScope = ScopeEntireWorkspace;
+	g_wwhizInterface->RefreshFileList();
+	m_fileList = &g_wwhizInterface->GetActiveFileList();
+	m_files->SetItemCountEx(m_fileList->GetCount());
+
+//	GetDlgItem(IDC_FF_REFRESH)->ShowWindow(SW_HIDE);
+	((CButton*)GetDlgItem(IDC_FF_SCOPE_WORKSPACE))->SetCheck(1);
+	RefreshFromFilename();
+	GetDlgItem(IDC_FF_FILENAME)->SetFocus();
+}
+
+
+void CFindFileDialog::OnFfScopeGlobal() 
+{
+	s_fileScope = ScopeGlobal;
+	g_wwhizInterface->RefreshGlobalFileList();
+	m_fileList = &g_wwhizInterface->GetGlobalFileList();
+	m_files->SetItemCountEx(m_fileList->GetCount());
+
+//	GetDlgItem(IDC_FF_REFRESH)->ShowWindow(SW_SHOW);
+	((CButton*)GetDlgItem(IDC_FF_SCOPE_GLOBAL))->SetCheck(1);
 	RefreshFromFilename();
 	GetDlgItem(IDC_FF_FILENAME)->SetFocus();
 }
@@ -684,6 +693,13 @@ void CFindFileDialog::OnContextMenu(CWnd* pWnd, CPoint point)
 	m_files->ClientToScreen(&point);
 	
 	const WWhizFile& file = *m_fileList->Get(curSel);
-	if (FilePopup(file.GetFullName(), this, &point))
+	if (FilePopup(file.GetCaseFullName(), this, &point))
 		OnCancel();
+}
+
+
+
+void CFindFileDialog::OnCbnCloseupFfFilename()
+{
+	RefreshFromFilename();
 }

@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: VirtualDrive.h $
 // $Archive: /WorkspaceWhiz/Src/Shared/VirtualDrive.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 6    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #8 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -89,6 +89,8 @@ public:
 	bool Close(void);
 	bool Flush();
 
+	bool IsReadOnly() const					{  return m_readOnly;  }
+
 	bool FileCreate(const CString& filename, VirtualFile& virtualFile, const CTime* fileTime = NULL);
 	bool FileOpen(const CString& filename, VirtualFile& virtualFile);
 	bool FileClose(VirtualFile& datafile);
@@ -134,15 +136,16 @@ private:
 
 	CString m_filename;
 	FileHeader m_header;
-	CArray<FileEntry, FileEntry&> m_dir;
+	WArray<FileEntry> m_dir;
 
+	bool m_readOnly;
 	CFile* m_parentFile;
 	bool m_ownParentFile;
 
-	CList<VirtualFile*, VirtualFile*> m_openFiles;	//!< All open files.
+	WList<VirtualFile*> m_openFiles;			//!< All open files.
 	bool m_changed;								//!< Whether the file needs to be flushed.
 	VirtualFile* m_curWriteFile;				//!< The current file being written to.
-	CMap<CString, const CString&, UINT, UINT> m_filenameMap;	//!< The filename to directory index map.
+	WMap<CString, UINT> m_filenameMap;	//!< The filename to directory index map.
 
 	friend class VirtualDriveManager;
 	friend class VirtualFile;

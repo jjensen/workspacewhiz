@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: ExtraFilesDialog.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/ExtraFilesDialog.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 13   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -31,6 +31,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CExtraFilesDialog)
 	enum { IDD = IDD_EXTRAFILES };
+	CButton	m_neverRefreshCheckbox;
 	CButton	m_butOK;
 	CButton	m_butCancel;
 	CButton	m_butRemove;
@@ -64,7 +65,8 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnDblclkEpList();
 	afx_msg void OnComAbout();
-	afx_msg void OnComPreferences();
+	afx_msg void OnSelchangeEpList();
+	afx_msg void OnEpNeverrefresh();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DYNAMIC_MAP()

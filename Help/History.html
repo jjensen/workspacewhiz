@@ -1,0 +1,295 @@
+<html>
+<head>
+<title>History</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css"></head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2>2/19/2002 - Version 2.15 Beta 3</h2>
+<h3>Features/Changes</h3>
+<ul>
+  <li><b>Ctags: </b>Upgraded to Exuberant Ctags 5.2.2.</li>
+</ul>
+<h3>Programming Interface</h3>
+<ul>
+  <li>A v-table problem was corrected.</li>
+</ul>
+<hr>
+<h2>4/12/2001 - Version 2.15 Beta 2</h2>
+<h3>Features/Changes</h3>
+<ul>
+  <li><b>Autocomplete Tags:</b> The window is draggable with the mouse (just click 
+    a gray area).</li>
+  <li><b>Files:</b> Global File Open dialog now determines the platform type and 
+    opens the correct set of global include and source directories (such as Win32 
+    vs. Xbox).</li>
+  <li><b>Files/Tags:</b> Combo box histories are stored for all the edit fields.</li>
+  <li><b>Extra Files:</b> The Extra Files dialog can toggle whether a given project 
+    should be refreshed on each task switch or just loaded once and ignored.</li>
+  <li><b>Tags:</b> Ctags.exe has been sped up and stripped down to just the C/C++ 
+    parser.</li>
+  <li><b>Tags:</b> Tag writing is faster.</li>
+  <li><b>Tags:</b> New Ignore Tokens list results in better tag parsing.</li>
+</ul>
+<h3>Bugs Fixed</h3>
+<ul>
+  <li><b>Autocomplete Tags: </b> Failed when restoring a tag in the middle of 
+    another tag.</li>
+  <li><b>Files/Tags:</b> Sometimes weird crashes would cause the values for the 
+    column widths in the dialogs to go screwy and nothing would show, although 
+    the columns could be adjusted back into place. An attempt to compensate for 
+    the problem has been made, although the source of the problem is unknown.</li>
+  <li><b>Files:</b> Context menu uses the case sensitive filename.</li>
+  <li><b>Header Flip: </b>Put the flipping order back the way it used to be, which 
+    was: 1) Check the project, 2) Check the workspace, 3) Check the same directory, 
+    and 4) Check the global files.</li>
+  <li><b>History:</b> A crash bug involving certain combinations of history usage 
+    has been fixed.</li>
+  <li><b>History:</b> The X and Y columns were flipped. Fixed.</li>
+  <li><b>Tags:</b> Sometimes the tag list would become corrupt. Fixed.</li>
+  <li><b>Tags:</b> The context menu was retrieving the wrong values for copying 
+    the tag name or tag parent to the clipboard.</li>
+  <li><b>Tags:</b> Find tag at cursor was broken when the caret was at the end 
+    of a word and a space followed.</li>
+  <li><b>WWhizInterface:</b> Better relative path resolving, especially for CvsIn.</li>
+  <li><b>WWhizInterfaceInstaller:</b> Incorrectly identified the Visual C++ 6.0 
+    path on some installations.</li>
+  <li>Other miscellaneous bug fixes.</li>
+</ul>
+            <h2>1/1/2001 - Version 2.12</h2>
+<h3>Features/Changes</h3>
+<ul>
+  <li><b>Extra Files:</b> Support for wildcards in the Extra Files filenames. 
+    Bug: Can't uncheck a wildcarded Extra Files.</li>
+  <li><b>Files: </b>If a comma or colon follows a filename being typed (as filename.ext:Line# 
+    or filename.ext,Line#), the number following the comma or colon is the exact 
+    line number to go to.</li>
+  <li><b>Files: </b>Right-clicking on a file in the file list gives the additional 
+    options of copying the path or full path (including filename) to the clipboard.</li>
+  <li><b>Files:</b> Reads Visual C++ 7.0 .vcproj files.</li>
+</ul>
+<h3>Bugs Fixed</h3>
+<ul>
+  <li><b>Files: </b>When using the left/right arrow keys in the edit field, the 
+    key was passed onto the list control, causing it to scroll left/right. Fixed.</li>
+  <li><b>Tags: </b>The Autocomplete Tags dialog showed multiple identifiers of 
+    the same name. Fixed.</li>
+  <li><b>Tags: </b>File tags removed from tag autocompletion.</li>
+  <li><b>Tags:</b> Autocomplete identifiers at the beginning of the line were 
+    sometimes not retrieved properly. Fixed.</li>
+  <li><b>Tags:</b> Fixed counting of packing for tag files.</li>
+</ul>
+<h3>Programming Interface</h3>
+<ul>
+  <li>ObjModelHelper::EndOfDocument() added.</li>
+  <li>For Debug builds, a registry setting at HKLM\Software\WWhizInterface\DebugPath 
+    gives the path to the WWhizInterface2D.mod file.</li>
+  <li>WWhizInterface assigns default file extensions, tag extensions, and ignore 
+    tokens at startup.</li>
+  <li>WWhizInterface uses a Ctags.exe that resides in the same directory as WWhizInterface2(D).mod.</li>
+  <li>Added two new add-ins to the source distribution: Src/Samples/BackupProjectsAddin 
+    and Src/Samples/ShowFunctionsAddin.</li>
+  <li>In the Shared/ directory, Node.* and XmlFile.* added.</li>
+  <li>In the Shared/ directory, major updates for the VirtualDrive classes.</li>
+  <li>WWhizConfig::GetTagAutoSaveAmount() and SetTagAutoSaveAmount() added.</li>
+  <li>WWhizProject::GetXmlData() added. All projects (.dsp and .vcproj) are represented 
+    as XML internally (although not all of the .dsp file is converted... just 
+    the file section).</li>
+</ul>
+<hr>
+<h2></h2>
+<h2>12/8/2000 - Version 2.11</h2>
+<h3>Features/Changes</h3>
+<ul>
+  <li><b>Extra Files:</b> The Extra Files filename is now {ActiveWorkspace}.ExtraFiles.WW. 
+    This solves a variety of problems related to multiple workspaces in the same 
+    directory. </li>
+  <li><b>Extra Files:</b> It is no longer possible to turn off an Extra File project 
+    that is a member of the active workspace. The Extra Files dialog will show 
+    it as turned off, but the option is ignored.</li>
+  <li><b>Templates: </b>Can toggle on/off a template group. Useful for hiding 
+    template groups.</li>
+</ul>
+<h3>Bugs Fixed</h3>
+<ul>
+  <li><b>Files:</b> DevStudio automation is no longer used to retrieve the active 
+    projects. They are read directly from the active .dsw.</li>
+</ul>
+<h3>Programming Interface</h3>
+<ul>
+  <li>WWhizInterface::GetWorkspaceFullPath() added.</li>
+  <li>WWhizTemplateGroup::IsActive() and SetActive() added.</li>
+  <li>WWhizTemplateManager::Get() renamed to WWhizTemplateManager::GetTemplateGroup().</li>
+  <li>Projects immediately within the active workspace are considered workspace 
+    projects. </li>
+  <li>WWhizFile::IsWorkspaceFile() added.</li>
+</ul>
+<h2>11/13/2000 - Version 2.10 Final</h2>
+<h3>Features/Changes</h3>
+<ul>
+  <li><b>*** eMbedded Visual C++ 3.0 support! ***</b><b></b></li>
+  <li><b>Extra Files:</b> The Browse button in the dialog now has filters for 
+    projects and workspaces. <a href="ExtraFilesDialog.html">More...</a></li>
+  <li><b>Extra Files:</b> Workspaces can be checked off in the Extra Files dialog. 
+    <a href="ExtraFilesDialog.html">More...</a> </li>
+  <li><b>Files:</b> WWFileOpenAtCursorDlg removed.</li>
+  <li><b>Files:</b> Readded File Open prefix field. <a href="FileOpenDialog.html">More...</a></li>
+  <li><b>Files:</b> Added a file counter to the title bar, like the tag dialogs. 
+    <a href="FileOpenDialog.html">More...</a> </li>
+  <li><b>Files: </b>The Find File dialog now allows the file <a href="FileContextMenu.html">context 
+    menu</a> to be accessed through the keyboard (via the context menu key on 
+    the right side of the keyboard). <a href="FileOpenNavigation.html">More...</a></li>
+  <li><b>Files:</b> The directories specified in the global Include and Source 
+    paths are recursively searched for the Global File Open dialog. <a href="GlobalFileOpen.html">More...</a></li>
+  <li><b>General:</b> File date/time checking has been drastically improved. Saving 
+    a file is updated almost instantly. All files are checked when Visual Studio 
+    is switched away from.</li>
+  <li><b>Header Flip:</b> Header flip checks the current file's directory first. 
+    <a href="HeaderFlip.html">More...</a> </li>
+  <li><b>History:</b> To more closely duplicate Internet Explorer keystrokes, 
+    History Back and History Forward now have the default key assignments of Alt-Left 
+    Arrow and Alt-Right Arrow, respectively. <a href="FileHistory.html">More...</a></li>
+  <li><b>Tags:</b> New implementation of the tags system uses far less memory, 
+    is tons faster, and doesn't rebuild tags for projects you've already built 
+    tags for.</li>
+  <li><b>Tags:</b> Upgraded to a modified Exuberant Ctags 4.0.3.</li>
+  <li><b>Tags:</b> The status fields in the Find Tag dialog will horizontally 
+    scroll if they have the focus and a selection is in progress. <a href="FindTagDialog.html">More...</a></li>
+  <li><b>Tags:</b> The namespace of a tag is resolved in most cases. <a href="FindTagDialog.html">More...</a></li>
+  <li><b>Tags:</b> Retrieves and shows the implementation type of a tag: virtual, 
+    pure virtual, or normal. <a href="FindTagDialog.html">More...</a></li>
+  <li><b>Tags:</b> Retrieves and shows the access of a tag: public, protected, 
+    private, or friend. <a href="FindTagDialog.html">More...</a></li>
+  <li><b>Tags:</b> Added tag declarations (or prototypes) so the tag in the class 
+    definition can be gone to.</li>
+  <li><b>Tags:</b> Added new command WWTagFlip which flips between the tag's declaration 
+    and definition.</li>
+  <li><b>Tags:</b> Right click on a tag in the Find Tag dialog lets you go to 
+    the tag's declaration or definition. <a href="TagContextMenu.html">More...</a></li>
+  <li><b>Tags:</b> Shift-Enter on a tag in the Find Tag dialog goes to the tag's 
+    declaration. <a href="FindTagDialog.html">More...</a></li>
+  <li><b>Tags:</b> Handles * for wildcard (substring) searching (identical to 
+    the slash). <a href="FindTagMatchingTags.html">More...</a></li>
+  <li><b>Tags:</b> Multiple search strings may be specified on a tag search by 
+    using more than one / (slash) or * (asterisk). <a href="FindTagMatchingTags.html">More...</a></li>
+  <li><b>Tags:</b> New ' symbol in tag finds. When the ' symbol is specified, 
+    all current tag types being shown are cancelled. The letters that follow the 
+    ' symbol, up to a closing ' symbol, turn on tag types. <a href="FindTagSearchAttributes.html">More...</a></li>
+  <li><b>Tags:</b> Files show up as tags in the tag dialog (almost invalidating 
+    the need for the Workspace File Open dialog). <a href="FindTagDialog.html">More...</a></li>
+  <li><b>Tags:</b> Since Find Tag at Cursor is more widely used that Tag Flip, 
+    their default key bindings have been flipped. Find Tag at Cursor is now assigned 
+    to Ctrl-Space and Tag Flip is assigned to Ctrl-Shift-Space. <a href="PreferencesKeyBindings.html">More...</a></li>
+  <li><b>Tags:</b> Because of the key bindings change for History Back and Forward, 
+    Tag Find Previous and Tag Find Next now have the new key assignments Alt-Shift-Left 
+    Arrow and Alt-Shift-Right Arrow. <a href="PreferencesKeyBindings.html">More...</a></li>
+  <li><b> Tags:</b> The Find Tag dialog now allow the tag list context menus to 
+    be accessed through the keyboard (via the context menu key on the right side 
+    of the keyboard). <a href="FileOpenNavigation.html">More...</a></li>
+  <li><b>Tags:</b> The Find Tag dialog's Refresh Tags button performs an automatic 
+    File-&gt;Save All. This is useful if the preference for automatically saving 
+    all files per each tag command is turned off. <a href="FindTagRefresh.html">More...</a></li>
+  <li><b>Tags:</b> When using the Find Tag at Cursor Dialog, the parent identifier 
+    is inserted into the parent field of the dialog, instead of being tacked onto 
+    the end of the tag. <a href="FindTagDialog.html">More...</a></li>
+  <li><b>Tags:</b> Scanning of changed files due to a task switch (Alt-Tab, etc) 
+    may be turned on/off in the Preferences-&gt;Tags dialog. <a href="PreferencesTags.html">More...</a></li>
+  <li><b>Tags:</b> Save All is performed for Find Tag at Cursor.</li>
+  <li><b>Tags:</b> Autocompletion of a tag shows the number of matches on the 
+    status line. </li>
+  <li><b>Templates:</b> Added Sel command. <a href="TFCSel.html">More...</a></li>
+</ul>
+<h3>Bugs Fixed</h3>
+<ul>
+  <li><b>Files:</b> Workspaces and projects can now have their read-only flag 
+    toggled from with the File Open dialog.</li>
+  <li><b>Files:</b> The current workspace and all projects are added to the file 
+    list. </li>
+  <li><b>Files:</b> .dsp files are more accurately parsed. Project Custom Build 
+    steps are ignored.</li>
+  <li><b>Files:</b> If there is no extension on a filename, a period is not appended.</li>
+  <li><b>Files:</b> Directories with periods in the names now properly resolve 
+    the filename.</li>
+  <li><b>Files:</b> When resolving filenames, \\machinename\directory was broken.</li>
+  <li><b>General:</b> Fixed all known memory leaks.</li>
+  <li><b>General:</b> The Help dialog isn't modal over DevStudio anymore.</li>
+  <li><b>Tags: </b>When performing a Find Tag at Cursor, lines with tabs were 
+    calculated incorrectly, causing some symbols to not be matched properly. Fixed.</li>
+  <li><b>Tags:</b> The Autocomplete Tag dialog properly saves its column width 
+    settings to the registry now.</li>
+  <li><b>Tags:</b> The Autocomplete Tag dialog's gripper is always easily accessible 
+    now.</li>
+  <li><b>Tags:</b> Corrupt tag files are better detected and repaired.</li>
+  <li><b>Tags:</b> Reorganized the tag system to consume far less memory. MFC 
+    tags, for instance, use about 10 megabytes less memory (from Beta 1). Another 
+    test case, involving approximately 175,000 tags, saved around 60 megabytes 
+    of memory.</li>
+  <li><b>Tags:</b> The Alt-F keyboard shortcut referred to two commands in the 
+    Find Tag dialog. Fixed. </li>
+  <li><b>Tags:</b> Tag autocompletion will remove the parent tag if no match is 
+    found.</li>
+  <li><b>Tags:</b> Tags are more accurately found now by line number.</li>
+  <li><b>Tags:</b> Fixed the Ignore Tokens list.</li>
+  <li><b>Tags:</b> Optimized tag loading, saving, and sorting.</li>
+  <li><b>Tags:</b> Find Tag at Cursor matches exact (not partial) tags now</li>
+  <li><b>Tags:</b> Fixed the execution of a tag command performing a SaveAll and 
+    not identifying the file as changed until the next tag command.</li>
+  <li><b>Tags:</b> Fixed a crash bug when autocompleting a tag.</li>
+  <li><b>Tags:</b> When autocompleting a tag that has only one match, repeatedly 
+    performing the autocompletion continued to fill the Undo buffer. Fixed.</li>
+  <li><b>Tags:</b> When adding/removing Extra Files, certain combinations of Extra 
+    Files usage would cause Workspace Whiz to not identify the new files. Fixed.</li>
+  <li><b>Tags:</b> Crash bug fixed when saving a file, removing it from the project, 
+    and opening the Find Tag dialog.</li>
+  <li><b>Tags:</b> Tag saves aren't done as often as before.</li>
+  <li><b>Tags:</b> Crash fixed in when reading certain combinations of lines for 
+    autocompletion.</li>
+  <li><b>Tags:</b> Sped up tag parsing a bit.</li>
+  <li><b>Templates: </b>Caret position on lines with tabs were calculated incorrectly. 
+    Fixed.</li>
+  <li><b>Templates: </b>The @@(Caret)@@ command didn't work if an ExecuteCommand 
+    SelectionFormat was issued and the text changed positions. Fixed.</li>
+  <li><b>Templates:</b> When right clicking on a template in the selection dialog, 
+    if it was a branch, the dialog exited. Fixed.</li>
+  <li><b>Templates:</b> !!if @@var@@ == &quot;&quot; works.</li>
+</ul>
+<h3>Programming Interface</h3>
+<ul>
+  <li><b>AIC:</b> Removed the AIC command GetWWhizInterface. Added the AIC command 
+    GetWWhizInterface2.</li>
+  <li>In the class WWhizTag, the functions GetShortIdent(), GetIdent(), GetFilename(), 
+    GetSearchString(), and GetNamespace() now return LPCSTR instead of const CString&amp;..</li>
+  <li>Removed the unused WWhizConfig::GetDoTagExactMatch(), SetDoTagExactMatch(), 
+    GetDoTagExactMatchExactLen(), and SetDoTagExactMatchExactLen().</li>
+  <li>Added WWhizConfig::GetScanFilesTaskSwitch() and SetScanFilesTaskSwitch().</li>
+  <li>Multiple WWhizInterface initializations not allowed (caused crash in new 
+    CvsIn).</li>
+  <li>Added reusable VirtualDrive and VirtualFile classes.</li>
+  <li>WWhizTag::Access added.</li>
+  <li>WWhizTag::Type::DECLARATION added.</li>
+  <li>WWhizTag::GetAccess() added.</li>
+  <li>WWhizTag::GetNamespace() added.</li>
+  <li>WWhizTag::GetBuddy() added.</li>
+  <li>WWhizTag::GetImplementationType() added.</li>
+  <li>WWhizInterface::GetTagScope() added.</li>
+  <li>WWhizFile::GetOrderedTagList() added.</li>
+  <li>WWhizInterface::Initialize() removed.</li>
+  <li>WWhizInterface::GetWorkspaceName() added.</li>
+  <li>Added WWhizInterfaceHelper.pkg file for workspace name detection.</li>
+  <li>Implementation of ObjModelHelper::SaveAll(), which is used in place of ExecuteCommand(&quot;SaveAll&quot;) 
+    when saving for a tag command.</li>
+  <li>Removal of WWhizInterface::HeaderFlip(). Moved to Commands.cpp.</li>
+  <li>ObjModelAuto.h renamed to ObjModelHelper.h.</li>
+  <li>WWhizInterface.mod renamed to WWhizInterface2.mod.</li>
+  <li>WWhizInterface2.mod has a mini-installer for redistribution. Get it from 
+    the Workspace Whiz web site.</li>
+  <li>WWhizCreate() renamed to WWhizInterfaceCreate().</li>
+  <li>WWhizDestroy() renamed to WWhizInterfaceDestroy().</li>
+  <li>New ObjModelHelper class shields the user from VC++ 5/6 and EVC++ 3 automation.</li>
+</ul>
+<h2></h2>
+<hr>
+<h2><a href="History200.html">Workspace Whiz 2.00 History</a></h2>
+</body>
+</html>

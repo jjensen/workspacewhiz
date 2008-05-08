@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: ProjectList.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizInterface/ProjectList.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 9    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -37,7 +37,7 @@ void ProjectList::RemoveAll( )
 		delete project;
 	}
 
-	CListEx<Project*, Project*>::RemoveAll();
+	WList<Project*>::RemoveAll();
 }
 
 
@@ -46,9 +46,10 @@ Project::Project() :
 	m_lastActive(true),
 	m_changed(false),
 	m_parent(NULL),
-	m_touched(0),
+	m_touched(false),
 	m_workspaceProject(false),
-	m_newProject(false)
+	m_newProject(false),
+	m_noRefresh(false)
 {
 }
 
@@ -120,7 +121,7 @@ bool Project::IsWorkspaceProject(void) const
 }
 
 
-static CMap<Project*, Project*, Project*, Project*> s_recursionMap;
+static WMap<Project*, Project*> s_recursionMap;
 
 void Project::SetActive(bool active)
 {

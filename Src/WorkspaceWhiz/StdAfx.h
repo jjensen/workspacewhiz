@@ -1,29 +1,60 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: StdAfx.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/StdAfx.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 20   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #9 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#if !defined(AFX_STDAFX_H__039FB62E_6DD0_11D3_9B27_835709CADA52__INCLUDED_)
-#define AFX_STDAFX_H__039FB62E_6DD0_11D3_9B27_835709CADA52__INCLUDED_
+#pragma once
 
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#ifndef STRICT
+#define STRICT
+#endif
 
-#pragma warning (disable : 4786)
+// Modify the following defines if you have to target a platform prior to the ones specified below.
+// Refer to MSDN for the latest info on corresponding values for different platforms.
+#ifndef WINVER				// Allow use of features specific to Windows 95 and Windows NT 4 or later.
+#define WINVER 0x0400		// Change this to the appropriate value to target Windows 98 and Windows 2000 or later.
+#endif
+
+#ifndef _WIN32_WINNT		// Allow use of features specific to Windows NT 4 or later.
+#define _WIN32_WINNT 0x0400	// Change this to the appropriate value to target Windows 2000 or later.
+#endif						
+
+#ifndef _WIN32_IE			// Allow use of features specific to IE 4.0 or later.
+#define _WIN32_IE 0x0400	// Change this to the appropriate value to target IE 5.0 or later.
+#endif
+
+#define _ATL_APARTMENT_THREADED
+#define _ATL_NO_AUTOMATIC_NAMESPACE
+
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+
+// turns off ATL's hiding of some common and often safely ignored warning messages
+#define _ATL_ALL_WARNINGS
 
 #include <afxdisp.h>
 #include <afxcmn.h>
 #include <afxdlgs.h>
 #include <afxtempl.h>
-#include "AfxTemplateEx.h"
+#include "WCollection.h"
 
 #include <atlbase.h>
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// WWHIZ_VC6
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+#ifdef WWHIZ_VC6
+
 //You may derive a class from CComModule and use it if you want to override
 //something, but do not change the name of _Module
 extern CComModule _Module;
@@ -31,15 +62,8 @@ extern CComModule _Module;
 
 // Developer Studio Object Model
 #include <ObjModel\addauto.h>
-//#include <ObjModel\appdefs.h>
-//#include <ObjModel\appauto.h>
-//#include <ObjModel\blddefs.h>
-//#include <ObjModel\bldauto.h>
-//#include <ObjModel\textdefs.h>
-//#include <ObjModel\textauto.h>
 #include <ObjModel\dbgdefs.h>
 #include <ObjModel\dbgauto.h>
-extern IApplication* g_pApplication;
 #include "ObjModelHelper.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -80,8 +104,69 @@ void GetLastErrorDescription(CComBSTR& bstr);		// Defined in WorkspaceWhiz.cpp
 
 #endif //_DEBUG
 
-int CStringFind(const CString& str, LPCTSTR lpszSub, int nStart);
-int CStringFind(const CString& str, TCHAR ch, int nStart);
+#include "AddInComm.h"
+
+#endif WWHIZ_VC6
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// WWHIZ_VSNET
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+#ifdef WWHIZ_VSNET
+
+#include <atlcom.h>
+
+#pragma warning( disable : 4278 )
+#pragma warning( disable : 4146 )
+	//The following #import imports the IDTExtensibility2 interface based on it's LIBID
+	#import "libid:AC0714F2-3D04-11D1-AE7D-00A0C90F26F4" version("1.0") lcid("0")  raw_interfaces_only named_guids
+
+	//The following #import imports MSO based on it's LIBID
+	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
+
+	//The following #import imports DTE based on it's LIBID
+	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
+#pragma warning( default : 4146 )
+#pragma warning( default : 4278 )
+
+//#define IfFailGo(x) { hr=(x); if (FAILED(hr)) goto Error; }
+//#define IfFailGoCheck(x, p) { hr=(x); if (FAILED(hr)) goto Error; if(!p) {hr = E_FAIL; goto Error; } }
+
+class DECLSPEC_UUID("8FB04AFE-EB33-4C47-9E1C-D90C6273DEE1") WWhizNetLib;
+
+using namespace ATL;
+
+class CAddInModule : public CAtlDllModuleT< CAddInModule >
+{
+public:
+	CAddInModule()
+	{
+		m_hInstance = NULL;
+	}
+
+	DECLARE_LIBID(__uuidof(WWhizNetLib))
+
+	inline HINSTANCE GetResourceInstance()
+	{
+		return m_hInstance;
+	}
+
+	inline void SetResourceInstance(HINSTANCE hInstance)
+	{
+		m_hInstance = hInstance;
+	}
+
+private:
+	HINSTANCE m_hInstance;
+};
+
+extern CAddInModule _AtlModule;
+
+#endif WWHIZ_VSNET
+
 
 // determine number of elements in an array (not bytes)
 #ifndef _countof
@@ -90,30 +175,21 @@ int CStringFind(const CString& str, TCHAR ch, int nStart);
 
 extern void LOG(LPCTSTR msg, ...);
 
+#include "ObjModelHelper.h"
 #include "Auto.h"
-#include "AddInComm.h"
 #include "cdxCDynamicDialog.h"
 #include "TreeCtrlEx.h"
 #include "MemFile.h"
 #include "Config.h"
 #include "HtmlHelpDialog.h"
-#include "WWhizInterface2.h"
+#include "WWhizInterface3.h"
 #include "WWhizReg.h"
 #include "WWhizTemplateManager.h"
+#include "WWhizCommands.h"
 
-extern BOOL CListCtrl_SetItemState(CListCtrl& listCtrl, int nItem, UINT nState, UINT nStateMask);
-extern BOOL CListCtrl_SetItemCountEx(CListCtrl& listCtrl, int iCount, DWORD dwFlags = LVSICF_NOINVALIDATEALL);
-extern POSITION CListCtrl_GetFirstSelectedItemPosition(CListCtrl& listCtrl);
-extern int CListCtrl_GetNextSelectedItem(CListCtrl& listCtrl, POSITION& pos);
-extern int CToolTipCtrl_SetMaxTipWidth(CToolTipCtrl& toolTipCtrl, int iWidth);
-extern void CToolTipCtrl_SetDelayTime(CToolTipCtrl& toolTipCtrl, DWORD dwDuration, int iTime);
 extern void PrintStatusBar(LPCTSTR message);
 
-extern WWhizInterface* g_wwhizInterface;
-extern WWhizReg* g_wwhizReg;
-extern WWhizTemplateManager* g_wwhizTemplateManager;
+#define WM_DOTOOLBAR             (WM_APP + 1)
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_STDAFX_H__039FB62E_6DD0_11D3_9B27_835709CADA52__INCLUDED)

@@ -1,21 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: AutoCompleteTagsDlg.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/AutoCompleteTagsDlg.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 19   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "workspacewhiz.h"
+#include "resource.h"
 #include "AutoCompleteTagsDlg.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -51,6 +50,7 @@ BEGIN_MESSAGE_MAP(CAutoCompleteTagsDlg, CHtmlHelpDialog)
 	ON_WM_DESTROY()
 	ON_NOTIFY(NM_DBLCLK, IDC_FT_TAGS, OnDblclkFtTags)
 	ON_NOTIFY(NM_CHAR, IDC_FT_NAME, OnChangeFtName)
+	ON_WM_LBUTTONDOWN()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -102,7 +102,7 @@ void CAutoCompleteTagsDlg::RefreshList(LPCTSTR pName)
 	if (g_wwhizInterface->GetTagMatchCount() == 0)
 	{
 		// Remove all items from the list.
-		CListCtrl_SetItemCountEx(*m_tagListCtrl, 0);
+		m_tagListCtrl->SetItemCountEx(0);
 		m_tagListCtrl->SetRedraw(TRUE);
 		m_tagListCtrl->Invalidate();
 
@@ -110,7 +110,7 @@ void CAutoCompleteTagsDlg::RefreshList(LPCTSTR pName)
 	}
 
 	// Set the number of items to the maximum.
-	m_tagArray.SetSize(g_wwhizInterface->GetTagMatchCount());
+	m_tagArray.SetCount(g_wwhizInterface->GetTagMatchCount());
 
 	// Start looking for it.
 	int curPos = 0;
@@ -130,14 +130,14 @@ void CAutoCompleteTagsDlg::RefreshList(LPCTSTR pName)
 		curPos++;
 	}
 
-	m_tagArray.SetSize(curPos);
-	CListCtrl_SetItemCountEx(*m_tagListCtrl, curPos);
+	m_tagArray.SetCount(curPos);
+	m_tagListCtrl->SetItemCountEx(curPos);
 
-	POSITION pos = CListCtrl_GetFirstSelectedItemPosition(*m_tagListCtrl);
+	POSITION pos = m_tagListCtrl->GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		int nItem = CListCtrl_GetNextSelectedItem(*m_tagListCtrl, pos);
-		CListCtrl_SetItemState(*m_tagListCtrl, nItem, 0, LVIS_SELECTED | LVIS_FOCUSED);
+		int nItem = m_tagListCtrl->GetNextSelectedItem(pos);
+		m_tagListCtrl->SetItemState(nItem, 0, LVIS_SELECTED | LVIS_FOCUSED);
 	}
 
 	if (m_lastPosition >= m_tagListCtrl->GetItemCount())
@@ -149,7 +149,7 @@ void CAutoCompleteTagsDlg::RefreshList(LPCTSTR pName)
 			setPos = 0;
 		else
 			setPos = m_lastPosition;
-		CListCtrl_SetItemState(*m_tagListCtrl, setPos, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		m_tagListCtrl->SetItemState(setPos, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 		m_tagListCtrl->EnsureVisible(setPos, FALSE);
 	}
 	else
@@ -174,7 +174,7 @@ void CAutoCompleteTagsDlg::OnOK()
 	if (m_tagListCtrl->GetItemCount() != 0)
 	{
 		if (m_tagListCtrl->GetSelectedCount() == 0)
-			CListCtrl_SetItemState(*m_tagListCtrl, 0, 0, LVIS_SELECTED | LVIS_FOCUSED);
+			m_tagListCtrl->SetItemState(0, 0, LVIS_SELECTED | LVIS_FOCUSED);
 		int nCount = m_tagListCtrl->GetSelectedCount();
 
 		m_selectedIndex = m_tagListCtrl->GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
@@ -203,7 +203,14 @@ void CAutoCompleteTagsDlg::OnChangeFtName(NMHDR* pNMHDR, LRESULT* pResult)
 void CAutoCompleteTagsDlg::SetTagName(CString tag)
 {
 	m_edit->SetWindowText(tag);
-	int lineLength = m_edit->LineLength();
-	m_edit->SetSel(lineLength, -1);
+//	int lineLength = m_edit->GetEditCtrl()->LineLength();
+	m_edit->CComboBox::SetEditSel(tag.GetLength(), -1);
 	RefreshList(tag);
+}
+
+void CAutoCompleteTagsDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	PostMessage (WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
+	
+	CHtmlHelpDialog::OnLButtonDown(nFlags, point);
 }

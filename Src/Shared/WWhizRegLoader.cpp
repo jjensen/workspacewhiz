@@ -1,29 +1,31 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: WWhizRegLoader.cpp $
 // $Archive: /WorkspaceWhiz/Src/Shared/WWhizRegLoader.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 6    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #8 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include <stdafx.h>
+#include "WWhizInterfaceLoader.h"
 #include "WWhizRegLoader.h"
 #include "WWhizReg.h"
 
 struct WWhizReg;
 
 static HINSTANCE s_wwhizRegInst;
-static WWhizReg* (*s_wwhizRegCreate)(IApplication*, WWhizInterface*);
+static WWhizReg* (*s_wwhizRegCreate)(MyApplicationType, WWhizInterface*);
 static void (*s_wwhizRegDestroy)(WWhizReg*);
 static WWhizReg* s_wwhizReg;
 
 WWhizReg* __cdecl WWhizRegCreate(
-		IApplication* pApplication, WWhizInterface* wwhizInterface )
+		MyApplicationType application, HINSTANCE hInstance, WWhizInterface* wwhizInterface )
 {
+	AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
 	// Only allow one interface per instance.
 	if (s_wwhizReg)
 		return s_wwhizReg;
@@ -40,7 +42,7 @@ WWhizReg* __cdecl WWhizRegCreate(
 		// module path.
 		TCHAR moduleName[_MAX_PATH];
 		moduleName[0] = 0;
-		::GetModuleFileName(AfxGetInstanceHandle(), (TCHAR*)&moduleName, _MAX_PATH);
+		::GetModuleFileName(hInstance, (TCHAR*)&moduleName, _MAX_PATH);
 		TCHAR* ptr = _tcsrchr(moduleName, '\\');
 		if (ptr)
 		{
@@ -54,7 +56,7 @@ WWhizReg* __cdecl WWhizRegCreate(
 	if (!s_wwhizRegInst)
 		return NULL;
 
-	s_wwhizRegCreate = (WWhizReg* (*)(IApplication*, WWhizInterface*))
+	s_wwhizRegCreate = (WWhizReg* (*)(MyApplicationType, WWhizInterface*))
 			GetProcAddress(s_wwhizRegInst, "WWhizRegCreate");
 	if (!s_wwhizRegCreate)
 	{
@@ -69,7 +71,7 @@ WWhizReg* __cdecl WWhizRegCreate(
 		return NULL;
 	}
 
-	s_wwhizReg = (*s_wwhizRegCreate)(pApplication, wwhizInterface);
+	s_wwhizReg = (*s_wwhizRegCreate)(application, wwhizInterface);
 
 	return s_wwhizReg;
 }
@@ -77,6 +79,8 @@ WWhizReg* __cdecl WWhizRegCreate(
 
 void __cdecl WWhizRegDestroy()
 {
+	AFX_MANAGE_STATE(AfxGetStaticModuleState())
+
 	if (s_wwhizRegInst)
 	{
 		if (s_wwhizRegDestroy)
@@ -88,3 +92,4 @@ void __cdecl WWhizRegDestroy()
 		s_wwhizReg = NULL;
 	}
 }
+

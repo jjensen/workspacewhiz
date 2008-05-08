@@ -1,11 +1,7 @@
-; WorkspaceWhiz.def : Declares the module parameters for the DLL.
-
-LIBRARY      "WORKSPACEWHIZ"
-DESCRIPTION  'WORKSPACEWHIZ Windows Dynamic Link Library'
+; AddIn.def : Declares the module parameters.
 
 EXPORTS
-    ; Explicit exports can go here
-	DllCanUnloadNow PRIVATE
-	DllGetClassObject PRIVATE
-	DllRegisterServer PRIVATE
-	DllUnregisterServer PRIVATE
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

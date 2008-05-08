@@ -2,14 +2,13 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
 #include "cdxCDynamicWnd.h"
 #include	"cdxCSizeIconCtrl.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #endif
 
 #pragma warning(disable: 4100)
@@ -563,7 +562,7 @@ void cdxCDynamicWnd::DoInitWindow(CWnd & rWnd, const CSize & szInitial)
 
 	if(m_nFlags & flSizeIcon)
 	{
-		m_pSizeIcon	=	new cdxCSizeIconCtrl;
+		m_pSizeIcon	=	WNEW cdxCSizeIconCtrl;
 		VERIFY( m_pSizeIcon->Create(m_pWnd) );
 
 		AddSzControl(m_pSizeIcon->m_hWnd,BotRight,M_szNull,false);

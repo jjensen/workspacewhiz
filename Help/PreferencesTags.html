@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>Preferences - Tags</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Preferences</h2>
+<h3 align="left">Tags</h3>
+<p align="center"><img src="PreferencesTags.png" width="415" height="390"></p>
+<p align="left">The Tags preferences are used to modify various tag compilation 
+  features.</p>
+<p align="left">The <span class="field">Modify tag file extensions:</span> portion 
+  of the dialog allows assignment of all file extensions considered for tag compilation. 
+  Although the default extensions only provide support for C++ oriented files, 
+  Exuberant Ctags can also build tags from Java files, too.</p>
+<p align="left">The <span class="field">Modify tag file extensions:</span> edit 
+  field is used to enter new extensions. The <span class="field">Add</span> button 
+  will add the extension being edited to the end of the extension list. The <span class="field">Remove</span> 
+  button will remove the currently selected extension. The <span class="field">Reset</span> 
+  button will restore the Workspace Whiz defaults.</p>
+<p>When finding the tag under the cursor, checking <span class="field">Always 
+  use dialog for Find Tag at Cursor</span> will always show the <a href="FindTagDialog.html">Find 
+  Tag dialog</a> with the matched symbols, whether there were any tag ambiguities 
+  or not. Tag ambiguities happen when there are more than one tag. If this field 
+  is unchecked and only one tag is found, it will be moved to instantly.</p>
+<p align="left">When <span class="field">Automatic refresh of tags </span> is 
+  checked, source files are automatically scanned for changes by date/time stamp. 
+  For large number of files, this process can take a while. If unchecked, tags 
+  are never refreshed unless the <span class="field">Refresh Tags</span> button 
+  in the <a href="FindTagDialog.html">Find Tag dialog</a> is pressed.</p>
+<p align="left">When <i>Scan files on task switch</i> is checked, all files are 
+  checked when switching back to Visual Studio from another application.</p>
+<p align="left"></p>
+<p align="left">When <span class="field">Automatic Save All issued per each tag 
+  command</span> is checked, a File->Save All command is issued before each tag 
+  command. If it is unchecked, no files are saved, but the Find Tag dialog's Refresh 
+  Tags button will save the files and check for changes.</p>
+<p align="left">Saving tags can be a slower process, so it is only done according 
+  the amount in the <span class="field">Save tags after # file saves</span> field.</p>
+<p align="left"></p>
+<p align="left">Due to the new, faster tag system, tag files will continue growing 
+  larger and larger until packed. <i>Workspace Whiz</i> can automatically pack 
+  the tag files, but the packing process is not a quick process. The number of 
+  tags that must change before packing the tag file may be entered in the <span class="field">Pack 
+  tag file after # changes</span> field.</p>
+<p align="left">Exuberant Ctags doesn't pay full attention to the syntax of the 
+  code it is parsing. In particular, #define macros aren't parsed. On occasion, 
+  macros cause problems when Exuberant Ctags parses the code. The <span class="field">Modify 
+  tokens to ignore during tag parse:</span> field allows input of tokens that 
+  will be ignored.</p>
+<p align="left">The simplest format for an ignored token is just the token itself. 
+  By default, Workspace Whiz ignores the token <span class="code">DECLARE_DYNAMIC</span>. 
+  A specialized form for ignoring tokens is actually a redefinition. For example, 
+  if the token <span class="code">CLASS</span> was #define'd to be <span class="code">class</span> 
+  in a section of code, the Workspace Whiz form would be <span class="code">CLASS=class</span>. 
+  The final form is following the identifier with a <span class="code">+</span> 
+  symbol. This causes source code that looks like a function to be ignored.</p>
+<p align="left">For further details, see the <span class="code">-I</span> option 
+  in the <a href="http://darren.hiebert.com/ctags" class="wwhiz">Exuberant Ctags</a> 
+  manual. </p>
+</body>
+</html>

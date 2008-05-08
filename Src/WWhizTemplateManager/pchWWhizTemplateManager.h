@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: pchWWhizTemplateManager.h $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplateManager/pchWWhizTemplateManager.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 6    $ $Author: Jjensen $
+// $Date: 2003/06/23 $ $Revision: #10 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -14,77 +14,49 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
-#pragma warning (disable : 4786)
+#ifndef WINVER
+#define WINVER 0x0400
+#endif
 
-#include <afxwin.h>         // MFC core and standard components
-#include <afxdisp.h>
+#define _ATL_APARTMENT_THREADED
+#define _ATL_NO_AUTOMATIC_NAMESPACE
+
+// turns off ATL's hiding of some common and often safely ignored warning messages
+#define _ATL_ALL_WARNINGS
+
+#pragma warning( disable : 4244 )
+#pragma warning( disable : 4311 )
+#pragma warning( disable : 4312 )
+
 #include <afxcmn.h>
-#include <afxdlgs.h>
 #include <afxtempl.h>
-#include <mmsystem.h>
-#include "AfxTemplateEx.h"
-#include "MemFile.h"
-#include "Auto.h"
-
 #include <atlbase.h>
-//You may derive a class from CComModule and use it if you want to override
-//something, but do not change the name of _Module
-extern CComModule _Module;
-#include <atlcom.h>
+#include <afxmt.h>
+#include <mmsystem.h>
+#include "WCollection.h"
+
+using namespace ATL;
+
+#ifdef WWHIZ_VC6
 
 // Developer Studio Object Model
-//#include <ObjModel\addauto.h>
-//#include <ObjModel\appdefs.h>
 #include <ObjModel\appauto.h>
-//#include <ObjModel\blddefs.h>
-//#include <ObjModel\bldauto.h>
-//#include <ObjModel\textdefs.h>
-//#include <ObjModel\textauto.h>
-//#include <ObjModel\dbgdefs.h>
-//#include <ObjModel\dbgauto.h>
-extern IApplication* g_pApplication;
-#include "ObjModelHelper.h"
 
-/////////////////////////////////////////////////////////////////////////////
-// Debugging support
+#endif WWHIZ_VC6
 
-// Use VERIFY_OK around all calls to the Developer Studio objects which
-//  you expect to return S_OK.
-// In DEBUG builds of your add-in, VERIFY_OK displays an ASSERT dialog box
-//  if the expression returns an HRESULT other than S_OK.  If the HRESULT
-//  is a success code, the ASSERT box will display that HRESULT.  If it
-//  is a failure code, the ASSERT box will display that HRESULT plus the
-//  error description string provided by the object which raised the error.
-// In RETAIL builds of your add-in, VERIFY_OK just evaluates the expression
-//  and ignores the returned HRESULT.
+#ifdef WWHIZ_VSNET
 
-#ifdef _DEBUG
+#pragma warning( disable : 4278 )
+#pragma warning( disable : 4146 )
+	//The following #import imports MSO based on it's LIBID
+	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
 
-void GetLastErrorDescription(CComBSTR& bstr);		// Defined in WorkspaceWhiz.cpp
-#define VERIFY_OK(f) \
-	{ \
-		HRESULT hr = (f); \
-		if (hr != S_OK) \
-		{ \
-			if (FAILED(hr)) \
-			{ \
-				CComBSTR bstr; \
-				GetLastErrorDescription(bstr); \
-				_RPTF2(_CRT_ASSERT, "Object call returned %lx\n\n%S", hr, (BSTR) bstr); \
-			} \
-			else \
-				_RPTF1(_CRT_ASSERT, "Object call returned %lx", hr); \
-		} \
-	}
+	//The following #import imports DTE based on it's LIBID
+	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
+#pragma warning( default : 4146 )
+#pragma warning( default : 4278 )
 
-#else //_DEBUG
-
-#define VERIFY_OK(f) (f);
-
-#endif //_DEBUG
-
-int CStringFind(const CString& str, LPCTSTR lpszSub, int nStart);
-int CStringFind(const CString& str, TCHAR ch, int nStart);
+#endif WWHIZ_VSNET
 
 // determine number of elements in an array (not bytes)
 #ifndef _countof
@@ -95,17 +67,23 @@ int CStringFind(const CString& str, TCHAR ch, int nStart);
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "ObjModelHelper.h"
+#include "Auto.h"
+#include "MemFile.h"
 #include "WWhizTemplateManager.h"
+#include "WWhizInterface3.h"
 
+extern WWhizInterface* g_wwhizInterface;
 extern CString g_modulePath;
 
-class CharArray : public CArrayEx<TCHAR, TCHAR>
+class CharArray : public WArray<TCHAR>
 {
 public:
 	CharArray()
 	{
-		SetSize(0, 1024);
+		SetCount(0, 1024);
 	}
 };
 
-#include "AggressiveOptimize.h"
+
+

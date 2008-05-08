@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Template Files - Command: StrSub</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3>Command: StrSub</h3>
+<p><b>Format:</b> <span class="code">StrSub TheString StartIndex [Count]</span></p>
+<p><b>Returns:</b> The substring of <span class="code">TheString</span> starting 
+  at zero-based <span class="code">StartIndex</span>. If <span class="code">Count</span> 
+  is specified, then <span class="code">Count</span> letters from StartIndex are 
+  returned.</p>
+<pre>!!Set SubString @@(StrSub &quot;Hello, World&quot; 7)@@<br>!!// Substring = &quot;World&quot;
+</pre>
+<p></p>
+</body>
+</html>

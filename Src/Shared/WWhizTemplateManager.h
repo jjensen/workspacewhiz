@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: WWhizTemplateManager.h $
 // $Archive: /WorkspaceWhiz/Src/Shared/WWhizTemplateManager.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 12   $ $Author: Jjensen $
+// $Date: 2003/01/30 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -292,14 +292,14 @@ public:
 
 		@param curTemplate The currently active template.
 	**/
-	virtual void Create(WWhizTemplate* curTemplate) { };
+	virtual void Create(WWhizTemplate* /*curTemplate*/) { };
 
 	/**
 		Called whenever the template is finished executing.
 
 		@param curTemplate The currently active template.
 	**/
-	virtual void Destroy(WWhizTemplate* curTemplate) { };
+	virtual void Destroy(WWhizTemplate* /*curTemplate*/) { };
 
 	/**
 		Called whenever the command is seen within the script.  All processing
@@ -379,8 +379,8 @@ class CTreeCtrlEx;
 
 
 /**
-	The WWhizTemplateManager is the primary interface to Workspace Whiz!'s
-	template system.  Workspace Whiz! offers a dynamic, powerful code template
+	The WWhizTemplateManager is the primary interface to Workspace Whiz's
+	template system.  Workspace Whiz offers a dynamic, powerful code template
 	system.
 **/
 class WWhizTemplateManager
@@ -424,7 +424,7 @@ public:
 	virtual WWhizTemplateGroup* GetTemplateGroup(int index) = 0;
 
 	/**
-		The Workspace Whiz! template system allows additions of user created
+		The Workspace Whiz template system allows additions of user created
 		commands.
 
 		@param commandName The name of the command being added.

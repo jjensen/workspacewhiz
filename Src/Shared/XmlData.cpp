@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: XmlData.cpp $
 // $Archive: /WorkspaceWhiz/Src/Shared/XmlData.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 3    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -222,13 +222,13 @@ bool XmlData::ParseXmlFile(CFile& file)
 	m_xmlRoot = NULL;
 
 	DWORD size = file.GetLength();
-	char* buf = new char[size + 1];
+	char* buf = WNEW char[size + 1];
 	file.Read(buf, size);
 	buf[size] = 0;
 
 	// Find a tag.
-	CList<XmlNode*, XmlNode*> xmlNodeStack;
-	m_xmlRoot = new XmlNode;
+	WList<XmlNode*> xmlNodeStack;
+	m_xmlRoot = WNEW XmlNode;
 	xmlNodeStack.AddTail(m_xmlRoot);
 
 	LPCSTR bufPos = buf;
@@ -248,7 +248,7 @@ bool XmlData::ParseXmlFile(CFile& file)
 			continue;
 		}
 
-		XmlNode* newNode = new XmlNode;
+		XmlNode* newNode = WNEW XmlNode;
 		newNode->m_name = ParseToken(ptr);
 
 		bool closeTag = false;

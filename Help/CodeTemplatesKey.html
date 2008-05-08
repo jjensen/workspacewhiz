@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Code Templates - Template Keys</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+<style type="text/css">
+<!--
+-->
+</style></head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left"><img src="IconWWTemplateComplete.png" width="32" height="32"> 
+  Code Templates</h2>
+<h3>Template Keys</h3>
+<p></p>
+<p>The <a href="CodeTemplatesTemplateSelectDialog.html">Code Templates dialog</a> 
+  may be bypassed by using the <span class="command">WWTemplateComplete</span> 
+  command. Templates are inserted through a code &quot;key&quot; system. This 
+  key, a single word, is entered into the text editor, and the <span class="command">WWTemplateComplete</span> 
+  command is executed. Assuming a template with the proper key, that template 
+  will begin running.</p>
+<p>Consider the following template (a detailed description of the template format 
+  may be found <a href="TF_Header.html">here</a>):</p>
+<pre>[If Statement]
+!!Key
+if
+
+!!Code
+if (@@(Caret)@@)
+{
+}
+!!End
+</pre>
+<p>In the above example, typing the word <span class="code">if</span> into a text 
+  editor and executing the <span class="command">WWTemplateComplete</span> command 
+  will replace the word <span class="code">if</span> with the body of code in 
+  the <span class="code">!!Code</span> section. The caret is positioned at the 
+  <span class="code">@@(Caret)@@</span> location.<br>
+</p>
+</body>
+</html>

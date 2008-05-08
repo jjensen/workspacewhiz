@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Project File - Name="WorkspaceWhiz" - Package Owner=<4>
-# Microsoft Developer Studio Generated Build File, Format Version 6.00
+# Microsoft Developer Studio Generated Build File, Format Version 60000
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /G5 /MD /W3 /GX /Zi /O2 /I "..\Shared" /I "." /I "..\3rdParty" /FI"StdAfx.h" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_USRDLL" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /G5 /MD /W3 /GX /Zi /O2 /I "..\Shared" /I "." /I "..\3rdParty" /FI"StdAfx.h" /D "NDEBUG" /D "_USRDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\Shared" /I "." /I "..\3rdParty" /FI"StdAfx.h" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "USRDLL" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\Shared" /I "." /I "..\3rdParty" /FI"StdAfx.h" /D "_DEBUG" /D "USRDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
@@ -198,10 +198,6 @@ SOURCE=.\ToolbarWnd.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\WorkspaceCommands.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\WorkspaceWhiz.cpp
 # End Source File
 # Begin Source File
@@ -216,6 +212,10 @@ SOURCE=.\WorkspaceWhiz.odl
 # Begin Source File
 
 SOURCE=.\WorkspaceWhiz.rc
+# End Source File
+# Begin Source File
+
+SOURCE=.\WWhizCommands.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -327,11 +327,11 @@ SOURCE=.\ToolbarWnd.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\WorkspaceCommands.h
+SOURCE=.\WorkspaceWhiz.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\WorkspaceWhiz.h
+SOURCE=.\WWhizCommands.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"
@@ -477,21 +477,25 @@ SOURCE=..\3rdParty\ShellTools.h
 
 SOURCE=..\3rdParty\TreeCtrlEx.h
 # End Source File
+# Begin Source File
+
+SOURCE=..\3rdParty\WCollection.h
+# End Source File
 # End Group
 # Begin Group "Shared"
 
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\Shared\WWhizInterface2.h
+SOURCE=..\Shared\WWhizInterface3.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\Shared\WWhizInterface2Loader.cpp
+SOURCE=..\Shared\WWhizInterfaceLoader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\Shared\WWhizInterface2Loader.h
+SOURCE=..\Shared\WWhizInterfaceLoader.h
 # End Source File
 # Begin Source File
 

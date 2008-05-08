@@ -1,22 +1,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: PrefTagsListBox.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/PrefTagsListBox.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 5    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "workspacewhiz.h"
+#include "resource.h"
 #include "PrefTagsListBox.h"
 #include "PrefTagsPage.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif

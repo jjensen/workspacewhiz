@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>Template Files - Section: Code Conditional Expressions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files </h2>
+<h3>Template Section: Code: Conditional Expressions</h3>
+<p>The template system supports simple conditional expressions of the form if-elif-else-endif. 
+  In every respect, conditional expressions look just like code commands. They 
+  must exist on the first column of the line. They begin with double explanation 
+  points.</p>
+<p>The simplest conditional expression is seen below:</p>
+<pre>
+!!If 0
+Won't ever get here.
+!!Endif</pre>
+<p>The above code won't ever evaluate, because the condition is always false.</p>
+<p>The reverse case of this will always evaluate:</p>
+<pre>!!If 1
+Gets here every time.
+!!Endif</pre>
+<p>Using variables:</p>
+<pre>!!Set condition 1
+!!If @@condition@@
+Hello, world!
+!!Endif</pre>
+<p>This tests <span class="code">condition</span> against <span class="code">0</span>. 
+  If it isn't <span class="code">0,</span> then the conditional evaluates to true, 
+  and <span class="code">Hello, world!</span> is printed.</p>
+<p>It is important to use the variable form when specifying condition: <span class="code">@@condition@@</span>. 
+  This substitutes the <i>value</i> of the variable, and that is what the condition 
+  expects. </p>
+<p>Note that <span class="code">0</span> is the only false value. While <span class="code">1</span> 
+  is a true value so is <span class="code">1000</span> or <span class="code">This 
+  is my string</span>.</p>
+<p>Alternatively, there is a similar test to ensure the conditional isn't true:</p>
+<pre>!!Set condition 1
+!!If !@@condition@@
+Hello, world!
+!!Endif</pre>
+<p></p>
+<p>Conditionals statements may take advantage of the <span class="code">else</span> 
+  statement:</p>
+<pre>!!Set test 0
+!!If @@test@@
+Test is true.
+!!Else
+Test is false.
+!!Endif</pre>
+<p>Since <span class="code">test</span> isn't true (not equal to <span class="code">0</span>), 
+  <span class="code">Test is false.</span> is displayed.</p>
+<p>The <span class="code">elif</span> statement makes conditional evaluation even 
+  more powerful.</p>
+<pre>!!Set test1 0
+!!Set test2 1
+!!If @@test1@@
+Test1 is true.
+!!Elif @@test2@@
+Test2 is true.
+!!Endif</pre>
+<p></p>
+<p>Since <span class="code">test1</span> isn't true and <span class="code">test2</span> 
+  is, the text <span class="code">Test2 is true.</span> is printed.</p>
+<p>Full facilities for the <span class="code">==</span> (is equal to), <span class="code">!=</span> 
+  (is not equal to), <span class="code">&gt;=</span> (greater than or equal to), 
+  <span class="code">&lt;=</span> (less than or equal to), <span class="code">&gt;</span> 
+  (greater than), and <span class="code">&lt;</span> (less than) conditional operators 
+  are available.</p>
+<pre>Format: !!if expr1 [cond] [expr2]</pre>
+<p><span class="code">expr1</span> is always required in an <span class="code">!!If</span> 
+  or <span class="code">!!Elseif</span> statement. If <span class="code">cond</span> 
+  exists (which is the <span class="code">==</span>, <span class="code">!=</span>, 
+  <span class="code">&gt;=</span>, <span class="code">&lt;=</span>, <span class="code">&gt;</span>, 
+  or <span class="code">&lt;</span> symbols), then <span class="code">expr2</span> 
+  must exist also.</p>
+<p>If <span class="code">expr1</span> and <span class="code">expr2</span> are 
+  both integers, they are evaluated as such. If <span class="code">expr1</span> 
+  or <span class="code">expr2</span> is a string, then both are evaluated as strings. 
+  For integers, this means that an operator such as <span class="code">&gt;=</span> 
+  will compare <span class="code">expr1</span> and <span class="code">expr2</span> 
+  as if they existed on the number line. For strings, the <span class="code">&gt;=</span> 
+  operator compares them alphabetically.</p>
+<pre>!!Set test1 cde
+!!Set test2 abc
+!!If @@test1@@ &lt; @@test2@@
+@@test2@@ is not less than @@test1@@.
+!!Else
+@@test2@@ is greater than @@test1@@.
+!!Endif</pre>
+<p>Nested conditionals are also possible.</p>
+<pre>!!Set test1 1000
+!!Set test2 500
+
+!!Set test3 750
+!!If @@test1@@ &gt; @@test2@@
+!!If @@test3@@ &gt; @@test1@@
+No way!
+!!Endif
+!!Endif</pre>
+<h3>&nbsp;</h3>
+</body>
+</html>

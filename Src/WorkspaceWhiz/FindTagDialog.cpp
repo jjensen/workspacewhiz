@@ -1,21 +1,19 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: FindTagDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/FindTagDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 47   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #8 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
-#include "WorkspaceWhiz.h"
+#include "resource.h"
 #include "FindTagDialog.h"
 #include "AboutDialog.h"
 #include "FindFileDialog.h"
-#include "PreferencesDialog.h"
 #include "ExtraFilesDialog.h"
 #include "TextLine.h"
 #include "BCMenu.h"
@@ -23,7 +21,7 @@
 extern bool GotoTag(const WWhizTag* tag);
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -79,7 +77,6 @@ void CFindTagDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_butOK);
 	DDX_Control(pDX, IDCANCEL, m_butCancel);
 	DDX_Control(pDX, IDC_FT_REBUILDTAGS, m_butRebuildTags);
-	DDX_Control(pDX, IDC_COM_PREFERENCES, m_butPreferences);
 	DDX_Control(pDX, IDHELP, m_butHelp);
 	DDX_Control(pDX, IDC_COM_ABOUT, m_butAbout);
 	DDX_Control(pDX, IDC_FT_INFO_SEARCHSTRING, m_infoSearchString);
@@ -91,7 +88,6 @@ void CFindTagDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CFindTagDialog, FIND_TAG_DIALOG)
 	//{{AFX_MSG_MAP(CFindTagDialog)
 	ON_BN_CLICKED(IDC_COM_ABOUT, OnFtAbout)
-	ON_BN_CLICKED(IDC_COM_PREFERENCES, OnFtPreferences)
 	ON_NOTIFY(NM_DBLCLK, IDC_FT_TAGS, OnDblclkFtTags)
 	ON_BN_CLICKED(IDC_FT_SCOPE_FILE, OnFtScopeFile)
 	ON_BN_CLICKED(IDC_FT_SCOPE_PROJECT, OnFtScopeProject)
@@ -143,7 +139,7 @@ void TagCallback(const WWhizInterface::TagCallbackInfo& info)
 		CWnd* wnd = (CWnd*)info.m_userData;
 		CString windowTitle = s_windowTitle;
 		if (windowTitle.IsEmpty())
-			windowTitle = "Workspace Whiz!";
+			windowTitle = "Workspace Whiz";
 
 		if (info.m_curFile == 0)
 		{
@@ -165,7 +161,7 @@ void TagCallback(const WWhizInterface::TagCallbackInfo& info)
 			ProcessEvents();
 		}
 
-		else if ((info.m_curFile % 20) == 0)
+		else if ((info.m_curFile % 20) == 0  ||  info.m_curFile == 1)
 		{
 			CString filename = info.m_curFilename;
 			int slashPos = filename.ReverseFind('\\');
@@ -229,7 +225,6 @@ BEGIN_DYNAMIC_MAP(CFindTagDialog, cdxCDynamicDialog)
 	DYNAMIC_MAP_ENTRY(IDCANCEL,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_ABOUT,		mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDHELP,				mdRepos,	mdNone)
-	DYNAMIC_MAP_ENTRY(IDC_COM_PREFERENCES,	mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_EXTRAFILES,	mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_CURRENTFILE,	mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_FT_REBUILDTAGS,	mdRepos,	mdNone)
@@ -266,7 +261,7 @@ BOOL CFindTagDialog::OnInitDialog()
 	
 	// Subclass the edit with our own.
 	m_edit->SetWindowText(m_lastFunction);
-	m_edit->SetSel(0, -1, FALSE);
+	m_edit->CComboBox::SetEditSel(0, -1);
 	
 	bool fileFound = false;
 	CString filename;
@@ -391,7 +386,7 @@ void CFindTagDialog::OnFtRebuildTags()
 
 	SetWindowText(s_windowTitle + " - Deleting all items...");
 
-	CListCtrl_SetItemCountEx(*m_tagListCtrl, 0);
+	m_tagListCtrl->SetItemCountEx(0);
 	m_tagListCtrl->Invalidate();
 	m_tagListCtrl->UpdateWindow();
 	m_tagArray.RemoveAll();
@@ -451,7 +446,7 @@ void CFindTagDialog::RefreshList(LPCTSTR name)
 	if (g_wwhizInterface->GetTagMatchCount() == 0)
 	{
 		// Remove all items from the list.
-		CListCtrl_SetItemCountEx(*m_tagListCtrl, 0);
+		m_tagListCtrl->SetItemCountEx(0);
 		m_tagListCtrl->SetRedraw(TRUE);
 		m_tagListCtrl->Invalidate();
 
@@ -459,7 +454,7 @@ void CFindTagDialog::RefreshList(LPCTSTR name)
 	}
 
 	// Set the number of items to the maximum.
-	m_tagArray.SetSize(g_wwhizInterface->GetTagMatchCount());
+	m_tagArray.SetCount(g_wwhizInterface->GetTagMatchCount());
 
 	// Start looking for it.
 	int curPos = 0;
@@ -487,14 +482,14 @@ void CFindTagDialog::RefreshList(LPCTSTR name)
 		curPos++;
 	}
 
-	m_tagArray.SetSize(curPos);
-	CListCtrl_SetItemCountEx(*m_tagListCtrl, curPos);
+	m_tagArray.SetCount(curPos);
+	m_tagListCtrl->SetItemCountEx(curPos);
 
-	POSITION pos = CListCtrl_GetFirstSelectedItemPosition(*m_tagListCtrl);
+	POSITION pos = m_tagListCtrl->GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		int nItem = CListCtrl_GetNextSelectedItem(*m_tagListCtrl, pos);
-		CListCtrl_SetItemState(*m_tagListCtrl, nItem, 0, LVIS_SELECTED | LVIS_FOCUSED);
+		int nItem = m_tagListCtrl->GetNextSelectedItem(pos);
+		m_tagListCtrl->SetItemState(nItem, 0, LVIS_SELECTED | LVIS_FOCUSED);
 	}
 
 	if (m_lastPosition >= m_tagListCtrl->GetItemCount())
@@ -506,7 +501,7 @@ void CFindTagDialog::RefreshList(LPCTSTR name)
 			setPos = 0;
 		else
 			setPos = m_lastPosition;
-		CListCtrl_SetItemState(*m_tagListCtrl, setPos, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		m_tagListCtrl->SetItemState(setPos, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 		m_tagListCtrl->EnsureVisible(setPos, FALSE);
 	}
 	else
@@ -539,11 +534,18 @@ void CFindTagDialog::OnOK()
 
 void CFindTagDialog::GotoTags(bool declaration)
 {
+	CString string;
+	m_edit->GetWindowText(string);
+	g_wwhizReg->TagAddEditTagString(string);
+
+	m_tagParent->GetWindowText(string);
+	g_wwhizReg->TagAddEditParentString(string);
+
 	if (m_tagListCtrl->GetItemCount() != 0)
 	{
 		CString filename;
 		if (m_tagListCtrl->GetSelectedCount() == 0)
-			CListCtrl_SetItemState(*m_tagListCtrl, 0, 0, LVIS_SELECTED | LVIS_FOCUSED);
+			m_tagListCtrl->SetItemState(0, 0, LVIS_SELECTED | LVIS_FOCUSED);
 		int nCount = m_tagListCtrl->GetSelectedCount();
 
 		int curSel = m_tagListCtrl->GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
@@ -592,18 +594,6 @@ void CFindTagDialog::OnDblclkFtTags(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CFindTagDialog::OnFtPreferences() 
-{
-	CPreferencesDialog dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-	}
-	m_edit->SetFocus();
-}
-
-
-
-
 void CFindTagDialog::OnFtScopeFile() 
 {
 	s_tagScope = ScopeCurrentFile;
@@ -628,7 +618,7 @@ void CFindTagDialog::OnItemchangedFtTags(NMHDR* pNMHDR, LRESULT* pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
 	int iItem = pNMListView->iItem;
-	if (iItem != -1  &&  iItem >= 0  &&  iItem < m_tagArray.GetSize())
+	if (iItem != -1  &&  iItem >= 0  &&  iItem < (int)m_tagArray.GetCount())
 	{
 		const WWhizTag* tag = m_tagArray[iItem];
 		const WWhizTag* accessTag = tag;
@@ -883,9 +873,9 @@ int CFindTagDialog::TagPopup(int item, CWnd* thisWnd, CPoint* inPoint)
 		case IDC_FTP_COPYPARENT:
 		{
 			// Hack to make this work.
-			int subItem = 2;
+			int subItem = 3;
 			if (ret == IDC_FTP_COPYPARENT)
-				subItem = 1;
+				subItem = 2;
 			CString str = m_tagListCtrl->GetItemText(item, subItem);
 
 			CEdit edit;

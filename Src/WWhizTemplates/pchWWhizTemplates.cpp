@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: pchWWhizTemplates.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizTemplates/pchWWhizTemplates.cpp $
-// $Date:: 1/03/01 12:14a  $ $Revision:: 4    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #4 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and

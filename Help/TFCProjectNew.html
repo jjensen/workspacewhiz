@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Template Files - Command: ProjectNew</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3> Command: ProjectNew</h3>
+<p><b>Format:</b> <span class="code">ProjectNew ProjectName PathToProject ProjectType</span></p>
+<p><b>Returns:</b> Nothing.</p>
+<p>Creates a new project. <span class="code">ProjectName</span> is the name of 
+  the new project. </p>
+<p><span class="code">ProjectPath</span> specifies the directory to place this 
+  project in. The project (.dsp) and workspace (.dsw) both called project name 
+  will be created at the directory path specified via <span class="code">ProjectPath</span>.</p>
+<p><span class="code">ProjectType</span> can be one of the following:</p>
+<table width="100%" border="1">
+  <tr> 
+    <td width="27%"><b>Project Type</b></td>
+    <td width="73%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="27%">Application</td>
+    <td width="73%">A Win32 executable application</td>
+  </tr>
+  <tr> 
+    <td width="27%">DLL</td>
+    <td width="73%">A Win32 Dynamic-link Library</td>
+  </tr>
+  <tr> 
+    <td width="27%">Console Application</td>
+    <td width="73%">A Win32 console application</td>
+  </tr>
+  <tr> 
+    <td width="27%">Static Library</td>
+    <td width="73%">A Win32 static link library</td>
+  </tr>
+  <tr> 
+    <td width="27%">Utility</td>
+    <td width="73%">A utility project</td>
+  </tr>
+  <tr> 
+    <td width="27%">Makefile</td>
+    <td width="73%">A makefile project</td>
+  </tr>
+</table>
+<pre>!!ProjectNew MyProject c:\MyProjects\MyProject Application</pre>
+<h3>&nbsp;</h3>
+</body>
+</html>

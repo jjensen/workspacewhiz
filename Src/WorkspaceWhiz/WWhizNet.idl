@@ -1,0 +1,26 @@
+// WWhizNet.idl : IDL source for AddIn
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (WWhizNet.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(8FB04AFE-EB33-4C47-9E1C-D90C6273DEE1),
+	version(1.0),
+	helpstring("WWhizNet 1.0 Type Library")
+]
+library WWhizNetLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(8DB555AF-8FC6-417C-A28C-FB7C7B871EB2),
+		helpstring("Connect Class")
+	]
+	coclass Connect
+	{
+		[default] interface IUnknown;
+	};
+};

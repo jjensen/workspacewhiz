@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Template Files - Command: GUID</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3></h3>
+<h3> Command: GUID</h3>
+<p><b>Format:</b> <span class="code">GUID [Type]</span></p>
+<p><b>Returns:</b> A GUID of one of the types specified below.</p>
+<table width="100%" border="1">
+  <tr> 
+    <td width="19%"><b>Creation Type</b></td>
+    <td width="81%"><b>Description</b></td>
+  </tr>
+  <tr> 
+    <td width="19%">0 (or nothing)</td>
+    <td width="81%" class="code">681B0A73_3616_45fb_9C95_A419913669FC </td>
+  </tr>
+  <tr> 
+    <td width="19%">1</td>
+    <td width="81%" class="code">{18C5332C-55BC-4766-A7F5-0FBDF54417D0} </td>
+  </tr>
+  <tr> 
+    <td width="19%">2</td>
+    <td width="81%" class="code">// {45E4CAF6-5459-4351-A645-1E8982C14365}<br>
+      IMPLEMENT_OLECREATE(<<class>>, <<external_name>>, 0x45e4caf6, 0x5459, 0x4351, 
+      0xa6, 0x45, 0x1e, 0x89, 0x82, 0xc1, 0x43, 0x65); </td>
+  </tr>
+  <tr>
+    <td width="19%">3</td>
+    <td width="81%" class="code">// {E3DA35F5-1994-480a-96A9-A702F9C13552}<br>
+      DEFINE_GUID(<<name>>, 0xe3da35f5, 0x1994, 0x480a, 0x96, 0xa9, 0xa7, 0x2, 
+      0xf9, 0xc1, 0x35, 0x52); </td>
+  </tr>
+  <tr> 
+    <td width="19%">4</td>
+    <td width="81%" class="code">// {8414580D-686F-4d4d-AE0C-4EF5BC6AE8AE}<br>
+      static const GUID <<name>> = { 0x8414580d, 0x686f, 0x4d4d, { 0xae, 0xc, 
+      0x4e, 0xf5, 0xbc, 0x6a, 0xe8, 0xae } }; </td>
+  </tr>
+</table>
+<pre>
+@@(GUID)@@
+</pre>
+</body>
+</html>

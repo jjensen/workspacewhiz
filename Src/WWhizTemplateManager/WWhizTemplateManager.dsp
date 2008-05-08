@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Project File - Name="WWhizTemplateManager" - Package Owner=<4>
-# Microsoft Developer Studio Generated Build File, Format Version 6.00
+# Microsoft Developer Studio Generated Build File, Format Version 60000
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizTemplateManager.h" /FD /c
-# ADD CPP /nologo /G5 /MD /W3 /GX /Zi /O2 /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizTemplateManager.h" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizTemplateManager.h" /FD /c
+# ADD CPP /nologo /G5 /MD /W3 /GX /Zi /O2 /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizTemplateManager.h" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"pchWWhizTemplateManager.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizTemplateManager.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizTemplateManager.h" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizTemplateManager.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizTemplateManager.h" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"pchWWhizTemplateManager.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -152,10 +152,6 @@ SOURCE=..\Shared\WWhizTemplateManager.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\3rdParty\AfxTemplateEx.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\3rdParty\AggressiveOptimize.h
 # End Source File
 # Begin Source File
@@ -169,6 +165,10 @@ SOURCE=..\3rdParty\MemFile.h
 # Begin Source File
 
 SOURCE=..\3rdParty\ObjModelHelper.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\3rdParty\WCollection.h
 # End Source File
 # End Group
 # End Target

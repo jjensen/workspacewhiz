@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: VirtualDriveCompiler.cpp $
 // $Archive: /WorkspaceWhiz/Src/Shared/VirtualDriveCompiler.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 2    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -454,7 +454,7 @@ void VirtualDriveCompiler::ProcessFiles(CString srcDir, CString origSrcDir, CStr
 			// Copy the file into the memory file.
 			CMemFile memFile;
 			DWORD size = diskFile.GetLength();
-			BYTE* buf = new BYTE[size];
+			BYTE* buf = WNEW BYTE[size];
 			diskFile.Read(buf, size);
 			diskFile.Close();
 
@@ -471,7 +471,7 @@ void VirtualDriveCompiler::ProcessFiles(CString srcDir, CString origSrcDir, CStr
 			BYTE *pData = memFile.Detach();
 
 			DWORD neededBufferSize = JCALG1_GetNeededBufferSize(header.unpackSize);
-			BYTE* compressedBuffer = new BYTE[neededBufferSize];
+			BYTE* compressedBuffer = WNEW BYTE[neededBufferSize];
 			if (header.unpackSize > 0)
 			{
 				header.packSize =
@@ -563,7 +563,7 @@ DoDirectories:
 DWORD VirtualDriveCompiler::GetFileCRC(CFile& file, DWORD skipBytes)
 {
 	const DWORD BLOCK_SIZE = 32768;
-	BYTE* buffer = new BYTE[BLOCK_SIZE];
+	BYTE* buffer = WNEW BYTE[BLOCK_SIZE];
 	DWORD fileCRC = 0;
 	DWORD bytesToDo = file.GetLength() - skipBytes;
 

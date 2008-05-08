@@ -95,7 +95,7 @@ BEGIN
             VALUE "FileDescription", "ShowGroupsAddin DLL\0"
             VALUE "FileVersion", "1, 0, 0, 1\0"
             VALUE "InternalName", "ShowGroupsAddin\0"
-            VALUE "LegalCopyright", "Copyright (C) 2001\0"
+            VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "ShowGroupsAddin.DLL\0"
             VALUE "ProductName", "ShowGroupsAddin Dynamic Link Library\0"

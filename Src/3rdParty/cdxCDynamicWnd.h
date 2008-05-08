@@ -360,7 +360,7 @@ protected:
 	virtual void OnInitialized() {}
 	virtual void OnDestroying() {}
 
-	virtual cdxCDynamicLayoutInfo *DoCreateLayoutInfo() { return new cdxCDynamicLayoutInfo(this); }
+	virtual cdxCDynamicLayoutInfo *DoCreateLayoutInfo() { return WNEW cdxCDynamicLayoutInfo(this); }
 
 	//
 	// misc utility functions

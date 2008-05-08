@@ -15,12 +15,11 @@
 // You are free to use/modify this code but leave this header intact.
 //
 
-#include "stdafx.h"        // Standard windows header file
 #include "BCMenu.h"        // BCMenu class declaration
 #include <afxpriv.h>       //SK: makes A2W and other spiffy AFX macros work
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -151,7 +150,7 @@ delete[] m_szMenuText;//Need not check for NULL because ANSI X3J16 allows "delet
 
 if (szWideString)
     {
-    m_szMenuText = new wchar_t[sizeof(wchar_t)*(wcslen(szWideString)+1)];
+    m_szMenuText = WNEW wchar_t[sizeof(wchar_t)*(wcslen(szWideString)+1)];
     if (m_szMenuText)
         wcscpy(m_szMenuText,szWideString);
     }
@@ -575,7 +574,7 @@ BOOL BCMenu::AppendODMenuW(wchar_t *lpstrText,UINT nFlags,UINT nID,
   if(!nID)nFlags=MF_SEPARATOR|MF_OWNERDRAW;
   else if(!(nFlags & MF_OWNERDRAW))nFlags |= MF_OWNERDRAW;
 
-  BCMenuData *mdata = new BCMenuData;
+  BCMenuData *mdata = WNEW BCMenuData;
   m_MenuList.Add(mdata);
   mdata->SetWideString(lpstrText);    //SK: modified for dynamic allocation
   
@@ -585,7 +584,7 @@ BOOL BCMenu::AppendODMenuW(wchar_t *lpstrText,UINT nFlags,UINT nID,
     mdata->xoffset=0;
     LoadFromToolBar(nID,nIconNormal,mdata->xoffset);
     if(mdata->bitmap)mdata->bitmap->DeleteImageList();
-    else mdata->bitmap=new(CImageList);
+    else mdata->bitmap=WNEW(CImageList);
     mdata->bitmap->Create(m_iconX,m_iconY,ILC_COLORDDB|ILC_MASK,1,1);
     AddBitmapToImageList(mdata->bitmap,nIconNormal);
   }
@@ -623,7 +622,7 @@ BOOL BCMenu::ModifyODMenuW(wchar_t *lpstrText,UINT nID,int nIconNormal)
   if(psubmenu && nLoc>=0)mdata = psubmenu->m_MenuList[nLoc];
   else{
   // Create a new BCMenuData structure:
-    mdata = new BCMenuData;
+    mdata = WNEW BCMenuData;
     m_MenuList.Add(mdata);
   }
   ASSERT(mdata);
@@ -635,7 +634,7 @@ BOOL BCMenu::ModifyODMenuW(wchar_t *lpstrText,UINT nID,int nIconNormal)
     mdata->xoffset=0;
     LoadFromToolBar(nID,nIconNormal,mdata->xoffset);
     if(mdata->bitmap)mdata->bitmap->DeleteImageList();
-    else mdata->bitmap=new(CImageList);
+    else mdata->bitmap=WNEW(CImageList);
     mdata->bitmap->Create(m_iconX,m_iconY,ILC_COLORDDB|ILC_MASK,1,1);
     AddBitmapToImageList(mdata->bitmap,nIconNormal);
   }
@@ -659,7 +658,7 @@ BOOL BCMenu::ModifyODMenuW(wchar_t *lpstrText,wchar_t *OptionText,
   BCMenuData *mdata;
 
   // Find the old BCMenuData structure:
-  CString junk=OptionText;
+  CString junk(OptionText);
   mdata=FindMenuOption(OptionText);
   if(mdata){
     if(lpstrText)
@@ -669,7 +668,7 @@ BOOL BCMenu::ModifyODMenuW(wchar_t *lpstrText,wchar_t *OptionText,
     if(nIconNormal>=0){
       mdata->xoffset=0;
       if(mdata->bitmap)mdata->bitmap->DeleteImageList();
-      else mdata->bitmap=new(CImageList);
+      else mdata->bitmap=WNEW(CImageList);
       mdata->bitmap->Create(m_iconX,m_iconY,ILC_COLORDDB|ILC_MASK,1,1);
       AddBitmapToImageList(mdata->bitmap,nIconNormal);
     }
@@ -682,7 +681,7 @@ BCMenuData *BCMenu::NewODMenu(UINT pos,UINT nFlags,UINT nID,CString string)
 {
   BCMenuData *mdata;
 
-  mdata = new BCMenuData;
+  mdata = WNEW BCMenuData;
   mdata->menuIconNormal = -1;
   mdata->xoffset=-1;
   #ifdef UNICODE
@@ -873,7 +872,7 @@ BOOL BCMenu::LoadMenu(LPCTSTR lpszResourceName)
     // Obtain Caption (and length)
 
     nLen = 0;
-    szCaption=new wchar_t[wcslen((wchar_t *)pTp)+1];
+    szCaption=WNEW wchar_t[wcslen((wchar_t *)pTp)+1];
     wcscpy(szCaption,(wchar_t *)pTp);
     pTp=&pTp[(wcslen((wchar_t *)pTp)+1)*sizeof(wchar_t)];//modified SK
     
@@ -882,7 +881,7 @@ BOOL BCMenu::LoadMenu(LPCTSTR lpszResourceName)
     //WideCharToMultiByte
     if(dwFlags & MF_POPUP){
       if(dwFlags & MF_END)m_StackEnd.SetAt(m_Stack.GetUpperBound(),TRUE);
-      BCMenu* pSubMenu = new BCMenu;
+      BCMenu* pSubMenu = WNEW BCMenu;
       pSubMenu->m_unselectcheck=m_unselectcheck;
       pSubMenu->m_selectcheck=m_selectcheck;
       pSubMenu->checkmaps=checkmaps;
@@ -994,7 +993,7 @@ void BCMenu::LoadCheckmarkBitmap(int unselect, int select)
     m_selectcheck=select;
     m_unselectcheck=unselect;
     if(checkmaps)checkmaps->DeleteImageList();
-    else checkmaps=new(CImageList);
+    else checkmaps=WNEW(CImageList);
     checkmaps->Create(m_iconX,m_iconY,ILC_MASK,2,1);
     AddBitmapToImageList(checkmaps,unselect);
     AddBitmapToImageList(checkmaps,select);
@@ -1338,8 +1337,8 @@ void BCMenu::AddFromToolBar(CToolBar* pToolBar, int nResourceID)
     BCMenu *pSubMenu = FindMenuOption(nID, nLoc);
     if (pSubMenu && nLoc >= 0)pData = pSubMenu->m_MenuList[nLoc];
     else {
-      // Create a new BCMenuData structure
-      pData = new BCMenuData;
+      // Create a WNEW BCMenuData structure
+      pData = WNEW BCMenuData;
       m_MenuList.Add(pData);
     }
     // Set some default structure members
@@ -1348,7 +1347,7 @@ void BCMenu::AddFromToolBar(CToolBar* pToolBar, int nResourceID)
     pData->nFlags =  MF_BYCOMMAND | MF_OWNERDRAW;
     pData->xoffset = nImage;
     if (pData->bitmap)pData->bitmap->DeleteImageList();
-    else pData->bitmap = new CImageList;
+    else pData->bitmap = WNEW CImageList;
     pData->bitmap->Create(m_iconX, m_iconY,ILC_COLORDDB|ILC_MASK, 1, 1);
     AddBitmapToImageList(pData->bitmap, nResourceID);
     // Modify our menu

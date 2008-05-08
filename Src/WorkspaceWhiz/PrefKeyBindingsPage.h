@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: PrefKeyBindingsPage.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/PrefKeyBindingsPage.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 12   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #6 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -51,7 +51,7 @@ public:
 
 // Implementation
 protected:
-	CArray<CPrefKeyBindingsHotKeyCtrl, CPrefKeyBindingsHotKeyCtrl&> m_subclassedHotKeys;
+	WArray<CPrefKeyBindingsHotKeyCtrl> m_subclassedHotKeys;
 	
 	void FillInControls();
 	void TranslateHKToDS(CString& commandStr, WORD vk, WORD mod);
@@ -70,6 +70,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnBnClickedPkbAssignallpages();
 };
 
 //{{AFX_INSERT_LOCATION}}

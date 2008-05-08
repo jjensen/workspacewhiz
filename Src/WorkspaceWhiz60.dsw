@@ -7,10 +7,6 @@ Project: "All"=.\All\All.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src/All", CABAAAAA
-    .\all
-    end source code control
 }}}
 
 Package=<4>
@@ -20,9 +16,6 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name WWhizInterface
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name WWhizReg
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name WWhizTemplateManager
@@ -36,6 +29,12 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name WorkspaceWhiz
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name WWhizReg
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name WWhizInterfaceHelper
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -44,10 +43,6 @@ Project: "WWhizInterface"=.\WWhizInterface\WWhizInterface.dsp - Package Owner=<4
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src/WWhizInterface", YVAAAAAA
-    .\wwhizinterface
-    end source code control
 }}}
 
 Package=<4>
@@ -60,10 +55,6 @@ Project: "WWhizInterfaceHelper"=.\WWhizInterfaceHelper\WWhizInterfaceHelper.dsp 
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src/WWhizInterfaceHelper", ZTBAAAAA
-    .\wwhizinterfacehelper
-    end source code control
 }}}
 
 Package=<4>
@@ -76,10 +67,6 @@ Project: "WWhizPickDirTemplate"=.\WWhizPickDirTemplate\WWhizPickDirTemplate.dsp 
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src/WWhizPickDirTemplate", ACBAAAAA
-    .\wwhizpickdirtemplate
-    end source code control
 }}}
 
 Package=<4>
@@ -88,14 +75,10 @@ Package=<4>
 
 ###############################################################################
 
-Project: "WWhizReg"=..\..\WWhizReg\WWhizReg.dsp - Package Owner=<4>
+Project: "WWhizReg"=.\WWhizReg\WWhizReg.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WWhizReg", RABAAAAA
-    ..\..\wwhizreg
-    end source code control
 }}}
 
 Package=<4>
@@ -108,10 +91,6 @@ Project: "WWhizTemplateManager"=.\WWhizTemplateManager\WWhizTemplateManager.dsp 
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src/WWhizTemplateManager", IBBAAAAA
-    .\wwhiztemplatemanager
-    end source code control
 }}}
 
 Package=<4>
@@ -124,10 +103,6 @@ Project: "WWhizTemplates"=.\WWhizTemplates\WWhizTemplates.dsp - Package Owner=<4
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src/WWhizTemplates", GBBAAAAA
-    .\wwhiztemplates
-    end source code control
 }}}
 
 Package=<4>
@@ -140,14 +115,13 @@ Project: "WorkspaceWhiz"=.\WorkspaceWhiz\WorkspaceWhiz60.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src/WorkspaceWhiz", HSAAAAAA
-    .\workspacewhiz
-    end source code control
 }}}
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name WWhizReg
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -156,10 +130,6 @@ Global:
 
 Package=<5>
 {{{
-    begin source code control
-    "$/WorkspaceWhiz/Src", GSAAAAAA
-    .
-    end source code control
 }}}
 
 Package=<3>

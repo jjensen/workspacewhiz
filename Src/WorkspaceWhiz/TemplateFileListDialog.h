@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: TemplateFileListDialog.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/TemplateFileListDialog.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 10   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -62,7 +62,6 @@ protected:
 	afx_msg void OnDblclkTflList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnComAbout();
-	afx_msg void OnComPreferences();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DYNAMIC_MAP()

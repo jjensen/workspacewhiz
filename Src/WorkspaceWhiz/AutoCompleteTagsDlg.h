@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: AutoCompleteTagsDlg.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/AutoCompleteTagsDlg.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 12   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #4 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -39,8 +39,8 @@ public:
 	enum { IDD = IDD_AUTOCOMPLETETAG };
 	//}}AFX_DATA
 
-	CEdit*			m_tagParent;
-	CEdit*			m_edit;
+	CComboBoxEx*	m_tagParent;
+	CComboBoxEx*	m_edit;
 	CListCtrl*		m_tagListCtrl;
 
 // Overrides
@@ -63,6 +63,7 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnDblclkFtTags(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnChangeFtName(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DYNAMIC_MAP()

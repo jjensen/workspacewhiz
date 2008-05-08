@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: WWhizInterfaceImpl.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizInterface/WWhizInterfaceImpl.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 15   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #10 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -15,7 +15,7 @@
 #include "CompilerFiles.h"
 #include "Config.h"
 
-static DWORD s_wwhizVersion = 0x020c0001;
+static DWORD s_wwhizVersion = 0x030003f7;
 
 class WWhizInterfaceImpl : public WWhizInterface
 {
@@ -35,8 +35,8 @@ public:
 	virtual bool RefreshFileList(void);
 	virtual void AddProject(CString projectName);
 	virtual void RemoveAllFiles(void);
-	virtual void Reserved1();
-
+	virtual void AddProject2(CString projectName, bool noRefresh);
+		
 	// Tags
 	virtual const WWhizTag* GetTagMatchHead(void) const;
 	virtual const WWhizTag* GetTagMatchTail(void) const;
@@ -116,6 +116,7 @@ WWhizFileList& WWhizInterfaceImpl::GetFileList(void) const
 
 CString WWhizInterfaceImpl::GetWorkspaceName(void) const
 {
+#ifdef WWHIZ_VC6
 extern pfnGetWorkspaceName g_fnGetWorkspaceName;
 	if (g_fnGetWorkspaceName)
 	{
@@ -123,12 +124,27 @@ extern pfnGetWorkspaceName g_fnGetWorkspaceName;
 		LPTSTR buf = str.GetBuffer(_MAX_PATH);
 		(*g_fnGetWorkspaceName)(buf, _MAX_PATH);
 		str.ReleaseBuffer();
+		OutputDebugString(str);
 
 		return str;
 	}
 
 	CString empty;
 	return empty;
+#endif WWHIZ_VC6
+
+#ifdef WWHIZ_VSNET
+	CComPtr<EnvDTE::_Solution> pSolution;
+	g_pDTE->get_Solution(&pSolution);
+	if (!pSolution)
+	{
+		return "";
+	}
+
+	CComBSTR solutionName;
+	pSolution->get_FullName(&solutionName);
+	return CString(solutionName);
+#endif WWHIZ_VSNET
 }
 
 	
@@ -182,14 +198,15 @@ void WWhizInterfaceImpl::AddProject(CString projectName)
 }
 
 
-void WWhizInterfaceImpl::RemoveAllFiles(void)
+void WWhizInterfaceImpl::AddProject2(CString projectName, bool noRefresh)
 {
-	WorkspaceInfo::RemoveAll();
+	WorkspaceInfo::AddProject(projectName, true, noRefresh);
 }
 
 	
-void WWhizInterfaceImpl::Reserved1()
+void WWhizInterfaceImpl::RemoveAllFiles(void)
 {
+	WorkspaceInfo::RemoveAll();
 }
 
 	

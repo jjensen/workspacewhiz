@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: HistoryDialog.h $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/HistoryDialog.h $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 9    $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -37,7 +37,6 @@ public:
 	CButton	m_butOK;
 	CButton	m_butCancel;
 	CButton	m_butReset;
-	CButton	m_butPreferences;
 	CButton	m_butHelp;
 	CButton	m_butAbout;
 	//}}AFX_DATA
@@ -59,7 +58,6 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHAbout();
 	afx_msg void OnHHelp();
-	afx_msg void OnHPreferences();
 	afx_msg void OnHReset();
 	virtual void OnOK();
 	afx_msg void OnDestroy();

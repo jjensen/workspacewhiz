@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Template Files - Commands</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files </h2>
+<h3>Commands</h3>
+<p></p>
+<p>Template commands allow complex processes to be accomplished. There is, for 
+  instance, a command that creates a new file. There is another command that returns 
+  the name of current project.</p>
+<p>Two types of commands exist. The first kind of command ignores return values 
+  (or has none). This type of command is specified by beginning a line with a 
+  double set of exclamation points. The command name and all related arguments 
+  follow.</p>
+<pre>
+!!// Specifies a comment, similar to the C++ // comment style.
+!!FileNew MyNewFile.h dsp</pre>
+<p>The above example executes a command called <span class="code">FileNew</span> 
+  that takes two arguments. The first argument is <span class="code">MyNewFile.h</span> 
+  and the second argument is <span class="code">dsp</span>. Arguments are separated 
+  by spaces, unless they are enclosed in quotation marks.</p>
+<p>The second type of command accepts return values. This type of command uses 
+  an enhanced substitution expression syntax that begins with a <span class="code">@@(</span> 
+  and ends with a <span class="code">)@@</span>. Like <a href="TF_Variables.html">normal 
+  substitution expressions</a>, the result of the template command is substituted 
+  into the code being evaluated. Command substitution expressions may exist anywhere 
+  on a line.</p>
+<pre>The current project is @@(ProjectName)@@.</pre>
+<p>A command of the form <span class="code">@@(!!Command)@@</span> ignores the 
+  return value.</p>
+<p>New commands may be added to Workspace Whiz's template processor. The API 
+  is described in the <a href="http://workspacewhiz.com/">Workspace Whiz Source 
+  Code</a>.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

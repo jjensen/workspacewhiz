@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: PickDirDlg.cpp $
 // $Archive: /WorkspaceWhiz/Src/WWhizPickDirTemplate/PickDirDlg.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 2    $ $Author: Jjensen $
+// $Date: 2003/01/30 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
@@ -82,7 +82,7 @@ CString CPickDirDlg::GetDirectory(void)
 * To this function, we pass the lParam from the BROWSEINFO in the form of lpData, and
 * while initializing, the shell browser will pick the directory whose name is in lpData.
 */
-int WINAPI CPickDirDlg::BrowseProc( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
+int WINAPI CPickDirDlg::BrowseProc( HWND hwnd, UINT uMsg, LPARAM /*lParam*/, LPARAM lpData)
 {
 	if (uMsg == BFFM_INITIALIZED)
 	{

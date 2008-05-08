@@ -1,26 +1,25 @@
 ///////////////////////////////////////////////////////////////////////////////
 // $Workfile: ExtraFilesDialog.cpp $
 // $Archive: /WorkspaceWhiz/Src/WorkspaceWhiz/ExtraFilesDialog.cpp $
-// $Date:: 1/03/01 12:13a  $ $Revision:: 22   $ $Author: Jjensen $
+// $Date: 2003/01/05 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
-// This source file is part of the Workspace Whiz! source distribution and
-// is Copyright 1997-2001 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// This source file is part of the Workspace Whiz source distribution and
+// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
-#include "afxdlgs.h"
-#include "WorkspaceWhiz.h"
+//#include "afxdlgs.h"
+#include "resource.h"
 #include "ExtraFilesDialog.h"
 #include <io.h>
 #include <sys/stat.h>
 #include "AboutDialog.h"
-#include "PreferencesDialog.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -42,6 +41,7 @@ void CExtraFilesDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CHtmlHelpDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CExtraFilesDialog)
+	DDX_Control(pDX, IDC_EP_NEVERREFRESH, m_neverRefreshCheckbox);
 	DDX_Control(pDX, IDOK, m_butOK);
 	DDX_Control(pDX, IDCANCEL, m_butCancel);
 	DDX_Control(pDX, IDC_EP_REMOVE, m_butRemove);
@@ -60,7 +60,8 @@ BEGIN_MESSAGE_MAP(CExtraFilesDialog, CHtmlHelpDialog)
 	ON_BN_CLICKED(IDC_EP_BROWSE, OnEpBrowse)
 	ON_LBN_DBLCLK(IDC_EP_LIST, OnDblclkEpList)
 	ON_BN_CLICKED(IDC_COM_ABOUT, OnComAbout)
-	ON_BN_CLICKED(IDC_COM_PREFERENCES, OnComPreferences)
+	ON_LBN_SELCHANGE(IDC_EP_LIST, OnSelchangeEpList)
+	ON_BN_CLICKED(IDC_EP_NEVERREFRESH, OnEpNeverrefresh)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -75,7 +76,8 @@ BEGIN_DYNAMIC_MAP(CExtraFilesDialog, cdxCDynamicDialog)
 	DYNAMIC_MAP_ENTRY(IDCANCEL,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDHELP,				mdRepos,	mdNone)
 	DYNAMIC_MAP_ENTRY(IDC_COM_ABOUT,		mdRepos,	mdNone)
-	DYNAMIC_MAP_ENTRY(IDC_COM_PREFERENCES,	mdRepos,	mdNone)
+
+	DYNAMIC_MAP_ENTRY(IDC_EP_NEVERREFRESH,	mdRepos,	mdRepos)
 END_DYNAMIC_MAP()
 	
 /////////////////////////////////////////////////////////////////////////////
@@ -121,6 +123,7 @@ BOOL CExtraFilesDialog::OnInitDialog()
 		const WWhizReg::ExtraFilesInfo& info = extraFilesList.GetNext(pos);
 		int index = m_list.AddString(info.m_name);
 		m_list.SetCheck(index, info.m_active ? 1 : 0);
+		m_list.SetItemData(index, info.m_noRefresh);
 	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -183,7 +186,7 @@ void CExtraFilesDialog::ResolveFilename(CString& filename)
 
 void CExtraFilesDialog::AddFileToList(CString& filename)
 {
-	ResolveFilename(filename);
+//	ResolveFilename(filename);
 	for (int i = 0; i < m_list.GetCount(); i++)
 	{
 		CString name;
@@ -222,10 +225,10 @@ void CExtraFilesDialog::OnEpRemove()
 void CExtraFilesDialog::OnEpBrowse() 
 {
 	CFileDialog fdlg(TRUE, NULL, "*.*", OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY,
-		"Workspaces (.dsw,.vcw)|*.dsw;*.vcw|Project Files (.dsp,.vcp,.vcproj)|*.dsp;*.vcp;*.vcproj|All Files (*.*)|*.*||", NULL);
+		"Workspaces and Project Files (.dsw,.sln,.dsp,.vcproj)|*.dsw;*.sln;*.dsp;*.vcproj|All Files (*.*)|*.*||", NULL);
 	fdlg.m_ofn.lpstrTitle = "Select Extra Files";
 	fdlg.m_ofn.nMaxFile = 10 * 1024;
-	AutoBasic<char> fileBuffer(new char[fdlg.m_ofn.nMaxFile]);
+	AutoBasic<char> fileBuffer(WNEW char[fdlg.m_ofn.nMaxFile]);
 	fdlg.m_ofn.lpstrFile = fileBuffer;
 	fdlg.m_ofn.lpstrFile[0] = 0;
 	if(fdlg.DoModal() == IDCANCEL)  
@@ -268,6 +271,7 @@ void CExtraFilesDialog::OnOK()
 		WWhizReg::ExtraFilesInfo info;
 		info.m_active = m_list.GetCheck(i) == 1;
 		m_list.GetText(i, info.m_name);
+		info.m_noRefresh = m_list.GetItemData(i) != 0;
 		extraFilesList.AddTail(info);
 	}
 	g_wwhizReg->SetExtraFiles(extraFilesList);
@@ -293,10 +297,20 @@ void CExtraFilesDialog::OnComAbout()
 	dlg.DoModal();
 }
 
-void CExtraFilesDialog::OnComPreferences() 
+void CExtraFilesDialog::OnSelchangeEpList() 
 {
-	CPreferencesDialog dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-	}
+	int curSel = m_list.GetCurSel();
+	if (curSel == LB_ERR)
+		return;
+
+	m_neverRefreshCheckbox.SetCheck(m_list.GetItemData(curSel));
+}
+
+void CExtraFilesDialog::OnEpNeverrefresh() 
+{
+	int curSel = m_list.GetCurSel();
+	if (curSel == LB_ERR)
+		return;
+
+	m_list.SetItemData(curSel, m_neverRefreshCheckbox.GetCheck());
 }

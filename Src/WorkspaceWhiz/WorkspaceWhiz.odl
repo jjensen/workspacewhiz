@@ -28,28 +28,29 @@ library WorkspaceWhiz
 	interface ICommands : IDispatch
 	{
 		// methods
-		[id(1), helpstring("method WWFileOpen")] HRESULT WWFileOpen();
-		[id(2), helpstring("method WWFileGlobalOpen")] HRESULT WWFileGlobalOpen();
-		[id(3), helpstring("method WWHeaderFlip")] HRESULT WWHeaderFlip();
-		[id(4), helpstring("method WWFileFindPrev")] HRESULT WWFileFindPrev();
-		[id(5), helpstring("method WWFileFindNext")] HRESULT WWFileFindNext();
-		[id(6), helpstring("method WWHistoryBack")] HRESULT WWHistoryBack();
-		[id(7), helpstring("method WWHistoryForward")] HRESULT WWHistoryForward();
-		[id(8), helpstring("method WWHistoryDlg")] HRESULT WWHistoryDlg();
-		[id(9), helpstring("method WWTagFindDlg")] HRESULT WWTagFindDlg();
-		[id(10), helpstring("method WWTagFindSpecialDlg")] HRESULT WWTagFindSpecialDlg();
-		[id(11), helpstring("method WWTagFlip")] HRESULT WWTagFlip();
-		[id(12), helpstring("method WWTagFindAtCursor")] HRESULT WWTagFindAtCursor();
-		[id(13), helpstring("method WWTagFindAtCursorDlg")] HRESULT WWTagFindAtCursorDlg();
-		[id(14), helpstring("method WWTagFindPrev")] HRESULT WWTagFindPrev();
-		[id(15), helpstring("method WWTagFindNext")] HRESULT WWTagFindNext();
-		[id(16), helpstring("method WWTagCompletePrev")] HRESULT WWTagCompletePrev();
-		[id(17), helpstring("method WWTagCompleteNext")] HRESULT WWTagCompleteNext();
-		[id(18), helpstring("method WWTagCompleteRestore")] HRESULT WWTagCompleteRestore();
-		[id(19), helpstring("method WWTagCompleteDlg")] HRESULT WWTagCompleteDlg();
-		[id(20), helpstring("method WWTemplateSelect")] HRESULT WWTemplateSelect();
-		[id(21), helpstring("method WWTemplateComplete")] HRESULT WWTemplateComplete();
-		[id(22), helpstring("method WWPasteFix")] HRESULT WWPasteFix();
+		[id(1), helpstring("method WWOptions")] HRESULT WWOptions();
+		[id(2), helpstring("method WWFileOpen")] HRESULT WWFileOpen();
+		[id(3), helpstring("method WWFileGlobalOpen")] HRESULT WWFileGlobalOpen();
+		[id(4), helpstring("method WWHeaderFlip")] HRESULT WWHeaderFlip();
+		[id(5), helpstring("method WWFileFindPrev")] HRESULT WWFileFindPrev();
+		[id(6), helpstring("method WWFileFindNext")] HRESULT WWFileFindNext();
+		[id(7), helpstring("method WWHistoryBack")] HRESULT WWHistoryBack();
+		[id(8), helpstring("method WWHistoryForward")] HRESULT WWHistoryForward();
+		[id(9), helpstring("method WWHistoryDlg")] HRESULT WWHistoryDlg();
+		[id(10), helpstring("method WWTagFindDlg")] HRESULT WWTagFindDlg();
+		[id(11), helpstring("method WWTagFindSpecialDlg")] HRESULT WWTagFindSpecialDlg();
+		[id(12), helpstring("method WWTagFlip")] HRESULT WWTagFlip();
+		[id(13), helpstring("method WWTagFindAtCursor")] HRESULT WWTagFindAtCursor();
+		[id(14), helpstring("method WWTagFindAtCursorDlg")] HRESULT WWTagFindAtCursorDlg();
+		[id(15), helpstring("method WWTagFindPrev")] HRESULT WWTagFindPrev();
+		[id(16), helpstring("method WWTagFindNext")] HRESULT WWTagFindNext();
+		[id(17), helpstring("method WWTagCompletePrev")] HRESULT WWTagCompletePrev();
+		[id(18), helpstring("method WWTagCompleteNext")] HRESULT WWTagCompleteNext();
+		[id(19), helpstring("method WWTagCompleteRestore")] HRESULT WWTagCompleteRestore();
+		[id(20), helpstring("method WWTagCompleteDlg")] HRESULT WWTagCompleteDlg();
+		[id(21), helpstring("method WWTemplateSelect")] HRESULT WWTemplateSelect();
+		[id(22), helpstring("method WWTemplateComplete")] HRESULT WWTemplateComplete();
+		[id(23), helpstring("method WWPasteFix")] HRESULT WWPasteFix();
 	};
 
 	//  Class information for CCommands

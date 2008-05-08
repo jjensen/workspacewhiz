@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>Template Files - Header</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="WWhiz.css">
+</head>
+
+<body bgcolor="#FFFFFF" background="Back.gif">
+<!-- #BeginLibraryItem "/Library/WWhizLogo.lbi" --><p><a href="http://workspacewhiz.com/" target="_blank"><img src="WWhizLogo.jpg" width="740" height="82" border="0"></a></p><!-- #EndLibraryItem --> 
+<h2 align="left">Template Files</h2>
+<h3>Header</h3>
+<p>Template files (otherwise known as template groups) can hold multiple code 
+  templates. It is usually wise to group related code templates in the same file. 
+  Template files are known by their <span class="code">.WWTpl</span> extension. 
+</p>
+<p>The first line of a <i>Workspace Whiz</i> Template Group File is the category 
+  of all the templates contained in the file. This category is shown at the root 
+  level of the template selection tree. All templates in the file are grouped 
+  under this category.</p>
+<p class="code">My First Template File!</p>
+<p>Each template exists in a block opened with a left square bracket, followed 
+  by the name of the template, and followed by a right square bracket:</p>
+<p class="code">[My First Template]</p>
+<p>By default, the template selection tree is not expanded. To force a template 
+  to fully expand the tree, insert a <span class="code">+</span> (plus) symbol 
+  at the start of the template name.</p>
+<p class="code">[+My First Template]</p>
+<p>To create subtrees within the template selection tree, separate each new branch 
+  with the <span class="code">|</span> (pipe) symbol.</p>
+<p class="code">[Branch 1|Another Branch|My Cool Template]</p>
+<p>To create a private template that won't show in the template selection tree 
+  (and whose use will be described below), insert a <span class="code">-</span> 
+  (minus) symbol at the start of the template name.</p>
+<pre>[-My Private Template]</pre>
+</body>
+</html>
