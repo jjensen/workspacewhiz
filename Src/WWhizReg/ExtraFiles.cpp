@@ -10,6 +10,8 @@
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "pchWWhizReg.h"
+
 WWhizReg::ExtraFilesList s_extraFilesList;
 
 bool WriteExtraFiles()

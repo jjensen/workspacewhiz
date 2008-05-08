@@ -1,5 +1,7 @@
 #pragma once
 
+#include <afxdisp.h>
+
 #ifdef WWHIZ_VC6
 
 #include <ObjModel\AppAuto.h>
@@ -22,8 +24,12 @@ struct IConfigurationEVC : public IConfiguration { };
 #endif WWHIZ_VC6
 
 #ifdef WWHIZ_VSNET
+#include "dte.tlh"
+
 __declspec(selectany) CComPtr<EnvDTE::_DTE> g_pDTE;
 #endif WWHIZ_VSNET
+
+#undef FindText
 
 class ObjModelHelper
 {
@@ -578,7 +584,7 @@ inline bool ObjModelHelper::FindText(CString searchString, CStringArray& flagsAr
 	}
 
 	short findReturn;
-	m_pTextSelection->FindText(CComBSTR(searchString), flags, &findReturn);
+	m_pTextSelection->FindTextA(CComBSTR(searchString), flags, &findReturn);
 	return (findReturn == VARIANT_TRUE);
 }
 
@@ -594,7 +600,7 @@ inline bool ObjModelHelper::FindText(CString searchString, CString flagStr)
 inline bool ObjModelHelper::FindText(CString searchString, long flags)
 {
 	short findReturn;
-	m_pTextSelection->FindText(CComBSTR(searchString), flags, &findReturn);
+	m_pTextSelection->FindTextA(CComBSTR(searchString), flags, &findReturn);
 	return (findReturn == VARIANT_TRUE);
 }
 

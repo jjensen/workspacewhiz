@@ -9,6 +9,8 @@
 // CChoiceWindowBtn window
 
 #include <afxtempl.h>
+#include <afxwin.h>
+#include <afxcmn.h>
 
 #ifdef _ITCDLL
 #include <itcall.h> 

@@ -12,6 +12,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <afxdlgs.h>
+#include <afxcmn.h>
+#include "../3rdParty/WCollection.h"
+#include "WWhizInterface3.h"
+
 typedef WArray<const WWhizTag*> TagArray;
 
 #define WM_USER_REFRESH (WM_USER + 1)
@@ -27,10 +32,10 @@ public:
 	};
 	typedef WList<ExtraFilesInfo> ExtraFilesList;
 
-	void (*RegistrationDialog)(void);
+	void (*RegistrationDialog)(bool force);
 	
 	bool (*CreateWFOControls)(CDialog* dlgParent, UINT dlgID,
-			CComboBoxEx*& editCtrl, CComboBoxEx*& prefixEditCtrl, CListCtrl*& listCtrl,
+			CComboBoxEx*& editCtrl, CListCtrl*& listCtrl,
 			WWhizFileList** fileList, WArray<int>* foundFiles );
 
 	bool (*DestroyWFOControls)();

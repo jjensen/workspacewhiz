@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
 #include "resource.h"
 #include "FindFileDialog.h"
 #include "History.h"
@@ -121,10 +122,9 @@ BOOL CFindFileDialog::OnInitDialog()
 
 	GetWindowText(s_windowTitle);
 
-	g_wwhizReg->CreateWFOControls(this, IDD, m_edit, m_prefixEdit, m_files, &m_fileList, &m_foundFiles );
+	g_wwhizReg->CreateWFOControls(this, IDD, m_edit, m_files, &m_fileList, &m_foundFiles );
 	
 	// Subclass the edit with our own.
-    m_prefixEdit->SetWindowText(m_lastPrefix);
     m_edit->SetWindowText(m_lastFilename);
 	m_edit->CComboBox::SetEditSel(0, -1);
 
@@ -181,6 +181,90 @@ BOOL CFindFileDialog::OnInitDialog()
 }
 
 
+/**
+	\internal
+	\author Jack Handy
+
+	Borrowed from http://www.codeproject.com/string/wildcmp.asp.
+	Modified by Joshua Jensen.
+**/
+static bool WildMatch( const char* pattern, const char *string, bool caseSensitive )
+{
+	// Handle all the letters of the pattern and the string.
+	while ( *string != 0  &&  *pattern != '*' )
+	{
+		if ( *pattern != '?' )
+		{
+			if ( caseSensitive )
+			{
+				if ( *pattern != *string )
+					return false;
+			}
+			else
+			{
+				if ( toupper( *pattern ) != toupper( *string ) )
+					return false;
+			}
+		}
+
+		pattern++;
+		string++;
+	}
+
+	const char* mp = NULL;
+	const char* cp = NULL;
+	while ( *string != 0 )
+	{
+		if (*pattern == '*')
+		{
+			// It's a match if the wildcard is at the end.
+			if ( *++pattern == 0 )
+			{
+				return true;
+			}
+
+			mp = pattern;
+			cp = string + 1;
+		}
+		else
+		{
+			if ( caseSensitive )
+			{
+				if ( *pattern == *string  ||  *pattern == '?' )
+				{
+					pattern++;
+					string++;
+				}
+				else 
+				{
+					pattern = mp;
+					string = cp++;
+				}
+			}
+			else
+			{
+				if ( toupper( *pattern ) == toupper( *string )  ||  *pattern == '?' )
+				{
+					pattern++;
+					string++;
+				}
+				else
+				{
+					pattern = mp;
+					string = cp++;
+				}
+			}
+		}
+	}
+
+	// Collapse remaining wildcards.
+	while ( *pattern == '*' )
+		pattern++;
+
+	return !*pattern;
+}
+
+
 void CFindFileDialog::RefreshList(LPCTSTR name) 
 {
 	if (m_created == false)
@@ -193,7 +277,7 @@ void CFindFileDialog::RefreshList(LPCTSTR name)
 	m_files->DeleteAllItems();
 
 	// We're going to modify the text, so copy it.
-	char filename[200];
+	char filename[500];
 	strcpy(filename, name);
 
 	// Is there a comma (line number) in the filename?
@@ -204,40 +288,51 @@ void CFindFileDialog::RefreshList(LPCTSTR name)
 	{
 		*comma = 0;
 	}
-	
-	// Is there an extension in the filename?
-	char* ext = strrchr(filename, '.');
-	int extLen = 0;
-	if (ext != NULL)
+
+	// Chop off the directory path, if there is one.
+	CString wildPath;
+	char* semicolon = strrchr(filename, ';');
+	if (semicolon)
 	{
-		*ext++ = 0;
-		strlwr(ext);
-		extLen = strlen(ext);
+		*semicolon++ = 0;
+		wildPath = CString("*\\") + semicolon + "*";
+		wildPath.MakeLower();
+		wildPath.Replace('/', '*');
 	}
+
+	// Is there an extension in the filename?
+	char* extPtr = strchr(filename, '.');
+	int extLen = 0;
+	CString ext;
+	if (extPtr != NULL)
+	{
+		*extPtr++ = 0;
+		ext = extPtr;
+		ext.MakeLower();
+		ext.Replace(".", "*.");
+		ext.Replace("/", "*");
+		ext = ext + "*";
+		extLen = ext.GetLength();
+	}
+	CString wildPreExt = "*." + ext;
 	
 	// Now build the shortened name.
 	int pLen = 0;
+	int minLen = 0;
 	int len = strlen(filename);
-	int splitPos = -1;
-	for (int i = 0; i < len; i++)
+	int i;
+	for (i = 0; i < len; i++)
 	{
 		if (isalnum(filename[i]))
+		{
 			filename[pLen++] = tolower(filename[i]);
+			minLen++;
+		}
 		else if (filename[i] == '/'  ||  filename[i] == '*')
-			splitPos = pLen;
+			filename[pLen++] = '*';
 	}
+	filename[pLen++] = '*';
 	filename[pLen] = 0;
-
-	// Last part.
-	char lastPart[200];
-	int lastPartLen = 0;
-	if (splitPos != -1)
-	{
-		strcpy(lastPart, (char *)&filename[splitPos]);
-		lastPartLen = strlen(lastPart);
-		filename[splitPos] = 0;
-		pLen = splitPos;
-	}
 
 	// Start the search.
 	int topOne = -1;
@@ -255,44 +350,39 @@ void CFindFileDialog::RefreshList(LPCTSTR name)
 		// Grab the extension, if we're doing it.
 		if (extLen != 0)
 		{
-			// Do the compare.
-			if (fileCmp.GetExt().GetLength() < extLen)
-				continue;
-			if (strncmp(ext, fileCmp.GetExt(), extLen) != 0)
-				continue;
+			// Check each part of the extension.
+			const char* fileCmpExt = fileCmp.GetExt();
+			if (!WildMatch(ext, fileCmpExt, true))
+			{
+				if (!WildMatch(wildPreExt, fileCmpExt, true))
+					continue;
+			}
 		}
 
-		if (fileCmp.GetShortName().GetLength() >= pLen)
+		if (fileCmp.GetShortName().GetLength() >= minLen)
 		{
-			int result;
-			if (pLen == 0)
-				result = 0;
-			else
-				result = strncmp(fileCmp.GetShortName(), filename, pLen);
-
-			// Do last part check.
-			if (result == 0  &&  lastPartLen != 0)
+			const char* fileCmpShortName = fileCmp.GetShortName();
+			if (!WildMatch(filename, fileCmpShortName, true))
 			{
-				if (fileCmp.GetShortName().GetLength() - pLen - lastPartLen >= 0)
+				continue;
+			}
+
+			// If the user specified a wild path, test for it.
+			if (!wildPath.IsEmpty())
+			{
+				const char* fileCmpPath = fileCmp.GetPath();
+				if (!WildMatch(wildPath, fileCmpPath, false))
 				{
-					if (strstr((LPCTSTR)fileCmp.GetShortName() + pLen, lastPart) != NULL)
-						result = 0;
-					else
-						result = -1;
+					continue;
 				}
-				else
-					result = -1;
 			}
 
-			if (result == 0)
-			{
-				m_foundFiles[curPos] = i;
+			m_foundFiles[curPos] = i;
 
-				if (fileCmp.GetShortName().GetLength() == pLen  &&  topOne == -1)
-					topOne = curPos;
+			if (fileCmp.GetShortName().GetLength() == minLen  &&  topOne == -1)
+				topOne = curPos;
 
-				curPos++;
-			}
+			curPos++;
 		}
 	}
 
@@ -317,11 +407,9 @@ void CFindFileDialog::RefreshList(LPCTSTR name)
 void CFindFileDialog::RefreshFromFilename()
 {
 	// Get the filename.
-	CString prefix;
-	m_prefixEdit->GetWindowText(prefix);
 	CString filename;
 	m_edit->GetWindowText(filename);
-	RefreshList(prefix + filename);
+	RefreshList(filename);
 }
 
 
@@ -335,9 +423,6 @@ void CFindFileDialog::OnOK()
 	CString string;
 	m_edit->GetWindowText(string);
 	g_wwhizReg->WFOAddEditString(string);
-	
-	m_prefixEdit->GetWindowText(string);
-	g_wwhizReg->WFOAddPrefixEditString(string);
 	
 	if (m_files->GetItemCount() != 0)
 	{
@@ -373,7 +458,9 @@ void CFindFileDialog::OnOK()
 		for (int i = toOpenList.GetCount() - 1; i >= 0; --i)
 		{
 			WWhizFile& file = *toOpenList[i];
-			CString filename = file.GetPath() + file.GetTitle() + "." + file.GetExt();
+			CString filename = file.GetPath() + file.GetTitle();
+			if (!file.GetExt().IsEmpty())
+				filename += "." + file.GetExt();
 
 			ObjModelHelper objModel;
 			if (objModel.OpenDocument(filename, "Auto"))
@@ -389,7 +476,6 @@ void CFindFileDialog::OnOK()
 	
 	m_lastPosition = m_files->GetNextItem(-1, LVNI_ALL | LVNI_FOCUSED);
 	m_edit->GetWindowText(CFindFileDialog::m_lastFilename);
-	m_prefixEdit->GetWindowText(CFindFileDialog::m_lastPrefix);
 	FIND_FILE_DIALOG::OnOK();
 }
 

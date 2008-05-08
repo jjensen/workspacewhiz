@@ -52,7 +52,8 @@ TemplateManager::TemplateManager() :
 **/
 TemplateManager::~TemplateManager()
 {
-	for (size_t i = 0; i < m_files.GetCount(); i++)
+	size_t i;
+	for (i = 0; i < m_files.GetCount(); i++)
 	{
 		delete m_files[i];
 	}
@@ -282,9 +283,9 @@ static inline void ReadStringGT255(CFile& file, CString& str)
 
 static inline void ReadTimeStamp(CFile& file, CTime& timeStamp)
 {
-	time_t time;
-	file.Read(&time, sizeof(time_t));
-	timeStamp = time;
+	unsigned __int64 time;
+	file.Read(&time, sizeof(unsigned __int64));
+	timeStamp = (time_t)time;
 }
 
 /**
@@ -299,6 +300,7 @@ void TemplateManager::LoadRegistry()
 	
 	UINT size;
 	BYTE* mem;
+	BYTE* mem2;
 
 	// Read in the filename file.
 	if (AfxGetApp()->GetProfileBinary("Templates", "FileList2", &mem, &size)  &&  size != 0)
@@ -306,10 +308,10 @@ void TemplateManager::LoadRegistry()
 		MemFile filenameFile;
 		filenameFile.Write(mem, size);
 		filenameFile.Seek(0, CFile::begin);
-		delete [] mem;
 
 		WORD count;
 		filenameFile.Read(&count, sizeof(WORD));
+		size_t i;
 		for (i = 0; i < count; i++)
 		{
 			CString filename;
@@ -341,15 +343,16 @@ void TemplateManager::LoadRegistry()
 			}
 		}
 	}
-	else if (AfxGetApp()->GetProfileBinary("Templates", "FileList", &mem, &size))
+	else if (AfxGetApp()->GetProfileBinary("Templates", "FileList", &mem2, &size))
 	{
 		MemFile filenameFile;
-		filenameFile.Write(mem, size);
+		filenameFile.Write(mem2, size);
 		filenameFile.Seek(0, CFile::begin);
-		delete [] mem;
+		delete [] mem2;
 
 		WORD count;
 		filenameFile.Read(&count, sizeof(WORD));
+		size_t i;
 		for (i = 0; i < count; i++)
 		{
 			CString filename;
@@ -379,14 +382,18 @@ void TemplateManager::LoadRegistry()
 		}
 	}
 		
+	delete [] mem;
+	mem = NULL;
+
 	// Read in the tree state.
 	if (AfxGetApp()->GetProfileBinary("Templates", "TreeState", &mem, &size))
 	{
 		m_treeStateFile.SetLength(0);
 		m_treeStateFile.Write(mem, size);
 		m_treeStateFile.Seek(0, CFile::begin);
-		delete [] mem;
 	}
+	delete [] mem;
+	mem = NULL;
 	
 	// Read in the parameters.
 	if (AfxGetApp()->GetProfileBinary("Templates", "SavedParameters", &mem, &size))
@@ -395,11 +402,12 @@ void TemplateManager::LoadRegistry()
 		paramFile.Write(mem, size);
 		paramFile.Seek(0, CFile::begin);
 		delete [] mem;
+		mem = NULL;
 
 		if (size > 0)
 		{
 			// The saved parameters SHOULD be in the same order.
-			for (i = 0; i < (size_t)GetCount(); i++)
+			for (size_t i = 0; i < (size_t)GetCount(); i++)
 			{
 				WWhizTemplateGroup* file = GetTemplateGroup(i);
 
@@ -448,6 +456,8 @@ void TemplateManager::LoadRegistry()
 			}
 		}
 	}
+
+	delete[] mem;
 	
 DoneWithParams:
 	int hi = 5;
@@ -472,8 +482,8 @@ void TemplateManager::SaveRegistry()
 			WORD len = file->GetFilename().GetLength();
 			filenameFile.Write(&len, sizeof(WORD));
 			filenameFile.Write((LPCTSTR)file->GetFilename(), len);
-			time_t time = file->GetTimeStamp().GetTime();
-			filenameFile.Write(&time, sizeof(time_t));
+			unsigned __int64 time = file->GetTimeStamp().GetTime();
+			filenameFile.Write(&time, sizeof(unsigned __int64));
 		}
 
 		LONG filenameFileSize = filenameFile.GetLength();
@@ -576,11 +586,13 @@ bool TemplateManager::RestoreTreeState(CTreeCtrlEx& tree)
 		filename.ReleaseBuffer(len);
 
 		// Write out the time stamp.
-		time_t time;
-		m_treeStateFile.Read(&time, sizeof(time_t));
+		unsigned __int64 timeIn;
+		m_treeStateFile.Read(&timeIn, sizeof(unsigned __int64));
+		time_t time = timeIn;
 
 		// Now, find it.
-		for (int j = 0; j < GetCount(); j++)
+		int j;
+		for (j = 0; j < GetCount(); j++)
 		{
 			WWhizTemplateGroup* file = GetTemplateGroup(j);
 
@@ -652,8 +664,8 @@ void TemplateManager::SaveTreeState(CTreeCtrlEx& tree)
 		m_treeStateFile.Write((LPCTSTR)file->GetFilename(), len);
 
 		// Write out the time stamp.
-		time_t time = file->GetTimeStamp().GetTime();
-		m_treeStateFile.Write(&time, sizeof(time_t));
+		unsigned __int64 time = file->GetTimeStamp().GetTime();
+		m_treeStateFile.Write(&time, sizeof(unsigned __int64));
 	}
 
 	// Write the tree item count.

@@ -21,6 +21,12 @@
 #include <ObjModel\bldguid.h>
 #endif WWHIZ_VC6
 
+#ifdef WWHIZ_VSNET
+#include <atlstr.h>
+#endif // WWHIZ_VSNET
+
+#undef FindText
+
 WWhizTemplateManager* g_templateManager;
 WWhizInterface* g_wwhizInterface;
 
@@ -649,7 +655,7 @@ public:
 
 #ifdef WWHIZ_VSNET
 		CString err;
-		err.Format("Visual Studio .NET support for the ConfigAddFileSettings command "
+		err.Format("Visual Studio support for the ConfigAddFileSettings command "
 				"has not been implemented yet.");
 		AfxMessageBox(err);
 #endif WWHIZ_VSNET
@@ -711,7 +717,7 @@ public:
 #endif WWHIZ_VC6
 #ifdef WWHIZ_VSNET
 		CString err;
-		err.Format("Visual Studio .NET support for the ConfigAddToolsSettings command "
+		err.Format("Visual Studio support for the ConfigAddToolsSettings command "
 				"has not been implemented yet.");
 		AfxMessageBox(err);
 #endif WWHIZ_VSNET
@@ -802,7 +808,7 @@ public:
 
 #ifdef WWHIZ_VSNET
 		CString err;
-		err.Format("Visual Studio .NET support for the ConfigRemoveFileSettings command "
+		err.Format("Visual Studio support for the ConfigRemoveFileSettings command "
 				"has not been implemented yet.");
 		AfxMessageBox(err);
 #endif WWHIZ_VSNET
@@ -860,7 +866,7 @@ public:
 
 #ifdef WWHIZ_VSNET
 		CString err;
-		err.Format("Visual Studio .NET support for the ConfigRemoveToolSettings command "
+		err.Format("Visual Studio support for the ConfigRemoveToolSettings command "
 				"has not been implemented yet.");
 		AfxMessageBox(err);
 #endif WWHIZ_VSNET

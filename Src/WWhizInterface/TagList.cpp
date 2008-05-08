@@ -4,17 +4,19 @@
 // $Date: 2003/01/05 $ $Revision: #7 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
 // This source file is part of the Workspace Whiz source distribution and
-// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// is Copyright 1997-2006 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #include "TagList.h"
 #include "FileList.h"
+//#include "../sqlite/sqlite3.h"
 
 #ifdef WWHIZ_VSNET
-#define USE_STL
+//#define USE_STL
 #endif WWHIZ_VSNET
 #ifdef USE_STL
 #include <algorithm>
@@ -73,15 +75,15 @@ static int __cdecl CompareArray(const void* elem1, const void* elem2)
 
 	// If the names match, compare against the namespaces.  Blank namespaces should
 	// sort last.
-	bool tag1NamespaceEmpty = tag1->m_namespace[0] == 0;
-	bool tag2NamespaceEmpty = tag2->m_namespace[0] == 0;
+	bool tag1NamespaceEmpty = tag1->m_shortNamespace[0] == 0;
+	bool tag2NamespaceEmpty = tag2->m_shortNamespace[0] == 0;
 	if (tag1NamespaceEmpty  &&  !tag2NamespaceEmpty)
 		return 1;
 
 	if (tag2NamespaceEmpty)
 		ret = 0;
 	else
-		ret = strcmp(tag1->Tag::GetNamespace(), tag2->Tag::GetNamespace());
+		ret = strcmp(tag1->Tag::GetShortNamespace(), tag2->Tag::GetShortNamespace());
 	if (ret == 0)
 	{
 		WWhizTag::Type tag1Type = tag1->Tag::GetType();
@@ -118,15 +120,15 @@ struct CompareTags
 
 		// If the names match, compare against the namespaces.  Blank namespaces should
 		// sort last.
-		bool tag1NamespaceEmpty = tag1->m_namespace[0] == 0;
-		bool tag2NamespaceEmpty = tag2->m_namespace[0] == 0;
+		bool tag1NamespaceEmpty = tag1->m_shortNamespace[0] == 0;
+		bool tag2NamespaceEmpty = tag2->m_shortNamespace[0] == 0;
 		if (tag1NamespaceEmpty  &&  !tag2NamespaceEmpty)
 			return false;
 
 		if (tag2NamespaceEmpty)
 			ret = 0;
 		else
-			ret = strcmp(tag1->Tag::GetNamespace(), tag2->Tag::GetNamespace());
+			ret = strcmp(tag1->Tag::GetShortNamespace(), tag2->Tag::GetShortNamespace());
 		if (ret == 0)
 		{
 			WWhizTag::Type tag1Type = tag1->Tag::GetType();
@@ -140,7 +142,11 @@ struct CompareTags
 				return false;		//ret = 0;
 			}
 
-			return true;		//ret = -1;
+			// Last resort.
+			ret = strcmp(tag1->Tag::GetSearchString(), tag2->Tag::GetSearchString());
+			return ret < 0;
+
+//			return true;		//ret = -1;
 		}
 
 		return ret < 0;

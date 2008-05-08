@@ -12,6 +12,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <afx.h>
+
 struct WWhizReg;
 class WWhizProjectList;
 class WWhizProject;
@@ -181,6 +183,8 @@ public:
 		@return Returns the tag's implementation type.
 	**/
 	virtual ImplementationType GetImplementationType(void) const = 0;
+
+	virtual WWhizFile* GetFile() const = 0;
 };
 
 
@@ -220,7 +224,7 @@ public:
 	/**
 		The definition of the callback called from the tag refresh.
 	**/
-	typedef void (*TagRefreshCallback)(const TagCallbackInfo& info);
+	typedef bool (*TagRefreshCallback)(const TagCallbackInfo& info);
 
 	/**
 		Initializes the WWhizInterface.

@@ -27,18 +27,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE DISCARDABLE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE DISCARDABLE
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE DISCARDABLE
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -66,8 +66,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,0,1026
- PRODUCTVERSION 3,0,0,1026
+ FILEVERSION 4,0,0,1115
+ PRODUCTVERSION 4,0,0,1115
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -85,14 +85,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "WWhizInterfaceHelper DLL\0"
-            VALUE "FileVersion", "3, 0, 0, 1026\0"
+            VALUE "FileVersion", "4, 0, 0, 1115\0"
             VALUE "InternalName", "WWhizInterfaceHelper\0"
-            VALUE "LegalCopyright", "Copyright (C) 2000-2002 Joshua C. Jensen\0"
+            VALUE "LegalCopyright", "Copyright (C) 1997-2007 Joshua C. Jensen\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "WWhizInterfaceHelper.DLL\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "WWhizInterfaceHelper Dynamic Link Library\0"
-            VALUE "ProductVersion", "3, 0, 0, 1026\0"
+            VALUE "ProductVersion", "4, 0, 0, 1115\0"
             VALUE "SpecialBuild", "\0"
         END
     END

@@ -412,7 +412,8 @@ static bool ParseTag(LPCTSTR& codePtr, CString& out, TokenHelper* helper)
 			comPtr += 2;
 		}
 
-		CString command = ParseToken(comPtr);
+		LPCTSTR& constComPtr = (LPCTSTR&)comPtr;
+		CString command = ParseToken(constComPtr);
 		command.MakeLower();
 
 		///////////////////////////////////////////////////////////////////
@@ -428,7 +429,8 @@ static bool ParseTag(LPCTSTR& codePtr, CString& out, TokenHelper* helper)
 			// Found a command.  Build the arg list.
 			while (true)
 			{
-				CString arg = ParseToken(comPtr, helper);
+				LPCTSTR& constComPtr = (LPCTSTR&)comPtr;
+				CString arg = ParseToken(constComPtr, helper);
 				if (arg.IsEmpty())
 					break;
 				args.m_argList.Add(arg);
@@ -478,7 +480,8 @@ static bool ParseTag(LPCTSTR& codePtr, CString& out, TokenHelper* helper)
 			flagPtr++;
 
 			// Get the number.
-			int amount = ParseNumber(flagPtr);
+			LPCTSTR& constFlagPtr = (LPCTSTR&)flagPtr;
+			int amount = ParseNumber(constFlagPtr);
 			if (amount < out.GetLength())
 			{
 				out = out.Left(amount);
@@ -500,7 +503,8 @@ static bool ParseTag(LPCTSTR& codePtr, CString& out, TokenHelper* helper)
 			flagPtr++;
 
 			// Get the number.
-			int amount = ParseNumber(flagPtr);
+			LPCTSTR& constFlagPtr = (LPCTSTR&)flagPtr;
+			int amount = ParseNumber(constFlagPtr);
 			if (amount < out.GetLength())
 			{
 				out = out.Right(amount);
@@ -522,7 +526,8 @@ static bool ParseTag(LPCTSTR& codePtr, CString& out, TokenHelper* helper)
 			flagPtr++;
 
 			// Get the column number.
-			int toCol = ParseNumber(flagPtr);
+			LPCTSTR& constFlagPtr = (LPCTSTR&)flagPtr;
+			int toCol = ParseNumber(constFlagPtr);
 
 			// Count the column position we're at right now.
 			int curCol = 1;
@@ -693,7 +698,8 @@ bool Template::Parse()
 		if (m_codeOffsets.GetCount() > 1)
 		{
 			OffsetInfo* info = NULL;
-			for (size_t i = 0; i < m_codeOffsets.GetCount() - 1; i++)
+			size_t i;
+			for (i = 0; i < m_codeOffsets.GetCount() - 1; i++)
 			{
 				info = &m_codeOffsets[i];
 				OffsetInfo& info2 = m_codeOffsets[i + 1];

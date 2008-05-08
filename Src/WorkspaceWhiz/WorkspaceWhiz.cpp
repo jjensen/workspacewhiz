@@ -10,17 +10,23 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
 #ifdef WWHIZ_VC6
 #include <initguid.h>
 #endif WWHIZ_VC6
 #include "ObjModelGUID.h"
 #include "resource.h"
+#include <crtdbg.h>
 
 #ifdef WWHIZ_VSNET
 
 #include "WWhizNet.h"
 
 CAddInModule _AtlModule;
+
+#include "dte80.tlh"
+#include "mso.tlh"
+#include "vsmso.tlh"
 
 #endif WWHIZ_VSNET
 
@@ -101,6 +107,7 @@ CWorkspaceWhizApp::CWorkspaceWhizApp()
 
 BOOL CWorkspaceWhizApp::InitInstance()
 {
+//	_CrtSetBreakAlloc(9875);
 	free((void*)m_pszRegistryKey);
 	free((void*)m_pszProfileName);
 #ifdef WWHIZ_VC6
@@ -125,6 +132,12 @@ BOOL CWorkspaceWhizApp::InitInstance()
 	_tcscat(modulePath, "WorkspaceWhiz.chm");
 	free((void*)m_pszHelpFilePath);
 	m_pszHelpFilePath = _tcsdup(_T(modulePath));
+
+#ifdef WWHIZ_VSNET
+	// Set the app name.
+	free((void*)m_pszAppName);
+	m_pszAppName = _tcsdup(CString(MAKEINTRESOURCE(IDS_WORKSPACEWHIZ_LONGNAME)));
+#endif
 
 #ifdef WWHIZ_VC6
 	_Module.Init(ObjectMap, m_hInstance);
@@ -171,15 +184,15 @@ static void SaveTemplateRegistryDefaults()
 	len = filename.GetLength();
 	filenameFile.Write(&len, sizeof(WORD));
 	filenameFile.Write((LPCTSTR)filename, len);
-	time_t time = 0;
-	filenameFile.Write(&time, sizeof(time_t));
+	unsigned __int64 time = 0;
+	filenameFile.Write(&time, sizeof(unsigned __int64));
 
 	filename = modulePath + CString("UsefulSamples.WWTpl");
 	len = filename.GetLength();
 	filenameFile.Write(&len, sizeof(WORD));
 	filenameFile.Write((LPCTSTR)filename, len);
 	time = 0;
-	filenameFile.Write(&time, sizeof(time_t));
+	filenameFile.Write(&time, sizeof(unsigned __int64));
 
 	LONG filenameFileSize = (LONG)filenameFile.GetLength();
 	BYTE* filenameFileMem = filenameFile.Detach();
@@ -241,9 +254,9 @@ static CString s_regWWhizPath = s_regWWhizBasePath + s_regWhichWWhizPath;
 
 #ifdef WWHIZ_VSNET
 
-extern void UnregisterAllCommands(CComPtr<EnvDTE::_DTE>& pDTE);
+extern void UnregisterAllCommands70(CComPtr<EnvDTE::_DTE>& pDTE);
 
-void ConnectAndUnregisterAllCommands()
+void ConnectAndUnregisterAllCommands70()
 {
 	// Create the shell and get an interface to it.
 	CComPtr<EnvDTE::_DTE> pDTE;
@@ -251,17 +264,52 @@ void ConnectAndUnregisterAllCommands()
 		__uuidof(EnvDTE::_DTE), reinterpret_cast<void**>(&pDTE));
 	if (pDTE)
 	{
-		UnregisterAllCommands(pDTE);
+		UnregisterAllCommands70(pDTE);
 
 		CComPtr<Office::_CommandBars> pCommandBars;
 		CComPtr<Office::CommandBar> pCommandBar;
 
 		// Get the set of command bars for the application.
-		pDTE->get_CommandBars(&pCommandBars);
+		pDTE->get_CommandBars((EnvDTE::_CommandBars**)&pCommandBars);
 		if (pCommandBars)
 		{
 			// See if the Workspace Whiz toolbar has been created.
 			hr = pCommandBars->get_Item(CComVariant(L"Workspace Whiz"), &pCommandBar);
+			if (SUCCEEDED(hr))
+			{
+				hr = pCommandBar->Delete();
+				int hi = 5;
+			}
+		}
+	}
+}
+
+extern void UnregisterAllCommands80(CComPtr<EnvDTE80::DTE2>& pDTE);
+
+void ConnectAndUnregisterAllCommands80()
+{
+	// Create the shell and get an interface to it.
+	CComPtr<EnvDTE80::DTE2> pDTE;
+	pDTE.CoCreateInstance(CComBSTR("VisualStudio.DTE.8.0"), 0, CLSCTX_ALL);
+//	HRESULT hr = CoCreateInstance(__uuidof(EnvDTE80::DTE2), NULL, CLSCTX_LOCAL_SERVER,
+//		__uuidof(EnvDTE80::DTE2), reinterpret_cast<void**>(&pDTE));
+	if (pDTE)
+	{
+		UnregisterAllCommands80(pDTE);
+
+		CComPtr<Microsoft_VisualStudio_CommandBars::_CommandBars> pCommandBars;
+		CComPtr<Microsoft_VisualStudio_CommandBars::CommandBar> pCommandBar;
+
+		// Get the set of command bars for the application.
+		CComPtr<IDispatch> pDisp;
+
+		pDisp = NULL;
+		pDTE->get_CommandBars((EnvDTE::_CommandBars**)&pDisp);
+		pCommandBars = pDisp;
+		if (pCommandBars)
+		{
+			// See if the Workspace Whiz toolbar has been created.
+			HRESULT hr = pCommandBars->get_Item(CComVariant(L"Workspace Whiz"), &pCommandBar);
 			if (SUCCEEDED(hr))
 			{
 				hr = pCommandBar->Delete();
@@ -403,8 +451,9 @@ STDAPI DllRegisterServer(void)
 				// Remove all old entries.
 				devKey.SetStringValue("SatelliteDLLPath", modulePath);
 				devKey.SetStringValue("SatelliteDLLName", moduleShortName);
+//				devKey.SetStringValue("SatelliteDLLName", "WorkspaceWhiz.dll");
 				devKey.SetDWORDValue("LoadBehavior", 3);
-				devKey.SetStringValue("FriendlyName", "Workspace Whiz - A Visual Studio .NET Add-in");
+				devKey.SetStringValue("FriendlyName", "Workspace Whiz - A Visual Studio Add-in");
 				devKey.SetStringValue("Description", "Adds useful code navigation and completion capabilities to Visual Studio");
 				devKey.SetDWORDValue("CommandPreload", 1);
 			}
@@ -427,8 +476,9 @@ STDAPI DllRegisterServer(void)
 				// Remove all old entries.
 				devKey.SetStringValue("SatelliteDLLPath", modulePath);
 				devKey.SetStringValue("SatelliteDLLName", moduleShortName);
+//				devKey.SetStringValue("SatelliteDLLName", "WorkspaceWhiz.dll");
 				devKey.SetDWORDValue("LoadBehavior", 3);
-				devKey.SetStringValue("FriendlyName", "Workspace Whiz - A Visual Studio .NET Add-in");
+				devKey.SetStringValue("FriendlyName", "Workspace Whiz - A Visual Studio Add-in");
 				devKey.SetStringValue("Description", "Adds useful code navigation and completion capabilities to Visual Studio");
 				devKey.SetDWORDValue("CommandPreload", 1);
 			}
@@ -436,6 +486,30 @@ STDAPI DllRegisterServer(void)
 	}
 
 	if (devKey.Open(HKEY_CURRENT_USER, s_regBasePath + "\\7.1\\PreloadAddinState") == ERROR_SUCCESS)
+	{
+		devKey.SetDWORDValue("WWhizNet.Connect", 1);
+	}
+
+	if (devKey.Open(HKEY_LOCAL_MACHINE, s_regBasePath + "\\8.0") == ERROR_SUCCESS)
+	{
+		// Auto create the addins key if it isn't already there.
+		if (devKey.Create(HKEY_LOCAL_MACHINE, s_regBasePath + "\\8.0\\AddIns") == ERROR_SUCCESS)
+		{
+			// Create the WorkspaceWhiz.DSAddin.1 key.
+			if (devKey.Create(HKEY_LOCAL_MACHINE, s_regBasePath + "\\8.0\\AddIns\\WWhizNet.Connect") == ERROR_SUCCESS)
+			{
+				// Remove all old entries.
+				devKey.SetStringValue("SatelliteDLLPath", modulePath);
+//				devKey.SetStringValue("SatelliteDLLName", moduleShortName);
+				devKey.SetStringValue("SatelliteDLLName", "WWhizResources.dll");
+				devKey.SetDWORDValue("LoadBehavior", 3);
+				devKey.SetStringValue("FriendlyName", "Workspace Whiz - A Visual Studio Add-in");
+				devKey.SetStringValue("Description", "Adds useful code navigation and completion capabilities to Visual Studio");
+			}
+		}
+	}
+
+	if (devKey.Open(HKEY_CURRENT_USER, s_regBasePath + "\\8.0\\PreloadAddinState") == ERROR_SUCCESS)
 	{
 		devKey.SetDWORDValue("WWhizNet.Connect", 1);
 	}
@@ -527,7 +601,19 @@ STDAPI DllUnregisterServer(void)
 
 #ifdef WWHIZ_VSNET
 	// Remove entries.
-	if (key.Open(HKEY_LOCAL_MACHINE, s_regBasePath + "\\AddIns") == ERROR_SUCCESS)
+	if (key.Open(HKEY_LOCAL_MACHINE, s_regBasePath + "\\7.0\\AddIns") == ERROR_SUCCESS)
+	{
+		// Remove all old entries.
+		key.RecurseDeleteKey("WWhizNet.Connect");
+	}
+
+	if (key.Open(HKEY_LOCAL_MACHINE, s_regBasePath + "\\7.1\\AddIns") == ERROR_SUCCESS)
+	{
+		// Remove all old entries.
+		key.RecurseDeleteKey("WWhizNet.Connect");
+	}
+
+	if (key.Open(HKEY_LOCAL_MACHINE, s_regBasePath + "\\8.0\\AddIns") == ERROR_SUCCESS)
 	{
 		// Remove all old entries.
 		key.RecurseDeleteKey("WWhizNet.Connect");
@@ -577,7 +663,8 @@ STDAPI DllUnregisterServer(void)
 #ifdef WWHIZ_VSNET
 	HRESULT hr = _AtlModule.DllUnregisterServer();
 
-	ConnectAndUnregisterAllCommands();
+	ConnectAndUnregisterAllCommands70();
+	ConnectAndUnregisterAllCommands80();
 
 	return S_OK;
 #endif WWHIZ_VSNET

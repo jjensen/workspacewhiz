@@ -48,11 +48,17 @@ using namespace ATL;
 
 #pragma warning( disable : 4278 )
 #pragma warning( disable : 4146 )
-	//The following #import imports MSO based on it's LIBID
-	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
+	//The following #import imports the IDTExtensibility2 interface based on it's LIBID
+	#import "libid:AC0714F2-3D04-11D1-AE7D-00A0C90F26F4" version("1.0") lcid("0")  raw_interfaces_only named_guids
+
+	//The following #import imports VS Command Bars based on it's LIBID
+	#import "libid:1CBA492E-7263-47BB-87FE-639000619B15" version("8.0") lcid("0") raw_interfaces_only named_guids
 
 	//The following #import imports DTE based on it's LIBID
 	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
+
+	//The following #import imports DTE80 based on it's LIBID
+	#import "libid:1A31287A-4D7D-413e-8E32-3B374931BD89" version("8.0") lcid("0") raw_interfaces_only named_guids
 #pragma warning( default : 4146 )
 #pragma warning( default : 4278 )
 

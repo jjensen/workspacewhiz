@@ -11,6 +11,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "wwhizreg.h"
 #include "RegThread.h"
+#include <afx.h>
+#include <afxmt.h>
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW

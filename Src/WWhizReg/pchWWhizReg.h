@@ -42,20 +42,6 @@ using namespace ATL;
 
 #endif WWHIZ_VC6
 
-#ifdef WWHIZ_VSNET
-
-#pragma warning( disable : 4278 )
-#pragma warning( disable : 4146 )
-	//The following #import imports MSO based on it's LIBID
-	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
-
-	//The following #import imports DTE based on it's LIBID
-	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-#pragma warning( default : 4146 )
-#pragma warning( default : 4278 )
-
-#endif WWHIZ_VSNET
-
 // determine number of elements in an array (not bytes)
 #ifndef _countof
 #define _countof(array) (sizeof(array)/sizeof(array[0]))
@@ -78,7 +64,7 @@ extern HINSTANCE g_instance;
 __forceinline bool HasExpiredHelper()
 {
 #ifdef USE_EXPIRATION
-	CTime timeStart(2003, 05, 22, 00, 00, 00);
+	CTime timeStart(2007, 5, 19, 00, 00, 00);
 	CTime currentTime = CTime::GetCurrentTime();
 	CTimeSpan time30Days(30, 0, 0, 0);
 
@@ -95,8 +81,8 @@ __forceinline bool HasExpired()
 #ifdef USE_EXPIRATION
 	if (HasExpiredHelper())
 	{
-		AfxMessageBox("Workspace Whiz 3.0 Build 1014 has expired.  Please go to "
-			"http://www.workspacewhiz.com/ to download the latest version.\n");
+		AfxMessageBox("Workspace Whiz 4.0 Build 1115 has expired.  Please go to "
+			"http://workspacewhiz.com/ to download the latest version.\n");
 
 		return true;
 	}

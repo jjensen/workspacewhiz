@@ -53,8 +53,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,0,1026
- PRODUCTVERSION 3,0,0,1026
+ FILEVERSION 4,0,0,1115
+ PRODUCTVERSION 4,0,0,1115
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -70,12 +70,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Workspace Whiz"
-            VALUE "FileVersion", "3, 0, 0, 1026"
+            VALUE "FileVersion", "4, 0, 0, 1115"
             VALUE "InternalName", "Workspace Whiz"
-            VALUE "LegalCopyright", "Copyright © 2000-2002 Joshua C. Jensen"
+            VALUE "LegalCopyright", "Copyright © 1997-2007 Joshua C. Jensen"
             VALUE "OriginalFilename", "WorkspaceWhiz.dll"
             VALUE "ProductName", "Workspace Whiz"
-            VALUE "ProductVersion", "3, 0, 0, 1026"
+            VALUE "ProductVersion", "4, 0, 0, 1115"
         END
     END
     BLOCK "VarFileInfo"
@@ -108,72 +108,52 @@ BEGIN
 END
 
 IDD_FINDFILE DIALOGEX 0, 0, 346, 179
-STYLE DS_SETFONT | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CLIPCHILDREN | 
-    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+STYLE DS_SETFONT | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Workspace Whiz - File Open"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_FF_FILENAME,64,11,167,108,CBS_DROPDOWN | WS_VSCROLL | 
-                    WS_TABSTOP,WS_EX_STATICEDGE
-    CONTROL         "List1",IDC_FF_FILES,"SysListView32",LVS_REPORT | 
-                    LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | 
-                    WS_TABSTOP,5,28,226,144,WS_EX_STATICEDGE
+    COMBOBOX        IDC_FF_FILENAME,6,11,225,108,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "List1",IDC_FF_FILES,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,5,28,226,144
     DEFPUSHBUTTON   "OK",IDOK,288,3,52,14
     PUSHBUTTON      "Cancel",IDCANCEL,288,19,52,14
     PUSHBUTTON      "&Help",IDHELP,288,35,52,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,288,50,52,14
-    PUSHBUTTON      "&Extra Files",IDC_COM_EXTRAFILES,234,3,52,14,0,
-                    WS_EX_TRANSPARENT
+    PUSHBUTTON      "&Extra Files",IDC_COM_EXTRAFILES,234,3,52,14
     PUSHBUTTON      "&Current File",IDC_COM_CURRENTFILE,234,19,52,14
-    CONTROL         "Current P&roject",IDC_FF_SCOPE_PROJECT,"Button",
-                    BS_AUTORADIOBUTTON,239,94,66,10
-    CONTROL         "Entire &Workspace",IDC_FF_SCOPE_WORKSPACE,"Button",
-                    BS_AUTORADIOBUTTON,239,105,88,9
-    CONTROL         "&Global Files",IDC_FF_SCOPE_GLOBAL,"Button",
-                    BS_AUTORADIOBUTTON,239,116,88,9
-    LTEXT           "Filen&ame to match:",IDC_STATIC,65,0,61,8
+    CONTROL         "Current P&roject",IDC_FF_SCOPE_PROJECT,"Button",BS_AUTORADIOBUTTON,239,94,66,10
+    CONTROL         "Entire &Workspace",IDC_FF_SCOPE_WORKSPACE,"Button",BS_AUTORADIOBUTTON,239,105,88,9
+    CONTROL         "&Global Files",IDC_FF_SCOPE_GLOBAL,"Button",BS_AUTORADIOBUTTON,239,116,88,9
+    LTEXT           "Filen&ame to match:",IDC_STATIC,7,1,61,8
     GROUPBOX        "Scope",IDC_FF_SCOPE,234,85,105,45,0,WS_EX_TRANSPARENT
-    LTEXT           "Prefix:",IDC_STATIC,7,0,22,8
-    COMBOBOX        IDC_FF_PREFIX,5,11,56,109,CBS_DROPDOWN | WS_VSCROLL | 
-                    WS_TABSTOP,WS_EX_STATICEDGE
 END
 
 IDD_EXTRAFILES DIALOGEX 0, 0, 328, 123
-STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
-    WS_THICKFRAME
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Workspace Whiz - Add/Remove Extra Files"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EP_FILENAME,4,3,158,14,ES_AUTOHSCROLL,
-                    WS_EX_STATICEDGE
+    EDITTEXT        IDC_EP_FILENAME,4,3,158,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
     PUSHBUTTON      "&Browse",IDC_EP_BROWSE,166,3,50,14
-    LISTBOX         IDC_EP_LIST,4,18,212,104,LBS_SORT | LBS_OWNERDRAWFIXED | 
-                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
-                    WS_TABSTOP,WS_EX_STATICEDGE
+    LISTBOX         IDC_EP_LIST,4,18,212,104,LBS_SORT | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
     DEFPUSHBUTTON   "OK",IDOK,272,3,52,14
     PUSHBUTTON      "Cancel",IDCANCEL,272,19,52,14
     PUSHBUTTON      "&Help",IDHELP,272,35,52,14
     PUSHBUTTON      "A&bout",IDC_COM_ABOUT,272,50,52,14
     PUSHBUTTON      "&Add",IDC_EP_ADD,220,3,50,14
     PUSHBUTTON      "&Remove",IDC_EP_REMOVE,220,19,50,14
-    CONTROL         "Never Refresh",IDC_EP_NEVERREFRESH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,220,113,63,9
+    CONTROL         "Never Refresh",IDC_EP_NEVERREFRESH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,220,113,63,9
 END
 
 IDD_FINDTAG DIALOGEX 0, 0, 388, 222
-STYLE DS_SETFONT | WS_POPUP | WS_VISIBLE | WS_CLIPCHILDREN | WS_CAPTION | 
-    WS_SYSMENU | WS_THICKFRAME
+STYLE DS_SETFONT | WS_POPUP | WS_VISIBLE | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Workspace Whiz - Find Tag"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_FT_NAME,143,13,130,110,CBS_DROPDOWN | WS_VSCROLL | 
-                    WS_TABSTOP,WS_EX_STATICEDGE
-    CONTROL         "List1",IDC_FT_TAGS,"SysListView32",LVS_REPORT | 
-                    LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | 
-                    WS_TABSTOP,2,28,271,150,WS_EX_STATICEDGE
+    COMBOBOX        IDC_FT_NAME,143,13,130,110,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "List1",IDC_FT_TAGS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,2,28,271,150,WS_EX_STATICEDGE
     DEFPUSHBUTTON   "OK",IDOK,334,2,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,334,18,50,14
     PUSHBUTTON      "&Help",IDHELP,334,34,50,14
@@ -183,22 +163,14 @@ BEGIN
     PUSHBUTTON      "Reb&uild Tags",IDC_FT_REBUILDTAGS,277,34,50,14
     PUSHBUTTON      "Re&fresh Tags",IDC_FT_REFRESHTAGS,277,50,50,14
     PUSHBUTTON      "&Show",IDC_FT_SHOW,277,66,50,14
-    CONTROL         "Current F&ile",IDC_FT_SCOPE_FILE,"Button",
-                    BS_AUTORADIOBUTTON,281,91,93,10
-    CONTROL         "Current P&roject",IDC_FT_SCOPE_PROJECT,"Button",
-                    BS_AUTORADIOBUTTON,281,102,95,10
-    CONTROL         "Entire &Workspace",IDC_FT_SCOPE_WORKSPACE,"Button",
-                    BS_AUTORADIOBUTTON,281,113,96,10
-    COMBOBOX        IDC_FT_TYPECOMBO,3,13,53,138,CBS_DROPDOWN | WS_VSCROLL | 
-                    WS_TABSTOP
-    COMBOBOX        IDC_FT_PARENT,60,13,80,110,CBS_DROPDOWN | WS_VSCROLL | 
-                    WS_TABSTOP,WS_EX_STATICEDGE
-    EDITTEXT        IDC_FT_INFO_FILENAME,6,184,374,12,ES_AUTOHSCROLL | 
-                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_FT_INFO_MISC,6,195,374,12,ES_AUTOHSCROLL | 
-                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_FT_INFO_SEARCHSTRING,6,206,374,12,ES_AUTOHSCROLL | 
-                    ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    CONTROL         "Current F&ile",IDC_FT_SCOPE_FILE,"Button",BS_AUTORADIOBUTTON,281,91,93,10
+    CONTROL         "Current P&roject",IDC_FT_SCOPE_PROJECT,"Button",BS_AUTORADIOBUTTON,281,102,95,10
+    CONTROL         "Entire &Workspace",IDC_FT_SCOPE_WORKSPACE,"Button",BS_AUTORADIOBUTTON,281,113,96,10
+    EDITTEXT        IDC_FT_INFO_FILENAME,6,184,374,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_FT_INFO_MISC,6,195,374,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_FT_INFO_SEARCHSTRING,6,206,374,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    COMBOBOX        IDC_FT_TYPECOMBO,3,13,53,138,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_FT_PARENT,60,13,80,110,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "",IDC_FT_INFO_FRAME,2,176,382,44,0,WS_EX_TRANSPARENT
     LTEXT           "T&ag to match:",IDC_STATIC,143,2,91,8
     LTEXT           "&Type:",IDC_STATIC,3,3,32,8
@@ -207,16 +179,12 @@ BEGIN
 END
 
 IDD_TEMPLATESELECT DIALOGEX 0, 0, 336, 207
-STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
-    WS_THICKFRAME
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Workspace Whiz - Code Templates"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    CONTROL         "Tree1",IDC_TS_TREE,"SysTreeView32",TVS_HASBUTTONS | 
-                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
-                    TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,3,13,222,148,
-                    WS_EX_STATICEDGE
+    CONTROL         "Tree1",IDC_TS_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,3,13,222,148,WS_EX_STATICEDGE
     DEFPUSHBUTTON   "OK",IDOK,279,3,52,14
     PUSHBUTTON      "Cancel",IDCANCEL,279,19,52,14
     PUSHBUTTON      "&Help",IDHELP,279,35,52,14
@@ -227,16 +195,13 @@ BEGIN
 END
 
 IDD_TEMPLATEFILELIST DIALOGEX 0, 0, 328, 143
-STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
-    WS_THICKFRAME
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Workspace Whiz - Template File List"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
     LTEXT           "Loaded Template &Files:",IDC_STATIC,4,2,74,8
-    CONTROL         "List1",IDC_TFL_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,3,12,212,124,
-                    WS_EX_STATICEDGE
+    CONTROL         "List1",IDC_TFL_LIST,"SysListView32",LVS_REPORT | LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,3,12,212,124,WS_EX_STATICEDGE
     DEFPUSHBUTTON   "OK",IDOK,272,2,52,14
     PUSHBUTTON      "Cancel",IDCANCEL,272,18,52,14
     PUSHBUTTON      "&Help",IDHELP,272,34,52,14
@@ -247,8 +212,7 @@ BEGIN
 END
 
 IDD_TEMPLATEWIZARD DIALOGEX 0, 0, 310, 235
-STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
-    WS_THICKFRAME
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Workspace Whiz - Template Parameter Wizard"
 FONT 8, "Arial", 0, 0, 0x1
@@ -265,38 +229,22 @@ EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CONTEXTHELP
 CAPTION "Key Bindings #1"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    CONTROL         "Workspace File Open:",IDC_PKB_KEYCHECK1,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,17,95,10
-    CONTROL         "HotKey1",IDC_PKB_KEY1,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,15,119,14
-    CONTROL         "Global File Open:",IDC_PKB_KEYCHECK2,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,32,95,10
-    CONTROL         "HotKey1",IDC_PKB_KEY2,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,30,119,14
-    CONTROL         "Header Flip:",IDC_PKB_KEYCHECK3,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,47,95,10
-    CONTROL         "HotKey1",IDC_PKB_KEY3,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,45,119,14
-    CONTROL         "Find Previous File:",IDC_PKB_KEYCHECK4,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,62,95,10
-    CONTROL         "HotKey1",IDC_PKB_KEY4,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,60,119,14
-    CONTROL         "Find Next File:",IDC_PKB_KEYCHECK5,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,77,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY5,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,75,119,14
-    CONTROL         "History Previous:",IDC_PKB_KEYCHECK6,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,92,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY6,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,90,119,14
-    CONTROL         "History Next:",IDC_PKB_KEYCHECK7,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,107,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY7,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,105,119,14
-    CONTROL         "History Dialog:",IDC_PKB_KEYCHECK8,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,122,95,10
-    CONTROL         "HotKey1",IDC_PKB_KEY8,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,120,119,14
+    CONTROL         "Workspace File Open:",IDC_PKB_KEYCHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,17,95,10
+    CONTROL         "HotKey1",IDC_PKB_KEY1,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,15,119,14
+    CONTROL         "Global File Open:",IDC_PKB_KEYCHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,32,95,10
+    CONTROL         "HotKey1",IDC_PKB_KEY2,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,30,119,14
+    CONTROL         "Header Flip:",IDC_PKB_KEYCHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,47,95,10
+    CONTROL         "HotKey1",IDC_PKB_KEY3,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,45,119,14
+    CONTROL         "Find Previous File:",IDC_PKB_KEYCHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,62,95,10
+    CONTROL         "HotKey1",IDC_PKB_KEY4,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,60,119,14
+    CONTROL         "Find Next File:",IDC_PKB_KEYCHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,77,95,10
+    CONTROL         "HotKey2",IDC_PKB_KEY5,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,75,119,14
+    CONTROL         "History Previous:",IDC_PKB_KEYCHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,92,95,10
+    CONTROL         "HotKey2",IDC_PKB_KEY6,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,90,119,14
+    CONTROL         "History Next:",IDC_PKB_KEYCHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,107,95,10
+    CONTROL         "HotKey2",IDC_PKB_KEY7,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,105,119,14
+    CONTROL         "History Dialog:",IDC_PKB_KEYCHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,122,95,10
+    CONTROL         "HotKey1",IDC_PKB_KEY8,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,120,119,14
     PUSHBUTTON      "&Assign this Page",IDC_PKB_ASSIGN,15,143,63,14
     PUSHBUTTON      "&Reset",IDC_PKB_RESET,175,143,50,14
     GROUPBOX        "Customize Key Bindings",IDC_STATIC,5,5,230,134
@@ -309,14 +257,12 @@ EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CONTEXTHELP
 CAPTION "Header Flip"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    LISTBOX         IDC_PHF_EXTLIST,59,14,70,66,LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_PHF_EXTLIST,59,14,70,66,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_PHF_EXTEDIT,5,14,51,14,ES_LOWERCASE | ES_AUTOHSCROLL
     DEFPUSHBUTTON   "&Add",IDC_PHF_ADD,6,32,50,14
     PUSHBUTTON      "&Remove",IDC_PHF_REMOVE,6,49,50,14
     PUSHBUTTON      "Reset",IDC_PHF_RESET,6,66,50,14
-    LTEXT           "Modify extension types for header flip:",IDC_STATIC,5,4,
-                    125,8
+    LTEXT           "Modify extension types for header flip:",IDC_STATIC,5,4,125,8
 END
 
 IDD_PREF_CTAGS DIALOGEX 0, 0, 259, 182
@@ -325,54 +271,41 @@ EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CONTEXTHELP
 CAPTION "Tags"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    LISTBOX         IDC_PC_EXTLIST,59,14,40,66,LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_PC_EXTLIST,59,14,40,66,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_PC_EXTEDIT,5,14,51,14,ES_LOWERCASE | ES_AUTOHSCROLL
     DEFPUSHBUTTON   "&Add",IDC_PC_ADD,6,32,50,14
     PUSHBUTTON      "&Remove",IDC_PC_REMOVE,6,49,50,14
     PUSHBUTTON      "R&eset",IDC_PC_RESET,6,66,50,14
-    CONTROL         "Always use dialog for Find Tag at Cursor",
-                    IDC_PC_USETAGCURSORDIALOG,"Button",BS_AUTOCHECKBOX | 
-                    BS_MULTILINE | WS_TABSTOP,103,5,148,8
+    CONTROL         "Always use dialog for Find Tag at Cursor",IDC_PC_USETAGCURSORDIALOG,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,103,5,148,8
     CONTROL         "Automatic refresh of tags",IDC_PC_AUTOREFRESHTAGS,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,103,
-                    17,148,8
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,103,17,148,8
     CONTROL         "Scan files on task switch",IDC_PC_SCANFILESTASKSWITCH,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,103,
-                    29,148,8
-    CONTROL         "Automatic Save All issued per each tag command",
-                    IDC_PC_AUTOSAVEALL,"Button",BS_AUTOCHECKBOX | 
-                    BS_MULTILINE | WS_TABSTOP,103,41,148,14
-    EDITTEXT        IDC_PC_AUTOSAVECHANGES,156,57,27,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    EDITTEXT        IDC_PC_AUTOPACKCHANGES,183,72,27,12,ES_AUTOHSCROLL | 
-                    ES_NUMBER
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,103,29,148,8
+    CONTROL         "Automatic Save All issued per each tag command",IDC_PC_AUTOSAVEALL,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,103,41,148,14
+    EDITTEXT        IDC_PC_AUTOSAVECHANGES,156,57,27,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_PC_AUTOPACKCHANGES,183,72,27,12,ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_PC_TOKENEDIT,5,97,243,14,ES_AUTOHSCROLL
     PUSHBUTTON      "Add",IDC_PC_TOKENADD,6,113,50,14
     PUSHBUTTON      "&Remove",IDC_PC_TOKENREMOVE,6,129,50,14
     PUSHBUTTON      "R&eset",IDC_PC_TOKENRESET,6,145,50,14
-    CONTROL         "List1",IDC_PC_TOKENLIST,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_EDITLABELS | 
-                    WS_BORDER | WS_TABSTOP,61,113,188,66
+    CONTROL         "List1",IDC_PC_TOKENLIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_EDITLABELS | WS_BORDER | WS_TABSTOP,61,113,188,66
     LTEXT           "Modify tag file extensions:",IDC_STATIC,5,4,94,8
     LTEXT           "file saves",IDC_STATIC,188,59,32,8
-    LTEXT           "Modify tokens to ignore during tag parse:",IDC_STATIC,5,
-                    87,134,8
+    LTEXT           "Modify tokens to ignore during tag parse:",IDC_STATIC,5,87,134,8
     LTEXT           "Save tags after",IDC_STATIC,103,59,51,8
     LTEXT           "changes",IDC_STATIC,213,74,29,8
     LTEXT           "Pack tag file after every",IDC_STATIC,103,74,78,8
 END
 
 IDD_HISTORY DIALOGEX 0, 0, 342, 151
-STYLE DS_SETFONT | DS_3DLOOK | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | 
-    WS_SYSMENU | WS_THICKFRAME
+STYLE DS_SETFONT | DS_3DLOOK | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Workspace Whiz - File History"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    CONTROL         "List1",IDC_H_FILES,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_OWNERDATA | 
-                    WS_BORDER | WS_TABSTOP,3,3,228,144,WS_EX_STATICEDGE
+    CONTROL         "List1",IDC_H_FILES,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,3,3,228,144,WS_EX_STATICEDGE
     DEFPUSHBUTTON   "OK",IDOK,288,3,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,288,19,50,14
     PUSHBUTTON      "&Help",IDHELP,288,35,50,14
@@ -385,11 +318,8 @@ STYLE DS_SETFONT | WS_POPUP | WS_CLIPCHILDREN | WS_THICKFRAME
 EXSTYLE WS_EX_CONTEXTHELP
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_FT_NAME,4,11,192,107,CBS_DROPDOWN | WS_VSCROLL | 
-                    WS_TABSTOP,WS_EX_STATICEDGE
-    CONTROL         "List1",IDC_FT_TAGS,"SysListView32",LVS_REPORT | 
-                    LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | 
-                    WS_TABSTOP,4,26,192,72,WS_EX_STATICEDGE
+    COMBOBOX        IDC_FT_NAME,4,11,192,107,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CONTROL         "List1",IDC_FT_TAGS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,4,26,192,72,WS_EX_STATICEDGE
 END
 
 IDD_PREF_KEYBINDINGS2 DIALOGEX 0, 0, 241, 146
@@ -398,34 +328,20 @@ EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CONTEXTHELP
 CAPTION "Key Bindings #2"
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    CONTROL         "Find Tag Dialog:",IDC_PKB_KEYCHECK9,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,17,94,10
-    CONTROL         "HotKey1",IDC_PKB_KEY9,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,15,119,14
-    CONTROL         "Find Tag Special Dialog:",IDC_PKB_KEYCHECK10,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,32,95,10
-    CONTROL         "HotKey1",IDC_PKB_KEY10,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,30,119,14
-    CONTROL         "Flip Tag",IDC_PKB_KEYCHECK11,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,9,47,95,10
-    CONTROL         "HotKey1",IDC_PKB_KEY11,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,109,45,119,14
-    CONTROL         "Find Tag at Cursor:",IDC_PKB_KEYCHECK12,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,62,94,10
-    CONTROL         "HotKey2",IDC_PKB_KEY12,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,60,119,14
-    CONTROL         "Find Tag at Cursor Dialog:",IDC_PKB_KEYCHECK13,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,77,94,10
-    CONTROL         "HotKey2",IDC_PKB_KEY13,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,75,119,14
-    CONTROL         "Find Previous Tag:",IDC_PKB_KEYCHECK14,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,92,94,10
-    CONTROL         "HotKey2",IDC_PKB_KEY14,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,90,119,14
-    CONTROL         "Find Next Tag:",IDC_PKB_KEYCHECK15,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,107,94,10
-    CONTROL         "HotKey2",IDC_PKB_KEY15,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,105,119,14
+    CONTROL         "Find Tag Dialog:",IDC_PKB_KEYCHECK9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,17,94,10
+    CONTROL         "HotKey1",IDC_PKB_KEY9,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,15,119,14
+    CONTROL         "Find Tag Special Dialog:",IDC_PKB_KEYCHECK10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,32,95,10
+    CONTROL         "HotKey1",IDC_PKB_KEY10,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,30,119,14
+    CONTROL         "Flip Tag",IDC_PKB_KEYCHECK11,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,47,95,10
+    CONTROL         "HotKey1",IDC_PKB_KEY11,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,109,45,119,14
+    CONTROL         "Find Tag at Cursor:",IDC_PKB_KEYCHECK12,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,62,94,10
+    CONTROL         "HotKey2",IDC_PKB_KEY12,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,60,119,14
+    CONTROL         "Find Tag at Cursor Dialog:",IDC_PKB_KEYCHECK13,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,77,94,10
+    CONTROL         "HotKey2",IDC_PKB_KEY13,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,75,119,14
+    CONTROL         "Find Previous Tag:",IDC_PKB_KEYCHECK14,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,92,94,10
+    CONTROL         "HotKey2",IDC_PKB_KEY14,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,90,119,14
+    CONTROL         "Find Next Tag:",IDC_PKB_KEYCHECK15,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,107,94,10
+    CONTROL         "HotKey2",IDC_PKB_KEY15,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,105,119,14
     PUSHBUTTON      "&Assign",IDC_PKB_ASSIGN,35,127,50,14
     PUSHBUTTON      "&Reset",IDC_PKB_RESET,150,127,50,14
     GROUPBOX        "Customize Key Bindings",IDC_STATIC,5,5,230,118
@@ -440,30 +356,18 @@ BEGIN
     PUSHBUTTON      "&Assign",IDC_PKB_ASSIGN,35,126,50,14
     PUSHBUTTON      "&Reset",IDC_PKB_RESET,150,126,50,14
     GROUPBOX        "Customize Key Bindings",IDC_STATIC,5,5,230,115
-    CONTROL         "Autocomplete Tag Prev:",IDC_PKB_KEYCHECK16,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,17,94,10
-    CONTROL         "HotKey2",IDC_PKB_KEY16,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,15,119,14
-    CONTROL         "Autocomplete Tag Next:",IDC_PKB_KEYCHECK17,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,32,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY17,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,30,119,14
-    CONTROL         "Autocomplete Tag Restore:",IDC_PKB_KEYCHECK18,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,47,98,10
-    CONTROL         "HotKey2",IDC_PKB_KEY18,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,45,119,14
-    CONTROL         "Autocomplete Tag Dialog:",IDC_PKB_KEYCHECK19,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,62,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY19,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,60,119,14
-    CONTROL         "Code Template Select:",IDC_PKB_KEYCHECK20,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,77,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY20,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,75,119,14
-    CONTROL         "Template Autocomplete:",IDC_PKB_KEYCHECK21,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,92,95,10
-    CONTROL         "HotKey2",IDC_PKB_KEY21,"msctls_hotkey32",WS_BORDER | 
-                    WS_TABSTOP,110,90,119,14
+    CONTROL         "Autocomplete Tag Prev:",IDC_PKB_KEYCHECK16,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,17,94,10
+    CONTROL         "HotKey2",IDC_PKB_KEY16,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,15,119,14
+    CONTROL         "Autocomplete Tag Next:",IDC_PKB_KEYCHECK17,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,32,95,10
+    CONTROL         "HotKey2",IDC_PKB_KEY17,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,30,119,14
+    CONTROL         "Autocomplete Tag Restore:",IDC_PKB_KEYCHECK18,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,47,98,10
+    CONTROL         "HotKey2",IDC_PKB_KEY18,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,45,119,14
+    CONTROL         "Autocomplete Tag Dialog:",IDC_PKB_KEYCHECK19,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,62,95,10
+    CONTROL         "HotKey2",IDC_PKB_KEY19,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,60,119,14
+    CONTROL         "Code Template Select:",IDC_PKB_KEYCHECK20,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,77,95,10
+    CONTROL         "HotKey2",IDC_PKB_KEY20,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,75,119,14
+    CONTROL         "Template Autocomplete:",IDC_PKB_KEYCHECK21,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,92,95,10
+    CONTROL         "HotKey2",IDC_PKB_KEY21,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,110,90,119,14
 END
 
 
@@ -483,14 +387,11 @@ BEGIN
         MENUITEM "Ma&ke Read-Only",             IDC_FFP_READONLY
         MENUITEM SEPARATOR
         MENUITEM "Copy &Path to Clipboard",     IDC_FFP_COPYPATHTOCLIPBOARD
-        MENUITEM "Copy &Full Path to Clipboard", 
-                                                IDC_FFP_COPYFULLPATHTOCLIPBOARD
-
+        MENUITEM "Copy &Full Path to Clipboard", IDC_FFP_COPYFULLPATHTOCLIPBOARD
         MENUITEM SEPARATOR
         POPUP "&Shell Context"
         BEGIN
-            MENUITEM "(Unavailable)",               ID_DUMMY_FILESYSTEM_UNAVAILABLE
-            , GRAYED
+            MENUITEM "(Unavailable)",               ID_DUMMY_FILESYSTEM_UNAVAILABLE, GRAYED
         END
     END
 END
@@ -551,12 +452,12 @@ IDB_CI_WWTEMPLATECOMPLETE BITMAP                  "res\\IconWWTemplateComplete.b
 
 STRINGTABLE 
 BEGIN
-    IDS_PROJNAME            "Workspace Whiz 3.0 Beta Build 1026"
+    IDS_PROJNAME            "Workspace Whiz 4.0 RC5 Build 1115"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz 3.0 Beta Build 1026"
+    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz 4.0 RC5 Build 1115"
     IDS_WORKSPACEWHIZ_DESCRIPTION 
                             "Adds many useful workspace-related functions, such as an incremental file open, code templates, tag matching, etc."
     IDS_PREFDLG_CAPTION     "Workspace Whiz - Options"
@@ -606,7 +507,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MISSINGTOOLBARCONTENTS 
-                            "The contents of the Workspace Whiz toolbar are missing.  Most likely, this is because Visual Studio .NET crashed and did not properly save the contents of the toolbar.\n\nPress Yes to recreate the toolbar.  Press No to leave it as is."
+                            "The contents of the Workspace Whiz toolbar are missing.  Most likely, this is because Visual Studio crashed and did not properly save the contents of the toolbar.\n\nPress Yes to recreate the toolbar.  Press No to leave it as is."
 END
 
 #endif    // English (U.S.) resources

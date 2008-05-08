@@ -3,6 +3,7 @@
 
 #include "ChoiceWindowBtn.h"
 #include "ChoiceWindow.h"
+#include "WCollection.h"
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW

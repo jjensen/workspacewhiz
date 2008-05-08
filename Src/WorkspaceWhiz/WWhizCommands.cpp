@@ -1,4 +1,6 @@
+#include "stdafx.h"
 #include "resource.h"
+#include "../WWhizResources/resource.h"
 #include "WWhizCommands.h"
 #include "WWhizInterfaceLoader.h"
 #include "WWhizRegLoader.h"
@@ -14,6 +16,7 @@
 #include "History.h"
 #include "TextLine.h"
 #include <io.h>
+#include <assert.h>
 
 WWhizInterface* g_wwhizInterface;
 WWhizReg* g_wwhizReg;
@@ -25,25 +28,27 @@ static WWhizCommands::CommandInfo s_commandList[] =
 	{ L"WWOptions",						"",						true,  false, IDB_CI_WWOPTIONS				  },
 	{ L"WWFileOpen",					"Ctrl+O",				true,  false, IDB_CI_WWFILEOPEN               },
 	{ L"WWFileGlobalOpen",				"Ctrl+Shift+O",			true,  false, IDB_CI_WWFILEGLOBALOPEN         },
-	{ L"WWHeaderFlip",					"Ctrl+L",				true,  false, IDB_CI_WWHEADERFLIP             },
+	{ L"WWHeaderFlip",					"Ctrl+L",				true,  true,  IDB_CI_WWHEADERFLIP             },
 	{ L"WWFileFindPrev",				"",						true,  false, IDB_CI_WWFILEFINDPREV           },
 	{ L"WWFileFindNext",				"",						true,  false, IDB_CI_WWFILEFINDNEXT           },
-	{ L"WWHistoryBack",					"Alt+Left Arrow",		true,  false, IDB_CI_WWHISTORYBACK            },
-	{ L"WWHistoryForward",				"Alt+Right Arrow",		true,  false, IDB_CI_WWHISTORYFORWARD         },
+	{ L"WWHistoryBack",					"Ctrl+Alt+Left Arrow",	true,  true,  IDB_CI_WWHISTORYBACK            },
+	{ L"WWHistoryForward",				"Ctrl+Alt+Right Arrow",	true,  true,  IDB_CI_WWHISTORYFORWARD         },
 	{ L"WWHistoryDlg",					"",						true,  false, IDB_CI_WWHISTORYDLG             },
 	{ L"WWTagFindDlg",					"Ctrl+D",				true,  false, IDB_CI_WWTAGFINDDLG             },
 	{ L"WWTagFindSpecialDlg",			"Ctrl+Shift+D",			true,  false, IDB_CI_WWTAGFINDSPECIALDLG      },
-	{ L"WWTagFlip",						"Ctrl+Shift+Space",		true,  false, IDB_CI_WWTAGFLIP                },
-	{ L"WWTagFindAtCursor",				"Ctrl+Space",			true,  false, IDB_CI_WWTAGFINDATCURSOR        },
-	{ L"WWTagFindAtCursorDlg",			"",						true,  false, IDB_CI_WWTAGFINDATCURSORDLG     },
+	{ L"WWTagFlip",						"Ctrl+Shift+Space",		true,  true,  IDB_CI_WWTAGFLIP                },
+	{ L"WWTagFindAtCursor",				"Ctrl+Space",			true,  true,  IDB_CI_WWTAGFINDATCURSOR        },
+	{ L"WWTagFindAtCursorDlg",			"",						true,  true,  IDB_CI_WWTAGFINDATCURSORDLG     },
 	{ L"WWTagFindPrev",					"Alt+Shift+Left Arrow",	true,  false, IDB_CI_WWTAGFINDPREV            },
 	{ L"WWTagFindNext",					"Alt+Shift+Right Arrow",true,  false, IDB_CI_WWTAGFINDNEXT            },
-	{ L"WWTagCompletePrev",				"Ctrl+Shift+Enter",		true,  false, IDB_CI_WWTAGCOMPLETEPREV        },
-	{ L"WWTagCompleteNext",				"Ctrl+Enter",			true,  false, IDB_CI_WWTAGCOMPLETENEXT        },
-	{ L"WWTagCompleteRestore",			"Ctrl+Alt+Enter",		true,  false, IDB_CI_WWTAGCOMPLETERESTORE     },
-	{ L"WWTagCompleteDlg",				"Ctrl+Alt+Shift+Enter",	true,  false, IDB_CI_WWTAGCOMPLETEDLG         },
+	{ L"WWTagCompletePrev",				"Ctrl+Shift+Enter",		true,  true,  IDB_CI_WWTAGCOMPLETEPREV        },
+	{ L"WWTagCompleteNext",				"Ctrl+Enter",			true,  true,  IDB_CI_WWTAGCOMPLETENEXT        },
+	{ L"WWTagCompleteRestore",			"Ctrl+Alt+Enter",		true,  true,  IDB_CI_WWTAGCOMPLETERESTORE     },
+	{ L"WWTagCompleteDlg",				"Ctrl+Alt+Shift+Enter",	true,  true,  IDB_CI_WWTAGCOMPLETEDLG         },
 	{ L"WWTemplateSelect",				"Ctrl+Shift+T",			true,  false, IDB_CI_WWTEMPLATESELECT         },
 	{ L"WWTemplateComplete",			"Ctrl+T",				true,  false, IDB_CI_WWTEMPLATECOMPLETE       },
+//	{ L"WWPreviousFunction",			"Ctrl+Alt+Up Arrow",	true,  true,  IDB_CI_WWHISTORYBACK            },
+//	{ L"WWNextFunction",				"Ctrl+Alt+Down Arrow",	true,  true,  IDB_CI_WWHISTORYFORWARD         },
 };
 
 
@@ -114,7 +119,7 @@ bool GotoTag(const WWhizTag* tag)
 }
 
 
-void TagCallback(const WWhizInterface::TagCallbackInfo& info);
+bool TagCallback(const WWhizInterface::TagCallbackInfo& info);
 
 
 void WWhizCommands::LoadTags()
@@ -248,7 +253,8 @@ int HeaderFlip(LPCTSTR fullNameStr)
 	int numExts = config.FilesExtGetCount();
 
 	// Figure out which extension we should start on.
-	for (int whichExt = 0; whichExt < numExts; ++whichExt)
+	int whichExt;
+	for (whichExt = 0; whichExt < numExts; ++whichExt)
 	{
 		if (file.GetExt() == config.FilesExtGet(whichExt))
 			break;
@@ -624,7 +630,8 @@ STDMETHODIMP WWhizCommands::WWTagFindDlg()
 	{
 		dlg.ShowWindow(SW_SHOW);
 		dlg.Refresh();
-		dlg.RunModalLoop(MLF_NOIDLEMSG);
+		if (!dlg.m_canceling)
+			dlg.RunModalLoop(MLF_NOIDLEMSG);
 		dlg.DestroyWindow();
 	}
 	EnableMainWindow(TRUE);
@@ -661,7 +668,8 @@ STDMETHODIMP WWhizCommands::WWTagFindSpecialDlg()
 	{
 		dlg.ShowWindow(SW_SHOW);
 		dlg.Refresh();
-		dlg.RunModalLoop(MLF_NOIDLEMSG);
+		if (!dlg.m_canceling)
+			dlg.RunModalLoop(MLF_NOIDLEMSG);
 		dlg.DestroyWindow();
 	}
 	EnableMainWindow(TRUE);
@@ -706,7 +714,7 @@ STDMETHODIMP WWhizCommands::WWTagFindAtCursorDlg()
 	if (dlg.Create(CFindTagDialog::IDD))
 	{
 		// Hack.
-		dlg.m_tagParent->SetWindowText(parentIdent);
+//		dlg.m_editTagCtrl->SetWindowText(parentIdent);
 		dlg.ShowWindow(SW_SHOW);
 		dlg.Refresh();
 		dlg.RunModalLoop(MLF_NOIDLEMSG);
@@ -717,7 +725,7 @@ STDMETHODIMP WWhizCommands::WWTagFindAtCursorDlg()
 	return S_OK;
 }
 
-extern void TagCallback(const WWhizInterface::TagCallbackInfo& info);
+extern bool TagCallback(const WWhizInterface::TagCallbackInfo& info);
 
 STDMETHODIMP WWhizCommands::WWTagFindAtCursor()
 {
@@ -748,13 +756,71 @@ STDMETHODIMP WWhizCommands::WWTagFindAtCursor()
 	}
 
 	TextLine line;
+	CString function;
 	CString foundText = line.GetIdent(true);
 	if (!foundText.IsEmpty())
 	{
-		foundText = "=" + foundText + "=";
-		g_wwhizInterface->MatchTag(g_wwhizInterface->GetTagList(), foundText);
+		// Try for an exact match first.
+		function = "=" + foundText + "=";
+		g_wwhizInterface->MatchTag(g_wwhizInterface->GetTagList(), function);
 
-		// Is there a match?
+		while (g_wwhizInterface->GetTagMatchCount() == 0)
+		{
+			// Search for ::
+			CString ident;
+			CString parentIdent;
+			int colonPos = foundText.ReverseFind(':');
+			if (colonPos != -1)
+			{
+				ident = foundText.Mid(colonPos + 1);
+				while (colonPos > 0  &&  foundText[colonPos - 1] == ':')
+					colonPos--;
+				parentIdent = foundText.Left(colonPos);
+
+				if (!parentIdent.IsEmpty())
+					function = parentIdent + ".";
+				function += ident;
+
+				// Try an exact match.
+				g_wwhizInterface->MatchTag(g_wwhizInterface->GetTagList(), "=" + function + "=");
+				if (g_wwhizInterface->GetTagMatchCount() != 0)
+				{
+					function = "=" + function + "=";
+					break;
+				}
+
+				function.Empty();
+				if (parentIdent.IsEmpty())
+					break;
+
+				// Try a wildcard match on the parent.
+				function = "/::" + parentIdent + "." + ident + "=";
+				g_wwhizInterface->MatchTag(g_wwhizInterface->GetTagList(), function);
+				if (g_wwhizInterface->GetTagMatchCount() != 0)
+					break;
+
+				// Wasn't found.  Perhaps it is a namespace.
+				function = parentIdent + ".." + ident;
+
+				// Go for an exact match.
+				g_wwhizInterface->MatchTag(g_wwhizInterface->GetTagList(), "=" + function + "=");
+				if (g_wwhizInterface->GetTagMatchCount() != 0)
+				{
+					function = "=" + function + "=";
+					break;
+				}
+
+				// Okay, let's search for a partial namespace match.
+				function = "/::" + function;
+				g_wwhizInterface->MatchTag(g_wwhizInterface->GetTagList(), function);
+//				if (g_wwhizInterface->GetTagMatchCount() != 0)
+//					break;
+			}
+
+			break;
+		}
+
+/*		// Is there a match?
 		if (g_wwhizInterface->GetTagMatchCount() == 0)
 		{
 			// Is there a parent identifier?
@@ -766,13 +832,57 @@ STDMETHODIMP WWhizCommands::WWTagFindAtCursor()
 				g_wwhizInterface->MatchTag(g_wwhizInterface->GetTagList(), foundText);
 			}
 		}
-
+*/
 		if (g_wwhizInterface->GetTagMatchCount() > 0)
 		{
-			if (g_wwhizInterface->GetTagMatchCount() > 1  && 
-				g_config.m_useFindTagAtCursorDialog)
+			bool bWentToTag = false;
+			if (g_wwhizInterface->GetTagMatchCount() == 1 ||
+				!g_config.m_useFindTagAtCursorDialog)
 			{
-				CFindTagDialog::m_lastFunction = foundText;
+				bWentToTag = true;
+				GotoTag(g_wwhizInterface->GetTagMatchHead());
+
+			} else {
+				// JE: Adding smart goto tag at cursor for structs/typedefs, function/declarations
+				// More than one, is there only one that is a struct?
+				const WWhizTag *tag = g_wwhizInterface->GetTagMatchHead();
+				const WWhizTag *good_tag=NULL;
+				int struct_count=0;
+				int function_count=0;
+				int decl_count=0;
+				int typedef_count=0;
+				int other_count=0;
+				do {
+					switch(tag->GetType()) {
+					case WWhizTag::STRUCTURE:
+						struct_count++;
+						good_tag = tag;
+						break;
+					case WWhizTag::FUNCTION:
+						function_count++;
+						good_tag = tag;
+						break;
+					case WWhizTag::DECLARATION:
+						decl_count++;
+						break;
+					case WWhizTag::TYPEDEF:
+						decl_count++;
+						break;
+					default:
+						other_count++;
+						good_tag = tag;
+					}
+				} while (tag = tag->GetMatchNext());
+				// Only one thing that is not a declaration nor typedef, go to it!
+				if (struct_count+function_count+other_count== 1) {
+					bWentToTag = true;
+					GotoTag(good_tag);
+				}
+			}
+
+			if (!bWentToTag)
+			{
+				CFindTagDialog::m_lastFunction = function;
 
 				// Simulate a modal dialog.
 				EnableMainWindow(FALSE);
@@ -785,10 +895,6 @@ STDMETHODIMP WWhizCommands::WWTagFindAtCursor()
 					dlg.DestroyWindow();
 				}
 				EnableMainWindow(TRUE);
-			}
-			else
-			{
-				GotoTag(g_wwhizInterface->GetTagMatchHead());
 			}
 		}
 	}

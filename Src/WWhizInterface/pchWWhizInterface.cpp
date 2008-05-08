@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #ifdef WWHIZ_VC6
 #include "atlimpl.cpp"
 #endif WWHIZ_VC6

@@ -1,5 +1,8 @@
 #include "ObjModelHelper.h"
-#include <afxdisp.h>
+
+#include "WWhizInterface3.h"
+
+extern WWhizInterface* g_wwhizInterface;
 
 #ifdef WWHIZ_VC6
 

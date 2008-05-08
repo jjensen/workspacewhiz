@@ -27,7 +27,7 @@ Visual Studio and shell operations to be performed on the file.
 The filename being incrementally searched for. The search is not case
 sensitive, and symbols, such as underscores, are ignored.
 
-Enter a / or * at any point in the filename to begin a substring search.
+Enter a / or * at any point in the filename to act as a wildcard.
 
 Enter a . at any point to begin an extension search.
 

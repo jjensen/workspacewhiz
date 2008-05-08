@@ -456,7 +456,8 @@ DoRecursion:
 	// Split the path into base path and pattern to match against.
 	bool hasWildcard = false;
 
-	for ( char* pattern = patternBuf; *pattern != '\0'; ++pattern )
+	char* pattern;
+	for ( pattern = patternBuf; *pattern != '\0'; ++pattern )
 	{
 		char ch = *pattern;
 

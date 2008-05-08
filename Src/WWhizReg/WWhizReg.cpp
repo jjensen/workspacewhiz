@@ -9,7 +9,8 @@
 // distribution is strictly prohibited unless prior consent has
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
-#include <afxdllx.h>    // standard MFC Extension DLL routines
+//#include <afxdllx.h>    // standard MFC Extension DLL routines
+#include "pchWWhizReg.h"
 #include "WWhizInterface3.h"
 #include <atlbase.h>
 #include <initguid.h>
@@ -23,13 +24,17 @@
 #include "RegHelperWnd.h"
 #include "RegThread.h"
 #include "ExpiredDlg.h"
-#include "DecodeUtils.h"
+#include "ValidateRegistrationCode.h"
+#include <assert.h>
+#include "Subclass.h"
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+#undef FindText
 
 HINSTANCE g_instance;
 
@@ -88,7 +93,6 @@ HWND g_devStudioWnd;
 HWND g_mdiWnd;
 
 CStringArray m_filenameEditStringArray;
-CStringArray m_prefixEditStringArray;
 
 CStringArray m_tagParentEditStringArray;
 CStringArray m_tagEditStringArray;
@@ -102,7 +106,7 @@ void BuildTokenList(CStringArray& stringArray, const CString& registryName)
 	{
 		tokenStr += stringArray[i] + "|";
 	}
-	
+
 	AfxGetApp()->WriteProfileString("Config", registryName, tokenStr);
 }
 
@@ -124,19 +128,19 @@ void ReadTokenList(CStringArray& stringArray, const CString& registryName)
 		nextPos = tokenStr.Find('|', curPos);
 		if (nextPos == -1)
 			break;
-		
+
 		CString token = tokenStr.Mid(curPos, nextPos - curPos);
 		curPos = nextPos + 1;
 		stringArray.Add(token);
 	}
-	
+
 	CString token = tokenStr.Mid(curPos);
 	if (!token.IsEmpty())
 		stringArray.Add(token);
 }
 
 
-extern "C" __declspec(dllexport) 
+extern "C" __declspec(dllexport)
 #ifdef WWHIZ_VC6
 WWhizReg* WWhizRegCreate(IApplication* pApplication, WWhizInterface* wwhizInterface)
 {
@@ -186,19 +190,18 @@ WWhizReg* WWhizRegCreate(void* pDTE, WWhizInterface* wwhizInterface)
 	// Find the MDI client window
 	HWND g_mdiWnd = ::FindWindowEx(g_devStudioWnd, NULL, "MDIClient", NULL);
 #endif WWHIZ_VSNET
-	
+
 	s_regHelperWnd.Create(NULL, "", 0, CRect(0, 0, 0, 0),
 			CWnd::FromHandle(g_devStudioWnd), 0, NULL);
 	s_regHelperWnd.SendMessage(WM_DOREG, 0x1235, (LPARAM)reg);
 	s_regHelperWnd.PostMessage(WM_DOREG, 0x1234, (LPARAM)reg);
 
-	ReadTokenList(m_filenameEditStringArray, "FilenameEditList");	
-	ReadTokenList(m_prefixEditStringArray, "PrefixEditList");	
-	ReadTokenList(m_tagParentEditStringArray, "TagParentEditList");	
-	ReadTokenList(m_tagEditStringArray, "TagEditList");	
+	ReadTokenList(m_filenameEditStringArray, "FilenameEditList");
+	ReadTokenList(m_tagParentEditStringArray, "TagParentEditList");
+	ReadTokenList(m_tagEditStringArray, "TagEditList");
 
 	//	BuildWWhizReg(reg);
-	
+
 	return reg;
 }
 
@@ -206,11 +209,10 @@ WWhizReg* WWhizRegCreate(void* pDTE, WWhizInterface* wwhizInterface)
 extern "C" __declspec(dllexport)
 void WWhizRegDestroy(WWhizReg* reg)
 {
-	BuildTokenList(m_filenameEditStringArray, "FilenameEditList");	
-	BuildTokenList(m_prefixEditStringArray, "PrefixEditList");	
-	BuildTokenList(m_tagParentEditStringArray, "TagParentEditList");	
-	BuildTokenList(m_tagEditStringArray, "TagEditList");	
-	
+	BuildTokenList(m_filenameEditStringArray, "FilenameEditList");
+	BuildTokenList(m_tagParentEditStringArray, "TagParentEditList");
+	BuildTokenList(m_tagEditStringArray, "TagEditList");
+
 	delete reg;
 
 #ifdef WWHIZ_VSNET
@@ -223,10 +225,12 @@ static int s_sub1Width;
 static int s_sub1_5Width;
 static int s_sub2Width;
 static int s_sub3Width;
+static int s_sub4Width;
+static int s_sub5Width;
+static int s_sub6Width;
 static UINT					s_ffID;
 static CFindFileListCtrl*	s_ffListCtrl;
 static CFindFileEdit*		s_ffEditCtrl;
-static CFindFileEdit*		s_ffPrefixEditCtrl;
 
 static UINT					s_ftID;
 static CFindTagListCtrl*	s_ftListCtrl;
@@ -240,12 +244,80 @@ static CFindTagEdit*		s_ftEditTagCtrl;
 #define IDC_FT_PARENT                   1051
 #define IDC_FT_NAME                     1052
 
+class CSubclassTitleWnd : public CSubclassWnd
+{
+	// Construction
+public:
+	CSubclassTitleWnd();
+
+	// Attributes
+public:
+
+	// Operations
+public:
+
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CRegHelperWnd)
+	//}}AFX_VIRTUAL
+
+	// Implementation
+public:
+	virtual ~CSubclassTitleWnd();
+
+	virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CSubclassTitleWnd
+
+CSubclassTitleWnd::CSubclassTitleWnd()
+{
+}
+
+CSubclassTitleWnd::~CSubclassTitleWnd()
+{
+}
+
+
+LRESULT CSubclassTitleWnd::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
+{
+	CString text;
+	if (msg == WM_SETTEXT)
+	{
+		text = (const char*)lp;
+
+		CString regName = AfxGetApp()->GetProfileString("Config", "RegName");
+		CString regCode = AfxGetApp()->GetProfileString("Config", "RegCode");
+
+		time_t registrationTime;
+		bool decoded = ValidateRegistrationCode(regCode, regName, registrationTime);
+		if (!decoded)
+			text += " - (Non-commercial usage license)";
+		else
+		{
+			text += " - " + regName;
+		}
+		lp = (LPARAM)(const char*)text;
+	}
+
+	return CSubclassWnd::WindowProc(msg, wp, lp);
+}
+
+
+static CSubclassTitleWnd s_WFOTitleWnd;
+static CSubclassTitleWnd s_TagTitleWnd;
+
+
 bool CreateWFOControls(
 		CDialog* dlgParent, UINT dlgID,
-		CComboBoxEx*& editCtrl, CComboBoxEx*& prefixEditCtrl, CListCtrl*& listCtrl,
+		CComboBoxEx*& editCtrl, CListCtrl*& listCtrl,
 		WWhizFileList** fileList, WArray<int>* foundFiles )
 {
 	s_ffID = dlgID;
+
+	s_WFOTitleWnd.HookWindow(dlgParent);
 
 	// Make the list control.
 	s_ffListCtrl = WNEW CFindFileListCtrl;
@@ -270,7 +342,7 @@ bool CreateWFOControls(
 		s_sub1Width = (int)(s_sub1Width * 0.33);
 	if (s_sub2Width <= 0)
 		s_sub2Width = (int)(s_sub2Width * 0.67);
-	
+
 	// Set the column names of the list control.
 	s_ffListCtrl->InsertColumn(0, "Filename",	LVCFMT_LEFT, s_sub1Width);
 	s_ffListCtrl->InsertColumn(1, "Path",		LVCFMT_LEFT, s_sub2Width);
@@ -283,17 +355,8 @@ bool CreateWFOControls(
 	for (int i = 0; i < m_filenameEditStringArray.GetSize(); ++i)
 		s_ffEditCtrl->CComboBox::AddString(m_filenameEditStringArray[i]);
 
-	// Make the edit field.
-	s_ffPrefixEditCtrl = WNEW CFindFileEdit;
-	s_ffPrefixEditCtrl->SubclassDlgItem( IDC_FF_PREFIX, dlgParent );
-	s_ffPrefixEditCtrl->m_buddyList = s_ffListCtrl;
-
-	for (i = 0; i < m_prefixEditStringArray.GetSize(); ++i)
-		s_ffPrefixEditCtrl->CComboBox::AddString(m_prefixEditStringArray[i]);
-
 	listCtrl = s_ffListCtrl;
 	editCtrl = s_ffEditCtrl;
-	prefixEditCtrl = s_ffPrefixEditCtrl;
 
 	if (HasExpired())
 		return true;
@@ -319,17 +382,7 @@ bool DestroyWFOControls()
 		s_ffEditCtrl->GetLBText(i, str);
 		m_filenameEditStringArray.Add(str);
 	}
-	
-	m_prefixEditStringArray.RemoveAll();
-	itemCount = s_ffPrefixEditCtrl->GetCount();
-	for (i = 0; i < itemCount; ++i)
-	{
-		CString str;
-		s_ffPrefixEditCtrl->GetLBText(i, str);
-		m_prefixEditStringArray.Add(str);
-	}
-	
-	delete s_ffPrefixEditCtrl;
+
 	delete s_ffEditCtrl;
 	delete s_ffListCtrl;
 
@@ -355,23 +408,6 @@ void WFOAddEditString(const CString& string)
 }
 
 
-void WFOAddPrefixEditString(const CString& string)
-{
-	if (string.IsEmpty())
-		return;
-
-	CString lbText;
-	if (s_ffPrefixEditCtrl->GetCount() > 0)
-		s_ffPrefixEditCtrl->GetLBText(0, lbText);
-	if (lbText != string)
-	{
-		s_ffPrefixEditCtrl->CComboBox::InsertString(0, string);
-	}
-
-	while (s_ffPrefixEditCtrl->GetCount() > 256)
-		s_ffPrefixEditCtrl->DeleteItem(256);
-}
-
 const int TYPE_WIDTH = 50;
 
 bool CreateTagControls(
@@ -380,6 +416,8 @@ bool CreateTagControls(
 		TagArray* tagArray )
 {
 	s_ftID = dlgID;
+
+	s_TagTitleWnd.HookWindow(dlgParent);
 
 	// Make the list control.
 	s_ftListCtrl = WNEW CFindTagListCtrl;
@@ -400,6 +438,9 @@ bool CreateTagControls(
 	s_sub1_5Width	= AfxGetApp()->GetProfileInt(windowProfile, "Sub1_5", (int)((listWidth - s_sub1Width) * 0.25));
 	s_sub2Width		= AfxGetApp()->GetProfileInt(windowProfile, "Sub2", (int)((listWidth - s_sub1Width) * 0.25));
 	s_sub3Width		= AfxGetApp()->GetProfileInt(windowProfile, "Sub3", (int)((listWidth - s_sub1Width) * 0.50));
+	s_sub4Width		= AfxGetApp()->GetProfileInt(windowProfile, "Sub4", 100);
+	s_sub5Width		= AfxGetApp()->GetProfileInt(windowProfile, "Sub5", 400);
+//	s_sub6Width		= AfxGetApp()->GetProfileInt(windowProfile, "Sub6", 400);
 	if (s_sub1Width <= 0)
 		s_sub1Width = TYPE_WIDTH;
 	if (s_sub1_5Width <= 0)
@@ -408,19 +449,29 @@ bool CreateTagControls(
 		s_sub2Width = (int)((listWidth - s_sub1Width) * 0.25);
 	if (s_sub3Width <= 0)
 		s_sub3Width = (int)((listWidth - s_sub1Width) * 0.50);
-	
+	if (s_sub4Width <= 0)
+		s_sub4Width = 100;
+	if (s_sub5Width <= 0)
+		s_sub5Width = 400;
+//	if (s_sub6Width <= 0)
+//		s_sub6Width = 400;
+
 	// Set the column names of the list control.
 	s_ftListCtrl->InsertColumn(0, "Type",		LVCFMT_LEFT, s_sub1Width);
 	s_ftListCtrl->InsertColumn(1, "Namespace",	LVCFMT_LEFT, s_sub1_5Width);
 	s_ftListCtrl->InsertColumn(2, "Parent",		LVCFMT_LEFT, s_sub2Width);
 	s_ftListCtrl->InsertColumn(3, "Tag",		LVCFMT_LEFT, s_sub3Width);
+	s_ftListCtrl->InsertColumn(4, "Filename",	LVCFMT_LEFT, s_sub4Width);
+//	s_ftListCtrl->InsertColumn(5, "Path",		LVCFMT_LEFT, s_sub5Width);
+	s_ftListCtrl->InsertColumn(5, "Line",		LVCFMT_LEFT, s_sub5Width);
 
 	// Make the parent edit field.
 	s_ftEditParentCtrl = WNEW CFindTagEdit;
 	s_ftEditParentCtrl->SubclassDlgItem( IDC_FT_PARENT, dlgParent );
 	s_ftEditParentCtrl->m_buddyList = s_ftListCtrl;
 
-	for (int i = 0; i < m_tagParentEditStringArray.GetSize(); ++i)
+	int i;
+	for (i = 0; i < m_tagParentEditStringArray.GetSize(); ++i)
 		s_ftEditParentCtrl->CComboBox::AddString(m_tagParentEditStringArray[i]);
 
 	// Make the tag edit field.
@@ -448,12 +499,18 @@ bool DestroyTagControls()
 	int sub1_5Width = s_ftListCtrl->GetColumnWidth(1);
 	int sub2Width = s_ftListCtrl->GetColumnWidth(2);
 	int sub3Width = s_ftListCtrl->GetColumnWidth(3);
+	int sub4Width = s_ftListCtrl->GetColumnWidth(4);
+	int sub5Width = s_ftListCtrl->GetColumnWidth(5);
+//	int sub6Width = s_ftListCtrl->GetColumnWidth(6);
 
 	CString windowProfile = "WindowPositions\\" + MakeWindowID(s_ftID);
 	AfxGetApp()->WriteProfileInt(windowProfile, "Sub1", sub1Width);
 	AfxGetApp()->WriteProfileInt(windowProfile, "Sub1_5", sub1_5Width);
 	AfxGetApp()->WriteProfileInt(windowProfile, "Sub2", sub2Width);
 	AfxGetApp()->WriteProfileInt(windowProfile, "Sub3", sub3Width);
+	AfxGetApp()->WriteProfileInt(windowProfile, "Sub4", sub4Width);
+	AfxGetApp()->WriteProfileInt(windowProfile, "Sub5", sub5Width);
+//	AfxGetApp()->WriteProfileInt(windowProfile, "Sub6", sub6Width);
 
 	m_tagParentEditStringArray.RemoveAll();
 	if (s_ftEditParentCtrl->GetSafeHwnd())
@@ -483,7 +540,7 @@ bool DestroyTagControls()
 	return true;
 }
 
-		
+
 void TagAddEditTagString(const CString& string)
 {
 	if (string.IsEmpty())
@@ -543,10 +600,10 @@ bool GotoTag(const WWhizTag* tag)
 		s_lastMatchedTag = NULL;
 		return false;
 	}
-	
+
 	if (!ObjModelHelper::VStudioExists())
 		return false;
-	
+
 	ObjModelHelper objModel;
 	if (!objModel.OpenDocument(tag->GetFilename(), "Auto"))
 	{
@@ -589,7 +646,7 @@ bool GotoTag(const WWhizTag* tag)
 #endif WWHIZ_VSNET
 		if (!objModel.FindText(searchString, flagsArray))
 		{
-			AfxMessageBox(CString("Unable to find ") + tag->GetIdent() + CString(".  Please save all files and refresh tags.\n"));
+			AfxMessageBox(CString("Unable to find ") + tag->GetIdent() + CString(".  Please save all files and refresh the tags.\n"));
 			return false;
 		}
 	}
@@ -630,12 +687,12 @@ CTime GetFirstTime()
 }
 
 
-void RegistrationDialog()
+void RegistrationDialog(bool force)
 {
 	CTime firstTime = GetFirstTime();
 	CTime curTime = CTime::GetCurrentTime();
 	CTimeSpan timeDiff = curTime - firstTime;
-	if (timeDiff.GetDays() > 14)
+	if (timeDiff.GetDays() > 14  ||  force)
 	{
 		CExpiredDlg dlg;
 		dlg.m_numDays = timeDiff.GetDays() + 1;
@@ -658,18 +715,17 @@ void BuildWWhizReg(WWhizReg* reg)
 	}
 
 	// Read the key stuff from the registry.
+//	validRegistration = ValidRegistration();
+//	if (!HasExpiredHelper()  &&  !validRegistration  &&  timeDiff.GetDays() > 14)
 	CString regName = AfxGetApp()->GetProfileString("Config", "RegName");
 	CString regCode = AfxGetApp()->GetProfileString("Config", "RegCode");
-	CString checkCode = AfxGetApp()->GetProfileString("Config", "CheckCode");
 
-	int license;
-	time_t regTime;
-	int validRegistration = ValidateRegistrationCode(regName, regCode, checkCode, license, regTime);
-	if (!HasExpiredHelper()  &&  validRegistration != 3  &&
-		validRegistration != 4  &&  timeDiff.GetDays() > 14)
+	time_t registrationTime;
+	bool decoded = ValidateRegistrationCode(regCode, regName, registrationTime);
+	if (!HasExpiredHelper()  &&  !decoded  &&  timeDiff.GetDays() > 14)
 	{
 		CExpiredDlg dlg;
 		dlg.m_numDays = timeDiff.GetDays() + 1;
-//		dlg.DoModal();
+		dlg.DoModal();
 	}
 }

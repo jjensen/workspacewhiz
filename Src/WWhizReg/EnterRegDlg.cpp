@@ -9,9 +9,10 @@
 // distribution is strictly prohibited unless prior consent has
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizReg.h"
 #include "WWhizReg.h"
 #include "EnterRegDlg.h"
-#include "DecodeUtils.h"
+#include "ValidateRegistrationCode.h"
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW
@@ -39,7 +40,6 @@ void CEnterRegDlg::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CEnterRegDlg)
 	DDX_Control(pDX, IDC_WWRR_USERNAME, m_fullName);
 	DDX_Control(pDX, IDC_WWRR_REGCODE, m_regCode);
-	DDX_Control(pDX, IDC_WWRR_CHECKCODE, m_checkCode);
 	//}}AFX_DATA_MAP
 }
 
@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CEnterRegDlg message handlers
 
-void CEnterRegDlg::OnOK() 
+void CEnterRegDlg::OnOK()
 {
 	CString regName;
 	m_fullName.GetWindowText(regName);
@@ -64,31 +64,24 @@ void CEnterRegDlg::OnOK()
 	regCode.TrimLeft();
 	regCode.TrimRight();
 
-	CString checkCode;
-	m_checkCode.GetWindowText(checkCode);
-	checkCode.TrimLeft();
-	checkCode.TrimRight();
-
-	int license;
-	time_t timeReg;
-	int validRegistration = ValidateRegistrationCode(regName, regCode, checkCode, license, timeReg);
-	if (validRegistration != 3  &&  validRegistration != 4)
+	time_t registrationTime;
+	bool decoded = ValidateRegistrationCode(regCode, regName, registrationTime);
+	if (!decoded)
 	{
 		AfxMessageBox("Registration code incorrect.\n");
 		return;
 	}
 
-	CTime time = timeReg;
+	CTime time(registrationTime);
 	CString timeStr = time.Format("%A, %B %d, %Y");
 
 	CString str;
-	str.Format("Workspace Whiz is registered to:\n\n%s (%d)\n\non:\n\n%s", (LPCTSTR)regName, license, timeStr);
+	str.Format("Workspace Whiz is registered to:\n\n%s\n\non:\n\n%s", (LPCTSTR)regName, timeStr);
 	AfxMessageBox(str);
 
 	AfxGetApp()->WriteProfileString("Config", "RegName", regName);
 	AfxGetApp()->WriteProfileString("Config", "RegCode", regCode);
-	AfxGetApp()->WriteProfileString("Config", "CheckCode", checkCode);
-	
+
 	m_gotCode = true;
 
 	CDialog::OnOK();

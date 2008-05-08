@@ -1,65 +1,73 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WorkspaceWhiz", "WorkspaceWhiz\WorkspaceWhiz.vcproj", "{4C0121D7-16F7-41E1-AEF1-C044693AFF30}"
-	ProjectSection(ProjectDependencies) = postProject
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WWhizInterface", "WWhizInterface\WWhizInterface.vcproj", "{A27857C3-DBEF-46BE-858A-04AB2647DFAB}"
-	ProjectSection(ProjectDependencies) = postProject
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WWhizReg", "WWhizReg\WWhizReg.vcproj", "{481E84E4-DD61-4717-9CFF-5C2B0080908C}"
-	ProjectSection(ProjectDependencies) = postProject
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WWhizTemplateManager", "WWhizTemplateManager\WWhizTemplateManager.vcproj", "{174C90C8-4985-4293-BA15-FA183C4E0B4C}"
-	ProjectSection(ProjectDependencies) = postProject
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WWhizTemplates", "WWhizTemplates\WWhizTemplates.vcproj", "{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}"
-	ProjectSection(ProjectDependencies) = postProject
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WWhizPickDirTemplate", "WWhizPickDirTemplate\WWhizPickDirTemplate.vcproj", "{78961033-0351-4DEF-9143-84EE105CB172}"
-	ProjectSection(ProjectDependencies) = postProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WWhizResources", "WWhizResources\WWhizResources.vcproj", "{85DC8592-0424-4F24-9D73-B2C6D6BD4AD9}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Debug.ActiveCfg = Debug|Win32
-		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Debug.Build.0 = Debug|Win32
-		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Release.ActiveCfg = Release|Win32
-		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Release.Build.0 = Release|Win32
-		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Debug.ActiveCfg = Debug|Win32
-		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Debug.Build.0 = Debug|Win32
-		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Release.ActiveCfg = Release|Win32
-		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Release.Build.0 = Release|Win32
-		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Debug.ActiveCfg = Debug|Win32
-		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Debug.Build.0 = Debug|Win32
-		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Release.ActiveCfg = Release|Win32
-		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Release.Build.0 = Release|Win32
-		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Debug.ActiveCfg = Debug|Win32
-		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Debug.Build.0 = Debug|Win32
-		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Release.ActiveCfg = Release|Win32
-		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Release.Build.0 = Release|Win32
-		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Debug.ActiveCfg = Debug|Win32
-		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Debug.Build.0 = Debug|Win32
-		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Release.ActiveCfg = Release|Win32
-		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Release.Build.0 = Release|Win32
-		{78961033-0351-4DEF-9143-84EE105CB172}.Debug.ActiveCfg = Debug|Win32
-		{78961033-0351-4DEF-9143-84EE105CB172}.Debug.Build.0 = Debug|Win32
-		{78961033-0351-4DEF-9143-84EE105CB172}.Release.ActiveCfg = Release|Win32
-		{78961033-0351-4DEF-9143-84EE105CB172}.Release.Build.0 = Release|Win32
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Debug|Win32.Build.0 = Debug|Win32
+		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Release|Win32.ActiveCfg = Release|Win32
+		{4C0121D7-16F7-41E1-AEF1-C044693AFF30}.Release|Win32.Build.0 = Release|Win32
+		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Debug|Win32.Build.0 = Debug|Win32
+		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Release|Win32.ActiveCfg = Release|Win32
+		{A27857C3-DBEF-46BE-858A-04AB2647DFAB}.Release|Win32.Build.0 = Release|Win32
+		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Debug|Win32.Build.0 = Debug|Win32
+		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Release|Win32.ActiveCfg = Release|Win32
+		{481E84E4-DD61-4717-9CFF-5C2B0080908C}.Release|Win32.Build.0 = Release|Win32
+		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Debug|Win32.Build.0 = Debug|Win32
+		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Release|Win32.ActiveCfg = Release|Win32
+		{174C90C8-4985-4293-BA15-FA183C4E0B4C}.Release|Win32.Build.0 = Release|Win32
+		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Debug|Win32.Build.0 = Debug|Win32
+		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Release|Win32.ActiveCfg = Release|Win32
+		{FE71A19A-5A42-4ED6-A4E1-40DE7265D707}.Release|Win32.Build.0 = Release|Win32
+		{85DC8592-0424-4F24-9D73-B2C6D6BD4AD9}.Debug|Win32.ActiveCfg = Release|Win32
+		{85DC8592-0424-4F24-9D73-B2C6D6BD4AD9}.Debug|Win32.Build.0 = Release|Win32
+		{85DC8592-0424-4F24-9D73-B2C6D6BD4AD9}.Release|Win32.ActiveCfg = Release|Win32
+		{85DC8592-0424-4F24-9D73-B2C6D6BD4AD9}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		DFlat.DirectoryChange.WaitTime = 100
-		DFlat.DirectoryChange.BufferSize = 8192
-		DFlat.ColumnWidths = 100|100|
-		DFlat.DirPaths = 
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

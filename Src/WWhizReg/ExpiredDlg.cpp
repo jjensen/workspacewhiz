@@ -9,10 +9,11 @@
 // distribution is strictly prohibited unless prior consent has
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizReg.h"
 #include "WWhizReg.h"
 #include "ExpiredDlg.h"
 #include "EnterRegDlg.h"
-#include "DecodeUtils.h"
+#include "ValidateRegistrationCode.h"
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW
@@ -54,10 +55,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CExpiredDlg message handlers
 
-BOOL CExpiredDlg::OnInitDialog() 
+BOOL CExpiredDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	m_timeLeftBar.SetRange(0, 21);
 
 	FillInControls();
@@ -71,18 +72,16 @@ void CExpiredDlg::FillInControls()
 	// Read the key stuff from the registry.
 	CString regName = AfxGetApp()->GetProfileString("Config", "RegName");
 	CString regCode = AfxGetApp()->GetProfileString("Config", "RegCode");
-	CString checkCode = AfxGetApp()->GetProfileString("Config", "CheckCode");
 
-	int license;
-	time_t regTime;
-	int validRegistration = ValidateRegistrationCode(regName, regCode, checkCode, license, regTime);
-	if (validRegistration == 3  ||  validRegistration == 4)
+	time_t registrationTime;
+	bool decoded = ValidateRegistrationCode(regCode, regName, registrationTime);
+	if (decoded)
 	{
-		CTime time = regTime;
+		CTime time(registrationTime);
 		CString timeStr = time.Format("%A, %B %d, %Y");
 
 		CString str;
-		str.Format("Workspace Whiz is registered to:\n    %s (%d)\non:\n    %s", (LPCTSTR)regName, license, timeStr);
+		str.Format("Workspace Whiz is registered to:\n    %s\non:\n    %s", (LPCTSTR)regName, timeStr);
 		GetDlgItem(IDC_WWRE_TEXT)->SetWindowText(str);
 
 		SetWindowText("Workspace Whiz Registered Version");
@@ -103,15 +102,15 @@ void CExpiredDlg::FillInControls()
 		AfxSetResourceHandle(oldResourceHandle);
 		m_timeLeftBar.SetPos(m_numDays);
 	}
-	
+
 }
 
-void CExpiredDlg::OnWwreEvaluate() 
+void CExpiredDlg::OnWwreEvaluate()
 {
 	OnOK();
 }
 
-void CExpiredDlg::OnWwreEntercode() 
+void CExpiredDlg::OnWwreEntercode()
 {
 	if (HasExpired())
 		return;
@@ -122,15 +121,15 @@ void CExpiredDlg::OnWwreEntercode()
 		OnOK();
 }
 
-void CExpiredDlg::OnWwreRegister() 
+void CExpiredDlg::OnWwreRegister()
 {
-	if (AfxMessageBox("If you wish to order Workspace Whiz 3.00 at this time, "
-			"press OK to connect to Register Now!\nPress Cancel to "
-			"continue using the unregistered Workspace Whiz 3.00.\n", MB_OKCANCEL) == IDCANCEL)
+	if (AfxMessageBox("If you wish to order Workspace Whiz 4.00 at this time, "
+			"press OK to connect to Plimus now.\nPress Cancel to "
+			"continue using the unregistered Workspace Whiz 4.00.\n", MB_OKCANCEL) == IDCANCEL)
 	{
 		return;
 	}
 
-	ShellExecute(NULL, "open", "https://www.regnow.com/softsell/nph-softsell.cgi?item=3775-1",
+	ShellExecute(NULL, "open", "https://www.plimus.com/jsp/buynow.jsp?contractId=1685607",
 			NULL, NULL, SW_SHOW);
 }

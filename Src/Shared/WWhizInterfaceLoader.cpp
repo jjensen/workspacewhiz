@@ -24,7 +24,7 @@
 const char* REG_ENTRY = "WWhizInterface\\VC6";
 #endif WWHIZ_VC6
 #ifdef WWHIZ_VSNET
-const char* REG_ENTRY = "WWhizInterface\\NET";
+const char* REG_ENTRY = "WWhizInterface\\2005";
 #endif WWHIZ_VSNET
 
 class WWhizInterface;

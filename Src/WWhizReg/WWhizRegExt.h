@@ -10,10 +10,10 @@
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
 
-void RegistrationDialog();
+void RegistrationDialog(bool force);
 
 bool CreateWFOControls(CDialog* dlgParent, UINT dlgID,
-		CComboBoxEx*& editCtrl, CComboBoxEx*& prefixEditCtrl, CListCtrl*& listCtrl,
+		CComboBoxEx*& editCtrl, CListCtrl*& listCtrl,
 		WWhizFileList** fileList, WArray<int>* foundFiles );
 
 bool DestroyWFOControls();

@@ -1,11 +1,11 @@
 ; The name of the installer
-Name "WWhizInterfaceNET 3.0 Beta Build 1026"
+Name "WWhizInterfaceNET 4.0 Beta Build 1105"
 
 ; The file to write
-OutFile "WWhizInterface30NET_1026.exe"
+OutFile "WWhizInterface40NET_1105.exe"
 
 ; The default installation directory
-InstallDir $PROGRAMFILES\WWhizInterface\NET
+InstallDir $PROGRAMFILES\WWhizInterface\2005
 
 ShowInstDetails nevershow
 
@@ -19,7 +19,7 @@ Section "Ignored"
   File "..\BinVSNET\WWhizInterface2.mod"
   File "..\BinVSNET\CTAGS.exe"
 
-  WriteRegStr HKLM SOFTWARE\WWhizInterface\NET "Path" $INSTDIR
+  WriteRegStr HKLM SOFTWARE\WWhizInterface\2005 "Path" $INSTDIR
 SectionEnd ; end the section
 
 ; eof

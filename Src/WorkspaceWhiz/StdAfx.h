@@ -12,15 +12,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#define USE_SQLITE 1
+
 #ifndef STRICT
 #define STRICT
 #endif
 
 // Modify the following defines if you have to target a platform prior to the ones specified below.
 // Refer to MSDN for the latest info on corresponding values for different platforms.
-#ifndef WINVER				// Allow use of features specific to Windows 95 and Windows NT 4 or later.
-#define WINVER 0x0400		// Change this to the appropriate value to target Windows 98 and Windows 2000 or later.
-#endif
+//#ifndef WINVER				// Allow use of features specific to Windows 95 and Windows NT 4 or later.
+//#define WINVER 0x0400		// Change this to the appropriate value to target Windows 98 and Windows 2000 or later.
+//#endif
 
 #ifndef _WIN32_WINNT		// Allow use of features specific to Windows NT 4 or later.
 #define _WIN32_WINNT 0x0400	// Change this to the appropriate value to target Windows 2000 or later.
@@ -38,6 +40,7 @@
 // turns off ATL's hiding of some common and often safely ignored warning messages
 #define _ATL_ALL_WARNINGS
 
+#include <afx.h>
 #include <afxdisp.h>
 #include <afxcmn.h>
 #include <afxdlgs.h>
@@ -118,19 +121,6 @@ void GetLastErrorDescription(CComBSTR& bstr);		// Defined in WorkspaceWhiz.cpp
 #ifdef WWHIZ_VSNET
 
 #include <atlcom.h>
-
-#pragma warning( disable : 4278 )
-#pragma warning( disable : 4146 )
-	//The following #import imports the IDTExtensibility2 interface based on it's LIBID
-	#import "libid:AC0714F2-3D04-11D1-AE7D-00A0C90F26F4" version("1.0") lcid("0")  raw_interfaces_only named_guids
-
-	//The following #import imports MSO based on it's LIBID
-	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
-
-	//The following #import imports DTE based on it's LIBID
-	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-#pragma warning( default : 4146 )
-#pragma warning( default : 4278 )
 
 //#define IfFailGo(x) { hr=(x); if (FAILED(hr)) goto Error; }
 //#define IfFailGoCheck(x, p) { hr=(x); if (FAILED(hr)) goto Error; if(!p) {hr = E_FAIL; goto Error; } }

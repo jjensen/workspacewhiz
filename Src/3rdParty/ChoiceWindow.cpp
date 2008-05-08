@@ -188,7 +188,8 @@ void CChoiceWindow::UpdateSizeAndPosition()
 	ASSERT(iNumberOfItemsInList>0);
 
 	m_wndList.DeleteAllItems();
-	for (int i = 0 ; i<iNumberOfItemsInList ; i++)
+	int i;
+	for (i = 0 ; i<iNumberOfItemsInList ; i++)
 	{
 		CChoiceWindowBtn::CChoice* pChoice = m_pParentBtn->m_choiceArray[i];
 		

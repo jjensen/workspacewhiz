@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Project File - Name="WWhizReg" - Package Owner=<4>
-# Microsoft Developer Studio Generated Build File, Format Version 60000
+# Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
@@ -43,7 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizReg.h" /FD /c
-# ADD CPP /nologo /G5 /MD /W3 /GX /O2 /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizReg.h" /D "NDEBUG" /D "_AFXEXT" /D "WWHIZINTERFACEBUILDDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"pchWWhizReg.h" /FD /c
+# ADD CPP /nologo /G5 /MD /W3 /GX /O2 /I "..\Shared" /I "..\3rdParty" /D "NDEBUG" /D "_AFXEXT" /D "WWHIZINTERFACEBUILDDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /FD /c
+# SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
@@ -70,8 +71,8 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"pchWWhizReg.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /GX /Zi /Od /I "..\Shared" /I "..\3rdParty" /FI"pchWWhizReg.h" /D "_DEBUG" /D "_MBCS" /D "_AFXEXT" /D "WWHIZINTERFACEBUILDDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /Yu"pchWWhizReg.h" /FD /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MDd /W3 /GX /Zi /Od /I "..\Shared" /I "..\3rdParty" /D "_DEBUG" /D "_MBCS" /D "_AFXEXT" /D "WWHIZINTERFACEBUILDDLL" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "WWHIZ_VC6" /FD /c
+# SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
@@ -94,7 +95,7 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\DecodeUtils.cpp
+SOURCE=.\Base32.cpp
 # End Source File
 # Begin Source File
 
@@ -126,6 +127,11 @@ SOURCE=.\FindTagListCtrl.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\md5c.c
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
 SOURCE=.\pchWWhizReg.cpp
 # ADD CPP /Yc"pchWWhizReg.h"
 # End Source File
@@ -136,6 +142,14 @@ SOURCE=.\RegHelperWnd.cpp
 # Begin Source File
 
 SOURCE=.\RegThread.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Subclass.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ValidateRegistrationCode.cpp
 # End Source File
 # Begin Source File
 
@@ -152,7 +166,7 @@ SOURCE=.\WWhizReg.rc
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\DecodeUtils.h
+SOURCE=.\Base32.h
 # End Source File
 # Begin Source File
 
@@ -180,6 +194,14 @@ SOURCE=.\FindTagListCtrl.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\md5.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\md5global.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\pchWWhizReg.h
 # End Source File
 # Begin Source File
@@ -189,6 +211,14 @@ SOURCE=.\RegHelperWnd.h
 # Begin Source File
 
 SOURCE=.\RegThread.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Subclass.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ValidateRegistrationCode.h
 # End Source File
 # Begin Source File
 

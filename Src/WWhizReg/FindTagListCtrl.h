@@ -24,6 +24,12 @@ protected:
 	
 // Implementation
 protected:
+	LPTSTR AddPool(CString* pstr);
+
+	CString m_strCPool[3];
+    LPTSTR  m_pstrPool[3];
+    int     m_nNextFree;
+
 	// Generated message map functions
 	//{{AFX_MSG(CFindTagListCtrl)
 	afx_msg void OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult);	

@@ -13,6 +13,8 @@
 #define FINDFILELISTCTRL_H
 
 #include <afxcmn.h>
+#include "WCollection.h"
+#include "WWhizInterface3.h"
 
 class CFindFileDialog;
 

@@ -12,6 +12,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "WWhizTemplateManager.h"
+
 /**
 	Loads the Workspace Whiz template interface library.
 */

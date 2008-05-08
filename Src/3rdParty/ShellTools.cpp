@@ -5,7 +5,10 @@
 /* due credit is given.                                                    */
 /***************************************************************************/
 
+#include <afxwin.h>
 #include "ShellTools.h"
+#include <shellapi.h>
+#include "WCollection.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -124,7 +127,7 @@ LPITEMIDLIST GetFullyQualPidl(LPSHELLFOLDER lpsf, LPITEMIDLIST lpi)
     STRRET2Str(&str, lpi);
 
     MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, str.cStr, -1,
-        (USHORT *)szOleChar, sizeof(szOleChar));
+        (LPWSTR)szOleChar, sizeof(szOleChar));
     
     hr = CInitializer::m_sfDesktop->ParseDisplayName(NULL,
         NULL, szOleChar, &ulEaten, &lpifq, &ulAttribs);

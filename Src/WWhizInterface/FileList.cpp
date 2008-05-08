@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #include "FileList.h"
 #include "WorkspaceInfo.h"
 #include <algorithm>
@@ -130,7 +131,7 @@ bool File::Create(File& file, const CString& filenameConst)
 	filename = filename.Mid(pathEndPosition + 1);
 
 	// Find the extension.
-	int extPosition = filename.ReverseFind('.');
+	int extPosition = filename.Find('.');
 	if (extPosition != -1)
 	{
 		file.m_ext = filename.Mid(extPosition + 1);
@@ -326,7 +327,8 @@ int FileList::FindExact(WWhizFile& file) const
 int FileList::FindNext(int startPos, WWhizFile& file) const
 {
 	// Scan the file list.
-	for (int i = startPos + 1; i < GetCount(); i++)
+	int i;
+	for (i = startPos + 1; i < GetCount(); i++)
 	{
 		WWhizFile* fileCmp = Get(i);
 
@@ -354,7 +356,8 @@ int FileList::FindNext(int startPos, WWhizFile& file) const
 int FileList::FindPrevious(int startPos, WWhizFile& file) const
 {
 	// Scan the file list.
-	for (int i = startPos - 1; i >= 0; i--)
+	int i;
+	for (i = startPos - 1; i >= 0; i--)
 	{
 		WWhizFile* fileCmp = Get(i);
 

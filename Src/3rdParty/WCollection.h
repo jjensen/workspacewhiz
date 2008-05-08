@@ -1,5 +1,7 @@
 #pragma once
 
+#include <afx.h>
+
 #define WNEW DEBUG_NEW
 
 #ifndef _ATLTRY
@@ -396,7 +398,6 @@ public:
 	void AssertValid() const;
 #endif  // _DEBUG
 
-private:
 	bool GrowBuffer( size_t nNewSize );
 
 // Implementation

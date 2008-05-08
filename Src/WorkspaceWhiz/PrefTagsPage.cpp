@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
 #include "resource.h"
 #include "PrefTagsPage.h"
 
@@ -99,7 +100,8 @@ void CPrefTagsPage::FillInControls()
 	m_extList.ResetContent();
 
 	int numExts = config.TagsExtGetCount();
-	for (int i = 0; i < numExts; i++)
+	int i;
+	for (i = 0; i < numExts; i++)
 	{
 		m_extList.AddString(config.TagsExtGet(i));
 	}
@@ -130,7 +132,8 @@ BOOL CPrefTagsPage::OnApply()
 
 	// Add them to the config.
 	int count = m_extList.GetCount();
-	for (int i = 0; i < count; i++)
+	int i;
+	for (i = 0; i < count; i++)
 	{
 		CString item;
 		m_extList.GetText(i, item);

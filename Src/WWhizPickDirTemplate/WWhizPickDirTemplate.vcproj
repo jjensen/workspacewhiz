@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="WWhizPickDirTemplate"
 	ProjectGUID="{78961033-0351-4DEF-9143-84EE105CB172}"
-	Keyword="MFCProj">
+	Keyword="MFCProj"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
@@ -16,11 +20,31 @@
 			IntermediateDirectory=".\..\..\Output\WWhizNet\WWhizPickDirTemplate\Release"
 			ConfigurationType="2"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="TRUE"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				TypeLibraryName=".\..\..\Output\WWhizPickDirTemplate\Release60/WWhizPickDirTemplate.tlb"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				OptimizeForProcessor="1"
 				AdditionalIncludeDirectories="..\Shared,..\3rdParty"
 				PreprocessorDefinitions="NDEBUG;_USRDLL;WIN32;_WINDOWS;WWHIZ_VSNET;WWHIZ_VSNET2002"
 				StringPooling="TRUE"
@@ -32,9 +56,20 @@
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="3"
 				CompileAs="0"
-				ForcedIncludeFiles="pchWWhizPickDirTemplate.h"/>
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles="pchWWhizPickDirTemplate.h"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_AFXDLL;NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
@@ -43,34 +78,29 @@
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
-				BaseAddress="0x60300000"/>
+				BaseAddress="0x60300000"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\..\..\Output\WWhizPickDirTemplate\Release60/WWhizPickDirTemplate.tlb"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_AFXDLL;NDEBUG"
-				Culture="1033"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
@@ -78,7 +108,28 @@
 			IntermediateDirectory=".\..\..\Output\WWhizNet\WWhizPickDirTemplate\Debug"
 			ConfigurationType="2"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="TRUE"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				TypeLibraryName=".\..\..\Output\WWhizPickDirTemplate\Debug/WWhizPickDirTemplate.tlb"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -91,9 +142,20 @@
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
 				CompileAs="0"
-				ForcedIncludeFiles="pchWWhizPickDirTemplate.h"/>
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles="pchWWhizPickDirTemplate.h"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_AFXDLL;_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
@@ -101,34 +163,29 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				SubSystem="2"/>
+				SubSystem="2"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\..\..\Output\WWhizPickDirTemplate\Debug/WWhizPickDirTemplate.tlb"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_AFXDLL;_DEBUG"
-				Culture="1033"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -136,44 +193,56 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
 			<File
-				RelativePath=".\pchWWhizPickDirTemplate.cpp">
+				RelativePath=".\pchWWhizPickDirTemplate.cpp"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\WWhizPickDirTemplate.cpp">
+				RelativePath=".\WWhizPickDirTemplate.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
+			Filter="h;hpp;hxx;hm;inl"
+			>
 			<File
-				RelativePath=".\pchWWhizPickDirTemplate.h">
+				RelativePath=".\pchWWhizPickDirTemplate.h"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Third Party"
-			Filter="">
+			>
 			<File
-				RelativePath="..\3rdParty\AggressiveOptimize.h">
+				RelativePath="..\3rdParty\AggressiveOptimize.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PickDirDlg.cpp">
+				RelativePath=".\PickDirDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PickDirDlg.h">
+				RelativePath=".\PickDirDlg.h"
+				>
 			</File>
 		</Filter>
 	</Files>

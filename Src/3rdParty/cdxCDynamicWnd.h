@@ -11,6 +11,7 @@
 
 #include <afxwin.h>
 #include <afxtempl.h>
+#include "WCollection.h"
 
 class cdxCSizeIconCtrl;
 class cdxCDynamicWnd;

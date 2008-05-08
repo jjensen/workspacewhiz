@@ -9,6 +9,7 @@
 // distribution is strictly prohibited unless prior consent has
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizReg.h"
 #include "FindFileListCtrl.h"
 
 BEGIN_MESSAGE_MAP(CFindFileListCtrl, CListCtrl)

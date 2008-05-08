@@ -10,6 +10,8 @@
 #ifndef SHELLTOOLS_H
 #define SHELLTOOLS_H
 
+#include <afx.h>
+
 #include <shlobj.h>
 
 // PIDL utilities

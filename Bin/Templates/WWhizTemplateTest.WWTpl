@@ -9,7 +9,6 @@ http://workspacewhiz.com/
 !!End
 
 !!Code
-!!ExecuteCommand NewText
 !!End
 
 //----------------------------------------------------------------------------
@@ -42,9 +41,9 @@ http://workspacewhiz.com/
 testmove
 
 !!Code
-!!ExecuteCommand LineDown
-!!ExecuteCommand LineDown
-!!ExecuteCommand CharRight
+!!ExecuteCommand "Edit.LineDown" ""
+!!ExecuteCommand Edit.LineDown
+!!ExecuteCommand Edit.CharRight
 !!End
 
 
@@ -53,6 +52,7 @@ testmove
 //----------------------------------------------------------------------------
 [!Caret Test]
 !!Code
+!!ExecuteCommand File.NewFile "/t:\"General\\Text File\""
             if (@@(Caret)@@)
 			{
 				printf("Hi");
@@ -65,7 +65,7 @@ testmove
 //----------------------------------------------------------------------------
 [!Date & Time Test]
 !!Code
-!!ExecuteCommand NewText
+!!ExecuteCommand File.NewFile "/t:\"General\\Text File\""
 @@(Date)@@
 @@(Time)@@
 @@(Date "ddd',' MMM dd yyyy")@@
@@ -78,7 +78,7 @@ testmove
 //----------------------------------------------------------------------------
 [!GUID Test]
 !!Code
-!!ExecuteCommand NewText
+!!ExecuteCommand File.NewFile "/t:\"General\\Text File\""
 @@(GUID)@@
 @@(GUID 1)@@
 @@(GUID 2)@@
@@ -633,7 +633,7 @@ Hello
 [Error Check|Commands|ExecuteCommand|Test 3]
 !!Code
 !!// Should work
-!!ExecuteCommand LineStart
+!!ExecuteCommand Edit.LineStart
 !!End
 
 
@@ -859,4 +859,5 @@ Hello World.  Hello @@name@@!
 !!Code
 @@(PickDir "Choose a directory.")@@
 !!End
+
 

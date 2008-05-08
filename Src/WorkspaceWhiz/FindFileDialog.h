@@ -32,7 +32,6 @@ public:
 	CFindFileDialog(CWnd* pParent = NULL);   // standard constructor
 	 ~CFindFileDialog();
 
-	CBrush		m_HollowBrush;
 	CString m_lastFilename;
 	CString m_lastPrefix;
 	int m_lastPosition;
@@ -40,9 +39,7 @@ public:
 	CString m_oldPrefix;
 	int m_created;
 	WWhizFileList* m_fileList;
-//	WWhizFileList* m_origFileList;
 	WWhizProject* m_curProject;
-//	bool m_workspaceOpen;
 	WArray<int> m_foundFiles;
 
 	void RefreshList(LPCTSTR filename);
@@ -55,7 +52,6 @@ public:
 	CButton	m_butCurrentFile;
 	CButton	m_butOK;
 	CButton	m_butCancel;
-//	CButton	m_butRefresh;
 	CButton	m_butHelp;
 	CButton	m_butExtraFiles;
 	CButton	m_butAbout;
@@ -63,7 +59,6 @@ public:
 
 	CListCtrl*		m_files;
 	CComboBoxEx*	m_edit;
-	CComboBoxEx*	m_prefixEdit;
 
 	CString m_saveOldFilename;
 	CString m_saveOldPrefix;

@@ -9,6 +9,7 @@
 // distribution is strictly prohibited unless prior consent has
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizReg.h"
 #include "FindTagListCtrl.h"
 
 BEGIN_MESSAGE_MAP(CFindTagListCtrl, CListCtrl)
@@ -17,8 +18,10 @@ BEGIN_MESSAGE_MAP(CFindTagListCtrl, CListCtrl)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-CFindTagListCtrl::CFindTagListCtrl() :
-	m_tagArray(NULL)
+CFindTagListCtrl::CFindTagListCtrl()
+	: m_tagArray(NULL)
+	, m_nNextFree(0)
+
 {
 }
 
@@ -66,8 +69,52 @@ void CFindTagListCtrl::OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult)
 		item->pszText = (LPTSTR)(LPCTSTR)tag->GetParentIdent();
 	}
 	else if (item->iSubItem == 3)
+	{
 		item->pszText = (LPTSTR)(LPCTSTR)tag->GetIdent();
+	}
+	else if (item->iSubItem == 4)
+	{
+		CString fileName = tag->GetFile()->GetTitle();
+		if (!tag->GetFile()->GetExt().IsEmpty())
+			fileName += "." + tag->GetFile()->GetExt();
+
+		LPTSTR pstrBuffer = AddPool(&fileName);
+		item->pszText = pstrBuffer;
+	}
+/*	else if (item->iSubItem == 5)
+	{
+		CString fileName = tag->GetFilename();
+		int lastSlash = fileName.ReverseFind('\\');
+		fileName = fileName.Left(lastSlash + 1);
+		LPTSTR pstrBuffer = AddPool(&fileName);
+		item->pszText = pstrBuffer;
+	}*/
+	else if (item->iSubItem == 5)
+	{
+		CString searchString = tag->GetSearchString();
+		searchString.TrimLeft("^");
+		searchString.TrimRight("$");
+		searchString.Replace('\t', ' ');
+		LPTSTR pstrBuffer = AddPool(&searchString);
+		item->pszText = pstrBuffer;
+	}
 
 	*pResult = 0;
+}
+
+
+LPTSTR CFindTagListCtrl::AddPool(CString* pstr)
+{
+	LPTSTR pstrRetVal;
+	int nOldest = m_nNextFree;
+
+	m_strCPool[m_nNextFree] = *pstr;
+	pstrRetVal = m_strCPool[m_nNextFree].LockBuffer();
+	m_pstrPool[m_nNextFree++] = pstrRetVal;
+	m_strCPool[nOldest].ReleaseBuffer();
+
+	if (m_nNextFree == 3)
+		m_nNextFree = 0;
+	return pstrRetVal;
 }
 

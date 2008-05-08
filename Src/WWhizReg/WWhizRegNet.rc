@@ -27,8 +27,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,0,1026
- PRODUCTVERSION 3,0,0,1026
+ FILEVERSION 4,0,0,1115
+ PRODUCTVERSION 4,0,0,1115
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -45,12 +45,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", " "
             VALUE "FileDescription", "Workspace Whiz Registration Module"
-            VALUE "FileVersion", "3, 0, 0, 1026"
+            VALUE "FileVersion", "4, 0, 0, 1115"
             VALUE "InternalName", "Workspace Whiz Registration Module"
-            VALUE "LegalCopyright", "Copyright © 2000-2002 Joshua C. Jensen"
+            VALUE "LegalCopyright", "Copyright © 1997-2007 Joshua C. Jensen"
             VALUE "OriginalFilename", "WWhizReg.mod"
             VALUE "ProductName", "Workspace Whiz Registration Module"
-            VALUE "ProductVersion", "3, 0, 0, 1026"
+            VALUE "ProductVersion", "4, 0, 0, 1115"
         END
     END
     BLOCK "VarFileInfo"
@@ -66,18 +66,18 @@ END
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
     "\r\n"
     "\0"
@@ -98,27 +98,23 @@ FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "&Enter Code",IDC_WWRE_ENTERCODE,78,97,50,14
     PUSHBUTTON      "Evaluate",IDC_WWRE_EVALUATE,140,97,50,14
-    LTEXT           "Thank you for trying Workspace Whiz\n\nThis is the unregistered, fully functional evaluation version of Workspace Whiz  You have 21 days to fully evaluate the product.  At the end of 21 days, you must order it.",
-                    IDC_WWRE_TEXT,7,7,193,43
+    LTEXT           "Thank you for trying Workspace Whiz\n\nThis is the unregistered, fully functional evaluation version of Workspace Whiz  You have 21 days to fully evaluate the product.  At the end of 21 days, you must order it.",IDC_WWRE_TEXT,7,7,193,43
     LTEXT           "Temp",IDC_WWRE_TIMELEFT,7,57,194,8
-    CONTROL         "Progress1",IDC_WWRE_TIMELEFTBAR,"msctls_progress32",
-                    WS_BORDER | 0x1,7,74,194,11
+    CONTROL         "Progress1",IDC_WWRE_TIMELEFTBAR,"msctls_progress32",WS_BORDER | 0x1,7,74,194,11
     PUSHBUTTON      "&Order",IDC_WWRE_REGISTER,16,97,50,14
 END
 
-IDD_WWR_ENTERREG DIALOG  0, 0, 205, 118
+IDD_WWR_ENTERREG DIALOGEX 0, 0, 205, 86
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Workspace Whiz Enter Registration Code"
-FONT 8, "MS Sans Serif"
+CAPTION "Workspace Whiz - Enter Registration Code"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     EDITTEXT        IDC_WWRR_USERNAME,7,18,189,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_WWRR_REGCODE,7,46,190,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_WWRR_CHECKCODE,7,76,191,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,36,96,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,120,96,50,14
+    DEFPUSHBUTTON   "OK",IDOK,36,65,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,120,65,50,14
     LTEXT           "Enter the registration name:",IDC_STATIC,7,7,87,8
     LTEXT           "Enter the registration code:",IDC_STATIC,7,36,86,8
-    LTEXT           "Enter the check code:",IDC_STATIC,7,66,72,8
 END
 
 
@@ -128,7 +124,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_WWR_EXPIRED, DIALOG
     BEGIN
@@ -143,7 +139,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 198
         TOPMARGIN, 7
-        BOTTOMMARGIN, 111
+        BOTTOMMARGIN, 79
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -154,7 +150,7 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_WWR_TIMELEFT        "You are on day %d of your 21-day trial."
 END

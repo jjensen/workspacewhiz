@@ -12,6 +12,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <afx.h>
+#include "../3rdParty/WCollection.h"
+
 class VirtualDrive;
 
 /**

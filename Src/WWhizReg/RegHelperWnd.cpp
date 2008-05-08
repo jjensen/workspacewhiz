@@ -9,6 +9,7 @@
 // distribution is strictly prohibited unless prior consent has
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizReg.h"
 #include "RegHelperWnd.h"
 #include "WWhizReg.h"
 #include "WWhizRegExt.h"
@@ -60,11 +61,10 @@ LRESULT CRegHelperWnd::OnDoRegSetup(WPARAM wParam, LPARAM lParam)
 		reg->CreateWFOControls		= CreateWFOControls;
 		reg->DestroyWFOControls		= DestroyWFOControls;
 		reg->WFOAddEditString		= WFOAddEditString;
-		reg->WFOAddPrefixEditString	= WFOAddPrefixEditString;
 		reg->CreateTagControls		= CreateTagControls;
 		reg->DestroyTagControls		= DestroyTagControls;
 		reg->TagAddEditTagString	= TagAddEditTagString;
-		reg->TagAddEditParentString	= TagAddEditParentString;
+		reg->TagAddEditParentString = TagAddEditParentString;
 		reg->ReadExtraFiles			= ReadExtraFiles;
 		reg->WriteExtraFiles		= WriteExtraFiles;
 		reg->GetExtraFiles			= GetExtraFiles;

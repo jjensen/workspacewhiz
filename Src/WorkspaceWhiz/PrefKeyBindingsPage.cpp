@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
 #include "resource.h"
 #include "PrefKeyBindingsPage.h"
 #include "PrefKeyBindingsHotKeyCtrl.h"
@@ -72,7 +73,8 @@ BOOL CPrefKeyBindingsPage::OnInitDialog()
 	
 	m_firstItem = 0;
 	m_lastItem = -1;
-	for (int i = 1; i < WWhizCommands::GetCommandCount(); i++)
+	int i;
+	for (i = 1; i < WWhizCommands::GetCommandCount(); i++)
 	{
 		CWnd* wnd = GetDlgItem(IDC_PKB_KEY1 + i - 1);
 		if (wnd)
@@ -308,7 +310,8 @@ void CPrefKeyBindingsPage::TranslateDSToHK(CString keyStr, WORD& vk, WORD& mod)
 	if (vk == 0)
 	{
         // use m_vk map
-        for (int i = 0; i < vkNamesCount; i++)
+		int i;
+        for (i = 0; i < vkNamesCount; i++)
         {
             if (vkStr.CompareNoCase(VKNames[i].m_name) == 0)
                 break;
@@ -335,7 +338,8 @@ void CPrefKeyBindingsPage::TranslateDSToHK(CString keyStr, WORD& vk, WORD& mod)
 void CPrefKeyBindingsPage::OnPkbAssign() 
 {
 	const WWhizCommands::CommandInfo* comInfo = WWhizCommands::GetCommandList();
-	for (int i = m_firstItem; i < m_lastItem; i++)
+	int i;
+	for (i = m_firstItem; i < m_lastItem; i++)
 	{
 		BOOL checked = ((CButton*)GetDlgItem(IDC_PKB_KEYCHECK1 + i - 1))->GetCheck();
 		g_config.m_keys[i].m_assignKey = (checked != FALSE);
@@ -402,7 +406,8 @@ void CPrefKeyBindingsPage::OnPkbReset()
 void CPrefKeyBindingsPage::OnBnClickedPkbAssignallpages()
 {
 	const WWhizCommands::CommandInfo* comInfo = WWhizCommands::GetCommandList();
-	for (int i = m_firstItem; i < m_lastItem; i++)
+	int i;
+	for (i = m_firstItem; i < m_lastItem; i++)
 	{
 		BOOL checked = ((CButton*)GetDlgItem(IDC_PKB_KEYCHECK1 + i - 1))->GetCheck();
 		g_config.m_keys[i].m_assignKey = (checked != FALSE);
@@ -448,7 +453,7 @@ void CPrefKeyBindingsPage::OnBnClickedPkbAssignallpages()
 #ifdef WWHIZ_VSNET			
 			AfxMessageBox("Workspace Whiz is unable to add the key binding [ " + keyStr + " ] "
 					"for command " + comInfo[i].m_name + ".  The most likely reason for this "
-					"is Visual Studio .NET maintains a set of read-only default key bindings.  "
+					"is Visual Studio maintains a set of read-only default key bindings.  "
 					"Go to the Tools menu->Options->Keyboard and press the Save As button to "
 					"generate a set of editable key bindings.");
 			break;

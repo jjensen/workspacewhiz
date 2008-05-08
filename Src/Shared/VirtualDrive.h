@@ -12,6 +12,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <afx.h>
+#include <afxtempl.h>
+
+#include "../3rdParty/WCollection.h"
+
 #define NEED_VIRTUAL_DRIVE_HASHKEY
 #ifdef NEED_VIRTUAL_DRIVE_HASHKEY
 

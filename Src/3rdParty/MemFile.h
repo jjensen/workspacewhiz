@@ -2,6 +2,8 @@
 #ifndef MEMFILE_H
 #define MEMFILE_H
 
+#include <afx.h>
+
 ////////////////////////////////////////////////////////////////////////////
 // Memory based file implementation
 
@@ -17,6 +19,7 @@ public:
 // Operations
 	void Attach(BYTE* lpBuffer, UINT nBufferSize, UINT nGrowBytes = 0);
 	BYTE* Detach();
+	BYTE* Peek();
 
 // Advanced Overridables
 protected:

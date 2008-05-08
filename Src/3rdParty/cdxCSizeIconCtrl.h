@@ -4,6 +4,10 @@
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
+
+#include <afxcmn.h>
+#include <afxwin.h>
+
 // cdxCSizeIconCtrl.h : header file
 //
 

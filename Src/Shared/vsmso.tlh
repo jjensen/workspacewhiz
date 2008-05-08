@@ -1,0 +1,875 @@
+﻿// Created by Microsoft (R) C/C++ Compiler Version 14.00.50727.42 (eb0e2b8f).
+//
+// s:\wwhiz\local\temp\wwhizvs8\workspacewhiz\debug\vsmso.tlh
+//
+// C++ source equivalent of Win32 type library 1CBA492E-7263-47BB-87FE-639000619B15
+// compiler-generated file created 04/24/06 at 17:22:26 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+namespace Microsoft_VisualStudio_CommandBars {
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("1cba492e-7263-47bb-87fe-639000619b15"))
+/* LIBID */ __Microsoft_VisualStudio_CommandBars;
+struct __declspec(uuid("19165052-5025-47f1-a7cd-b4e428e1a348"))
+/* dual interface */ _IVsMsoDispObj;
+struct __declspec(uuid("618736e0-3c3d-11cf-810c-00aa00389b71"))
+/* dual interface */ IAccessible;
+struct __declspec(uuid("5aceb159-4442-4c84-8099-80fd11fd2ca2"))
+/* dual interface */ _IVsMsoOleAccDispObj;
+struct __declspec(uuid("43fd5911-7bac-4bdc-ab6c-2de65b5c0233"))
+/* dual interface */ CommandBarControl;
+enum MsoControlOLEUsage;
+struct __declspec(uuid("d27b4dfe-351c-4ad4-9211-f49bec19106d"))
+/* dual interface */ CommandBar;
+struct __declspec(uuid("9f0a2735-2303-4e7b-82a9-21101530b842"))
+/* dual interface */ CommandBarControls;
+enum MsoBarPosition;
+enum MsoBarProtection;
+enum MsoBarType;
+enum MsoControlType;
+enum MsoButtonStyleHidden;
+enum MsoBarRow;
+enum MsoMenuAnimation;
+enum MsoButtonState;
+enum MsoButtonStyle;
+enum MsoCommandBarButtonHyperlinkType;
+enum MsoOLEMenuGroup;
+enum MsoComboStyle;
+struct __declspec(uuid("83d31b2e-9990-4275-ae39-77d1fb5bbcd9"))
+/* dual interface */ _CommandBars;
+struct __declspec(uuid("e11c7ce2-8641-4183-9458-309c6a201cdd"))
+/* dual interface */ _CommandBarButton;
+struct __declspec(uuid("aad0c7e1-12eb-4271-9538-2c91b460012b"))
+/* dual interface */ CommandBarPopup;
+struct __declspec(uuid("b9223dac-9c92-4916-9396-6e7673a93724"))
+/* dual interface */ _CommandBarComboBox;
+struct __declspec(uuid("7f1ee169-15be-44be-b21e-6339fc029807"))
+/* dual interface */ _CommandBarActiveX;
+struct __declspec(uuid("37318b32-4553-4b37-b0b9-3a0f8a2c1e60"))
+/* dual interface */ ICommandBarsEvents;
+struct __declspec(uuid("db12e968-cac8-4edc-af8a-909e9222e132"))
+/* dispinterface */ _CommandBarsEvents;
+struct /* coclass */ CommandBars;
+struct __declspec(uuid("9d13162a-8059-4210-b4e6-306d00fe3c49"))
+/* dual interface */ ICommandBarComboBoxEvents;
+struct /* coclass */ CommandBarComboBox;
+struct __declspec(uuid("b9fc4679-ba92-44de-824b-b1fc7c739d87"))
+/* dispinterface */ _CommandBarComboBoxEvents;
+struct __declspec(uuid("40864b73-c4b0-4e9c-9c17-567d130cb413"))
+/* dual interface */ ICommandBarButtonEvents;
+struct /* coclass */ CommandBarButton;
+struct __declspec(uuid("5b6bb734-fc7d-4372-a67d-0d7a212a98f7"))
+/* dispinterface */ _CommandBarButtonEvents;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(_IVsMsoDispObj, __uuidof(_IVsMsoDispObj));
+_COM_SMARTPTR_TYPEDEF(IAccessible, __uuidof(IAccessible));
+_COM_SMARTPTR_TYPEDEF(_IVsMsoOleAccDispObj, __uuidof(_IVsMsoOleAccDispObj));
+_COM_SMARTPTR_TYPEDEF(ICommandBarsEvents, __uuidof(ICommandBarsEvents));
+_COM_SMARTPTR_TYPEDEF(_CommandBarsEvents, __uuidof(_CommandBarsEvents));
+_COM_SMARTPTR_TYPEDEF(ICommandBarComboBoxEvents, __uuidof(ICommandBarComboBoxEvents));
+_COM_SMARTPTR_TYPEDEF(_CommandBarComboBoxEvents, __uuidof(_CommandBarComboBoxEvents));
+_COM_SMARTPTR_TYPEDEF(ICommandBarButtonEvents, __uuidof(ICommandBarButtonEvents));
+_COM_SMARTPTR_TYPEDEF(_CommandBarButtonEvents, __uuidof(_CommandBarButtonEvents));
+_COM_SMARTPTR_TYPEDEF(CommandBarControl, __uuidof(CommandBarControl));
+_COM_SMARTPTR_TYPEDEF(_CommandBarButton, __uuidof(_CommandBarButton));
+_COM_SMARTPTR_TYPEDEF(_CommandBarComboBox, __uuidof(_CommandBarComboBox));
+_COM_SMARTPTR_TYPEDEF(_CommandBarActiveX, __uuidof(_CommandBarActiveX));
+_COM_SMARTPTR_TYPEDEF(CommandBar, __uuidof(CommandBar));
+_COM_SMARTPTR_TYPEDEF(CommandBarControls, __uuidof(CommandBarControls));
+_COM_SMARTPTR_TYPEDEF(_CommandBars, __uuidof(_CommandBars));
+_COM_SMARTPTR_TYPEDEF(CommandBarPopup, __uuidof(CommandBarPopup));
+
+//
+// Type library items
+//
+
+struct __declspec(uuid("19165052-5025-47f1-a7cd-b4e428e1a348"))
+_IVsMsoDispObj : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_Application (
+        /*[out,retval]*/ IDispatch * * ppidisp ) = 0;
+      virtual HRESULT __stdcall get_Creator (
+        /*[out,retval]*/ long * plCreator ) = 0;
+};
+
+struct __declspec(uuid("618736e0-3c3d-11cf-810c-00aa00389b71"))
+IAccessible : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_accParent (
+        /*[out,retval]*/ IDispatch * * ppdispParent ) = 0;
+      virtual HRESULT __stdcall get_accChildCount (
+        /*[out,retval]*/ long * pcountChildren ) = 0;
+      virtual HRESULT __stdcall get_accChild (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ IDispatch * * ppdispChild ) = 0;
+      virtual HRESULT __stdcall get_accName (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ BSTR * pszName ) = 0;
+      virtual HRESULT __stdcall get_accValue (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ BSTR * pszValue ) = 0;
+      virtual HRESULT __stdcall get_accDescription (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ BSTR * pszDescription ) = 0;
+      virtual HRESULT __stdcall get_accRole (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ VARIANT * pvarRole ) = 0;
+      virtual HRESULT __stdcall get_accState (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ VARIANT * pvarState ) = 0;
+      virtual HRESULT __stdcall get_accHelp (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ BSTR * pszHelp ) = 0;
+      virtual HRESULT __stdcall get_accHelpTopic (
+        /*[out]*/ BSTR * pszHelpFile,
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ long * pidTopic ) = 0;
+      virtual HRESULT __stdcall get_accKeyboardShortcut (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ BSTR * pszKeyboardShortcut ) = 0;
+      virtual HRESULT __stdcall get_accFocus (
+        /*[out,retval]*/ VARIANT * pvarChild ) = 0;
+      virtual HRESULT __stdcall get_accSelection (
+        /*[out,retval]*/ VARIANT * pvarChildren ) = 0;
+      virtual HRESULT __stdcall get_accDefaultAction (
+        /*[in]*/ VARIANT varChild,
+        /*[out,retval]*/ BSTR * pszDefaultAction ) = 0;
+      virtual HRESULT __stdcall accSelect (
+        /*[in]*/ long flagsSelect,
+        /*[in]*/ VARIANT varChild = vtMissing ) = 0;
+      virtual HRESULT __stdcall accLocation (
+        /*[out]*/ long * pxLeft,
+        /*[out]*/ long * pyTop,
+        /*[out]*/ long * pcxWidth,
+        /*[out]*/ long * pcyHeight,
+        /*[in]*/ VARIANT varChild = vtMissing ) = 0;
+      virtual HRESULT __stdcall accNavigate (
+        /*[in]*/ long navDir,
+        /*[in]*/ VARIANT varStart,
+        /*[out,retval]*/ VARIANT * pvarEndUpAt ) = 0;
+      virtual HRESULT __stdcall accHitTest (
+        /*[in]*/ long xLeft,
+        /*[in]*/ long yTop,
+        /*[out,retval]*/ VARIANT * pvarChild ) = 0;
+      virtual HRESULT __stdcall accDoDefaultAction (
+        /*[in]*/ VARIANT varChild = vtMissing ) = 0;
+      virtual HRESULT __stdcall put_accName (
+        /*[in]*/ VARIANT varChild,
+        /*[in]*/ BSTR pszName ) = 0;
+      virtual HRESULT __stdcall put_accValue (
+        /*[in]*/ VARIANT varChild,
+        /*[in]*/ BSTR pszValue ) = 0;
+};
+
+struct __declspec(uuid("5aceb159-4442-4c84-8099-80fd11fd2ca2"))
+_IVsMsoOleAccDispObj : IAccessible
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_Application (
+        /*[out,retval]*/ IDispatch * * ppidisp ) = 0;
+      virtual HRESULT __stdcall get_Creator (
+        /*[out,retval]*/ long * plCreator ) = 0;
+};
+
+enum MsoControlOLEUsage
+{
+    msoControlOLEUsageNeither = 0,
+    msoControlOLEUsageServer = 1,
+    msoControlOLEUsageClient = 2,
+    msoControlOLEUsageBoth = 3
+};
+
+enum MsoBarPosition
+{
+    msoBarLeft = 0,
+    msoBarTop = 1,
+    msoBarRight = 2,
+    msoBarBottom = 3,
+    msoBarFloating = 4,
+    msoBarPopup = 5,
+    msoBarMenuBar = 6
+};
+
+enum MsoBarProtection
+{
+    msoBarNoProtection = 0,
+    msoBarNoCustomize = 1,
+    msoBarNoResize = 2,
+    msoBarNoMove = 4,
+    msoBarNoChangeVisible = 8,
+    msoBarNoChangeDock = 16,
+    msoBarNoVerticalDock = 32,
+    msoBarNoHorizontalDock = 64
+};
+
+enum MsoBarType
+{
+    msoBarTypeNormal = 0,
+    msoBarTypeMenuBar = 1,
+    msoBarTypePopup = 2
+};
+
+enum MsoControlType
+{
+    msoControlCustom = 0,
+    msoControlButton = 1,
+    msoControlEdit = 2,
+    msoControlDropdown = 3,
+    msoControlComboBox = 4,
+    msoControlButtonDropdown = 5,
+    msoControlSplitDropdown = 6,
+    msoControlOCXDropdown = 7,
+    msoControlGenericDropdown = 8,
+    msoControlGraphicDropdown = 9,
+    msoControlPopup = 10,
+    msoControlGraphicPopup = 11,
+    msoControlButtonPopup = 12,
+    msoControlSplitButtonPopup = 13,
+    msoControlSplitButtonMRUPopup = 14,
+    msoControlLabel = 15,
+    msoControlExpandingGrid = 16,
+    msoControlSplitExpandingGrid = 17,
+    msoControlGrid = 18,
+    msoControlGauge = 19,
+    msoControlGraphicCombo = 20,
+    msoControlPane = 21,
+    msoControlActiveX = 22,
+    msoControlSpinner = 23,
+    msoControlLabelEx = 24,
+    msoControlWorkPane = 25,
+    msoControlAutoCompleteCombo = 26
+};
+
+enum MsoButtonStyleHidden
+{
+    msoButtonWrapText = 4,
+    msoButtonTextBelow = 8
+};
+
+enum MsoBarRow
+{
+    msoBarRowFirst = 0,
+    msoBarRowLast = -1
+};
+
+enum MsoMenuAnimation
+{
+    msoMenuAnimationNone = 0,
+    msoMenuAnimationRandom = 1,
+    msoMenuAnimationUnfold = 2,
+    msoMenuAnimationSlide = 3
+};
+
+enum MsoButtonState
+{
+    msoButtonUp = 0,
+    msoButtonDown = -1,
+    msoButtonMixed = 2
+};
+
+enum MsoButtonStyle
+{
+    msoButtonAutomatic = 0,
+    msoButtonIcon = 1,
+    msoButtonCaption = 2,
+    msoButtonIconAndCaption = 3,
+    msoButtonIconAndWrapCaption = 7,
+    msoButtonIconAndCaptionBelow = 11,
+    msoButtonWrapCaption = 14,
+    msoButtonIconAndWrapCaptionBelow = 15
+};
+
+enum MsoCommandBarButtonHyperlinkType
+{
+    msoCommandBarButtonHyperlinkNone = 0,
+    msoCommandBarButtonHyperlinkOpen = 1,
+    msoCommandBarButtonHyperlinkInsertPicture = 2
+};
+
+enum MsoOLEMenuGroup
+{
+    msoOLEMenuGroupNone = -1,
+    msoOLEMenuGroupFile = 0,
+    msoOLEMenuGroupEdit = 1,
+    msoOLEMenuGroupContainer = 2,
+    msoOLEMenuGroupObject = 3,
+    msoOLEMenuGroupWindow = 4,
+    msoOLEMenuGroupHelp = 5
+};
+
+enum MsoComboStyle
+{
+    msoComboNormal = 0,
+    msoComboLabel = 1
+};
+
+struct __declspec(uuid("37318b32-4553-4b37-b0b9-3a0f8a2c1e60"))
+ICommandBarsEvents : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual void __stdcall OnUpdate ( ) = 0;
+};
+
+struct __declspec(uuid("db12e968-cac8-4edc-af8a-909e9222e132"))
+_CommandBarsEvents : IDispatch
+{};
+
+struct __declspec(uuid("2280d7e1-dbeb-4d9c-a3c6-b12cdddbd1af"))
+CommandBars;
+    // [ default ] interface _CommandBars
+    // [ default, source ] dispinterface _CommandBarsEvents
+
+struct __declspec(uuid("c914a004-f36c-4a2f-bc3c-429ffb577717"))
+CommandBarComboBox;
+    // [ default ] interface _CommandBarComboBox
+    // [ default, source ] dispinterface _CommandBarComboBoxEvents
+
+struct __declspec(uuid("9d13162a-8059-4210-b4e6-306d00fe3c49"))
+ICommandBarComboBoxEvents : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual void __stdcall Change (
+        /*[in]*/ struct _CommandBarComboBox * Ctrl ) = 0;
+};
+
+struct __declspec(uuid("b9fc4679-ba92-44de-824b-b1fc7c739d87"))
+_CommandBarComboBoxEvents : IDispatch
+{};
+
+struct __declspec(uuid("e322950c-aaf9-43df-a328-62a1a7e96aa6"))
+CommandBarButton;
+    // [ default ] interface _CommandBarButton
+    // [ default, source ] dispinterface _CommandBarButtonEvents
+
+struct __declspec(uuid("40864b73-c4b0-4e9c-9c17-567d130cb413"))
+ICommandBarButtonEvents : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual void __stdcall Click (
+        /*[in]*/ struct _CommandBarButton * Ctrl,
+        /*[in,out]*/ VARIANT_BOOL * CancelDefault ) = 0;
+};
+
+struct __declspec(uuid("5b6bb734-fc7d-4372-a67d-0d7a212a98f7"))
+_CommandBarButtonEvents : IDispatch
+{};
+
+struct __declspec(uuid("43fd5911-7bac-4bdc-ab6c-2de65b5c0233"))
+CommandBarControl : _IVsMsoOleAccDispObj
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_BeginGroup (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfBeginGroup ) = 0;
+      virtual HRESULT __stdcall put_BeginGroup (
+        /*[in]*/ VARIANT_BOOL pvarfBeginGroup ) = 0;
+      virtual HRESULT __stdcall get_BuiltIn (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfBuiltIn ) = 0;
+      virtual HRESULT __stdcall get_Caption (
+        /*[out,retval]*/ BSTR * pbstrCaption ) = 0;
+      virtual HRESULT __stdcall put_Caption (
+        /*[in]*/ BSTR pbstrCaption ) = 0;
+      virtual HRESULT __stdcall get_Control (
+        /*[out,retval]*/ IDispatch * * ppidisp ) = 0;
+      virtual HRESULT __stdcall Copy (
+        /*[in]*/ VARIANT Bar,
+        /*[in]*/ VARIANT Before,
+        /*[out,retval]*/ struct CommandBarControl * * ppcbc ) = 0;
+      virtual HRESULT __stdcall Delete (
+        /*[in]*/ VARIANT Temporary = vtMissing ) = 0;
+      virtual HRESULT __stdcall get_DescriptionText (
+        /*[out,retval]*/ BSTR * pbstrText ) = 0;
+      virtual HRESULT __stdcall put_DescriptionText (
+        /*[in]*/ BSTR pbstrText ) = 0;
+      virtual HRESULT __stdcall get_Enabled (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfEnabled ) = 0;
+      virtual HRESULT __stdcall put_Enabled (
+        /*[in]*/ VARIANT_BOOL pvarfEnabled ) = 0;
+      virtual HRESULT __stdcall Execute ( ) = 0;
+      virtual HRESULT __stdcall get_Height (
+        /*[out,retval]*/ int * pdy ) = 0;
+      virtual HRESULT __stdcall put_Height (
+        /*[in]*/ int pdy ) = 0;
+      virtual HRESULT __stdcall get_HelpContextId (
+        /*[out,retval]*/ int * pid ) = 0;
+      virtual HRESULT __stdcall put_HelpContextId (
+        /*[in]*/ int pid ) = 0;
+      virtual HRESULT __stdcall get_HelpFile (
+        /*[out,retval]*/ BSTR * pbstrFilename ) = 0;
+      virtual HRESULT __stdcall put_HelpFile (
+        /*[in]*/ BSTR pbstrFilename ) = 0;
+      virtual HRESULT __stdcall get_Id (
+        /*[out,retval]*/ int * pid ) = 0;
+      virtual HRESULT __stdcall get_Index (
+        /*[out,retval]*/ int * pi ) = 0;
+      virtual HRESULT __stdcall get_InstanceId (
+        /*[out,retval]*/ long * pid ) = 0;
+      virtual HRESULT __stdcall Move (
+        /*[in]*/ VARIANT Bar,
+        /*[in]*/ VARIANT Before,
+        /*[out,retval]*/ struct CommandBarControl * * ppcbc ) = 0;
+      virtual HRESULT __stdcall get_Left (
+        /*[out,retval]*/ int * px ) = 0;
+      virtual HRESULT __stdcall get_OLEUsage (
+        /*[out,retval]*/ enum MsoControlOLEUsage * pcou ) = 0;
+      virtual HRESULT __stdcall put_OLEUsage (
+        /*[in]*/ enum MsoControlOLEUsage pcou ) = 0;
+      virtual HRESULT __stdcall get_OnAction (
+        /*[out,retval]*/ BSTR * pbstrOnAction ) = 0;
+      virtual HRESULT __stdcall put_OnAction (
+        /*[in]*/ BSTR pbstrOnAction ) = 0;
+      virtual HRESULT __stdcall get_Parent (
+        /*[out,retval]*/ struct CommandBar * * ppcb ) = 0;
+      virtual HRESULT __stdcall get_Parameter (
+        /*[out,retval]*/ BSTR * pbstrParam ) = 0;
+      virtual HRESULT __stdcall put_Parameter (
+        /*[in]*/ BSTR pbstrParam ) = 0;
+      virtual HRESULT __stdcall get_Priority (
+        /*[out,retval]*/ int * pnPri ) = 0;
+      virtual HRESULT __stdcall put_Priority (
+        /*[in]*/ int pnPri ) = 0;
+      virtual HRESULT __stdcall Reset ( ) = 0;
+      virtual HRESULT __stdcall SetFocus ( ) = 0;
+      virtual HRESULT __stdcall get_Tag (
+        /*[out,retval]*/ BSTR * pbstrTag ) = 0;
+      virtual HRESULT __stdcall put_Tag (
+        /*[in]*/ BSTR pbstrTag ) = 0;
+      virtual HRESULT __stdcall get_TooltipText (
+        /*[out,retval]*/ BSTR * pbstrTooltip ) = 0;
+      virtual HRESULT __stdcall put_TooltipText (
+        /*[in]*/ BSTR pbstrTooltip ) = 0;
+      virtual HRESULT __stdcall get_Top (
+        /*[out,retval]*/ int * py ) = 0;
+      virtual HRESULT __stdcall get_Type (
+        /*[out,retval]*/ enum MsoControlType * ptype ) = 0;
+      virtual HRESULT __stdcall get_Visible (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfVisible ) = 0;
+      virtual HRESULT __stdcall put_Visible (
+        /*[in]*/ VARIANT_BOOL pvarfVisible ) = 0;
+      virtual HRESULT __stdcall get_Width (
+        /*[out,retval]*/ int * pdx ) = 0;
+      virtual HRESULT __stdcall put_Width (
+        /*[in]*/ int pdx ) = 0;
+      virtual HRESULT __stdcall get_IsPriorityDropped (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfDropped ) = 0;
+      virtual HRESULT __stdcall Reserved1 ( ) = 0;
+      virtual HRESULT __stdcall Reserved2 ( ) = 0;
+      virtual HRESULT __stdcall Reserved3 ( ) = 0;
+      virtual HRESULT __stdcall Reserved4 ( ) = 0;
+      virtual HRESULT __stdcall Reserved5 ( ) = 0;
+      virtual HRESULT __stdcall Reserved6 ( ) = 0;
+      virtual HRESULT __stdcall Reserved7 ( ) = 0;
+};
+
+struct __declspec(uuid("e11c7ce2-8641-4183-9458-309c6a201cdd"))
+_CommandBarButton : CommandBarControl
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_BuiltInFace (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfBuiltIn ) = 0;
+      virtual HRESULT __stdcall put_BuiltInFace (
+        /*[in]*/ VARIANT_BOOL pvarfBuiltIn ) = 0;
+      virtual HRESULT __stdcall CopyFace ( ) = 0;
+      virtual HRESULT __stdcall get_FaceId (
+        /*[out,retval]*/ int * pid ) = 0;
+      virtual HRESULT __stdcall put_FaceId (
+        /*[in]*/ int pid ) = 0;
+      virtual HRESULT __stdcall PasteFace ( ) = 0;
+      virtual HRESULT __stdcall get_ShortcutText (
+        /*[out,retval]*/ BSTR * pbstrText ) = 0;
+      virtual HRESULT __stdcall put_ShortcutText (
+        /*[in]*/ BSTR pbstrText ) = 0;
+      virtual HRESULT __stdcall get_State (
+        /*[out,retval]*/ enum MsoButtonState * pstate ) = 0;
+      virtual HRESULT __stdcall put_State (
+        /*[in]*/ enum MsoButtonState pstate ) = 0;
+      virtual HRESULT __stdcall get_Style (
+        /*[out,retval]*/ enum MsoButtonStyle * pstyle ) = 0;
+      virtual HRESULT __stdcall put_Style (
+        /*[in]*/ enum MsoButtonStyle pstyle ) = 0;
+      virtual HRESULT __stdcall get_HyperlinkType (
+        /*[out,retval]*/ enum MsoCommandBarButtonHyperlinkType * phlType ) = 0;
+      virtual HRESULT __stdcall put_HyperlinkType (
+        /*[in]*/ enum MsoCommandBarButtonHyperlinkType phlType ) = 0;
+      virtual HRESULT __stdcall get_Picture (
+        /*[out,retval]*/ struct Picture * * ppdispPicture ) = 0;
+      virtual HRESULT __stdcall put_Picture (
+        /*[in]*/ struct Picture * ppdispPicture ) = 0;
+      virtual HRESULT __stdcall get_Mask (
+        /*[out,retval]*/ struct Picture * * ppipictdispMask ) = 0;
+      virtual HRESULT __stdcall put_Mask (
+        /*[in]*/ struct Picture * ppipictdispMask ) = 0;
+};
+
+struct __declspec(uuid("b9223dac-9c92-4916-9396-6e7673a93724"))
+_CommandBarComboBox : CommandBarControl
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall AddItem (
+        /*[in]*/ BSTR Text,
+        /*[in]*/ VARIANT Index = vtMissing ) = 0;
+      virtual HRESULT __stdcall Clear ( ) = 0;
+      virtual HRESULT __stdcall get_DropDownLines (
+        /*[out,retval]*/ int * pcLines ) = 0;
+      virtual HRESULT __stdcall put_DropDownLines (
+        /*[in]*/ int pcLines ) = 0;
+      virtual HRESULT __stdcall get_DropDownWidth (
+        /*[out,retval]*/ int * pdx ) = 0;
+      virtual HRESULT __stdcall put_DropDownWidth (
+        /*[in]*/ int pdx ) = 0;
+      virtual HRESULT __stdcall get_List (
+        /*[in]*/ int Index,
+        /*[out,retval]*/ BSTR * pbstrItem ) = 0;
+      virtual HRESULT __stdcall put_List (
+        /*[in]*/ int Index,
+        /*[in]*/ BSTR pbstrItem ) = 0;
+      virtual HRESULT __stdcall get_ListCount (
+        /*[out,retval]*/ int * pcItems ) = 0;
+      virtual HRESULT __stdcall get_ListHeaderCount (
+        /*[out,retval]*/ int * pcItems ) = 0;
+      virtual HRESULT __stdcall put_ListHeaderCount (
+        /*[in]*/ int pcItems ) = 0;
+      virtual HRESULT __stdcall get_ListIndex (
+        /*[out,retval]*/ int * pi ) = 0;
+      virtual HRESULT __stdcall put_ListIndex (
+        /*[in]*/ int pi ) = 0;
+      virtual HRESULT __stdcall RemoveItem (
+        /*[in]*/ int Index ) = 0;
+      virtual HRESULT __stdcall get_Style (
+        /*[out,retval]*/ enum MsoComboStyle * pstyle ) = 0;
+      virtual HRESULT __stdcall put_Style (
+        /*[in]*/ enum MsoComboStyle pstyle ) = 0;
+      virtual HRESULT __stdcall get_Text (
+        /*[out,retval]*/ BSTR * pbstrText ) = 0;
+      virtual HRESULT __stdcall put_Text (
+        /*[in]*/ BSTR pbstrText ) = 0;
+};
+
+struct __declspec(uuid("7f1ee169-15be-44be-b21e-6339fc029807"))
+_CommandBarActiveX : CommandBarControl
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_ControlCLSID (
+        /*[out,retval]*/ BSTR * pbstrClsid ) = 0;
+      virtual HRESULT __stdcall put_ControlCLSID (
+        /*[in]*/ BSTR pbstrClsid ) = 0;
+      virtual HRESULT __stdcall get_QueryControlInterface (
+        /*[in]*/ BSTR bstrIid,
+        /*[out,retval]*/ IUnknown * * ppUnk ) = 0;
+      virtual HRESULT __stdcall SetInnerObjectFactory (
+        /*[in]*/ IUnknown * pUnk ) = 0;
+      virtual HRESULT __stdcall EnsureControl ( ) = 0;
+      virtual HRESULT __stdcall put_InitWith (
+        /*[in]*/ IUnknown * _arg1 ) = 0;
+};
+
+struct __declspec(uuid("d27b4dfe-351c-4ad4-9211-f49bec19106d"))
+CommandBar : _IVsMsoOleAccDispObj
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_BuiltIn (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfBuiltIn ) = 0;
+      virtual HRESULT __stdcall get_Context (
+        /*[out,retval]*/ BSTR * pbstrContext ) = 0;
+      virtual HRESULT __stdcall put_Context (
+        /*[in]*/ BSTR pbstrContext ) = 0;
+      virtual HRESULT __stdcall get_Controls (
+        /*[out,retval]*/ struct CommandBarControls * * ppcbcs ) = 0;
+      virtual HRESULT __stdcall Delete ( ) = 0;
+      virtual HRESULT __stdcall get_Enabled (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfEnabled ) = 0;
+      virtual HRESULT __stdcall put_Enabled (
+        /*[in]*/ VARIANT_BOOL pvarfEnabled ) = 0;
+      virtual HRESULT __stdcall FindControl (
+        /*[in]*/ VARIANT Type,
+        /*[in]*/ VARIANT Id,
+        /*[in]*/ VARIANT Tag,
+        /*[in]*/ VARIANT Visible,
+        /*[in]*/ VARIANT Recursive,
+        /*[out,retval]*/ struct CommandBarControl * * ppcbc ) = 0;
+      virtual HRESULT __stdcall get_Height (
+        /*[out,retval]*/ int * pdy ) = 0;
+      virtual HRESULT __stdcall put_Height (
+        /*[in]*/ int pdy ) = 0;
+      virtual HRESULT __stdcall get_Index (
+        /*[out,retval]*/ int * pi ) = 0;
+      virtual HRESULT __stdcall get_InstanceId (
+        /*[out,retval]*/ long * pid ) = 0;
+      virtual HRESULT __stdcall get_Left (
+        /*[out,retval]*/ int * pxpLeft ) = 0;
+      virtual HRESULT __stdcall put_Left (
+        /*[in]*/ int pxpLeft ) = 0;
+      virtual HRESULT __stdcall get_Name (
+        /*[out,retval]*/ BSTR * pbstrName ) = 0;
+      virtual HRESULT __stdcall put_Name (
+        /*[in]*/ BSTR pbstrName ) = 0;
+      virtual HRESULT __stdcall get_NameLocal (
+        /*[out,retval]*/ BSTR * pbstrNameLocal ) = 0;
+      virtual HRESULT __stdcall put_NameLocal (
+        /*[in]*/ BSTR pbstrNameLocal ) = 0;
+      virtual HRESULT __stdcall get_Parent (
+        /*[out,retval]*/ IDispatch * * ppidisp ) = 0;
+      virtual HRESULT __stdcall get_Position (
+        /*[out,retval]*/ enum MsoBarPosition * ppos ) = 0;
+      virtual HRESULT __stdcall put_Position (
+        /*[in]*/ enum MsoBarPosition ppos ) = 0;
+      virtual HRESULT __stdcall get_RowIndex (
+        /*[out,retval]*/ int * piRow ) = 0;
+      virtual HRESULT __stdcall put_RowIndex (
+        /*[in]*/ int piRow ) = 0;
+      virtual HRESULT __stdcall get_Protection (
+        /*[out,retval]*/ enum MsoBarProtection * pprot ) = 0;
+      virtual HRESULT __stdcall put_Protection (
+        /*[in]*/ enum MsoBarProtection pprot ) = 0;
+      virtual HRESULT __stdcall Reset ( ) = 0;
+      virtual HRESULT __stdcall ShowPopup (
+        /*[in]*/ VARIANT x = vtMissing,
+        /*[in]*/ VARIANT y = vtMissing ) = 0;
+      virtual HRESULT __stdcall get_Top (
+        /*[out,retval]*/ int * pypTop ) = 0;
+      virtual HRESULT __stdcall put_Top (
+        /*[in]*/ int pypTop ) = 0;
+      virtual HRESULT __stdcall get_Type (
+        /*[out,retval]*/ enum MsoBarType * ptype ) = 0;
+      virtual HRESULT __stdcall get_Visible (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfVisible ) = 0;
+      virtual HRESULT __stdcall put_Visible (
+        /*[in]*/ VARIANT_BOOL pvarfVisible ) = 0;
+      virtual HRESULT __stdcall get_Width (
+        /*[out,retval]*/ int * pdx ) = 0;
+      virtual HRESULT __stdcall put_Width (
+        /*[in]*/ int pdx ) = 0;
+      virtual HRESULT __stdcall get_AdaptiveMenu (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfAdaptiveMenu ) = 0;
+      virtual HRESULT __stdcall put_AdaptiveMenu (
+        /*[in]*/ VARIANT_BOOL pvarfAdaptiveMenu ) = 0;
+      virtual HRESULT __stdcall get_Id (
+        /*[out,retval]*/ int * pid ) = 0;
+};
+
+struct __declspec(uuid("9f0a2735-2303-4e7b-82a9-21101530b842"))
+CommandBarControls : _IVsMsoDispObj
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall Add (
+        /*[in]*/ VARIANT Type,
+        /*[in]*/ VARIANT Id,
+        /*[in]*/ VARIANT Parameter,
+        /*[in]*/ VARIANT Before,
+        /*[in]*/ VARIANT Temporary,
+        /*[out,retval]*/ struct CommandBarControl * * ppcbc ) = 0;
+      virtual HRESULT __stdcall get_Count (
+        /*[out,retval]*/ int * pcToolbarControls ) = 0;
+      virtual HRESULT __stdcall get_Item (
+        /*[in]*/ VARIANT Index,
+        /*[out,retval]*/ struct CommandBarControl * * ppcbc ) = 0;
+      virtual HRESULT __stdcall get__NewEnum (
+        /*[out,retval]*/ IUnknown * * ppienum ) = 0;
+      virtual HRESULT __stdcall get_Parent (
+        /*[out,retval]*/ struct CommandBar * * ppcb ) = 0;
+};
+
+struct __declspec(uuid("83d31b2e-9990-4275-ae39-77d1fb5bbcd9"))
+_CommandBars : _IVsMsoDispObj
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_ActionControl (
+        /*[out,retval]*/ struct CommandBarControl * * ppcbc ) = 0;
+      virtual HRESULT __stdcall get_ActiveMenuBar (
+        /*[out,retval]*/ struct CommandBar * * ppcb ) = 0;
+      virtual HRESULT __stdcall Add (
+        /*[in]*/ VARIANT Name,
+        /*[in]*/ VARIANT Position,
+        /*[in]*/ VARIANT MenuBar,
+        /*[in]*/ VARIANT Temporary,
+        /*[out,retval]*/ struct CommandBar * * ppcb ) = 0;
+      virtual HRESULT __stdcall get_Count (
+        /*[out,retval]*/ int * pcToolbars ) = 0;
+      virtual HRESULT __stdcall get_DisplayTooltips (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfDisplayTooltips ) = 0;
+      virtual HRESULT __stdcall put_DisplayTooltips (
+        /*[in]*/ VARIANT_BOOL pvarfDisplayTooltips ) = 0;
+      virtual HRESULT __stdcall get_DisplayKeysInTooltips (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfDisplayKeys ) = 0;
+      virtual HRESULT __stdcall put_DisplayKeysInTooltips (
+        /*[in]*/ VARIANT_BOOL pvarfDisplayKeys ) = 0;
+      virtual HRESULT __stdcall FindControl (
+        /*[in]*/ VARIANT Type,
+        /*[in]*/ VARIANT Id,
+        /*[in]*/ VARIANT Tag,
+        /*[in]*/ VARIANT Visible,
+        /*[out,retval]*/ struct CommandBarControl * * ppcbc ) = 0;
+      virtual HRESULT __stdcall get_Item (
+        /*[in]*/ VARIANT Index,
+        /*[out,retval]*/ struct CommandBar * * ppcb ) = 0;
+      virtual HRESULT __stdcall get_LargeButtons (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfLargeButtons ) = 0;
+      virtual HRESULT __stdcall put_LargeButtons (
+        /*[in]*/ VARIANT_BOOL pvarfLargeButtons ) = 0;
+      virtual HRESULT __stdcall get_MenuAnimationStyle (
+        /*[out,retval]*/ enum MsoMenuAnimation * pma ) = 0;
+      virtual HRESULT __stdcall put_MenuAnimationStyle (
+        /*[in]*/ enum MsoMenuAnimation pma ) = 0;
+      virtual HRESULT __stdcall get__NewEnum (
+        /*[out,retval]*/ IUnknown * * ppienum ) = 0;
+      virtual HRESULT __stdcall get_Parent (
+        /*[out,retval]*/ IDispatch * * ppidisp ) = 0;
+      virtual HRESULT __stdcall ReleaseFocus ( ) = 0;
+      virtual HRESULT __stdcall get_IdsString (
+        /*[in]*/ int ids,
+        /*[out]*/ BSTR * pbstrName,
+        /*[out,retval]*/ int * pcch ) = 0;
+      virtual HRESULT __stdcall get_TmcGetName (
+        /*[in]*/ int tmc,
+        /*[out]*/ BSTR * pbstrName,
+        /*[out,retval]*/ int * pcch ) = 0;
+      virtual HRESULT __stdcall get_AdaptiveMenus (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfAdaptiveMenus ) = 0;
+      virtual HRESULT __stdcall put_AdaptiveMenus (
+        /*[in]*/ VARIANT_BOOL pvarfAdaptiveMenus ) = 0;
+      virtual HRESULT __stdcall FindControls (
+        /*[in]*/ VARIANT Type,
+        /*[in]*/ VARIANT Id,
+        /*[in]*/ VARIANT Tag,
+        /*[in]*/ VARIANT Visible,
+        /*[out,retval]*/ struct CommandBarControls * * ppcbcs ) = 0;
+      virtual HRESULT __stdcall AddEx (
+        /*[in]*/ VARIANT TbidOrName,
+        /*[in]*/ VARIANT Position,
+        /*[in]*/ VARIANT MenuBar,
+        /*[in]*/ VARIANT Temporary,
+        /*[in]*/ VARIANT TbtrProtection,
+        /*[out,retval]*/ struct CommandBar * * ppcb ) = 0;
+      virtual HRESULT __stdcall get_DisplayFonts (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfDisplayFonts ) = 0;
+      virtual HRESULT __stdcall put_DisplayFonts (
+        /*[in]*/ VARIANT_BOOL pvarfDisplayFonts ) = 0;
+      virtual HRESULT __stdcall get_DisableCustomize (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfDisableCustomize ) = 0;
+      virtual HRESULT __stdcall put_DisableCustomize (
+        /*[in]*/ VARIANT_BOOL pvarfDisableCustomize ) = 0;
+      virtual HRESULT __stdcall get_DisableAskAQuestionDropdown (
+        /*[out,retval]*/ VARIANT_BOOL * pvarfDisableAskAQuestionDropdown ) = 0;
+      virtual HRESULT __stdcall put_DisableAskAQuestionDropdown (
+        /*[in]*/ VARIANT_BOOL pvarfDisableAskAQuestionDropdown ) = 0;
+};
+
+struct __declspec(uuid("aad0c7e1-12eb-4271-9538-2c91b460012b"))
+CommandBarPopup : CommandBarControl
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_CommandBar (
+        /*[out,retval]*/ struct CommandBar * * ppcb ) = 0;
+      virtual HRESULT __stdcall get_Controls (
+        /*[out,retval]*/ struct CommandBarControls * * ppcbcs ) = 0;
+      virtual HRESULT __stdcall get_OLEMenuGroup (
+        /*[out,retval]*/ enum MsoOLEMenuGroup * pomg ) = 0;
+      virtual HRESULT __stdcall put_OLEMenuGroup (
+        /*[in]*/ enum MsoOLEMenuGroup pomg ) = 0;
+};
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_Microsoft_VisualStudio_CommandBars =
+    {0x1cba492e,0x7263,0x47bb,{0x87,0xfe,0x63,0x90,0x00,0x61,0x9b,0x15}};
+extern "C" const GUID __declspec(selectany) IID__IVsMsoDispObj =
+    {0x19165052,0x5025,0x47f1,{0xa7,0xcd,0xb4,0xe4,0x28,0xe1,0xa3,0x48}};
+extern "C" const GUID __declspec(selectany) IID_IAccessible =
+    {0x618736e0,0x3c3d,0x11cf,{0x81,0x0c,0x00,0xaa,0x00,0x38,0x9b,0x71}};
+extern "C" const GUID __declspec(selectany) IID__IVsMsoOleAccDispObj =
+    {0x5aceb159,0x4442,0x4c84,{0x80,0x99,0x80,0xfd,0x11,0xfd,0x2c,0xa2}};
+extern "C" const GUID __declspec(selectany) IID_ICommandBarsEvents80 =
+    {0x37318b32,0x4553,0x4b37,{0xb0,0xb9,0x3a,0x0f,0x8a,0x2c,0x1e,0x60}};
+extern "C" const GUID __declspec(selectany) DIID__CommandBarsEvents80 =
+    {0xdb12e968,0xcac8,0x4edc,{0xaf,0x8a,0x90,0x9e,0x92,0x22,0xe1,0x32}};
+extern "C" const GUID __declspec(selectany) CLSID_CommandBars80 =
+    {0x2280d7e1,0xdbeb,0x4d9c,{0xa3,0xc6,0xb1,0x2c,0xdd,0xdb,0xd1,0xaf}};
+extern "C" const GUID __declspec(selectany) CLSID_CommandBarComboBox80 =
+    {0xc914a004,0xf36c,0x4a2f,{0xbc,0x3c,0x42,0x9f,0xfb,0x57,0x77,0x17}};
+extern "C" const GUID __declspec(selectany) IID_ICommandBarComboBoxEvents80 =
+    {0x9d13162a,0x8059,0x4210,{0xb4,0xe6,0x30,0x6d,0x00,0xfe,0x3c,0x49}};
+extern "C" const GUID __declspec(selectany) DIID__CommandBarComboBoxEvents80 =
+    {0xb9fc4679,0xba92,0x44de,{0x82,0x4b,0xb1,0xfc,0x7c,0x73,0x9d,0x87}};
+extern "C" const GUID __declspec(selectany) CLSID_CommandBarButton80 =
+    {0xe322950c,0xaaf9,0x43df,{0xa3,0x28,0x62,0xa1,0xa7,0xe9,0x6a,0xa6}};
+extern "C" const GUID __declspec(selectany) IID_ICommandBarButtonEvents80 =
+    {0x40864b73,0xc4b0,0x4e9c,{0x9c,0x17,0x56,0x7d,0x13,0x0c,0xb4,0x13}};
+extern "C" const GUID __declspec(selectany) DIID__CommandBarButtonEvents80 =
+    {0x5b6bb734,0xfc7d,0x4372,{0xa6,0x7d,0x0d,0x7a,0x21,0x2a,0x98,0xf7}};
+extern "C" const GUID __declspec(selectany) IID_CommandBarControl80 =
+    {0x43fd5911,0x7bac,0x4bdc,{0xab,0x6c,0x2d,0xe6,0x5b,0x5c,0x02,0x33}};
+extern "C" const GUID __declspec(selectany) IID__CommandBarButton80 =
+    {0xe11c7ce2,0x8641,0x4183,{0x94,0x58,0x30,0x9c,0x6a,0x20,0x1c,0xdd}};
+extern "C" const GUID __declspec(selectany) IID__CommandBarComboBox80 =
+    {0xb9223dac,0x9c92,0x4916,{0x93,0x96,0x6e,0x76,0x73,0xa9,0x37,0x24}};
+extern "C" const GUID __declspec(selectany) IID__CommandBarActiveX80 =
+    {0x7f1ee169,0x15be,0x44be,{0xb2,0x1e,0x63,0x39,0xfc,0x02,0x98,0x07}};
+extern "C" const GUID __declspec(selectany) IID_CommandBar80 =
+    {0xd27b4dfe,0x351c,0x4ad4,{0x92,0x11,0xf4,0x9b,0xec,0x19,0x10,0x6d}};
+extern "C" const GUID __declspec(selectany) IID_CommandBarControls80 =
+    {0x9f0a2735,0x2303,0x4e7b,{0x82,0xa9,0x21,0x10,0x15,0x30,0xb8,0x42}};
+extern "C" const GUID __declspec(selectany) IID__CommandBars80 =
+    {0x83d31b2e,0x9990,0x4275,{0xae,0x39,0x77,0xd1,0xfb,0x5b,0xbc,0xd9}};
+extern "C" const GUID __declspec(selectany) IID_CommandBarPopup80 =
+    {0xaad0c7e1,0x12eb,0x4271,{0x95,0x38,0x2c,0x91,0xb4,0x60,0x01,0x2b}};
+
+} // namespace Microsoft_VisualStudio_CommandBars
+
+#pragma pack(pop)

@@ -42,7 +42,7 @@ bool WWhizTemplateRegister(WWhizInterface* /*wwhizInterface*/,
 						   WWhizTemplateManager* templateManager,
 						   void* pDTE)
 {
-	g_pDTE = (EnvDTE::_DTE*)pDTE;
+	g_pDTE = (EnvDTE80::DTE2*)pDTE;
 #endif WWHIZ_VSNET
 	templateManager->RegisterCommand("PickDir",		s_pickDirCommand);
 

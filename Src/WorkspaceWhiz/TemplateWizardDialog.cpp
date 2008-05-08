@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
 #include "resource.h"
 #include "TemplateWizardDialog.h"
 #include <MsHtml.h>
@@ -284,7 +285,8 @@ void CTemplateWizardDialog::DocumentComplete(LPDISPATCH pDisp, VARIANT* URL)
 					// Match the name.
 					long optionCount;
 					pSelectElement->get_length(&optionCount);
-					for (int j = 0; j < optionCount; j++)
+					int j;
+					for (j = 0; j < optionCount; j++)
 					{
 						// Get the item at the index.
 						CComPtr<IDispatch> pDispOptionElement;

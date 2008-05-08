@@ -10,6 +10,8 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include <afx.h>
+#include <afxwin.h>
 #include "WWhizInterfaceLoader.h"
 #include "WWhizTemplateManagerLoader.h"
 #include "WWhizTemplateManager.h"

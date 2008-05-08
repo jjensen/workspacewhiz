@@ -43,24 +43,6 @@ using namespace ATL;
 
 #endif WWHIZ_VC6
 
-#ifdef WWHIZ_VSNET
-
-#pragma warning( disable : 4278 )
-#pragma warning( disable : 4146 )
-	//The following #import imports MSO based on it's LIBID
-	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
-
-	//The following #import imports DTE based on it's LIBID
-	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-						
-	//The following imports the VCProjectEngine.
-	#include "VCProjectEngine70.tlh"
-	#include "VCProjectEngine71.tlh"
-#pragma warning( default : 4146 )
-#pragma warning( default : 4278 )
-
-#endif WWHIZ_VSNET
-
 #pragma warning(push, 3)
 #pragma warning(disable: 4035)
 __forceinline int PASCAL FastStrlen(LPCSTR lpsz)

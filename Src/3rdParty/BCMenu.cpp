@@ -17,6 +17,7 @@
 
 #include "BCMenu.h"        // BCMenu class declaration
 #include <afxpriv.h>       //SK: makes A2W and other spiffy AFX macros work
+#include "WCollection.h"
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW

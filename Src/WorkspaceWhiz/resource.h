@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by WorkspaceWhiz.rc
+// Microsoft Visual C++ generated include file.
+// Used by WWhizNet.rc
 //
 #define IDS_WORKSPACEWHIZ_LONGNAME      1
 #define IDS_WORKSPACEWHIZ_DESCRIPTION   2
@@ -210,7 +210,7 @@
 #define IDC_FFP_EXPLORE                 45006
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        201

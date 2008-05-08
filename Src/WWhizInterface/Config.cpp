@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #include "Config.h"
 
 WWhizConfigImpl::WWhizConfigImpl()

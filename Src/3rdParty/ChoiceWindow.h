@@ -5,6 +5,9 @@
 // ChoiceWindow.h : header file
 //
 
+#include <afxwin.h>
+#include <afxcmn.h>
+
 /////////////////////////////////////////////////////////////////////////////
 // CChoiceWindow window
 

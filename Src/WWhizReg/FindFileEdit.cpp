@@ -9,6 +9,7 @@
 // distribution is strictly prohibited unless prior consent has
 // been given by Joshua C. Jensen.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizReg.h"
 #include "FindFileEdit.h"
 
 #ifdef _DEBUG

@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
 #include "resource.h"
 #include "TextLine.h"
 
@@ -45,7 +46,8 @@ bool TextLine::GetLine()
 
 	// Get the untabified line size.
 	int newLineWidth = 0;
-	for (int i = 0; i < strLine.GetLength(); i++)
+	int i;
+	for (i = 0; i < strLine.GetLength(); i++)
 	{
 		if (strLine[i] == '\t')
 			newLineWidth += m_tabSize - (newLineWidth % m_tabSize);
@@ -249,7 +251,11 @@ Done:
 //			extra = "'f";
 	}
 	if (!parent.IsEmpty())
+#if USE_SQLITE
+		return extra + parent + "::" + word;
+#else
 		return extra + word + ";" + parent;
+#endif
 	else
 		return extra + word;
 }

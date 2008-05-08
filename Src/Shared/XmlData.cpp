@@ -82,15 +82,24 @@ static CString ReadTag(LPCSTR& ptr)
 			LPCSTR startTagPtr = ptr;
 			// Start of tag.
 			bool quoted = false;
+			char quoteChar = 0;
 			while (true)
 			{
 				if (*ptr == 0)
 				{
 					return "";
 				}
-				else if (*ptr == '"')
+				else if (*ptr == '"'  ||  *ptr == '\'')
 				{
-					quoted = !quoted;
+					if (!quoted)
+					{
+						quoted = true;
+						quoteChar = *ptr;
+					}
+					else if (*ptr == quoteChar)
+					{
+						quoted = false;
+					}
 				}
 				else if (*ptr == '\n'  ||  *ptr == '\r'  ||  *ptr == '\t')
 				{
@@ -126,9 +135,11 @@ static CString ParseToken(LPCSTR& ptr)
 		
 	// Get the parameter.
 	bool inQuote = false;
-	if (*ptr == '"')
+	char quoteChar = 0;
+	if (*ptr == '"'  ||  *ptr == '\'')
 	{
 		inQuote = true;
+		quoteChar = *ptr;
 		ptr++;
 	}
 
@@ -140,7 +151,7 @@ static CString ParseToken(LPCSTR& ptr)
 		{
 			break;
 		}
-		else if (*ptr == '"')
+		else if (*ptr == quoteChar)
 		{
 			if (inQuote)
 			{
@@ -232,12 +243,14 @@ bool XmlData::ParseXmlFile(CFile& file)
 	xmlNodeStack.AddTail(m_xmlRoot);
 
 	LPCSTR bufPos = buf;
+	CString lastTag;
 	while (true)
 	{
 		XmlNode* curNode = xmlNodeStack.GetTail();
 		CString tag = ReadTag(bufPos);
 		if (tag.IsEmpty())
 			break;
+		lastTag = tag;
 
 		LPCSTR ptr = (LPCTSTR)tag;
 

@@ -54,6 +54,11 @@ BYTE* MemFile::Detach()
 	return lpBuffer;
 }
 
+BYTE* MemFile::Peek()
+{
+	return m_lpBuffer;
+}
+
 MemFile::~MemFile()
 {
 	// Close should have already been called, but we check anyway

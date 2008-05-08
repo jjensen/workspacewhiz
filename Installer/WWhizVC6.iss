@@ -3,30 +3,34 @@
 
 [Setup]
 AppName=Workspace Whiz for Visual C++ 6
-AppVerName=Workspace Whiz 3.0 for Visual C++ 6 - Build 1026
-AppVersion=3.0 Build 1026
+AppVerName=Workspace Whiz 4.0 for Visual C++ 6 - Build 1115
+AppVersion=4.0 RC5 Build 1115
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 3.0 for Visual C++ 6, Copyright © 2003 Joshua Jensen
+AppCopyright=Workspace Whiz 4.0 for Visual C++ 6, Copyright © 1997-2007 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz VC6
 DefaultGroupName=Workspace Whiz for Visual C++ 6
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz30VC6_1026
+OutputBaseFilename=WorkspaceWhiz40VC6_1115
 OutputDir=.
-AdminPrivilegesRequired=yes
+PrivilegesRequired=admin
 UsePreviousAppDir=yes
 
 [Files]
-Source: "..\Bin\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: ignoreversion regserver
+Source: "..\Bin\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: regserver ignoreversion
+Source: "..\Bin\WWhizInterfaceHelper.pkg"; DestDir: "{reg:HKLM\Software\Microsoft\VisualStudio\6.0\Setup,VsCommonDir}\MSDev98\Bin\IDE"; Flags: ignoreversion
+Source: "..\Bin\WWhizInterface2.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Bin\CTAGS.EXE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Bin\ctags.conf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Bin\WWhizReg.mod"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Bin\WWhizTemplateManager.mod"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Bin\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Bin\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Bin\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
-Source: "..\Bin\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
-Source: ".\WWhizInterface30VC6_1026.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "..\Bin\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
+;Source: ".\WWhizInterface40VC6_1115.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\VC6"; Flags: uninsdeletekeyifempty
@@ -42,7 +46,7 @@ Name: "{group}\Workspace Whiz Website"; Filename: "{app}\WorkspaceWhiz.url"
 Name: "{group}\Workspace Whiz Help"; Filename: "{app}\WorkspaceWhiz.chm"
 
 [Run]
-Filename: "{app}\WWhizInterface30VC6_1026.exe"
+;Filename: "{app}\WWhizInterface30VC6_1026.exe"
 
 [UninstallDelete]
 Type: files; Name: "{app}\WorkspaceWhiz.url"
@@ -56,9 +60,11 @@ var
   uninstallRegKey: String;
   uninstallFileName: String;
   resultCode: Integer;
+  quoteChar: Char;
   Ch : Char;
 begin
   Result := True;
+  quoteChar := Chr(34);
 
   while FindWindowByClassName('Afx:400000:8:10011:0:180565') <> 0 do
   begin
@@ -78,7 +84,7 @@ begin
     uninstallFileName := installPath + '\UNWISE.EXE';
     if FileExists(uninstallFileName) then
     begin
-      InstExec(uninstallFileName, '/S install.log', installPath, True, False, SW_SHOWNORMAL, resultCode);
+      Exec(uninstallFileName, '/S install.log', installPath, SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
     end;
     uninstallFileName := ''
   end;
@@ -88,14 +94,12 @@ begin
   RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
   if uninstallFileName <> '' then
   begin
-(*    if Ord(StrGet(uninstallFileName, 1)) = 34 then*)
     ch := StrGet(uninstallFileName, 1);
-{    if ch = quoteChar then}
-      uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
+    uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
 
     if FileExists(uninstallFileName) then
     begin
-      InstExec(uninstallFileName, '/SILENT', '', True, False, SW_SHOWNORMAL, resultCode);
+      Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
     end;
   end;
 end;

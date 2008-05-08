@@ -24,6 +24,7 @@
 #include <afxtempl.h>
 #include <process.h>
 #include "TemplateManager.h"
+#include "ObjModelHelper.h"
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW
@@ -32,6 +33,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
+class WWhizInterface;
 
 WWhizInterface* g_wwhizInterface;
 HINSTANCE g_instance;

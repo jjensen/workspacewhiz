@@ -135,9 +135,9 @@ int CAboutDialog::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CAboutDialog::OnAbRegister()
 {
-//	if (g_wwhizReg)
-//		g_wwhizReg->RegistrationDialog();
-	if (AfxMessageBox("If you wish to contribute to the further development of Workspace Whiz "
+	if (g_wwhizReg)
+		g_wwhizReg->RegistrationDialog(true);
+/*	if (AfxMessageBox("If you wish to contribute to the further development of Workspace Whiz "
 			"press OK to connect to PayPal and send a donation to 'sales@workspacewhiz.com'.  Any amount "
 			"would be appreciated.\nPress Cancel to continue using Workspace Whiz.\n",
 			MB_OKCANCEL) == IDCANCEL)
@@ -146,5 +146,5 @@ void CAboutDialog::OnAbRegister()
 	}
 
 	ShellExecute(NULL, "open", "http://www.paypal.com/", NULL, NULL, SW_SHOW);
-
+*/
 }

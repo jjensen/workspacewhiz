@@ -4,13 +4,15 @@
 // $Date: 2003/01/05 $ $Revision: #5 $ $Author: Joshua $
 ///////////////////////////////////////////////////////////////////////////////
 // This source file is part of the Workspace Whiz source distribution and
-// is Copyright 1997-2003 by Joshua C. Jensen.  (http://workspacewhiz.com/)
+// is Copyright 1997-2006 by Joshua C. Jensen.  (http://workspacewhiz.com/)
 //
 // The code presented in this file may be freely used and modified for all
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
+
+#include <assert.h>
 
 class WorkspaceTags;
 class File;
@@ -25,15 +27,17 @@ const DWORD TAG_IDENTLEN_OFFSET = 9;
 const DWORD TAG_SEARCHSTRINGLEN_OFFSET = 10;
 const DWORD TAG_SHORTPARENTIDENTLEN_OFFSET = 12;
 const DWORD TAG_PARENTIDENTLEN_OFFSET = 13;
-const DWORD TAG_NAMESPACELEN_OFFSET = 14;
-const DWORD TAG_SHORTIDENT_OFFSET = 15;
+const DWORD TAG_SHORTNAMESPACELEN_OFFSET = 14;
+const DWORD TAG_NAMESPACELEN_OFFSET = 15;
+const DWORD TAG_SHORTIDENT_OFFSET = 16;
 
 const BYTE TAGFLAG_SHORTIDENT		= 0x01;
 const BYTE TAGFLAG_IDENT			= 0x02;
 const BYTE TAGFLAG_SEARCHSTRING		= 0x04;
 const BYTE TAGFLAG_SHORTPARENTIDENT = 0x08;
 const BYTE TAGFLAG_PARENTIDENT		= 0x10;
-const BYTE TAGFLAG_NAMESPACE		= 0x20;
+const BYTE TAGFLAG_SHORTNAMESPACE   = 0x20;
+const BYTE TAGFLAG_NAMESPACE		= 0x40;
 
 	
 class Tag : public WWhizTag
@@ -51,6 +55,7 @@ public:
 	virtual LPCSTR GetSearchString(void) const;
 	virtual LPCSTR GetShortParentIdent(void) const;
 	virtual LPCSTR GetParentIdent(void) const;
+	virtual LPCSTR GetShortNamespace(void) const;
 	virtual LPCSTR GetNamespace(void) const;
 
 	virtual int GetLineNumber(void) const;
@@ -61,6 +66,8 @@ public:
 	virtual Access GetAccess(void) const;
 	virtual WWhizTag* GetBuddy(void) const;
 	virtual ImplementationType GetImplementationType(void) const;
+
+	virtual WWhizFile* GetFile() const				{  return (WWhizFile*)m_parent;  }
 
 	static bool ConvertFromText(CFile& file, TCHAR* strLine);
 
@@ -80,6 +87,7 @@ public: //Hack.
 	LPCSTR m_shortParentIdent;
 	LPCSTR m_parentIdent;
 //	int m_lineNumber;
+	LPCSTR m_shortNamespace;
 	LPCSTR m_namespace;
 //	ImplementationType m_implementationType;
 
@@ -158,6 +166,12 @@ inline LPCSTR Tag::GetShortParentIdent(void) const
 inline LPCSTR Tag::GetParentIdent(void) const
 {
 	return m_parentIdent;
+}
+
+
+inline LPCSTR Tag::GetShortNamespace(void) const
+{
+	return m_shortNamespace;
 }
 
 

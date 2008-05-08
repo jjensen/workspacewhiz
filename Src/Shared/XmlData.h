@@ -17,6 +17,8 @@
 #include <afx.h>
 #include <afxtempl.h>
 
+#include "WCollection.h"
+
 /**
 	Represents a node within an simple XML hierarchy.
 

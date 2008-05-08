@@ -1,8 +1,11 @@
 #pragma once
 
+#include "../sqlite/sqlite3.h"
+
 extern WWhizInterface* g_wwhizInterface;
 extern WWhizReg* g_wwhizReg;
 extern WWhizTemplateManager* g_wwhizTemplateManager;
+extern sqlite3* g_db;
 
 extern Config g_config;
 

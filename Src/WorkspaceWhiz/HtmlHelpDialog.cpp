@@ -16,6 +16,7 @@
 /* use is allowed, as long as this document is not altered in any way, and */
 /* due credit is given.                                                    */
 /***************************************************************************/
+#include "stdafx.h"
 #include "resource.h"
 #include "HtmlHelpDialog.h"
 #include "HtmlHelp.h"

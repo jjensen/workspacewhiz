@@ -14,12 +14,30 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
+#ifndef STRICT
+#define STRICT
+#endif
+
 #ifndef WINVER
 #define WINVER 0x0400
 #endif
 
+#ifndef _WIN32_WINNT		// Allow use of features specific to Windows NT 4 or later.
+#define _WIN32_WINNT 0x0400	// Change this to the appropriate value to target Windows 2000 or later.
+#endif						
+
+#ifndef _WIN32_WINDOWS		// Allow use of features specific to Windows 98 or later.
+#define _WIN32_WINDOWS 0x0410 // Change this to the appropriate value to target Windows Me or later.
+#endif
+
+#ifndef _WIN32_IE			// Allow use of features specific to IE 4.0 or later.
+#define _WIN32_IE 0x0400	// Change this to the appropriate value to target IE 5.0 or later.
+#endif
+
 #define _ATL_APARTMENT_THREADED
 #define _ATL_NO_AUTOMATIC_NAMESPACE
+
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
 // turns off ATL's hiding of some common and often safely ignored warning messages
 #define _ATL_ALL_WARNINGS
@@ -27,6 +45,7 @@
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4311 )
 #pragma warning( disable : 4312 )
+
 
 #include <afxcmn.h>
 #include <afxtempl.h>
@@ -43,20 +62,6 @@ using namespace ATL;
 #include <ObjModel\appauto.h>
 
 #endif WWHIZ_VC6
-
-#ifdef WWHIZ_VSNET
-
-#pragma warning( disable : 4278 )
-#pragma warning( disable : 4146 )
-	//The following #import imports MSO based on it's LIBID
-	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
-
-	//The following #import imports DTE based on it's LIBID
-	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-#pragma warning( default : 4146 )
-#pragma warning( default : 4278 )
-
-#endif WWHIZ_VSNET
 
 // determine number of elements in an array (not bytes)
 #ifndef _countof

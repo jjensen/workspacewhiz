@@ -2,11 +2,7 @@
 
 #pragma once
 #include "resource.h"       // main symbols
-
-#pragma warning( disable : 4278 )
-//The following #import imports DTE based on it's LIBID
-#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-#pragma warning( default : 4278 )
+#include "MSADDNDR.tlh"
 
 // CConnect
 class ATL_NO_VTABLE CConnect : 
@@ -44,6 +40,8 @@ END_COM_MAP()
 	}
 
 public:
+	void FreeEvents();
+
 // IDTExtensibility2 implementation:
 	STDMETHOD(OnConnection)(IDispatch * Application, AddInDesignerObjects::ext_ConnectMode ConnectMode, IDispatch *AddInInst, SAFEARRAY **custom);
 	STDMETHOD(OnDisconnection)(AddInDesignerObjects::ext_DisconnectMode RemoveMode, SAFEARRAY **custom );

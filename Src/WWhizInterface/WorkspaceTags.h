@@ -13,6 +13,7 @@
 #pragma once
 
 #include "WorkspaceInfo.h"
+#include "TagList.h"
 
 /**
 **/

@@ -1,153 +1,220 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="WorkspaceWhiz"
 	ProjectGUID="{4C0121D7-16F7-41E1-AEF1-C044693AFF30}"
-	Keyword="AtlProj">
+	RootNamespace="WorkspaceWhiz"
+	Keyword="AtlProj"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\..\Output\WWhizNet\WorkspaceWhiz\Debug"
-			IntermediateDirectory=".\..\..\Output\WWhizNet\WorkspaceWhiz\Debug"
+			OutputDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			UseOfATL="1"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="0">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(IntDir)/WWhizNet.tlb"
+				HeaderFileName="WWhizNet.h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="WWhizNet_i.c"
+				ProxyFileName="WWhizNet_p.c"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\Shared,..\3rdParty"
 				PreprocessorDefinitions="WWHIZ_VSNET;WWHIZ_VSNET2002"
-				MinimalRebuild="FALSE"
+				MinimalRebuild="false"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="3"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 				CompileAs="0"
-				ForcedIncludeFiles="StdAfx.h"/>
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles=""
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				RegisterOutput="FALSE"
-				OutputFile="..\..\BinVSNet\WorkspaceWhizD.dll"
-				LinkIncremental="2"
-				IgnoreDefaultLibraryNames=""
-				ModuleDefinitionFile=".\WorkspaceWhiz.def"
-				GenerateDebugInformation="TRUE"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/$(ProjectName).lib"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="FALSE"
-				TargetEnvironment="1"
-				GenerateStublessProxies="TRUE"
-				TypeLibraryName="$(IntDir)/WWhizNet.tlb"
-				HeaderFileName="WWhizNet.h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="WWhizNet_i.c"
-				ProxyFileName="WWhizNet_p.c"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"/>
+				AdditionalIncludeDirectories="$(IntDir)"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLinkerTool"
+				RegisterOutput="false"
+				OutputFile="..\..\BinVSNet\WorkspaceWhizD.dll"
+				LinkIncremental="2"
+				IgnoreDefaultLibraryNames=""
+				ModuleDefinitionFile=".\WorkspaceWhiz.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				ImportLibrary="$(OutDir)/$(ProjectName).lib"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\..\..\Output\WWhizNet\WorkspaceWhiz\Release"
-			IntermediateDirectory=".\..\..\Output\WWhizNet\WorkspaceWhiz\Release"
+			OutputDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			UseOfATL="1"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(IntDir)/WWhizNet.tlb"
+				HeaderFileName="WWhizNet.h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="WWhizNet_i.c"
+				ProxyFileName="WWhizNet_p.c"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\Shared,..\3rdParty"
 				PreprocessorDefinitions="WWHIZ_VSNET;WWHIZ_VSNET2002"
-				StringPooling="TRUE"
-				MinimalRebuild="FALSE"
+				StringPooling="true"
+				MinimalRebuild="false"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="3"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
-				ForcedIncludeFiles="StdAfx.h"/>
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles=""
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				RegisterOutput="FALSE"
-				IgnoreImportLibrary="TRUE"
-				OutputFile="..\..\BinVSNet\WorkspaceWhiz.dll"
-				LinkIncremental="1"
-				ModuleDefinitionFile=".\WorkspaceWhiz.def"
-				GenerateDebugInformation="TRUE"
-				SubSystem="2"
-				BaseAddress="0x60000000"
-				ImportLibrary="$(OutDir)/$(ProjectName).lib"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="FALSE"
-				TargetEnvironment="1"
-				GenerateStublessProxies="TRUE"
-				TypeLibraryName="$(IntDir)/WWhizNet.tlb"
-				HeaderFileName="WWhizNet.h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="WWhizNet_i.c"
-				ProxyFileName="WWhizNet_p.c"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"/>
+				AdditionalIncludeDirectories="$(IntDir)"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLinkerTool"
+				RegisterOutput="false"
+				IgnoreImportLibrary="true"
+				OutputFile="..\..\BinVSNet\WorkspaceWhiz.dll"
+				LinkIncremental="1"
+				ModuleDefinitionFile=".\WorkspaceWhiz.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				BaseAddress="0x60000000"
+				ImportLibrary="$(OutDir)/$(ProjectName).lib"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCManifestTool"
+				EmbedManifest="true"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -155,399 +222,754 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
+			>
 			<File
-				RelativePath="AboutDialog.cpp">
+				RelativePath="AboutDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="AutoCompleteTagsDlg.cpp">
+				RelativePath="AutoCompleteTagsDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath="Config.cpp">
+				RelativePath="Config.cpp"
+				>
 			</File>
 			<File
-				RelativePath="ExtraFilesDialog.cpp">
+				RelativePath="ExtraFilesDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="FindFileDialog.cpp">
+				RelativePath="FindFileDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="FindTagDialog.cpp">
+				RelativePath="FindTagDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="History.cpp">
+				RelativePath="History.cpp"
+				>
 			</File>
 			<File
-				RelativePath="HistoryDialog.cpp">
+				RelativePath="HistoryDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="HistoryListCtrl.cpp">
+				RelativePath="HistoryListCtrl.cpp"
+				>
 			</File>
 			<File
-				RelativePath="HtmlHelpDialog.cpp">
+				RelativePath="HtmlHelpDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="PreferencesDialog.cpp">
+				RelativePath="PreferencesDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="PrefHeaderFlipListBox.cpp">
+				RelativePath="PrefHeaderFlipListBox.cpp"
+				>
 			</File>
 			<File
-				RelativePath="PrefHeaderFlipPage.cpp">
+				RelativePath="PrefHeaderFlipPage.cpp"
+				>
 			</File>
 			<File
-				RelativePath="PrefKeyBindingsHotKeyCtrl.cpp">
+				RelativePath="PrefKeyBindingsHotKeyCtrl.cpp"
+				>
 			</File>
 			<File
-				RelativePath="PrefKeyBindingsPage.cpp">
+				RelativePath="PrefKeyBindingsPage.cpp"
+				>
 			</File>
 			<File
-				RelativePath="PrefTagsListBox.cpp">
+				RelativePath="PrefTagsListBox.cpp"
+				>
 			</File>
 			<File
-				RelativePath="PrefTagsPage.cpp">
+				RelativePath="PrefTagsPage.cpp"
+				>
 			</File>
 			<File
-				RelativePath="stdafx.cpp">
+				RelativePath="stdafx.cpp"
+				>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TemplateFileListDialog.cpp">
+				RelativePath="TemplateFileListDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="TemplateSelectDialog.cpp">
+				RelativePath="TemplateSelectDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="TemplateWizardDialog.cpp">
+				RelativePath="TemplateWizardDialog.cpp"
+				>
 			</File>
 			<File
-				RelativePath="TextLine.cpp">
+				RelativePath="TextLine.cpp"
+				>
 			</File>
 			<File
-				RelativePath="WorkspaceWhiz.cpp">
+				RelativePath="WorkspaceWhiz.cpp"
+				>
 			</File>
 			<File
-				RelativePath="WorkspaceWhiz.def">
+				RelativePath="WorkspaceWhiz.def"
+				>
 			</File>
 			<File
-				RelativePath="WWhizCommands.cpp">
+				RelativePath="WWhizCommands.cpp"
+				>
 			</File>
 			<File
-				RelativePath="WWhizNet.idl">
+				RelativePath="WWhizNet.idl"
+				>
 			</File>
 			<File
-				RelativePath="WWhizNetConnect.cpp">
+				RelativePath="WWhizNetConnect.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc">
+			Filter="h;hpp;hxx;hm;inl;inc"
+			>
 			<File
-				RelativePath="AboutDialog.h">
+				RelativePath="AboutDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="AutoCompleteTagsDlg.h">
+				RelativePath="AutoCompleteTagsDlg.h"
+				>
 			</File>
 			<File
-				RelativePath="Config.h">
+				RelativePath="Config.h"
+				>
 			</File>
 			<File
-				RelativePath="ExtraFilesDialog.h">
+				RelativePath="ExtraFilesDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="FindFileDialog.h">
+				RelativePath="FindFileDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="FindTagDialog.h">
+				RelativePath="FindTagDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="History.h">
+				RelativePath="History.h"
+				>
 			</File>
 			<File
-				RelativePath="HistoryDialog.h">
+				RelativePath="HistoryDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="HistoryListCtrl.h">
+				RelativePath="HistoryListCtrl.h"
+				>
 			</File>
 			<File
-				RelativePath="HtmlHelpDialog.h">
+				RelativePath="HtmlHelpDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="PreferencesDialog.h">
+				RelativePath="PreferencesDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="PrefHeaderFlipListBox.h">
+				RelativePath="PrefHeaderFlipListBox.h"
+				>
 			</File>
 			<File
-				RelativePath="PrefHeaderFlipPage.h">
+				RelativePath="PrefHeaderFlipPage.h"
+				>
 			</File>
 			<File
-				RelativePath="PrefKeyBindingsHotKeyCtrl.h">
+				RelativePath="PrefKeyBindingsHotKeyCtrl.h"
+				>
 			</File>
 			<File
-				RelativePath="PrefKeyBindingsPage.h">
+				RelativePath="PrefKeyBindingsPage.h"
+				>
 			</File>
 			<File
-				RelativePath="PrefTagsListBox.h">
+				RelativePath="PrefTagsListBox.h"
+				>
 			</File>
 			<File
-				RelativePath="PrefTagsPage.h">
+				RelativePath="PrefTagsPage.h"
+				>
 			</File>
 			<File
-				RelativePath="Resource.h">
+				RelativePath="Resource.h"
+				>
 			</File>
 			<File
-				RelativePath="stdafx.h">
+				RelativePath="stdafx.h"
+				>
 			</File>
 			<File
-				RelativePath="TemplateFileListDialog.h">
+				RelativePath="TemplateFileListDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="TemplateSelectDialog.h">
+				RelativePath="TemplateSelectDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="TemplateWizardDialog.h">
+				RelativePath="TemplateWizardDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="TextLine.h">
+				RelativePath="TextLine.h"
+				>
 			</File>
 			<File
-				RelativePath="WWhizCommands.h">
+				RelativePath="WWhizCommands.h"
+				>
 			</File>
 			<File
-				RelativePath="WWhizNetConnect.h">
+				RelativePath="WWhizNetConnect.h"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+			>
 			<File
-				RelativePath="res\AboutTitle.JPG">
+				RelativePath="res\AboutTitle.JPG"
+				>
 			</File>
 			<File
-				RelativePath="res\Back.GIF">
+				RelativePath="res\Back.GIF"
+				>
 			</File>
 			<File
-				RelativePath="res\icon1.ico">
+				RelativePath="res\icon1.ico"
+				>
 			</File>
 			<File
-				RelativePath="res\IconFileFindNext.bmp">
+				RelativePath="res\IconFileFindNext.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconFileFindPrev.bmp">
+				RelativePath="res\IconFileFindPrev.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconGlobalFileOpen.bmp">
+				RelativePath="res\IconGlobalFileOpen.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconHeaderFlip.bmp">
+				RelativePath="res\IconHeaderFlip.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWorkspaceFileOpen.bmp">
+				RelativePath="res\IconWorkspaceFileOpen.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWFileFindNext.bmp">
+				RelativePath="res\IconWWFileFindNext.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWFileFindPrev.bmp">
+				RelativePath="res\IconWWFileFindPrev.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWFileGlobalOpen.bmp">
+				RelativePath="res\IconWWFileGlobalOpen.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWFileOpen.bmp">
+				RelativePath="res\IconWWFileOpen.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWHeaderFlip.bmp">
+				RelativePath="res\IconWWHeaderFlip.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWHistoryBack.bmp">
+				RelativePath="res\IconWWHistoryBack.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWHistoryDlg.bmp">
+				RelativePath="res\IconWWHistoryDlg.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWHistoryForward.bmp">
+				RelativePath="res\IconWWHistoryForward.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWOptions.bmp">
+				RelativePath="res\IconWWOptions.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagCompleteDlg.bmp">
+				RelativePath="res\IconWWTagCompleteDlg.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagCompleteNext.bmp">
+				RelativePath="res\IconWWTagCompleteNext.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagCompletePrev.bmp">
+				RelativePath="res\IconWWTagCompletePrev.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagCompleteRestore.bmp">
+				RelativePath="res\IconWWTagCompleteRestore.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagFindAtCursor.bmp">
+				RelativePath="res\IconWWTagFindAtCursor.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagFindAtCursorDlg.bmp">
+				RelativePath="res\IconWWTagFindAtCursorDlg.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagFindDlg.bmp">
+				RelativePath="res\IconWWTagFindDlg.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagFindNext.bmp">
+				RelativePath="res\IconWWTagFindNext.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagFindPrev.bmp">
+				RelativePath="res\IconWWTagFindPrev.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagFindSpecialDlg.bmp">
+				RelativePath="res\IconWWTagFindSpecialDlg.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTagFlip.bmp">
+				RelativePath="res\IconWWTagFlip.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTemplateComplete.bmp">
+				RelativePath="res\IconWWTemplateComplete.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\IconWWTemplateSelect.bmp">
+				RelativePath="res\IconWWTemplateSelect.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\TBarLrge.bmp">
+				RelativePath="res\TBarLrge.bmp"
+				>
 			</File>
 			<File
-				RelativePath="res\TBarMedm.bmp">
+				RelativePath="res\TBarMedm.bmp"
+				>
 			</File>
 			<File
-				RelativePath="WWhizNet.rc">
+				RelativePath="WWhizNet.rc"
+				>
 			</File>
 			<File
-				RelativePath="WWhizNet.rgs">
-			</File>
-		</Filter>
-		<Filter
-			Name="Third Party">
-			<File
-				RelativePath="..\3rdParty\BCMenu.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\BCMenu.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCDynamicDialog.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCDynamicDialog.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCDynamicWnd.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCDynamicWnd.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCDynamicWndEx.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCDynamicWndEx.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCSizeIconCtrl.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\cdxCSizeIconCtrl.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ChoiceWindow.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ChoiceWindow.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ChoiceWindowBtn.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ChoiceWindowBtn.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\MemFile.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\MemFile.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ObjModelHelper.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ObjModelHelper.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ShellContextMenu.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ShellContextMenu.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ShellTools.cpp">
-			</File>
-			<File
-				RelativePath="..\3rdParty\ShellTools.h">
-			</File>
-			<File
-				RelativePath="..\Shared\Timer.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\TreeCtrlEx.h">
-			</File>
-			<File
-				RelativePath="..\3rdParty\WCollection.h">
+				RelativePath="WWhizNet.rgs"
+				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Shared">
+			Name="Third Party"
+			>
 			<File
-				RelativePath="..\Shared\WWhizInterface2.h">
+				RelativePath="..\3rdParty\BCMenu.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizInterface3.h">
+				RelativePath="..\3rdParty\BCMenu.h"
+				>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizInterfaceLoader.cpp">
+				RelativePath="..\3rdParty\cdxCDynamicDialog.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizInterfaceLoader.h">
+				RelativePath="..\3rdParty\cdxCDynamicDialog.h"
+				>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizReg.h">
+				RelativePath="..\3rdParty\cdxCDynamicWnd.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizRegLoader.cpp">
+				RelativePath="..\3rdParty\cdxCDynamicWnd.h"
+				>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizRegLoader.h">
+				RelativePath="..\3rdParty\cdxCDynamicWndEx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizTemplateManager.h">
+				RelativePath="..\3rdParty\cdxCDynamicWndEx.h"
+				>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizTemplateManagerLoader.cpp">
+				RelativePath="..\3rdParty\cdxCSizeIconCtrl.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizTemplateManagerLoader.h">
+				RelativePath="..\3rdParty\cdxCSizeIconCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ChoiceWindow.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ChoiceWindow.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ChoiceWindowBtn.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ChoiceWindowBtn.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\MemFile.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\3rdParty\MemFile.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ObjModelHelper.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ObjModelHelper.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ShellContextMenu.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ShellContextMenu.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ShellTools.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\3rdParty\ShellTools.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\Timer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\TreeCtrlEx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\3rdParty\WCollection.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Shared"
+			>
+			<File
+				RelativePath="..\Shared\WWhizInterface2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizInterface3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizInterfaceLoader.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizInterfaceLoader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizReg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizRegLoader.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizRegLoader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizTemplateManager.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizTemplateManagerLoader.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizTemplateManagerLoader.h"
+				>
 			</File>
 		</Filter>
 		<File
-			RelativePath="res\About.html">
+			RelativePath="res\About.html"
+			>
 		</File>
 	</Files>
 	<Globals>

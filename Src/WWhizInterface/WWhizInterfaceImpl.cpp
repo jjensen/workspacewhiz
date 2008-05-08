@@ -10,12 +10,13 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #include "WorkspaceInfo.h"
 #include "WorkspaceTags.h"
 #include "CompilerFiles.h"
 #include "Config.h"
 
-static DWORD s_wwhizVersion = 0x030003f7;
+static DWORD s_wwhizVersion = 0x04000459;
 
 class WWhizInterfaceImpl : public WWhizInterface
 {
@@ -134,6 +135,9 @@ extern pfnGetWorkspaceName g_fnGetWorkspaceName;
 #endif WWHIZ_VC6
 
 #ifdef WWHIZ_VSNET
+	if (!g_pDTE)
+		return "";
+
 	CComPtr<EnvDTE::_Solution> pSolution;
 	g_pDTE->get_Solution(&pSolution);
 	if (!pSolution)

@@ -19,6 +19,7 @@
 #include "BCMenu.h"
 #include "ShellContextMenu.h"
 #include "ShellTools.h"
+#include "WCollection.h"
 
 #ifdef _DEBUG
 #define WNEW DEBUG_NEW

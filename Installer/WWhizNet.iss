@@ -2,33 +2,42 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Workspace Whiz for Visual Studio .NET
-AppVerName=Workspace Whiz 3.0 for Visual Studio .NET - Build 1026
-AppVersion=3.0 Build 1026
+AppName=Workspace Whiz for Visual Studio 2002, 2003, and 2005
+AppVerName=Workspace Whiz 4.0 for Visual Studio 2002, 2003, and 2005 - Build 1115
+AppVersion=4.0 RC5 Build 1115
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 3.0 for Visual Studio .NET, Copyright © 2003 Joshua Jensen
-DefaultDirName={pf}\Workspace Whiz .NET
-DefaultGroupName=Workspace Whiz for Visual Studio .NET
+AppCopyright=Workspace Whiz 4.0 for Visual Studio, Copyright © 1997-2007 Joshua Jensen
+DefaultDirName={pf}\Workspace Whiz
+DefaultGroupName=Workspace Whiz for Visual Studio 2002, 2003, and 2005
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz30VSNET_1026
+OutputBaseFilename=WorkspaceWhiz40VS200x_1115
 OutputDir=.
-AdminPrivilegesRequired=yes
+PrivilegesRequired=admin
 UsePreviousAppDir=yes
 
 [Files]
 Source: "..\BinVSNet\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: regserver ignoreversion
+Source: "..\BinVSNet\WWhizInterface2.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\BinVSNet\CTAGS.EXE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\BinVSNet\ctags.conf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\WWhizReg.mod"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\WWhizTemplateManager.mod"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
-Source: "..\BinVSNet\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
-Source: ".\WWhizInterface30NET_1026.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\MFC71.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "..\BinVSNet\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
+;Source: ".\WWhizInterface40NET_1115.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "..\BinVSNet\MFC71.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "..\BinVSNet\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\BinVSNet\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC80.CRT\msvcr80.dll"; DestDir: "{app}\Microsoft.VC80.CRT"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC80.CRT\msvcp80.dll"; DestDir: "{app}\Microsoft.VC80.CRT"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"; DestDir: "{app}\Microsoft.VC80.CRT"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC80.MFC\mfc80.dll"; DestDir: "{app}\Microsoft.VC80.MFC"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC80.MFC\Microsoft.VC80.MFC.manifest"; DestDir: "{app}\Microsoft.VC80.MFC"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
@@ -36,6 +45,7 @@ Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; ValueType: string; ValueName
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS700FirstTime"; ValueData: "1"
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS710FirstTime"; ValueData: "1"
+Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS800FirstTime"; ValueData: "1"
 
 [INI]
 Filename: "{app}\WorkspaceWhiz.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://workspacewhiz.com/"
@@ -46,7 +56,7 @@ Name: "{group}\Workspace Whiz Help"; Filename: "{app}\WorkspaceWhiz.chm"
 Name: "{group}\Uninstall Workspace Whiz"; Filename: "{uninstallexe}"
 
 [Run]
-Filename: "{app}\WWhizInterface30NET_1026.exe"
+;Filename: "{app}\WWhizInterface40NET_1105.exe"
 
 [UninstallDelete]
 Type: files; Name: "{app}\WorkspaceWhiz.url"
@@ -82,12 +92,39 @@ begin
   if uninstallFileName <> '' then
   begin
     ch := StrGet(uninstallFileName, 1);
-{    if ch = quoteChar then}
-      uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
+    uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
 
     if FileExists(uninstallFileName) then
     begin
-      InstExec(uninstallFileName, '/SILENT', '', True, False, SW_SHOWNORMAL, resultCode);
+      Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
+    end
+  end
+
+uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio .NET and 2005_is1';
+  RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
+  RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
+  if uninstallFileName <> '' then
+  begin
+    ch := StrGet(uninstallFileName, 1);
+    uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
+
+    if FileExists(uninstallFileName) then
+    begin
+      Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
+    end
+  end
+
+uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio 2002, 2003, and 2005_is1';
+  RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
+  RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
+  if uninstallFileName <> '' then
+  begin
+    ch := StrGet(uninstallFileName, 1);
+    uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
+
+    if FileExists(uninstallFileName) then
+    begin
+      Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
     end
   end
 end;

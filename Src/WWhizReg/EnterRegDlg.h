@@ -32,7 +32,6 @@ public:
 	enum { IDD = IDD_WWR_ENTERREG };
 	CEdit	m_fullName;
 	CEdit	m_regCode;
-	CEdit	m_checkCode;
 	//}}AFX_DATA
 
 	bool m_gotCode;

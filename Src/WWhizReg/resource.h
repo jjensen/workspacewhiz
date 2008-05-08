@@ -11,7 +11,6 @@
 #define IDC_WWRE_EVALUATE               1002
 #define IDC_WWRR_USERNAME               1003
 #define IDC_WWRR_REGCODE                1004
-#define IDC_WWRR_CHECKCODE              1005
 #define IDC_WWRE_REGISTER               1006
 #define IDC_WWRE_TEXT                   1007
 

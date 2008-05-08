@@ -12,6 +12,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "../3rdParty/WCollection.h"
+#include "../3rdParty/MemFile.h"
+
 /**
 **/
 class TemplateManager : public WWhizTemplateManager

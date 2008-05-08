@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #include <afx.h>
 #include "WWhizInterface3.h"
 #include <atlbase.h>
@@ -32,18 +33,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-
-#ifdef WWHIZ_VSNET
-#pragma warning( disable : 4278 )
-#pragma warning( disable : 4146 )
-	//The following #import imports MSO based on it's LIBID
-	#import "libid:2DF8D04C-5BFA-101B-BDE5-00AA0044DE52" version("2.2") lcid("0") raw_interfaces_only named_guids
-
-	//The following #import imports DTE based on it's LIBID
-	#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-#pragma warning( default : 4146 )
-#pragma warning( default : 4278 )
-#endif WWHIZ_VSNET
 
 WWhizInterface* g_wwhizInterface;
 WWhizReg* g_wwhizReg;

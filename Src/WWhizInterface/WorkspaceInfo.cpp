@@ -10,9 +10,9 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #include "WorkspaceInfo.h"
 #include "WorkspaceTags.h"
-#include "TagList.h"
 #include "CompilerFiles.h"
 #include "XmlData.h"
 #include "MemFile.h"
@@ -67,6 +67,8 @@ void WorkspaceInfo::ResolveFilename(const CString& rootDir, CString& filename)
 		}
 	}
 
+	CString noEnvFileName = filename;
+
 	// Now resolve relative paths.
 	if (filename[0] == '.'  ||
 		((filename[0] != '\\'  &&  filename[0] != '/')  &&  filename[1] != ':')
@@ -89,6 +91,8 @@ void WorkspaceInfo::ResolveFilename(const CString& rootDir, CString& filename)
 	CFileStatus fileStatus;
 	CFile::GetStatus(filename, fileStatus);
 	filename = fileStatus.m_szFullName;
+	if (filename.IsEmpty())
+		filename = noEnvFileName;
 }
 
 
@@ -98,7 +102,7 @@ void WorkspaceInfo::SetWorkspaceLocation(void)
 	s_workspaceFullPath = g_wwhizInterface->GetWorkspaceName();
 
 	// Is it empty?
-	if (s_workspaceFullPath.IsEmpty())
+	if (s_workspaceFullPath.IsEmpty()  ||  s_workspaceFullPath == "!!WWhizSolution!!.sln")
 	{
 		// If so, then there is no workspace open.
 		// Call the OS for the current directory.
@@ -107,7 +111,7 @@ void WorkspaceInfo::SetWorkspaceLocation(void)
 
 		// Make sure it ends in a closing backslash.
 		s_workspaceFullPath.TrimRight('\\');
-		s_workspaceFullPath += "\\!!!WWhizVirtualWorkspace!!!.dsw";
+		s_workspaceFullPath += "\\!!!WWhizSolution!!!.sln";
 	}
 
 	int slashPos = s_workspaceFullPath.ReverseFind('\\');
@@ -226,6 +230,7 @@ void WorkspaceInfo::ReadDSPFile(Project& prj)
 	bool localListRefreshed = false;
 	CString line;
 	UINT numSpaces = 4;
+	int inGroup = 0;		// Hack to fix a CMake generation bug.
 	while (true)
 	{
 		// Read in a line from the file.
@@ -264,13 +269,15 @@ void WorkspaceInfo::ReadDSPFile(Project& prj)
 			{
 				type = BEGIN_GROUP;
 				line = line.Mid(14);
+				inGroup++;
 			}
 
 			// Check for # End Group lines
-			else if (line.GetLength() >= 11  &&  _tcsncmp(line, "# End Group", 11) == 0)
+			else if (line.GetLength() >= 11  &&  _tcsncmp(line, "# End Group", 11) == 0  &&  inGroup > 0)
 			{
 				type = END_GROUP;
 				line = line.Mid(11);
+				inGroup--;
 			}
 
 			// Check for SOURCE= lines.  (Do _tcsncmp() for speed)
@@ -419,7 +426,7 @@ void WorkspaceInfo::RecurseVCProjNode(
 							CString ext = filename.Mid(dotPos + 1);
 							ext.MakeLower();
 							if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||  ext == "vcw"  ||
-								ext == "vcproj"  ||  ext == "csproj"  ||  ext == "sln")
+								ext == "vcproj"  ||  ext == "csproj"  ||  ext == "vbproj"  ||  ext == "sln")
 								projectsToAdd.AddTail(filename);
 						}
 					}
@@ -468,7 +475,8 @@ void WorkspaceInfo::ReadVCProjFile(Project& prj, CFile* inFile)
 
 	// Make sure no files have been touched yet.
 	int fileListCount = fileList.GetCount();
-	for (int i = 0; i < fileListCount; i++)
+	int i;
+	for (i = 0; i < fileListCount; i++)
 	{
 		File* file = (File*)fileList.Get(i);
 		file->m_touched = false;
@@ -551,7 +559,7 @@ void WorkspaceInfo::RecurseCSProjNode(
 						ext.MakeLower();
 						if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
 							ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-							ext == "sln")
+							ext == "vbproj"  ||  ext == "sln")
 							projectsToAdd.AddTail(filename);
 					}
 				}
@@ -598,15 +606,85 @@ void WorkspaceInfo::ReadCSProjFile(Project& prj, CFile* inFile)
 
 	// Make sure no files have been touched yet.
 	int fileListCount = fileList.GetCount();
-	for (int i = 0; i < fileListCount; i++)
+	int i;
+	for (i = 0; i < fileListCount; i++)
 	{
 		File* file = (File*)fileList.Get(i);
 		file->m_touched = false;
 	}
 
 	bool localListRefreshed = false;
-	XmlNode* filesNode = prj.GetXmlData().Find("Files");
-	RecurseCSProjNode(filesNode, rootPath, fileList, localListRefreshed, projectsToAdd);
+
+	// Determine the version of the project file.
+	bool vs2005 = false;
+	XmlNode* rootNode = prj.GetXmlData().GetRootNode()->Find("Project");
+	if (rootNode)
+	{
+		XmlNode::Attribute* attr = rootNode->FindAttribute("xmlns");
+		if (attr)
+		{
+			CString xmlns = attr->GetValue();
+			if (xmlns == "http://schemas.microsoft.com/developer/msbuild/2003")
+			{
+				vs2005 = true;
+			}
+		}
+	}
+
+	if (vs2005)
+	{
+		XmlNode* itemGroupNode = prj.GetXmlData().Find("ItemGroup");
+		while (itemGroupNode)
+		{
+			XmlNode* childNode = (XmlNode*)itemGroupNode->GetFirstChildNode();
+			while (childNode)
+			{
+				if (childNode->GetName() == "Compile"  ||  childNode->GetName() == "Content"  ||  
+					childNode->GetName() == "EmbeddedResource"  ||  childNode->GetName() == "None")
+				{
+					XmlNode::Attribute* attr = childNode->FindAttribute("Include");
+					if (attr)
+					{
+						CString filename = attr->GetValue();
+						WorkspaceInfo::ResolveFilename(rootPath, filename);
+						if (!filename.IsEmpty())
+						{
+							File* file = File::Create(filename);
+
+							// Insert it into the current project.
+							if (fileList.Add(file))
+							{
+								g_filesRefreshed = true;
+								localListRefreshed = true;
+							}
+							file->m_touched = true;
+
+							// Test the file to see if it is a project or workspace.
+							int dotPos = filename.ReverseFind('.');
+							if (dotPos != -1)
+							{
+								CString ext = filename.Mid(dotPos + 1);
+								ext.MakeLower();
+								if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
+									ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
+									ext == "vbproj"  ||  ext == "sln")
+									projectsToAdd.AddTail(filename);
+							}
+						}
+					}
+				}
+				
+				childNode = (XmlNode*)childNode->GetNextSiblingNode();
+			}
+
+			itemGroupNode = ((XmlNode*)itemGroupNode->GetNextSiblingNode())->Find("ItemGroup");
+		}
+	}
+	else
+	{
+		XmlNode* filesNode = prj.GetXmlData().Find("Files");
+		RecurseCSProjNode(filesNode, rootPath, fileList, localListRefreshed, projectsToAdd);
+	}
 
 	// Remove unused files.
 	fileListCount = fileList.GetCount();
@@ -892,10 +970,12 @@ Project* WorkspaceInfo::AddHelper(CString projectName, CString ext, bool active,
 			File* file = (File*)project->m_fileList.Get(i);
 			file->m_touched = true;
 
-			const CString& ext = file->GetExt();
+			const CString& fullExt = file->GetExt();
+			int dotPos = fullExt.ReverseFind('.');
+			CString ext = dotPos == -1 ? fullExt : fullExt.Mid(dotPos + 1);
 			if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
 				ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-				ext == "sln")
+				ext == "vbproj"  ||  ext == "sln")
 			{
 				if (projectName.CompareNoCase(file->GetFullName()) != 0)
 					AddProject(file->GetCaseFullName(), project->IsActive(), noRefresh);
@@ -932,7 +1012,7 @@ Project* WorkspaceInfo::AddHelper(CString projectName, CString ext, bool active,
 			{
 				ReadVCProjFile(*project);
 			}
-			else if (ext == "csproj")
+			else if (ext == "csproj"  ||  ext == "vbproj")
 			{
 				ReadCSProjFile(*project);
 			}
@@ -947,10 +1027,12 @@ Project* WorkspaceInfo::AddHelper(CString projectName, CString ext, bool active,
 			for (int i = 0; i < project->m_fileList.GetCount(); i++)
 			{
 				File* file = (File*)project->m_fileList.Get(i);
-				const CString& ext = file->GetExt();
+				const CString& fullExt = file->GetExt();
+				int dotPos = fullExt.ReverseFind('.');
+				CString ext = dotPos == -1 ? fullExt : fullExt.Mid(dotPos + 1);
 				if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
 					ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-					ext == "sln")
+					ext == "vbproj"  ||  ext == "sln")
 				{
 					if (projectName.CompareNoCase(file->GetFullName()) != 0)
 						AddProject(file->GetCaseFullName(), project->IsActive(), noRefresh);

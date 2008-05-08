@@ -18,6 +18,7 @@
 #ifndef BCMenu_H
 #define BCMenu_H
 
+#include <afxcmn.h>
 #include <afxtempl.h>
 
 // BCMenuData class. Fill this class structure to define a single menu item:

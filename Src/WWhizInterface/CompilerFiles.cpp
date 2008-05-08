@@ -10,8 +10,18 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "pchWWhizInterface.h"
 #include "CompilerFiles.h"
 #include "FileList.h"
+
+#ifdef WWHIZ_VSNET
+
+#include <atlsafe.h>
+#include "VCProjectEngine70.tlh"
+#include "VCProjectEngine71.tlh"
+#include "VCProjectEngine80.tlh"
+
+#endif // WWHIZ_VSNET
 
 static FileList s_fileList;
 static bool s_updated = false;
@@ -83,7 +93,6 @@ void CompilerFiles::ProcessPaths(char* buffer)
 #ifdef WWHIZ_VSNET
 	CComBSTR version;
 	g_pDTE->get_Version(&version);
-	bool vc70 = version == "7.00";
 
 	CComPtr<EnvDTE::Project> pProject;
 	CComPtr<IDispatch> pID;
@@ -96,21 +105,35 @@ void CompilerFiles::ProcessPaths(char* buffer)
 	CComQIPtr<VCProjectEngineLibrary70::VCProject> cpProject70;
 	CComQIPtr<VCProjectEngineLibrary71::VCProjectEngine> pProjEng71;
 	CComQIPtr<VCProjectEngineLibrary71::VCProject> cpProject71;
+	CComQIPtr<VCProjectEngineLibrary80::VCProjectEngine> pProjEng80;
+	CComQIPtr<VCProjectEngineLibrary80::VCProject> cpProject80;
 
 	if (pProject)
 	{
 		pProject->get_Object( &pID );
-		if (vc70)
+		if (version == "7.00")
 		{
 			cpProject70 = pID;
 			cpProject70->get_VCProjectEngine(&pDispProjEngine);
 			pProjEng70 = pDispProjEngine;
+			if (!pProjEng70)
+				return;
 		}
-		else
+		else if (version == "7.10")
 		{
 			cpProject71 = pID;
 			cpProject71->get_VCProjectEngine(&pDispProjEngine);
 			pProjEng71 = pDispProjEngine;
+			if (!pProjEng71)
+				return;
+		}
+		else if (version == "8.0")
+		{
+			cpProject80 = pID;
+			cpProject80->get_VCProjectEngine(&pDispProjEngine);
+			pProjEng80 = pDispProjEngine;
+			if (!pProjEng80)
+				return;
 		}
 	}
 #endif WWHIZ_VSNET
@@ -131,19 +154,17 @@ void CompilerFiles::ProcessPaths(char* buffer)
 
 #ifdef WWHIZ_VSNET
 		CComBSTR bstrResolvedDir;
-		if (vc70)
+		if (pProjEng70)
 		{
-			if (pProjEng70)
-			{
-				pProjEng70->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
-			}
+			pProjEng70->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
 		}
-		else
+		else if (pProjEng71)
 		{
-			if (pProjEng71)
-			{
-				pProjEng71->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
-			}
+			pProjEng71->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
+		}
+		else if (pProjEng80)
+		{
+			pProjEng80->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
 		}
 
 		if (bstrResolvedDir == "")
@@ -198,9 +219,12 @@ bool CompilerFiles::Refresh(bool force)
 	RemoveAll();
 
 	// Read the registry to get the paths.
-	HKEY key;
+	CComBSTR bstrIncludeDirectories;
+	CComBSTR bstrSourceDirectories;
+
 #ifdef WWHIZ_VC6
 Top:
+	HKEY key;
 	LONG lRes =
 		RegOpenKeyEx(HKEY_CURRENT_USER,
 		"Software\\Microsoft\\Devstudio\\6.0\\Build System\\Components\\Platforms\\" + configName + "\\Directories",
@@ -221,45 +245,172 @@ Top:
 			return true;
 		}
 	}
+
+	char buffer[5000];
+	DWORD len = 5000;
+	QueryValueString(key, "Include Dirs", buffer, len);
+	bstrIncludeDirectories = buffer;
+
+	len = 5000;
+	QueryValueString(key, "Source Dirs", buffer, len);
+	bstrSourceDirectories = buffer;
+
+	RegCloseKey(key);
+
 #endif WWHIZ_VC6
 
 #ifdef WWHIZ_VSNET
 	CString version = ObjModelHelper::GetVersion();
 
-	LONG lRes;
+	// Look up the DTE.Solution object.
+	CComPtr<EnvDTE::_Solution> pSolution;
+	g_pDTE->get_Solution(&pSolution);
+	if (!pSolution)
+	{
+		return false;
+	}
+
+	// Look up the DTE.Solution.SolutionBuild object.
+	CComPtr<EnvDTE::SolutionBuild> m_pSolutionBuild;
+	pSolution->get_SolutionBuild(&m_pSolutionBuild);
+	if (!m_pSolutionBuild)
+	{
+		return false;
+	}
+
+	// DTE.Solution.SolutionBuild.ActiveConfiguration
+	CComPtr<EnvDTE::SolutionConfiguration> m_pSolutionConfiguration;
+	m_pSolutionBuild->get_ActiveConfiguration(&m_pSolutionConfiguration);
+	if (!m_pSolutionConfiguration)
+	{
+		return false;
+	}
+
+	// DTE.Solution.SolutionBuild.ActiveConfiguration.SolutionContexts
+	CComPtr<EnvDTE::SolutionContexts> m_pSolutionContexts;
+	m_pSolutionConfiguration->get_SolutionContexts(&m_pSolutionContexts);
+	if (!m_pSolutionContexts)
+	{
+		return false;
+	}
+
+	// Look up the DTE.Solution.SolutionBuild.StartupProjects array.
+	CComVariant pProjectVariant;
+	if (FAILED(m_pSolutionBuild->get_StartupProjects(&pProjectVariant)))
+	{
+		return false;
+	}
+
+	// If the array has nothing in it, then they don't have any startup projects.
+	CComSafeArray<VARIANT> startupProjects;
+	startupProjects.Attach(pProjectVariant.parray);
+	if (startupProjects.GetCount() == 0)
+	{
+		return false;
+	}
+
+	VARIANT& startupProjectPath = startupProjects.GetAt(0);
+	startupProjects.Detach();
+
+	// DTE.Solution.Projects
+	CComPtr<EnvDTE::Projects> pProjects;
+	pSolution->get_Projects(&pProjects);
+	if (!pProjects)
+	{
+		return false;
+	}
+
+	// Look up the project object for the startup project.
+	CComPtr<EnvDTE::Project> pActiveProject;
+	pProjects->Item(startupProjectPath, &pActiveProject);
+	if (!pActiveProject)
+	{
+		return false;
+	}
+
+	// Test the GUID and make sure we're only looking at C/C++ projects.
+	CComBSTR cppKind = "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}";
+	CComBSTR bstrKind;
+	pActiveProject->get_Kind(&bstrKind);
+	if (bstrKind != cppKind)
+	{
+		return false;
+	}
+
+	// VCProject
+	CComPtr<IDispatch> pDispatch;
+	pActiveProject->get_Object(&pDispatch);
+
+	// Get the project's unique name to look up its solution context.
+	CComBSTR projectUniqueName;
+	pActiveProject->get_UniqueName(&projectUniqueName);
+
+	// Look up the solution context.
+	CComPtr<EnvDTE::SolutionContext> pSolutionContext;
+	m_pSolutionContexts->Item(CComVariant(projectUniqueName), &pSolutionContext);
+
+	CComBSTR bstrPlatformName;
+	pSolutionContext->get_PlatformName(&bstrPlatformName);
+/*
+	CComPtr<EnvDTE::Properties> props;
+	g_pDTE->get_Properties(CComBSTR("Projects"), CComBSTR("VCDirectories"), &props);
 	
+	CComPtr<EnvDTE::Property> pItem;
+	props->Item(CComVariant("Platforms"), &pItem);
+
+	CComPtr<IDispatch> pDispatch;
+	pItem->get_Object(&pDispatch);
+*/
 	if (version == "7.00")
 	{
-		lRes =
-			RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-			"Software\\Microsoft\\VisualStudio\\7.0\\VC\\VC_OBJECTS_PLATFORM_INFO\\Win32\\Directories",
-			0, KEY_ALL_ACCESS, &key);
+		CComQIPtr<VCProjectEngineLibrary70::IVCCollection> pVCCollection(pDispatch);
+		pDispatch = NULL;
+
+		pVCCollection->Item(CComVariant(bstrPlatformName), &pDispatch);
+
+		CComQIPtr<VCProjectEngineLibrary70::VCPlatform> pVCPlatform(pDispatch);
+
+		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
+		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
 	}
 	else if (version == "7.10")
 	{
-		lRes =
-			RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-			"Software\\Microsoft\\VisualStudio\\7.1\\VC\\VC_OBJECTS_PLATFORM_INFO\\Win32\\Directories",
-			0, KEY_ALL_ACCESS, &key);
+		CComQIPtr<VCProjectEngineLibrary71::IVCCollection> pVCCollection(pDispatch);
+		pDispatch = NULL;
+
+		pVCCollection->Item(CComVariant(bstrPlatformName), &pDispatch);
+
+		CComQIPtr<VCProjectEngineLibrary71::VCPlatform> pVCPlatform(pDispatch);
+
+		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
+		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
+	}
+	else if (version == "8.0")
+	{
+		CComQIPtr<VCProjectEngineLibrary80::VCProject> pVCProject(pDispatch);
+		pDispatch = NULL;
+
+		// Get the platform pointer...
+		CComPtr<IDispatch> pDispPlatforms;
+		pVCProject->get_Platforms(&pDispPlatforms);
+		CComQIPtr<VCProjectEngineLibrary80::IVCCollection> pPlatforms(pDispPlatforms);
+		CComPtr<IDispatch> pDispPlatform;
+		pPlatforms->Item(CComVariant(bstrPlatformName), &pDispPlatform);
+
+		CComQIPtr<VCProjectEngineLibrary80::VCPlatform> pVCPlatform(pDispPlatform);
+
+		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
+		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
 	}
 
-	if (lRes != ERROR_SUCCESS)
-	{
-		return true;
-	}
 #endif WWHIZ_VSNET
 
 	s_lastConfigName = configName;
 	
-	char buffer[5000];
-	DWORD len = 5000;
-	QueryValueString(key, "Include Dirs", buffer, len);
-	ProcessPaths(buffer);
-	len = 5000;
-	QueryValueString(key, "Source Dirs", buffer, len);
-	ProcessPaths(buffer);
-
-	RegCloseKey(key);
+	CString dir = bstrIncludeDirectories;
+	ProcessPaths((char*)(const char*)dir);
+	dir = bstrSourceDirectories;
+	ProcessPaths((char*)(const char*)dir);
 
 	s_fileList.Sort();
 

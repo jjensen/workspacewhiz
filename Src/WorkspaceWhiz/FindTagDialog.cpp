@@ -10,6 +10,7 @@
 // non-commercial and commercial purposes so long as due credit is given and
 // this header is left intact.
 ///////////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
 #include "resource.h"
 #include "FindTagDialog.h"
 #include "AboutDialog.h"
@@ -17,6 +18,7 @@
 #include "ExtraFilesDialog.h"
 #include "TextLine.h"
 #include "BCMenu.h"
+#include <assert.h>
 
 extern bool GotoTag(const WWhizTag* tag);
 
@@ -38,6 +40,8 @@ void LOG(LPCTSTR msg, ...)
 	OutputDebugString(textBuffer);
 }
 
+IMPLEMENT_DYNCREATE(CFindTagDialog, FIND_TAG_DIALOG)
+
 /////////////////////////////////////////////////////////////////////////////
 // CFindTagDialog dialog
 
@@ -54,6 +58,10 @@ CFindTagDialog::CFindTagDialog(CWnd* pParent /*=NULL*/) :
 	m_tagParent(NULL),
 	m_edit(NULL),
 	m_tagListCtrl(NULL),
+	m_sorted_column(4), // JE: For sorting feature
+	m_closed(false),
+	m_inRefresh(false),
+	m_canceling(false),
 	FIND_TAG_DIALOG(CFindTagDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CFindTagDialog)
@@ -94,6 +102,7 @@ BEGIN_MESSAGE_MAP(CFindTagDialog, FIND_TAG_DIALOG)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_FT_TAGS, OnItemchangedFtTags)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_FT_SHOW, OnItemchangedFtShow)
 	ON_CBN_SELCHANGE(IDC_FT_TYPECOMBO, OnSelchangeFtTypecombo)
+	ON_WM_CLOSE()
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_COM_CURRENTFILE, OnFtCurrentfile)
 	ON_BN_CLICKED(IDC_COM_EXTRAFILES, OnFtExtraprojects)
@@ -108,6 +117,7 @@ BEGIN_MESSAGE_MAP(CFindTagDialog, FIND_TAG_DIALOG)
 	ON_CONTROL(WM_USER_REFRESH, IDC_FT_NAME, OnFtRefreshtags)
 	ON_WM_CONTEXTMENU()
 	//}}AFX_MSG_MAP
+	ON_NOTIFY(LVN_COLUMNCLICK, IDC_FT_TAGS, OnLvnColumnclickFtTags)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -118,8 +128,7 @@ static CString s_windowTitle;
 
 void ProcessEvents()
 {
-#if 0
-	MSG msg;
+/*	MSG msg;
 	while (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE))
 	{
 		if (!AfxGetThread()->PumpMessage())
@@ -127,19 +136,31 @@ void ProcessEvents()
 			AfxPostQuitMessage(0);
 			return;
 		}
-	}
-#endif
+	}*/
 }
 
 
-void TagCallback(const WWhizInterface::TagCallbackInfo& info)
+bool TagCallback(const WWhizInterface::TagCallbackInfo& info)
 {
 	if (info.m_type == WWhizInterface::TagCallbackInfo::REFRESH)
 	{
 		CWnd* wnd = (CWnd*)info.m_userData;
+		CFindTagDialog* findTagDialog = DYNAMIC_DOWNCAST(CFindTagDialog, wnd);
+
 		CString windowTitle = s_windowTitle;
 		if (windowTitle.IsEmpty())
 			windowTitle = "Workspace Whiz";
+
+		bool active = true;
+		if (findTagDialog  &&  findTagDialog->m_closed)
+		{
+			CString str;
+			str.Format("%s - Canceled", windowTitle);
+			if (wnd)
+				wnd->SetWindowText(str);
+			PrintStatusBar(str);
+			return false;
+		}
 
 		if (info.m_curFile == 0)
 		{
@@ -215,6 +236,8 @@ void TagCallback(const WWhizInterface::TagCallbackInfo& info)
 			ProcessEvents();
 		}
 	}
+
+	return true;
 }
 
 
@@ -364,7 +387,14 @@ void CFindTagDialog::Refresh()
 	SetWindowText(s_windowTitle + " - Checking for updates...");
 
 	g_wwhizInterface->RefreshFileList();
+	m_inRefresh = true;
 	g_wwhizInterface->RefreshTagList(false);
+	m_inRefresh = false;
+	if (m_canceling)
+	{
+		OnCancel();
+		return;
+	}
 
 	m_project = g_wwhizInterface->GetCurrentProject();
 	if (m_project)
@@ -376,12 +406,16 @@ void CFindTagDialog::Refresh()
 
 	m_created = true;
 
-	RefreshList(m_lastFunction);
+//	RefreshList(m_lastFunction);
+	RefreshFromEdit();
 }
 
 
 void CFindTagDialog::OnFtRebuildTags()
 {
+	if (m_inRefresh)
+		return;
+
 	CWaitCursor cursor;
 
 	SetWindowText(s_windowTitle + " - Deleting all items...");
@@ -397,16 +431,25 @@ void CFindTagDialog::OnFtRebuildTags()
 
 	g_wwhizInterface->RefreshFileList();
 	g_wwhizInterface->RemoveAllTags();
+	m_inRefresh = true;
 	g_wwhizInterface->RefreshTagList(true, true);
+	m_inRefresh = false;
+	if (m_canceling)
+	{
+		OnCancel();
+		return;
+	}
+	else
+	{
+		SetWindowText(s_windowTitle);
+		
+		m_created = true;
 
-	SetWindowText(s_windowTitle);
-	
-	m_created = true;
-
-	// Get the filename.
-	CString filename;
-	m_edit->GetWindowText(filename);
-	RefreshList(filename);
+		// Get the filename.
+		CString filename;
+		m_edit->GetWindowText(filename);
+		RefreshList(filename);
+	}
 }
 
 
@@ -428,6 +471,66 @@ void CFindTagDialog::OnChangeFtTag(NMHDR* pNMHDR, LRESULT* pResult)
 	RefreshFromEdit();
 }
 
+static int g_sorted_column;
+static int WWhizTagCompare(const WWhizTag **a, const WWhizTag **b)
+{
+	int ret;
+	WWhizTag::Type atype = (*a)->GetType();
+	WWhizTag::Type btype = (*b)->GetType();
+	// Switch order so that Structs are first for Cryptic
+	if (atype == WWhizTag::STRUCTURE) {
+		atype = WWhizTag::DECLARATION;
+	} else if (atype == WWhizTag::DECLARATION) {
+		atype = WWhizTag::STRUCTURE;
+	}
+	if (btype == WWhizTag::STRUCTURE) {
+		btype = WWhizTag::DECLARATION;
+	} else if (btype == WWhizTag::DECLARATION) {
+		btype = WWhizTag::STRUCTURE;
+	}
+	switch(g_sorted_column) {
+	case 1: // Type
+		ret = atype - btype;
+		if (ret==0)
+			ret = stricmp((*a)->GetShortIdent(), (*b)->GetShortIdent());
+		break;
+	case -1:
+		ret = btype - atype;
+		if (ret==0)
+			ret = stricmp((*b)->GetShortIdent(), (*a)->GetShortIdent());
+		break;
+	case 4: // Tag
+		ret = stricmp((*a)->GetShortIdent(), (*b)->GetShortIdent());
+		if (ret==0)
+			ret = atype - btype;
+		break;
+	case -4: // Tag
+		ret = stricmp((*b)->GetShortIdent(), (*a)->GetShortIdent());
+		if (ret==0)
+			ret = btype - atype;
+		break;
+	default:
+		return 0;
+	}
+	return ret;
+}
+
+void CFindTagDialog::SortTags(void)
+{
+	if (m_sorted_column==0)
+		return;
+	int count = m_tagArray.GetCount();
+	const WWhizTag **array = (const WWhizTag **)calloc(count, sizeof(WWhizTag*));
+	int i;
+	for (i=0; i<count; i++) {
+		array[i] = m_tagArray[i];
+	}
+	g_sorted_column = m_sorted_column;
+	qsort(array, count, sizeof(array[0]), (int (*)(const void *,const void *))WWhizTagCompare);
+	for (i=0; i<count; i++) 
+		m_tagArray[i] = array[i];
+	free(array);
+}
 
 void CFindTagDialog::RefreshList(LPCTSTR name) 
 {
@@ -483,6 +586,8 @@ void CFindTagDialog::RefreshList(LPCTSTR name)
 	}
 
 	m_tagArray.SetCount(curPos);
+	SortTags(); // JE: Sort tags!
+
 	m_tagListCtrl->SetItemCountEx(curPos);
 
 	POSITION pos = m_tagListCtrl->GetFirstSelectedItemPosition();
@@ -527,7 +632,10 @@ void CFindTagDialog::RefreshList(LPCTSTR name)
 
 void CFindTagDialog::OnOK() 
 {
+	if (m_inRefresh)
+		return;
 	GotoTags(false);
+	m_closed = true;
 
 	FIND_TAG_DIALOG::OnOK();
 }
@@ -575,6 +683,12 @@ void CFindTagDialog::GotoTags(bool declaration)
 
 void CFindTagDialog::OnCancel() 
 {
+	m_canceling = true;
+	m_closed = true;
+
+	if (m_inRefresh)
+		return;
+
 	m_lastPosition = m_saveLastPosition;
 	m_oldFunction = m_saveOldFunction;
 	
@@ -624,7 +738,7 @@ void CFindTagDialog::OnItemchangedFtTags(NMHDR* pNMHDR, LRESULT* pResult)
 		const WWhizTag* accessTag = tag;
 		if (tag->GetBuddy())
 			accessTag = tag->GetBuddy();
-		m_infoFilename.SetWindowText(tag->GetFilename());
+		m_infoFilename.SetWindowText(tag->GetFile()->GetCaseFullName());
 		m_infoFilename.Invalidate();
 
 		CString str;
@@ -723,6 +837,15 @@ void CFindTagDialog::OnSelchangeFtTypecombo()
 	RefreshFromEdit();
 }
 
+
+void CFindTagDialog::OnClose() 
+{
+	FIND_TAG_DIALOG::OnClose();
+	
+	m_created = false;
+}
+
+
 void CFindTagDialog::OnDestroy() 
 {
 	FIND_TAG_DIALOG::OnDestroy();
@@ -759,7 +882,14 @@ void CFindTagDialog::OnFtExtraprojects()
 		SetWindowText(s_windowTitle + " - Checking for updates...");
 
 		g_wwhizInterface->RefreshFileList();
+		m_inRefresh = true;
 		g_wwhizInterface->RefreshTagList();
+		m_inRefresh = false;
+		if (m_canceling)
+		{
+			OnCancel();
+			return;
+		}
 
 		SetWindowText(s_windowTitle);
 
@@ -771,6 +901,9 @@ void CFindTagDialog::OnFtExtraprojects()
 
 void CFindTagDialog::OnFtRefreshtags() 
 {
+	if (m_inRefresh)
+		return;
+
 	CWaitCursor cursor;
 
 	g_wwhizInterface->SetTagCallback(TagCallback, this);
@@ -781,7 +914,14 @@ void CFindTagDialog::OnFtRefreshtags()
 	objModel.SaveAll();
 
 	g_wwhizInterface->RefreshFileList();
+	m_inRefresh = true;
 	g_wwhizInterface->RefreshTagList(true);
+	m_inRefresh = false;
+	if (m_canceling)
+	{
+		OnCancel();
+		return;
+	}
 
 	SetWindowText(s_windowTitle);
 	
@@ -934,4 +1074,22 @@ void CFindTagDialog::OnContextMenu(CWnd* pWnd, CPoint point)
 	
 	if (TagPopup(curSel, this, &point))
 		OnCancel();
+}
+
+
+// JE: For sorting feature
+void CFindTagDialog::OnLvnColumnclickFtTags(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	int new_sorted_column = pNMLV->iSubItem+1;
+	if (m_sorted_column==new_sorted_column) {
+		m_sorted_column*=-1;
+	} else {
+		m_sorted_column = new_sorted_column;
+	}
+	// Get the filename.
+	CString filename;
+	m_edit->GetWindowText(filename);
+	RefreshList(filename);
+	*pResult = 0;
 }

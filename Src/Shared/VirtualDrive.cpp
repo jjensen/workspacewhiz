@@ -67,9 +67,9 @@ static inline void ReadDWORD(BYTE*& ptr, DWORD& dw)
 **/
 static inline void ReadTimeStamp(BYTE*& ptr, CTime& timeStamp)
 {
-	time_t time;
-	time = *(time_t*)ptr;			ptr += sizeof(time_t);
-	timeStamp = time;
+	unsigned __int64 time;
+	time = *(unsigned __int64*)ptr;			ptr += sizeof(unsigned __int64);
+	timeStamp = (time_t)time;
 }
 
 
@@ -108,8 +108,8 @@ static inline void WriteBool(CFile& file, bool b)
 **/
 static inline void WriteTimeStamp(CFile& file, const CTime& timeStamp)
 {
-	time_t time = timeStamp.GetTime();
-	file.Write(&time, sizeof(time_t));
+	unsigned __int64 time = timeStamp.GetTime();
+	file.Write(&time, sizeof(unsigned __int64));
 }
 
 
@@ -207,91 +207,98 @@ bool VirtualDrive::Create(const CString& filename)
 **/
 bool VirtualDrive::Open(const CString& filename)
 {
-	// Save the filename.
-	m_filename = filename;
-
-	// Open the file.
-	m_ownParentFile = true;
-	m_parentFile = WNEW CFile();
-	if (!m_parentFile->Open(m_filename, CFile::modeReadWrite))
+	try
 	{
-		if (!m_parentFile->Open(m_filename, CFile::modeRead))
+		// Save the filename.
+		m_filename = filename;
+
+		// Open the file.
+		m_ownParentFile = true;
+		m_parentFile = WNEW CFile();
+		if (!m_parentFile->Open(m_filename, CFile::modeReadWrite))
 		{
-			// Couldn't open the file!
-			Close();
+			if (!m_parentFile->Open(m_filename, CFile::modeRead))
+			{
+				// Couldn't open the file!
+				Close();
 
-			return false;
+				return false;
+			}
+			
+			m_readOnly = true;
 		}
-		
-		m_readOnly = true;
-	}
 
-	// Read the header.
-	m_parentFile->Read(&m_header, sizeof(FileHeader));
+		// Read the header.
+		m_parentFile->Read(&m_header, sizeof(FileHeader));
 
-	// Is it a header we recognize?
-	if (strncmp(m_header.m_id, DRIVE_ID, 8) != 0)
-	{
-		Close();
-		return false;
-	}
-
-	// Is it a version we recognize?
-	if (m_header.m_version != DRIVE_VERSION)
-	{
-		Close();
-		return false;
-	}
-
-	// Are there any file entries?
-	m_dir.RemoveAll();
-	if (m_header.m_fileEntryCount > 0)
-	{
-		// Yes. Seek to the directory.
-		m_parentFile->Seek(m_header.m_dirOffset, CFile::begin);
-
-		// Make sure the directory is valid.
-		char dirID[8];
-		m_parentFile->Read(&dirID, 8);
-		if (strncmp(dirID, DIR_ID, 8) != 0)
+		// Is it a header we recognize?
+		if (strncmp(m_header.m_id, DRIVE_ID, 8) != 0)
 		{
 			Close();
 			return false;
 		}
 
-		// Allocate memory for the directory.
-		WArray<BYTE> dirBuffer;
-		dirBuffer.SetCount(m_header.m_dirSize);
-		m_parentFile->Read(dirBuffer.GetData(), m_header.m_dirSize);
-
-		// Now, process the directory.
-		m_dir.SetCount(m_header.m_fileEntryCount, 100);
-
-		// Read in the directory..
-		BYTE* ptr = dirBuffer.GetData();
-		for (UINT i = 0; i < m_header.m_fileEntryCount; ++i)
+		// Is it a version we recognize?
+		if (m_header.m_version != DRIVE_VERSION)
 		{
-			FileEntry& entry = m_dir[i];
-
-			ReadString(ptr, entry.m_filename);
-			ReadTimeStamp(ptr, entry.m_fileTime);
-			ReadDWORD(ptr, entry.m_offset);
-			ReadDWORD(ptr, entry.m_size);
-			ReadDWORD(ptr, entry.m_crc);
-			memcpy(entry.m_userData, ptr, sizeof(entry.m_userData));
-			ptr += sizeof(entry.m_userData);
-			entry.m_parentDrive = this;
-
-			m_filenameMap[entry.m_filename] = i;
+			Close();
+			return false;
 		}
+
+		// Are there any file entries?
+		m_dir.RemoveAll();
+		if (m_header.m_fileEntryCount > 0)
+		{
+			// Yes. Seek to the directory.
+			m_parentFile->Seek(m_header.m_dirOffset, CFile::begin);
+
+			// Make sure the directory is valid.
+			char dirID[8];
+			m_parentFile->Read(&dirID, 8);
+			if (strncmp(dirID, DIR_ID, 8) != 0)
+			{
+				Close();
+				return false;
+			}
+
+			// Allocate memory for the directory.
+			WArray<BYTE> dirBuffer;
+			dirBuffer.SetCount(m_header.m_dirSize);
+			m_parentFile->Read(dirBuffer.GetData(), m_header.m_dirSize);
+
+			// Now, process the directory.
+			m_dir.SetCount(m_header.m_fileEntryCount, 100);
+
+			// Read in the directory..
+			BYTE* ptr = dirBuffer.GetData();
+			for (UINT i = 0; i < m_header.m_fileEntryCount; ++i)
+			{
+				FileEntry& entry = m_dir[i];
+
+				ReadString(ptr, entry.m_filename);
+				ReadTimeStamp(ptr, entry.m_fileTime);
+				ReadDWORD(ptr, entry.m_offset);
+				ReadDWORD(ptr, entry.m_size);
+				ReadDWORD(ptr, entry.m_crc);
+				memcpy(entry.m_userData, ptr, sizeof(entry.m_userData));
+				ptr += sizeof(entry.m_userData);
+				entry.m_parentDrive = this;
+
+				m_filenameMap[entry.m_filename] = i;
+			}
+		}
+
+		// Finish setting it up.
+		m_changed = false;
+		m_curWriteFile = NULL;
+
+		// Opened successfully!
+		return true;
 	}
-
-	// Finish setting it up.
-	m_changed = false;
-	m_curWriteFile = NULL;
-
-	// Opened successfully!
-	return true;
+	catch (...)
+	{
+		return false;
+	}
 } // Open()
 
 

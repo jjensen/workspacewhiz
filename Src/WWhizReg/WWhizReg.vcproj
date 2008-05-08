@@ -1,135 +1,200 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="WWhizReg"
 	ProjectGUID="{481E84E4-DD61-4717-9CFF-5C2B0080908C}"
-	Keyword="MFCProj">
+	RootNamespace="WWhizReg"
+	Keyword="MFCProj"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\Output\WWhizNet\WWhizReg\Debug"
-			IntermediateDirectory="..\..\Output\WWhizNet\WWhizReg\Debug"
+			OutputDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\..\WorkspaceWhiz\Output\WWhizReg\Debug/WWhizReg.tlb"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\Shared,..\3rdParty"
 				PreprocessorDefinitions="WWHIZ_VSNET;WWHIZ_VSNET2002"
+				ExceptionHandling="2"
 				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="3"
+				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderThrough="pchWWhizReg.h"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
 				CompileAs="0"
-				ForcedIncludeFiles="pchWWhizReg.h"/>
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles=""
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_AFXDLL;_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				OutputFile="..\..\BinVSNet\WWhizRegD.mod"
 				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				SubSystem="2"/>
+				SuppressStartupBanner="true"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\..\WorkspaceWhiz\Output\WWhizReg\Debug/WWhizReg.tlb"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_AFXDLL;_DEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\Output\WWhizNet\WWhizReg\Release"
-			IntermediateDirectory="..\..\Output\WWhizNet\WWhizReg\Release"
+			OutputDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory=".\..\..\Temp\WWhizVS8\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\..\WorkspaceWhiz\Output\WWhizReg\Release60/WWhizReg.tlb"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="..\Shared,..\3rdParty"
 				PreprocessorDefinitions="WWHIZ_VSNET;WWHIZ_VSNET2002"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="FALSE"
-				UsePrecompiledHeader="3"
+				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderThrough="pchWWhizReg.h"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				CompileAs="0"
-				ForcedIncludeFiles="pchWWhizReg.h"/>
+				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles=""
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_AFXDLL;NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="winmm.lib"
 				OutputFile="..\..\BinVSNet\WWhizReg.mod"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				SubSystem="2"
-				BaseAddress="0x60400000"/>
+				BaseAddress="0x60400000"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\..\WorkspaceWhiz\Output\WWhizReg\Release60/WWhizReg.tlb"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+				EmbedManifest="true"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_AFXDLL;NDEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine=""
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -137,128 +202,203 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
 			<File
-				RelativePath=".\DecodeUtils.cpp">
+				RelativePath=".\Base32.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\EnterRegDlg.cpp">
+				RelativePath=".\EnterRegDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ExpiredDlg.cpp">
+				RelativePath=".\ExpiredDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ExtraFiles.cpp">
+				RelativePath=".\ExtraFiles.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FindFileEdit.cpp">
+				RelativePath=".\FindFileEdit.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FindFileListCtrl.cpp">
+				RelativePath=".\FindFileListCtrl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FindTagEdit.cpp">
+				RelativePath=".\FindTagEdit.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FindTagListCtrl.cpp">
+				RelativePath=".\FindTagListCtrl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\pchWWhizReg.cpp">
+				RelativePath=".\md5c.c"
+				>
+			</File>
+			<File
+				RelativePath=".\pchWWhizReg.cpp"
+				>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\RegHelperWnd.cpp">
-			</File>
-			<File
-				RelativePath=".\RegThread.cpp">
-			</File>
-			<File
-				RelativePath=".\WWhizReg.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						UsePrecompiledHeader="1"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\WWhizRegNet.rc">
+				RelativePath=".\RegHelperWnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RegThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Subclass.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ValidateRegistrationCode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WWhizReg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\WWhizRegNet.rc"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
+			Filter="h;hpp;hxx;hm;inl"
+			>
 			<File
-				RelativePath=".\DecodeUtils.h">
+				RelativePath=".\Base32.h"
+				>
 			</File>
 			<File
-				RelativePath=".\EnterRegDlg.h">
+				RelativePath=".\EnterRegDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ExpiredDlg.h">
+				RelativePath=".\ExpiredDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\FindFileEdit.h">
+				RelativePath=".\FindFileEdit.h"
+				>
 			</File>
 			<File
-				RelativePath=".\FindFileListCtrl.h">
+				RelativePath=".\FindFileListCtrl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\FindTagEdit.h">
+				RelativePath=".\FindTagEdit.h"
+				>
 			</File>
 			<File
-				RelativePath=".\FindTagListCtrl.h">
+				RelativePath=".\FindTagListCtrl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\pchWWhizReg.h">
+				RelativePath=".\md5.h"
+				>
 			</File>
 			<File
-				RelativePath=".\RegHelperWnd.h">
+				RelativePath=".\md5global.h"
+				>
 			</File>
 			<File
-				RelativePath=".\RegThread.h">
+				RelativePath=".\pchWWhizReg.h"
+				>
 			</File>
 			<File
-				RelativePath="resource.h">
+				RelativePath=".\RegHelperWnd.h"
+				>
 			</File>
 			<File
-				RelativePath="..\Shared\WWhizReg.h">
+				RelativePath=".\RegThread.h"
+				>
 			</File>
 			<File
-				RelativePath=".\WWhizRegExt.h">
+				RelativePath="resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Subclass.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ValidateRegistrationCode.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Shared\WWhizReg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WWhizRegExt.h"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Third Party"
-			Filter="">
+			>
 			<File
-				RelativePath="..\3rdParty\MemFile.cpp">
+				RelativePath="..\3rdParty\MemFile.cpp"
+				>
 			</File>
 			<File
-				RelativePath="..\3rdParty\MemFile.h">
+				RelativePath="..\3rdParty\MemFile.h"
+				>
 			</File>
 			<File
-				RelativePath="..\3rdParty\WCollection.h">
+				RelativePath="..\3rdParty\WCollection.h"
+				>
 			</File>
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="WWhizRegNet.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

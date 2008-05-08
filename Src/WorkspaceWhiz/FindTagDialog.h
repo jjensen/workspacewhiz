@@ -16,6 +16,7 @@
 #pragma once
 
 #include <afxcmn.h>
+#include "resource.h"
 
 #include "ChoiceWindowBtn.h"
 
@@ -27,6 +28,7 @@
 class CFindTagDialog : public FIND_TAG_DIALOG
 {
 // Construction
+	DECLARE_DYNCREATE(CFindTagDialog)
 public:
 	typedef enum { ScopeCurrentFile, ScopeCurrentProject, ScopeEntireWorkspace } TagScope;
 
@@ -42,6 +44,7 @@ public:
 	static int m_lastPosition;
 	static CString m_oldFunction;
 	bool m_created;
+	bool m_closed;
 	static TagScope s_tagScope;
 	static int s_typeFilter;
 
@@ -49,6 +52,10 @@ public:
 	WWhizProject* m_project;
 
 	TagArray m_tagArray;
+	int m_sorted_column; // JE: For sorting feature
+
+	bool m_inRefresh;
+	bool m_canceling;
 
 // Dialog Data
 	//{{AFX_DATA(CFindTagDialog)
@@ -84,6 +91,7 @@ public:
 // Implementation
 protected:
 	void GotoTags(bool declaration);
+	void SortTags(void);
 	const WWhizTagList* GetCurTagList();
 	int TagPopup(int item, CWnd* thisWnd, CPoint* inPoint);
 
@@ -103,6 +111,7 @@ protected:
 	afx_msg void OnItemchangedFtTags(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnItemchangedFtShow(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSelchangeFtTypecombo();
+	afx_msg void OnClose();
 	afx_msg void OnDestroy();
 	afx_msg void OnFtCurrentfile();
 	afx_msg void OnFtExtraprojects();
@@ -114,6 +123,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DYNAMIC_MAP()
+public:
+	afx_msg void OnLvnColumnclickFtTags(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 //{{AFX_INSERT_LOCATION}}
