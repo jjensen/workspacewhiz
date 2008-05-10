@@ -3,17 +3,17 @@
 
 [Setup]
 AppName=Workspace Whiz for Visual C++ 6
-AppVerName=Workspace Whiz 4.0 for Visual C++ 6 - Build 1115
-AppVersion=4.0 RC5 Build 1115
+AppVerName=Workspace Whiz 4.1 Beta for Visual C++ 6 - Build 1200
+AppVersion=4.1 Beta Build 1200
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.0 for Visual C++ 6, Copyright © 1997-2007 Joshua Jensen
+AppCopyright=Workspace Whiz 4.1 Beta for Visual C++ 6, Copyright © 1997-2008 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz VC6
 DefaultGroupName=Workspace Whiz for Visual C++ 6
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz40VC6_1115
+OutputBaseFilename=WorkspaceWhiz41_VC6_1200
 OutputDir=.
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
@@ -44,6 +44,7 @@ Filename: "{app}\WorkspaceWhiz.url"; Section: "InternetShortcut"; Key: "URL"; St
 [Icons]
 Name: "{group}\Workspace Whiz Website"; Filename: "{app}\WorkspaceWhiz.url"
 Name: "{group}\Workspace Whiz Help"; Filename: "{app}\WorkspaceWhiz.chm"
+Name: "{group}\Uninstall Workspace Whiz"; Filename: "{uninstallexe}"
 
 [Run]
 ;Filename: "{app}\WWhizInterface30VC6_1026.exe"
@@ -100,7 +101,7 @@ begin
     if FileExists(uninstallFileName) then
     begin
       Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
-    end;
-  end;
+    end
+  end
 end;
 

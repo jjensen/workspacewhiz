@@ -17,6 +17,7 @@
 #ifdef WWHIZ_VSNET
 
 #include <atlsafe.h>
+#include "VCProjectEngine90.tlh"
 #include "VCProjectEngine70.tlh"
 #include "VCProjectEngine71.tlh"
 #include "VCProjectEngine80.tlh"
@@ -107,6 +108,8 @@ void CompilerFiles::ProcessPaths(char* buffer)
 	CComQIPtr<VCProjectEngineLibrary71::VCProject> cpProject71;
 	CComQIPtr<VCProjectEngineLibrary80::VCProjectEngine> pProjEng80;
 	CComQIPtr<VCProjectEngineLibrary80::VCProject> cpProject80;
+	CComQIPtr<VCProjectEngineLibrary90::VCProjectEngine> pProjEng90;
+	CComQIPtr<VCProjectEngineLibrary90::VCProject> cpProject90;
 
 	if (pProject)
 	{
@@ -133,6 +136,14 @@ void CompilerFiles::ProcessPaths(char* buffer)
 			cpProject80->get_VCProjectEngine(&pDispProjEngine);
 			pProjEng80 = pDispProjEngine;
 			if (!pProjEng80)
+				return;
+		}
+		else if (version == "9.0")
+		{
+			cpProject90 = pID;
+			cpProject90->get_VCProjectEngine(&pDispProjEngine);
+			pProjEng90 = pDispProjEngine;
+			if (!pProjEng90)
 				return;
 		}
 	}
@@ -402,12 +413,29 @@ Top:
 		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
 		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
 	}
+	else if (version == "9.0")
+	{
+		CComQIPtr<VCProjectEngineLibrary90::VCProject> pVCProject(pDispatch);
+		pDispatch = NULL;
+
+		// Get the platform pointer...
+		CComPtr<IDispatch> pDispPlatforms;
+		pVCProject->get_Platforms(&pDispPlatforms);
+		CComQIPtr<VCProjectEngineLibrary90::IVCCollection> pPlatforms(pDispPlatforms);
+		CComPtr<IDispatch> pDispPlatform;
+		pPlatforms->Item(CComVariant(bstrPlatformName), &pDispPlatform);
+
+		CComQIPtr<VCProjectEngineLibrary90::VCPlatform> pVCPlatform(pDispPlatform);
+
+		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
+		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
+	}
 
 #endif WWHIZ_VSNET
 
 	s_lastConfigName = configName;
 	
-	CString dir = bstrIncludeDirectories;
+	CString dir = CString(bstrIncludeDirectories);
 	ProcessPaths((char*)(const char*)dir);
 	dir = bstrSourceDirectories;
 	ProcessPaths((char*)(const char*)dir);

@@ -27,18 +27,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "#include ""winres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
     "1 TYPELIB ""WWhizNet.tlb""\r\n"
     "\0"
@@ -53,8 +53,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,0,0,1115
- PRODUCTVERSION 4,0,0,1115
+ FILEVERSION 4,1,0,1200
+ PRODUCTVERSION 4,1,0,1200
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -70,12 +70,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Workspace Whiz"
-            VALUE "FileVersion", "4, 0, 0, 1115"
+            VALUE "FileVersion", "4, 1, 0, 1200"
             VALUE "InternalName", "Workspace Whiz"
-            VALUE "LegalCopyright", "Copyright © 1997-2007 Joshua C. Jensen"
+            VALUE "LegalCopyright", "Copyright © 1997-2008 Joshua C. Jensen"
             VALUE "OriginalFilename", "WorkspaceWhiz.dll"
             VALUE "ProductName", "Workspace Whiz"
-            VALUE "ProductVersion", "4, 0, 0, 1115"
+            VALUE "ProductVersion", "4, 1, 0, 1200"
         END
     END
     BLOCK "VarFileInfo"
@@ -376,7 +376,7 @@ END
 // Menu
 //
 
-IDM_FINDFILEPOPUP MENU 
+IDM_FINDFILEPOPUP MENU
 BEGIN
     POPUP "Temp"
     BEGIN
@@ -396,7 +396,7 @@ BEGIN
     END
 END
 
-IDM_FINDTAG_POPUP MENU 
+IDM_FINDTAG_POPUP MENU
 BEGIN
     POPUP "Temp"
     BEGIN
@@ -450,25 +450,25 @@ IDB_CI_WWTEMPLATECOMPLETE BITMAP                  "res\\IconWWTemplateComplete.b
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_PROJNAME            "Workspace Whiz 4.0 RC5 Build 1115"
+    IDS_PROJNAME            "Workspace Whiz 4.1 Beta 1 Build 1200"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz 4.0 RC5 Build 1115"
-    IDS_WORKSPACEWHIZ_DESCRIPTION 
+    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz 4.1 Beta 1 Build 1200"
+    IDS_WORKSPACEWHIZ_DESCRIPTION
                             "Adds many useful workspace-related functions, such as an incremental file open, code templates, tag matching, etc."
     IDS_PREFDLG_CAPTION     "Workspace Whiz - Options"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CI_WWOPTIONS        "\nWorkspace Whiz Options\nOpen the Workspace Whiz Options dialog\nWorkspace Whiz Options"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CI_WWFILEOPEN       "\nWorkspace File Open\nIncremental workspace-wide file open\nWorkspace file open"
     IDS_CI_WWFILEGLOBALOPEN "\nGlobal File Open\nIncremental global file open\nGlobal file open"
@@ -479,34 +479,34 @@ BEGIN
     IDS_CI_WWHISTORYFORWARD "\nMove Forward in history\nMove forward through the history\nMove forward in history"
     IDS_CI_WWHISTORYDLG     "\nHistory Dialog\nOpen the history dialog\nHistory dialog"
     IDS_CI_WWTAGFINDDLG     "\nFind Tag Dialog\nFind a tag within the workspace\nFind tag dialog"
-    IDS_CI_WWTAGFINDSPECIALDLG 
+    IDS_CI_WWTAGFINDSPECIALDLG
                             "\nFind Tag Special Dialog\nFind a tag within the workspace specialized by user parameters\nFind tag special dialog"
     IDS_CI_WWTAGFLIP        "\nTag Flip\nAlternates between the tag's declaration and definition\nTag Flip"
-    IDS_CI_WWTAGFINDATCURSOR 
+    IDS_CI_WWTAGFINDATCURSOR
                             "\nFind Tag At Cursor\nMatches the tag under the cursor\nFind tag at cursor"
-    IDS_CI_WWTAGFINDATCURSORDLG 
+    IDS_CI_WWTAGFINDATCURSORDLG
                             "\nFind Tag At Cursor Dialog\nTries to match the tag under the cursor. Displays a dialog of all matching tags\nFind tag at cursor dialog"
     IDS_CI_WWTAGFINDPREV    "\nFind Previous Tag\nGoes to the previous matching tag\nFind previous tag"
     IDS_CI_WWTAGFINDNEXT    "\nFind Next Tag\nGoes to the next matching tag\nFind next tag"
-    IDS_CI_WWTAGCOMPLETEPREV 
+    IDS_CI_WWTAGCOMPLETEPREV
                             "\nAutocomplete Previous Tag\nAutocompletes the tag specified to the previous match\nAutocomplete previous tag"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_CI_WWTAGCOMPLETENEXT 
+    IDS_CI_WWTAGCOMPLETENEXT
                             "\nAutocomplete Next Tag\nAutocompletes the tag specified to the next match\nAutocomplete next tag"
-    IDS_CI_WWTAGCOMPLETERESTORE 
+    IDS_CI_WWTAGCOMPLETERESTORE
                             "\nAutocomplete Pattern Restore\nRestores the autocompleted tag to the typed pattern\nAutocomplete pattern restore"
     IDS_CI_WWTAGCOMPLETEDLG "\nAutocomplete Tag Dialog\nShows a matching tag selection dialog\nAutocomplete tag dialog"
     IDS_CI_WWTEMPLATESELECT "\nInsert Code Template\nInserts a template of code based on user parameters\nInsert code template"
-    IDS_CI_WWTEMPLATECOMPLETE 
+    IDS_CI_WWTEMPLATECOMPLETE
                             "\nAutocomplete Code Template\nAutocompletes a code template based on the key entered\nAutocompletes a code template"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_MISSINGTOOLBARCONTENTS 
+    IDS_MISSINGTOOLBARCONTENTS
                             "The contents of the Workspace Whiz toolbar are missing.  Most likely, this is because Visual Studio crashed and did not properly save the contents of the toolbar.\n\nPress Yes to recreate the toolbar.  Press No to leave it as is."
 END
 

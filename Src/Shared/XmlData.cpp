@@ -232,7 +232,7 @@ bool XmlData::ParseXmlFile(CFile& file)
 	delete m_xmlRoot;
 	m_xmlRoot = NULL;
 
-	DWORD size = file.GetLength();
+	DWORD size = (DWORD)file.GetLength();
 	char* buf = WNEW char[size + 1];
 	file.Read(buf, size);
 	buf[size] = 0;

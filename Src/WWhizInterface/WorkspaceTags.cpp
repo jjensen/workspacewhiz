@@ -245,7 +245,7 @@ void WorkspaceTags::AddChangedFile(CString filename)
 		CString ext = filename.Mid(dotPos + 1);
 		ext.MakeLower();
 		if ( ext == "dsw"  ||  ext == "sln"  ||  ext == "dsp"  ||  ext == "vcproj"  ||
-			ext == "csproj"  ||  ext == "vbproj" )
+			ext == "csproj"  ||  ext == "vbproj"  ||  ext == "stproj" )
 		{
 			g_filesChangedFileMap[filename] = 0;
 		}

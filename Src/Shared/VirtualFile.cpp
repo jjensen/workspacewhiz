@@ -123,20 +123,20 @@ ULONGLONG VirtualFile::Seek(LONGLONG lOff, UINT nFrom)
 		case begin:
 			if (lOff < 0  ||  (DWORD)lOff > m_fileEntry->m_size)
 				return -1;
-			m_curPosition = lOff;
+			m_curPosition = (DWORD)lOff;
 			break;
 
 		case current:
 			if ((lOff + (LONG)m_curPosition < 0)  ||
 				(lOff + (LONG)m_curPosition > (LONG)m_fileEntry->m_size))
 				return -1;
-			m_curPosition = lOff + m_curPosition;
+			m_curPosition = (DWORD)(lOff + m_curPosition);
 			break;
 
 		case end:
 			if ((lOff > 0)  ||  ((LONG)m_curPosition + lOff < 0))
 				return -1;
-			m_curPosition = m_fileEntry->m_size - lOff;
+			m_curPosition = (DWORD)(m_fileEntry->m_size - lOff);
 			break;
 	}
 
@@ -155,7 +155,7 @@ void VirtualFile::SetLength(ULONGLONG newSize)
 
 	if (newSize <= m_fileEntry->m_size)
 	{
-		m_fileEntry->m_size = newSize;
+		m_fileEntry->m_size = (DWORD)newSize;
 		m_parentDrive->m_changed = true;
 		m_parentDrive->m_header.m_needPack = true;
 		return;

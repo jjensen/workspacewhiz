@@ -2,18 +2,18 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Workspace Whiz for Visual Studio 2002, 2003, and 2005
-AppVerName=Workspace Whiz 4.0 for Visual Studio 2002, 2003, and 2005 - Build 1115
-AppVersion=4.0 RC5 Build 1115
+AppName=Workspace Whiz for Visual Studio 2002/2003/2005/2008
+AppVerName=Workspace Whiz 4.1 Beta for Visual Studio 2002/2003/2005/2008 - Build 1200
+AppVersion=4.1 Beta Build 1200
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.0 for Visual Studio, Copyright © 1997-2007 Joshua Jensen
+AppCopyright=Workspace Whiz 4.1 Beta for Visual Studio, Copyright © 1997-2008 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz
-DefaultGroupName=Workspace Whiz for Visual Studio 2002, 2003, and 2005
+DefaultGroupName=Workspace Whiz for Visual Studio 2002/2003/2005/2008
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz40VS200x_1115
+OutputBaseFilename=WorkspaceWhiz41_VS200x_1200
 OutputDir=.
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
@@ -33,11 +33,11 @@ Source: "..\BinVSNet\Templates\*"; DestDir: "{app}\Templates"; Flags: ignorevers
 ;Source: "..\BinVSNet\MFC71.dll"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "..\BinVSNet\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC80.CRT\msvcr80.dll"; DestDir: "{app}\Microsoft.VC80.CRT"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC80.CRT\msvcp80.dll"; DestDir: "{app}\Microsoft.VC80.CRT"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"; DestDir: "{app}\Microsoft.VC80.CRT"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC80.MFC\mfc80.dll"; DestDir: "{app}\Microsoft.VC80.MFC"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC80.MFC\Microsoft.VC80.MFC.manifest"; DestDir: "{app}\Microsoft.VC80.MFC"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC90.CRT\msvcr90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC90.CRT\msvcp90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC90.MFC\mfc90.dll"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
+Source: "..\BinVSNet\Microsoft.VC90.MFC\Microsoft.VC90.MFC.manifest"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
@@ -46,6 +46,7 @@ Root: HKCU; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS700FirstTime"; ValueData: "1"
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS710FirstTime"; ValueData: "1"
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS800FirstTime"; ValueData: "1"
+Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS900FirstTime"; ValueData: "1"
 
 [INI]
 Filename: "{app}\WorkspaceWhiz.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://workspacewhiz.com/"
@@ -115,6 +116,20 @@ uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspac
   end
 
 uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio 2002, 2003, and 2005_is1';
+  RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
+  RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
+  if uninstallFileName <> '' then
+  begin
+    ch := StrGet(uninstallFileName, 1);
+    uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
+
+    if FileExists(uninstallFileName) then
+    begin
+      Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
+    end
+  end
+
+  uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio 2002/2003/2005/2008_is1';
   RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
   RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
   if uninstallFileName <> '' then

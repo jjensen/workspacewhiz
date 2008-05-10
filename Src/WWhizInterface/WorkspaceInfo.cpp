@@ -426,7 +426,8 @@ void WorkspaceInfo::RecurseVCProjNode(
 							CString ext = filename.Mid(dotPos + 1);
 							ext.MakeLower();
 							if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||  ext == "vcw"  ||
-								ext == "vcproj"  ||  ext == "csproj"  ||  ext == "vbproj"  ||  ext == "sln")
+								ext == "vcproj"  ||  ext == "csproj"  ||  ext == "vbproj"  ||  ext == "stproj"  ||
+								ext == "sln")
 								projectsToAdd.AddTail(filename);
 						}
 					}
@@ -559,7 +560,7 @@ void WorkspaceInfo::RecurseCSProjNode(
 						ext.MakeLower();
 						if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
 							ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-							ext == "vbproj"  ||  ext == "sln")
+							ext == "vbproj"  ||  ext == "stproj"  ||  ext == "sln")
 							projectsToAdd.AddTail(filename);
 					}
 				}
@@ -640,7 +641,8 @@ void WorkspaceInfo::ReadCSProjFile(Project& prj, CFile* inFile)
 			while (childNode)
 			{
 				if (childNode->GetName() == "Compile"  ||  childNode->GetName() == "Content"  ||  
-					childNode->GetName() == "EmbeddedResource"  ||  childNode->GetName() == "None")
+					childNode->GetName() == "EmbeddedResource"  ||  childNode->GetName() == "None"  ||
+					childNode->GetName() == "Ruby"  ||  childNode->GetName() == "EmbeddedRuby")
 				{
 					XmlNode::Attribute* attr = childNode->FindAttribute("Include");
 					if (attr)
@@ -667,7 +669,7 @@ void WorkspaceInfo::ReadCSProjFile(Project& prj, CFile* inFile)
 								ext.MakeLower();
 								if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
 									ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-									ext == "vbproj"  ||  ext == "sln")
+									ext == "vbproj"  ||  ext == "stproj"  ||  ext == "sln")
 									projectsToAdd.AddTail(filename);
 							}
 						}
@@ -975,7 +977,7 @@ Project* WorkspaceInfo::AddHelper(CString projectName, CString ext, bool active,
 			CString ext = dotPos == -1 ? fullExt : fullExt.Mid(dotPos + 1);
 			if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
 				ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-				ext == "vbproj"  ||  ext == "sln")
+				ext == "vbproj"  ||  ext == "stproj"  ||  ext == "sln")
 			{
 				if (projectName.CompareNoCase(file->GetFullName()) != 0)
 					AddProject(file->GetCaseFullName(), project->IsActive(), noRefresh);
@@ -1012,7 +1014,7 @@ Project* WorkspaceInfo::AddHelper(CString projectName, CString ext, bool active,
 			{
 				ReadVCProjFile(*project);
 			}
-			else if (ext == "csproj"  ||  ext == "vbproj")
+			else if (ext == "csproj"  ||  ext == "vbproj"  ||  ext == "stproj")
 			{
 				ReadCSProjFile(*project);
 			}
@@ -1032,7 +1034,7 @@ Project* WorkspaceInfo::AddHelper(CString projectName, CString ext, bool active,
 				CString ext = dotPos == -1 ? fullExt : fullExt.Mid(dotPos + 1);
 				if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
 					ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-					ext == "vbproj"  ||  ext == "sln")
+					ext == "vbproj"  ||  ext == "stproj"  ||  ext == "sln")
 				{
 					if (projectName.CompareNoCase(file->GetFullName()) != 0)
 						AddProject(file->GetCaseFullName(), project->IsActive(), noRefresh);

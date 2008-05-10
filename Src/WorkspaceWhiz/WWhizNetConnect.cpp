@@ -231,6 +231,25 @@ void UnregisterAllCommands80(CComPtr<EnvDTE80::DTE2>& pDTE)
 }
 
 
+void UnregisterAllCommands90(CComPtr<EnvDTE80::DTE2>& pDTE)
+{
+	CComPtr<EnvDTE::Commands> pCommands;
+	pDTE->get_Commands(&pCommands);
+
+	// Unregister all previously registered commands.
+	UnregisterCommand(pCommands, L"WorkspaceFileOpen");
+	UnregisterCommand(pCommands, L"WorkspaceFileOpen2");
+	UnregisterCommand(pCommands, L"InternalTemplatePut");
+
+	for (int curCommand = 0; curCommand < WWhizCommands::GetCommandCount(); ++curCommand)
+	{
+		const WWhizCommands::CommandInfo* commandInfo = WWhizCommands::GetCommand(curCommand);
+		CStringW commandName = commandInfo->m_name;
+		UnregisterCommand(pCommands, commandName);
+	}
+}
+
+
 CComBSTR version;
 
 
@@ -244,7 +263,7 @@ void CConnect::FreeEvents()
 			delete m_SolutionEventsSink70;
 			m_SolutionEventsSink70 = NULL;
 		}
-		else if (version = "8.0")
+		else if (version = "8.0"  ||  version == "9.0")
 		{
 			m_SolutionEventsSink80->DispEventUnadvise((IUnknown*)pSolutionEvents.p);
 			delete m_SolutionEventsSink80;
@@ -261,7 +280,7 @@ void CConnect::FreeEvents()
 			delete m_DocumentEventsSink70;
 			m_DocumentEventsSink70 = NULL;
 		}
-		else if (version = "8.0")
+		else if (version = "8.0"  ||  version == "9.0")
 		{
 			m_DocumentEventsSink80->DispEventUnadvise((IUnknown*)pDocumentEvents.p);
 			delete m_DocumentEventsSink80;
@@ -317,21 +336,6 @@ STDMETHODIMP CConnect::OnConnection(IDispatch *pApplication,
 		// Chances are, this won't work.
 		if ( ConnectMode == AddInDesignerObjects::ext_cm_CommandLine )
 			return S_OK;
-
-		// Find the Visual Studio main window.
-		CComPtr<EnvDTE::Window> pMainWindow;
-		ObjModelHelper::GetInterface()->get_MainWindow(&pMainWindow);
-		if (!pMainWindow)
-		{
-			::MessageBeep(MB_ICONEXCLAMATION);
-			//????
-			return S_OK;
-		}
-
-		pMainWindow->get_HWnd((long*)&g_devStudioWnd);
-
-		s_wndProcHook = SetWindowsHookEx(WH_CALLWNDPROC, CallWndProc,
-			AfxGetInstanceHandle(), AfxGetThread()->m_nThreadID);
 
 		CComPtr<IDispatch> pDisp;
 		CComPtr<EnvDTE::Commands> pCommands;
@@ -456,7 +460,7 @@ STDMETHODIMP CConnect::OnConnection(IDispatch *pApplication,
 				}
 			}
 		}
-		else if (version == "8.0")
+		else if (version == "8.0"  ||  version == "9.0")
 		{
 			CComQIPtr<Microsoft_VisualStudio_CommandBars::_CommandBars> pCommandBars;
 			CComPtr<Microsoft_VisualStudio_CommandBars::CommandBar> pCommandBar;
@@ -581,6 +585,21 @@ STDMETHODIMP CConnect::OnConnection(IDispatch *pApplication,
 			}
 		}
 
+		// Find the Visual Studio main window.
+		CComPtr<EnvDTE::Window> pMainWindow;
+		ObjModelHelper::GetInterface()->get_MainWindow(&pMainWindow);
+		if (!pMainWindow)
+		{
+			::MessageBeep(MB_ICONEXCLAMATION);
+			//????
+			return S_OK;
+		}
+
+		pMainWindow->get_HWnd((long*)&g_devStudioWnd);
+
+		s_wndProcHook = SetWindowsHookEx(WH_CALLWNDPROC, CallWndProc,
+			AfxGetInstanceHandle(), AfxGetThread()->m_nThreadID);
+
 		FreeEvents();
 
 		// Retrieve the list of events.
@@ -617,7 +636,7 @@ STDMETHODIMP CConnect::OnConnection(IDispatch *pApplication,
 				m_WindowEventsSink.DispEventAdvise((IUnknown*)pWindowEvents.p);
 			}*/
 		}
-		else if (version == "8.0")
+		else if (version == "8.0"  ||  version == "9.0")
 		{
 			// Register the event systems.
 			if(SUCCEEDED(pEvents->get_SolutionEvents((EnvDTE::_SolutionEvents**)&pSolutionEvents)))
