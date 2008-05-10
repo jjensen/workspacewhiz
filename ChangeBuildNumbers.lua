@@ -1,29 +1,13 @@
-import "glob"
+require "glob"
 
-oldBuildNumber = arg[1]
-newBuildNumber = arg[2]
-
-function LoadFile(fileName)
-	local file = io.open(fileName, "rt")
-	local str = file:read("*a")
-	file:close()
-	return str
-end
-
-function SaveFile(fileName, str)
-	local file = io.open(fileName, "wt")
-	file:write(str)
-	file:close()
-end
+oldBuildNumber, newBuildNumber = unpack(arg)
 
 function ReplaceBuildNumbers(globPath)
-	local files = glob.match(globPath)
-
-	for index, fileName in files do
+	for index, fileName in ipairs(glob.match(globPath)) do
 		print(fileName)
-		local str = LoadFile(fileName)
+		local str = io.readall(fileName)
 		str = str:gsub(oldBuildNumber, newBuildNumber)
-		SaveFile(fileName, str)
+		io.writeall(fileName, str)
 	end
 end
 
