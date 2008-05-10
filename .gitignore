@@ -4,9 +4,12 @@
 *.ilk
 *.lib
 *.ncb
+*.opt
 *.suo
+*.user
 *.wwdb
 *.WW
+UpgradeLog.XML
 BinVSNet/WWhizInterface2D.mod
 BinVSNet/WWhizRegD.mod
 BinVSNet/WWhizTemplateManagerD.mod
@@ -14,3 +17,8 @@ BinVSNet/WorkspaceWhizD.dll
 Output/
 Src/WorkspaceWhiz/WWhizNet.h
 Src/WorkspaceWhiz/WWhizNet_i.c
+Src/WorkspaceWhiz/WorkspaceWhizTypes.h
+Src/WorkspaceWhiz/WorkspaceWhiz_i.c
+_UpgradeReport_Files
+Temp
+
