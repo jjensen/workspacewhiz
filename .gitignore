@@ -1,0 +1,16 @@
+*.bak
+*.dtpl
+*.exp
+*.ilk
+*.lib
+*.ncb
+*.suo
+*.wwdb
+*.WW
+BinVSNet/WWhizInterface2D.mod
+BinVSNet/WWhizRegD.mod
+BinVSNet/WWhizTemplateManagerD.mod
+BinVSNet/WorkspaceWhizD.dll
+Output/
+Src/WorkspaceWhiz/WWhizNet.h
+Src/WorkspaceWhiz/WWhizNet_i.c
