@@ -3,17 +3,17 @@
 
 [Setup]
 AppName=Workspace Whiz for Visual C++ 6
-AppVerName=Workspace Whiz 4.1 Beta for Visual C++ 6 - Build 1200
-AppVersion=4.1 Beta Build 1200
+AppVerName=Workspace Whiz 4.2 Beta for Visual C++ 6 - Build 1201
+AppVersion=4.2 Beta Build 1201
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.1 Beta for Visual C++ 6, Copyright © 1997-2008 Joshua Jensen
+AppCopyright=Workspace Whiz 4.2 Beta for Visual C++ 6, Copyright © 1997-2008 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz VC6
 DefaultGroupName=Workspace Whiz for Visual C++ 6
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz41_VC6_1200
+OutputBaseFilename=WorkspaceWhiz42_VC6_1201
 OutputDir=.
 PrivilegesRequired=admin
 UsePreviousAppDir=yes

@@ -2,18 +2,18 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Workspace Whiz for Visual Studio 2002/2003/2005/2008
-AppVerName=Workspace Whiz 4.1 Beta for Visual Studio 2002/2003/2005/2008 - Build 1200
-AppVersion=4.1 Beta Build 1200
+AppName=Workspace Whiz for Visual Studio 200x
+AppVerName=Workspace Whiz 4.2 Beta for Visual Studio 200x - Build 1201
+AppVersion=4.2 Beta Build 1201
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.1 Beta for Visual Studio, Copyright © 1997-2008 Joshua Jensen
+AppCopyright=Workspace Whiz 4.2 Beta for Visual Studio, Copyright © 1997-2008 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz
-DefaultGroupName=Workspace Whiz for Visual Studio 2002/2003/2005/2008
+DefaultGroupName=Workspace Whiz for Visual Studio 200x
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz41_VS200x_1200
+OutputBaseFilename=WorkspaceWhiz42_VS200x_1201
 OutputDir=.
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
@@ -130,6 +130,20 @@ uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspac
   end
 
   uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio 2002/2003/2005/2008_is1';
+  RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
+  RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
+  if uninstallFileName <> '' then
+  begin
+    ch := StrGet(uninstallFileName, 1);
+    uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
+
+    if FileExists(uninstallFileName) then
+    begin
+      Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
+    end
+  end
+
+  uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio 200x_is1';
   RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
   RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
   if uninstallFileName <> '' then
