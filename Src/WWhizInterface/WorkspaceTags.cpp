@@ -849,8 +849,15 @@ bool Tag::ConvertFromText(CFile& file, TCHAR* line)
 	else
 	{
 		char* ptr = strchr(parts[2], ';');
-		*ptr = 0;
-		lineNumber = atoi(parts[2]);
+		if (ptr)
+		{
+			*ptr = 0;
+			lineNumber = atoi(parts[2]);
+		}
+		else
+		{
+			lineNumber = -1;
+		}
 	}
 
 	// Get the type.
