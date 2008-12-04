@@ -185,7 +185,12 @@ static bool MatchFromFileList(int whichExt, WWhizFile& file, const WWhizFileList
 		int curExt = nextExt;
 		do
 		{
-			if (foundFile->GetExt() == config.FilesExtGet(curExt))
+			CString foundFileExt = foundFile->GetExt();
+			int dotPos = foundFileExt.ReverseFind('.');
+			if (dotPos != -1)
+				foundFileExt = foundFileExt.Mid(dotPos + 1);
+
+			if (foundFileExt == config.FilesExtGet(curExt))
 			{
 				// See if the file exists.
 				if (_access(foundFile->GetFullName(), 00) != -1)
@@ -256,7 +261,12 @@ int HeaderFlip(LPCTSTR fullNameStr)
 	int whichExt;
 	for (whichExt = 0; whichExt < numExts; ++whichExt)
 	{
-		if (file.GetExt() == config.FilesExtGet(whichExt))
+		CString fileExt = file.GetExt();
+		int dotPos = fileExt.ReverseFind('.');
+		if (dotPos != -1)
+			fileExt = fileExt.Mid(dotPos + 1);
+
+		if (fileExt == config.FilesExtGet(whichExt))
 			break;
 	}
 
