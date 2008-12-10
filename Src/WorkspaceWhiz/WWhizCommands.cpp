@@ -258,14 +258,14 @@ int HeaderFlip(LPCTSTR fullNameStr)
 	int numExts = config.FilesExtGetCount();
 
 	// Figure out which extension we should start on.
+	CString fileExt = file.GetExt();
+	int dotPos = fileExt.ReverseFind('.');
+	if (dotPos != -1)
+		fileExt = fileExt.Mid(dotPos + 1);
+
 	int whichExt;
 	for (whichExt = 0; whichExt < numExts; ++whichExt)
 	{
-		CString fileExt = file.GetExt();
-		int dotPos = fileExt.ReverseFind('.');
-		if (dotPos != -1)
-			fileExt = fileExt.Mid(dotPos + 1);
-
 		if (fileExt == config.FilesExtGet(whichExt))
 			break;
 	}

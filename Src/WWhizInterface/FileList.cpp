@@ -326,14 +326,24 @@ int FileList::FindExact(WWhizFile& file) const
 // Find next file index.
 int FileList::FindNext(int startPos, WWhizFile& file) const
 {
+	CString fileName = file.GetTitle() + "." + file.GetExt();
+	int dotPos = fileName.ReverseFind('.');
+	if (dotPos != -1)
+		fileName = fileName.Left(dotPos);
+
 	// Scan the file list.
 	int i;
 	for (i = startPos + 1; i < GetCount(); i++)
 	{
 		WWhizFile* fileCmp = Get(i);
 
-		// Compare the file titles.
-		if (file.GetTitle().CompareNoCase(fileCmp->GetTitle()) == 0)
+		// Compare the files without extension.
+		CString fileCmpName = fileCmp->GetTitle() + "." + fileCmp->GetExt();
+		int dotPos = fileCmpName.ReverseFind('.');
+		if (dotPos != -1)
+			fileCmpName = fileCmpName.Left(dotPos);
+
+		if (fileName.CompareNoCase(fileCmpName) == 0)
 			return i;
 	}
 
@@ -341,8 +351,13 @@ int FileList::FindNext(int startPos, WWhizFile& file) const
 	{
 		WWhizFile* fileCmp = Get(i);
 
-		// Compare the file titles.
-		if (file.GetTitle().CompareNoCase(fileCmp->GetTitle()) == 0)
+		// Compare the files without extension.
+		CString fileCmpName = fileCmp->GetTitle() + "." + fileCmp->GetExt();
+		int dotPos = fileCmpName.ReverseFind('.');
+		if (dotPos != -1)
+			fileCmpName = fileCmpName.Left(dotPos);
+
+		if (fileName.CompareNoCase(fileCmpName) == 0)
 			return i;
 	}
 
@@ -355,14 +370,24 @@ int FileList::FindNext(int startPos, WWhizFile& file) const
 **/
 int FileList::FindPrevious(int startPos, WWhizFile& file) const
 {
+	CString fileName = file.GetTitle() + "." + file.GetExt();
+	int dotPos = fileName.ReverseFind('.');
+	if (dotPos != -1)
+		fileName = fileName.Left(dotPos);
+
 	// Scan the file list.
 	int i;
 	for (i = startPos - 1; i >= 0; i--)
 	{
 		WWhizFile* fileCmp = Get(i);
 
-		// Compare the file titles.
-		if (file.GetTitle().CompareNoCase(fileCmp->GetTitle()) == 0)
+		// Compare the files without extension.
+		CString fileCmpName = fileCmp->GetTitle() + "." + fileCmp->GetExt();
+		int dotPos = fileCmpName.ReverseFind('.');
+		if (dotPos != -1)
+			fileCmpName = fileCmpName.Left(dotPos);
+
+		if (fileName.CompareNoCase(fileCmpName) == 0)
 			return i;
 	}
 
@@ -370,8 +395,13 @@ int FileList::FindPrevious(int startPos, WWhizFile& file) const
 	{
 		WWhizFile* fileCmp = Get(i);
 
-		// Compare the file titles.
-		if (file.GetTitle().CompareNoCase(fileCmp->GetTitle()) == 0)
+		// Compare the files without extension.
+		CString fileCmpName = fileCmp->GetTitle() + "." + fileCmp->GetExt();
+		int dotPos = fileCmpName.ReverseFind('.');
+		if (dotPos != -1)
+			fileCmpName = fileCmpName.Left(dotPos);
+
+		if (fileName.CompareNoCase(fileCmpName) == 0)
 			return i;
 	}
 
