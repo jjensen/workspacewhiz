@@ -34,6 +34,8 @@ Enter a . at any point to begin an extension search.
 Enter a : or , at the end of the filename followed by a line number to go to
 that line.
 
+Enter a ; at the end of the filename to begin a search for a directory name.
+
 Use the arrow keys, Home, End, Page Up, and Page Down for navigation within
 the list of files.
 
