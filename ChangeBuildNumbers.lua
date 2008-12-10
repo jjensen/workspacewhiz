@@ -4,10 +4,13 @@ oldBuildNumber, newBuildNumber = unpack(arg)
 
 function ReplaceBuildNumbers(globPath)
 	for index, fileName in ipairs(glob.match(globPath)) do
-		print(fileName)
 		local str = io.readall(fileName)
+		local oldStr = str
 		str = str:gsub(oldBuildNumber, newBuildNumber)
-		io.writeall(fileName, str)
+		if oldStr ~= str then
+			print(fileName)
+			io.writeall(fileName, str)
+		end
 	end
 end
 
