@@ -1,0 +1,70 @@
+{
+
+SubDir WWHIZ Src WWhizTemplateManager ;
+
+local HEADER_FILES_SRCS =
+		pchWWhizTemplateManager.h
+		resource.h
+		Template.h
+		TemplateGroup.h
+		TemplateManager.h
+;
+
+local SHARED_SRCS =
+		../Shared/VirtualDrive.cpp
+		../Shared/VirtualDrive.h
+		../Shared/VirtualDriveManager.cpp
+		../Shared/VirtualDriveManager.h
+		../Shared/VirtualFile.cpp
+		../Shared/VirtualFile.h
+		../Shared/WWhizTemplateManager2.h
+;
+
+local SOURCE_FILES_NOPCH_SRCS =
+		WWhizTemplateManager.cpp
+;
+
+local SOURCE_FILES_PCH_SRCS =
+		pchWWhizTemplateManager.cpp
+		Template.cpp
+		TemplateGroup.cpp
+		TemplateManager.cpp
+		WWhizTemplateManagerNet.rc
+;
+
+local SOURCE_FILES_SRCS =
+		$(SOURCE_FILES_NOPCH_SRCS)
+		$(SOURCE_FILES_PCH_SRCS)
+;
+
+local THIRD_PARTY_SRCS =
+		../3rdParty/MemFile.cpp
+		../3rdParty/MemFile.h
+		../3rdParty/ObjModelHelper.h
+		../Shared/Timer.h
+		../3rdParty/WCollection.h
+;
+
+local SRCS =
+		$(HEADER_FILES_SRCS)
+		$(SHARED_SRCS)
+		$(SOURCE_FILES_SRCS)
+		$(THIRD_PARTY_SRCS)
+;
+
+SourceGroup WWhizTemplateManager : "Header Files" : $(HEADER_FILES_SRCS) ;
+SourceGroup WWhizTemplateManager : Shared : $(SHARED_SRCS) ;
+SourceGroup WWhizTemplateManager : "Source Files" : $(SOURCE_FILES_SRCS) ;
+SourceGroup WWhizTemplateManager : "Third Party" : $(THIRD_PARTY_SRCS) ;
+
+IncludeDirectories WWhizTemplateManager : ../3rdParty ../Shared ;
+PrecompiledHeader WWhizTemplateManager : pchWWhizTemplateManager : $(SOURCE_FILES_PCH_SRCS) ;
+
+UseMFC WWhizTemplateManager : shared ;
+
+local RES_SRCS = [ ResourceCompiler WWhizTemplateManager : WWhizTemplateManagerNet.rc ] ;
+
+OutputSuffix WWhizTemplateManager : .mod ;
+Library WWhizTemplateManager : $(SRCS) $(RES_SRCS) : shared ;
+
+}

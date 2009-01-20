@@ -1,0 +1,81 @@
+{
+
+SubDir WWHIZ Src WWhizReg ;
+
+local HEADER_FILES_SRCS =
+		Base32.h
+		EnterRegDlg.h
+		ExpiredDlg.h
+		FindFileEdit.h
+		FindFileListCtrl.h
+		FindTagEdit.h
+		FindTagListCtrl.h
+		md5.h
+		md5global.h
+		pchWWhizReg.h
+		RegHelperWnd.h
+		RegThread.h
+		resource.h
+		stdafx.h
+		Subclass.h
+		ValidateRegistrationCode.h
+		../Shared/WWhizReg.h
+		WWhizRegExt.h
+;
+
+local SOURCE_FILES_NOPCH_SRCS =
+		Base32.cpp
+		md5c.c
+		RegThread.cpp
+		ValidateRegistrationCode.cpp
+;
+
+local SOURCE_FILES_PCH_SRCS =
+		EnterRegDlg.cpp
+		ExpiredDlg.cpp
+		ExtraFiles.cpp
+		FindFileEdit.cpp
+		FindFileListCtrl.cpp
+		FindTagEdit.cpp
+		FindTagListCtrl.cpp
+		pchWWhizReg.cpp
+		RegHelperWnd.cpp
+		Subclass.cpp
+		WWhizReg.cpp
+		WWhizRegNet.rc
+;
+
+local THIRD_PARTY_SRCS =
+		../3rdParty/MemFile.cpp
+		../3rdParty/MemFile.h
+		../3rdParty/WCollection.h
+;
+
+local PCH_SRCS =
+		$(HEADER_FILES_SRCS)
+		$(SOURCE_FILES_PCH_SRCS)
+;
+
+local SRCS =
+		$(PCH_SRCS)
+		$(SOURCE_FILES_NOPCH_SRCS)
+		$(THIRD_PARTY_SRCS)
+;
+
+ActiveProject WWhizReg ;
+
+SourceGroup : "Header Files" : $(HEADER_FILES_SRCS) ;
+SourceGroup : "Source Files" : $(SOURCE_FILES_NOPCH_SRCS) $(SOURCE_FILES_PCH_SRCS) ;
+SourceGroup : "Third Party" : $(THIRD_PARTY_SRCS) ;
+
+UseMFC : shared ;
+
+IncludeDirectories : ../3rdParty ../Shared ;
+PrecompiledHeader : pchWWhizReg : $(PCH_SRCS) ;
+
+local resFile = [ ResourceCompiler : WWhizRegNet.rc ] ;
+
+OutputSuffix : .mod ;
+Library : $(SRCS) $(resFile) : shared ;
+
+}

@@ -1,0 +1,22 @@
+ALL_LOCATE_TARGET ?= $(WWHIZ)/obj/$(COMPILER)/temp-$(PLATFORM)-$(CONFIG) ;
+
+DEPCACHE.standard ?= $(ALL_LOCATE_TARGET)/.depcache ;
+DEPCACHE ?= standard ;
+
+WWHIZ_OUTPUT_DIRECTORY ?= $(LUAPLUS)/bin/$(COMPILER) ;
+
+IncludeModule CopyFile ;
+IncludeModule MFC ;
+
+if $(COMPILER) = vc6
+{
+	Defines * : WWHIZ_VC6 ;
+}
+else
+{
+	Defines * : WWHIZ_VSNET ;
+}
+
+OutputPath * : $(WWHIZ_OUTPUT_DIRECTORY) ;
+OutputPostfix * : D : debug ;
+OutputPostfix * : : release ;

@@ -1,0 +1,217 @@
+{
+
+SubDir WWHIZ Src WorkspaceWhiz ;
+
+local HEADER_FILES_SRCS =
+		AboutDialog.h
+		AutoCompleteTagsDlg.h
+		Config.h
+		ExtraFilesDialog.h
+		FindFileDialog.h
+		FindTagDialog.h
+		History.h
+		HistoryDialog.h
+		HistoryListCtrl.h
+		HtmlHelpDialog.h
+		PreferencesDialog.h
+		PrefHeaderFlipListBox.h
+		PrefHeaderFlipPage.h
+		PrefKeyBindingsHotKeyCtrl.h
+		PrefKeyBindingsPage.h
+		PrefTagsListBox.h
+		PrefTagsPage.h
+		Resource.h
+		stdafx.h
+		TemplateFileListDialog.h
+		TemplateSelectDialog.h
+		TemplateWizardDialog.h
+		TextLine.h
+		WWhizCommands.h
+		WWhizNetConnect.h
+;
+
+local RESOURCE_FILES_SRCS =
+		res/AboutTitle.JPG
+		res/Back.GIF
+		res/icon1.ico
+		res/IconFileFindNext.bmp
+		res/IconFileFindPrev.bmp
+		res/IconGlobalFileOpen.bmp
+		res/IconHeaderFlip.bmp
+		res/IconWorkspaceFileOpen.bmp
+		res/IconWWFileFindNext.bmp
+		res/IconWWFileFindPrev.bmp
+		res/IconWWFileGlobalOpen.bmp
+		res/IconWWFileOpen.bmp
+		res/IconWWHeaderFlip.bmp
+		res/IconWWHistoryBack.bmp
+		res/IconWWHistoryDlg.bmp
+		res/IconWWHistoryForward.bmp
+		res/IconWWOptions.bmp
+		res/IconWWTagCompleteDlg.bmp
+		res/IconWWTagCompleteNext.bmp
+		res/IconWWTagCompletePrev.bmp
+		res/IconWWTagCompleteRestore.bmp
+		res/IconWWTagFindAtCursor.bmp
+		res/IconWWTagFindAtCursorDlg.bmp
+		res/IconWWTagFindDlg.bmp
+		res/IconWWTagFindNext.bmp
+		res/IconWWTagFindPrev.bmp
+		res/IconWWTagFindSpecialDlg.bmp
+		res/IconWWTagFlip.bmp
+		res/IconWWTemplateComplete.bmp
+		res/IconWWTemplateSelect.bmp
+		res/TBarLrge.bmp
+		res/TBarMedm.bmp
+		WWhizNet.rc
+		WWhizNet.rgs
+;
+
+local SHARED_SRCS =
+		../Shared/WWhizInterface2.h
+		../Shared/WWhizInterface3.h
+		../Shared/WWhizInterfaceLoader.cpp
+		../Shared/WWhizInterfaceLoader.h
+		../Shared/WWhizReg.h
+		../Shared/WWhizRegLoader.cpp
+		../Shared/WWhizRegLoader.h
+		../Shared/WWhizTemplateManager.h
+		../Shared/WWhizTemplateManagerLoader.cpp
+		../Shared/WWhizTemplateManagerLoader.h
+;
+
+local SOURCE_FILES_SRCS =
+		AboutDialog.cpp
+		AutoCompleteTagsDlg.cpp
+		Config.cpp
+		ExtraFilesDialog.cpp
+		FindFileDialog.cpp
+		FindTagDialog.cpp
+		History.cpp
+		HistoryDialog.cpp
+		HistoryListCtrl.cpp
+		HtmlHelpDialog.cpp
+		PreferencesDialog.cpp
+		PrefHeaderFlipListBox.cpp
+		PrefHeaderFlipPage.cpp
+		PrefKeyBindingsHotKeyCtrl.cpp
+		PrefKeyBindingsPage.cpp
+		PrefTagsListBox.cpp
+		PrefTagsPage.cpp
+		stdafx.cpp
+		TemplateFileListDialog.cpp
+		TemplateSelectDialog.cpp
+		TemplateWizardDialog.cpp
+		TextLine.cpp
+		WorkspaceWhiz.cpp
+		WorkspaceWhiz.def
+		WWhizCommands.cpp
+		WWhizNet.idl
+		WWhizNetConnect.cpp
+;
+
+local THIRD_PARTY_SRCS =
+		../3rdParty/BCMenu.cpp
+		../3rdParty/BCMenu.h
+		../3rdParty/cdxCDynamicDialog.cpp
+		../3rdParty/cdxCDynamicDialog.h
+		../3rdParty/cdxCDynamicWnd.cpp
+		../3rdParty/cdxCDynamicWnd.h
+		../3rdParty/cdxCDynamicWndEx.cpp
+		../3rdParty/cdxCDynamicWndEx.h
+		../3rdParty/cdxCSizeIconCtrl.cpp
+		../3rdParty/cdxCSizeIconCtrl.h
+		../3rdParty/ChoiceWindow.cpp
+		../3rdParty/ChoiceWindow.h
+		../3rdParty/ChoiceWindowBtn.cpp
+		../3rdParty/ChoiceWindowBtn.h
+		../3rdParty/MemFile.cpp
+		../3rdParty/MemFile.h
+		../3rdParty/ObjModelHelper.cpp
+		../3rdParty/ObjModelHelper.h
+		../3rdParty/ShellContextMenu.cpp
+		../3rdParty/ShellContextMenu.h
+		../3rdParty/ShellTools.cpp
+		../3rdParty/ShellTools.h
+		../Shared/Timer.h
+		../3rdParty/TreeCtrlEx.h
+		../3rdParty/WCollection.h
+;
+
+local PCH_SRCS =
+		$(HEADER_FILES_SRCS)
+		$(SOURCE_FILES_SRCS)
+;
+
+local SRCS =
+		res/About.html
+		$(PCH_SRCS)
+		$(RESOURCE_FILES_SRCS)
+		$(SHARED_SRCS)
+		$(THIRD_PARTY_SRCS)
+;
+
+SourceGroup WorkspaceWhiz : "Header Files" : $(HEADER_FILES_SRCS) ;
+SourceGroup WorkspaceWhiz : "Resource Files" : $(RESOURCE_FILES_SRCS) ;
+SourceGroup WorkspaceWhiz : Shared : $(SHARED_SRCS) ;
+SourceGroup WorkspaceWhiz : "Source Files" : $(SOURCE_FILES_SRCS) ;
+SourceGroup WorkspaceWhiz : "Third Party" : $(THIRD_PARTY_SRCS) ;
+
+UseMFC WorkspaceWhiz : shared ;
+
+IncludeDirectories WorkspaceWhiz : ../3rdParty ../Shared ;
+PrecompiledHeader WorkspaceWhiz : stdafx : $(PCH_SRCS) ;
+
+RcIncludeDirectories WorkspaceWhiz : WWhizNet.rc : $(LOCATE_SOURCE) ;
+local RES_SRCS = [ ResourceCompiler WorkspaceWhiz : WWhizNet.rc ] ;
+
+MIDL = "$(MSSDK)/bin/midl" ;
+MIDLFLAGS.debug on * = /D "_DEBUG" /char signed /env win32 /Oicf ;
+MIDLFLAGS.release on * = /D "NDEBUG" /char signed /env win32 ;
+
+rule MidlCompiler PARENT : SOURCE
+{
+	PARENT = [ _retrieveActiveTargetName $(PARENT) ] ;
+	local grist = $(PARENT) ;
+
+	SOURCE = $(SOURCE:G=$(grist)) ;
+	SearchSource $(SOURCE) ;
+
+	local tlbFile = $(SOURCE:S=.tlb) ;
+	local hFile = $(SOURCE:S=.h) ;
+	local iidFile = $(SOURCE:S=_i.c) ;
+	local proxyFile = $(SOURCE:S=_p.c) ;
+	local targets = $(tlbFile) $(hFile) $(iidFile) ; #$(proxyFile) ;
+	MakeLocate $(targets) : $(LOCATE_TARGET) ;
+
+	Depends $(targets) : $(SOURCE) ;
+
+	local flags ;
+	on $(PARENT) flags += $(MIDLFLAGS.$(CONFIG)) $(MIDLFLAGS.*) ;
+	on * flags += $(MIDLFLAGS.$(CONFIG)) $(MIDLFLAGS.*) ;
+	flags += /tlb $(tlbFile:T) /h $(hFile:T) /iid $(iidFile:T) ; #/proxy $(proxyFile:T) ;
+	FLAGS on $(targets) = $(flags) ;
+
+	Clean clean:$(PARENT) : $(targets) ;
+
+	Midl $(targets) : $(SOURCE) ;
+
+	return $(targets) ;
+}
+
+
+actions Midl
+{
+	"$(MIDL)" $(FLAGS) $(2)
+}
+
+
+local MIDL_SRCS = [ MidlCompiler WorkspaceWhiz : WWhizNet.idl ] ;
+
+Includes <WorkspaceWhiz>WWhizNet.rc : $(MIDL_SRCS) ;
+
+DefFile WorkspaceWhiz : WorkspaceWhiz.def ;
+
+Library WorkspaceWhiz : $(SRCS) $(RES_SRCS) : shared ;
+
+}

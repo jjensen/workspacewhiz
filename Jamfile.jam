@@ -1,0 +1,17 @@
+SubDir WWHIZ ;
+
+Workspace WorkspaceWhiz :
+		WorkspaceWhiz
+		WWhizInterface
+		WWhizReg
+		WWhizResources
+		WWhizTemplateManager
+		WWhizTemplates
+;
+
+SubInclude WWHIZ Src WorkspaceWhiz : WorkspaceWhiz ;
+SubInclude WWHIZ Src WWhizInterface : WWhizInterface ;
+SubInclude WWHIZ Src WWhizReg : WWhizReg ;
+SubInclude WWHIZ Src WWhizResources : WWhizResources ;
+SubInclude WWHIZ Src WWhizTemplateManager : WWhizTemplateManager ;
+SubInclude WWHIZ Src WWhizTemplates : WWhizTemplates ;

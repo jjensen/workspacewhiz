@@ -1,0 +1,56 @@
+{
+
+SubDir WWHIZ Src WWhizResources ;
+
+local HEADER_FILES_SRCS =
+		resource.h
+;
+
+local RESOURCE_FILES_SRCS =
+		res/IconWWFileFindNext.bmp
+		res/IconWWFileFindPrev.bmp
+		res/IconWWFileGlobalOpen.bmp
+		res/IconWWFileOpen.bmp
+		res/IconWWHeaderFlip.bmp
+		res/IconWWHistoryBack.bmp
+		res/IconWWHistoryDlg.bmp
+		res/IconWWHistoryForward.bmp
+		res/IconWWOptions.bmp
+		res/IconWWTagCompleteDlg.bmp
+		res/IconWWTagCompleteNext.bmp
+		res/IconWWTagCompletePrev.bmp
+		res/IconWWTagCompleteRestore.bmp
+		res/IconWWTagFindAtCursor.bmp
+		res/IconWWTagFindAtCursorDlg.bmp
+		res/IconWWTagFindDlg.bmp
+		res/IconWWTagFindNext.bmp
+		res/IconWWTagFindPrev.bmp
+		res/IconWWTagFindSpecialDlg.bmp
+		res/IconWWTagFlip.bmp
+		res/IconWWTemplateComplete.bmp
+		res/IconWWTemplateSelect.bmp
+		WWhizResources.rc
+;
+
+local SOURCE_FILES_SRCS =
+;
+
+local SRCS =
+		$(HEADER_FILES_SRCS)
+		$(RESOURCE_FILES_SRCS)
+		$(SOURCE_FILES_SRCS)
+;
+
+SourceGroup WWhizResources : "Header Files" : $(HEADER_FILES_SRCS) ;
+SourceGroup WWhizResources : "Resource Files" : $(RESOURCE_FILES_SRCS) ;
+SourceGroup WWhizResources : "Source Files" : $(SOURCE_FILES_SRCS) ;
+
+UseMFC WWhizResources : shared ;
+
+local RES_SRCS = [ ResourceCompiler WWhizResources : WWhizResources.rc ] ;
+
+OutputPath WWhizResources : $(WWHIZ_OUTPUT_DIRECTORY)/1033 ;
+LinkFlags WWhizResources : /NOENTRY ;
+Library WWhizResources : $(SRCS) $(RES_SRCS) : shared nomanifest noexportlib ;
+
+}

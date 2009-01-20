@@ -1,0 +1,88 @@
+{
+
+SubDir WWHIZ Src WWhizInterface ;
+
+local HEADER_FILES_SRCS =
+		CompilerFiles.h
+		Config.h
+		FileList.h
+		pchWWhizInterface.h
+		ProjectList.h
+		RCBase.h
+		resource.h
+		TagList.h
+		WorkspaceInfo.h
+		WorkspaceTags.h
+;
+
+local SHARED_SRCS =
+		../Shared/FileGlobBase.cpp
+		../Shared/FileGlobBase.h
+		../Shared/FileGlobList.h
+		../Shared/Node.cpp
+		../Shared/Node.h
+		../Shared/VCProjectEngine70.tlh
+		../Shared/VCProjectEngine71.tlh
+		../Shared/VirtualDrive.cpp
+		../Shared/VirtualDrive.h
+		../Shared/VirtualDriveManager.cpp
+		../Shared/VirtualDriveManager.h
+		../Shared/VirtualFile.cpp
+		../Shared/VirtualFile.h
+		../Shared/WWhizInterface3.h
+		../Shared/XmlData.cpp
+		../Shared/XmlData.h
+;
+
+local SOURCE_FILES_SRCS =
+		CompilerFiles.cpp
+		Config.cpp
+		FileList.cpp
+		pchWWhizInterface.cpp
+		ProjectList.cpp
+		TagList.cpp
+		WorkspaceInfo.cpp
+		WorkspaceTags.cpp
+		WWhizInterface.cpp
+		WWhizInterfaceImpl.cpp
+		WWhizInterfaceNet.rc
+;
+
+local THIRD_PARTY_SRCS =
+		../3rdParty/AggressiveOptimize.h
+		../3rdParty/MemFile.cpp
+		../3rdParty/MemFile.h
+		../3rdParty/ObjModelHelper.cpp
+		../3rdParty/ObjModelHelper.h
+		../Shared/Timer.h
+		../3rdParty/WCollection.h
+;
+
+local PCH_SRCS =
+		$(HEADER_FILES_SRCS)
+		$(SOURCE_FILES_SRCS)
+;
+
+local SRCS =
+		$(PCH_SRCS)
+		$(SHARED_SRCS)
+		$(THIRD_PARTY_SRCS)
+;
+
+SourceGroup WWhizInterface : "Header Files" : $(HEADER_FILES_SRCS) ;
+SourceGroup WWhizInterface : Shared : $(SHARED_SRCS) ;
+SourceGroup WWhizInterface : "Source Files" : $(SOURCE_FILES_SRCS) ;
+SourceGroup WWhizInterface : "Third Party" : $(THIRD_PARTY_SRCS) ;
+
+UseMFC WWhizInterface : shared ;
+
+IncludeDirectories WWhizInterface : ../3rdParty ../Shared ;
+PrecompiledHeader WWhizInterface : pchWWhizInterface : $(PCH_SRCS) ;
+
+local RES_SRCS = [ ResourceCompiler WWhizInterface : WWhizInterfaceNet.rc ] ;
+
+OutputName WWhizInterface : WWhizInterface2 ;
+OutputSuffix WWhizInterface : .mod ;
+Library WWhizInterface : $(SRCS) $(RES_SRCS) : shared ;
+
+}
