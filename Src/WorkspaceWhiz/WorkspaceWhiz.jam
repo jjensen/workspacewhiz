@@ -165,46 +165,7 @@ PrecompiledHeader WorkspaceWhiz : stdafx : $(PCH_SRCS) ;
 RcIncludeDirectories WorkspaceWhiz : WWhizNet.rc : $(LOCATE_SOURCE) ;
 local RES_SRCS = [ ResourceCompiler WorkspaceWhiz : WWhizNet.rc ] ;
 
-MIDL = "$(MSSDK)/bin/midl" ;
-MIDLFLAGS.debug on * = /D "_DEBUG" /char signed /env win32 /Oicf ;
-MIDLFLAGS.release on * = /D "NDEBUG" /char signed /env win32 ;
-
-rule MidlCompiler PARENT : SOURCE
-{
-	PARENT = [ _retrieveActiveTargetName $(PARENT) ] ;
-	local grist = $(PARENT) ;
-
-	SOURCE = $(SOURCE:G=$(grist)) ;
-	SearchSource $(SOURCE) ;
-
-	local tlbFile = $(SOURCE:S=.tlb) ;
-	local hFile = $(SOURCE:S=.h) ;
-	local iidFile = $(SOURCE:S=_i.c) ;
-	local proxyFile = $(SOURCE:S=_p.c) ;
-	local targets = $(tlbFile) $(hFile) $(iidFile) ; #$(proxyFile) ;
-	MakeLocate $(targets) : $(LOCATE_TARGET) ;
-
-	Depends $(targets) : $(SOURCE) ;
-
-	local flags ;
-	on $(PARENT) flags += $(MIDLFLAGS.$(CONFIG)) $(MIDLFLAGS.*) ;
-	on * flags += $(MIDLFLAGS.$(CONFIG)) $(MIDLFLAGS.*) ;
-	flags += /tlb $(tlbFile:T) /h $(hFile:T) /iid $(iidFile:T) ; #/proxy $(proxyFile:T) ;
-	FLAGS on $(targets) = $(flags) ;
-
-	Clean clean:$(PARENT) : $(targets) ;
-
-	Midl $(targets) : $(SOURCE) ;
-
-	return $(targets) ;
-}
-
-
-actions Midl
-{
-	"$(MIDL)" $(FLAGS) $(2)
-}
-
+IncludeModule Midl ;
 
 local MIDL_SRCS = [ MidlCompiler WorkspaceWhiz : WWhizNet.idl ] ;
 
