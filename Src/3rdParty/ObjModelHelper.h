@@ -725,7 +725,7 @@ inline void ObjModelHelper::Delete()
 
 inline bool ObjModelHelper::IsTextDocument()
 {
-	return (m_pTextDocument != NULL);
+	return m_pTextDocument  &&  m_pTextSelection;
 }
 
 
