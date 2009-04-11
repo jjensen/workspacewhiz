@@ -531,8 +531,72 @@ void WorkspaceInfo::RecurseCSProjNode(
     XmlNode* node = (XmlNode*)parentNode->GetFirstChildNode();
     while (node)
     {
+		if (node->GetName() == "ItemGroup")
+		{
+			XmlNode* childNode = (XmlNode*)node->GetFirstChildNode();
+			while (childNode)
+			{
+				if (childNode->GetName() == "Compile"  ||  childNode->GetName() == "Content"  ||  
+					childNode->GetName() == "EmbeddedResource"  ||  childNode->GetName() == "None"  ||
+					childNode->GetName() == "Ruby"  ||  childNode->GetName() == "EmbeddedRuby")
+				{
+					XmlNode::Attribute* attr = childNode->FindAttribute("Include");
+					if (attr)
+					{
+						CString filename = attr->GetValue();
+						WorkspaceInfo::ResolveFilename(rootPath, filename);
+						if (!filename.IsEmpty())
+						{
+							FileGlobList glob;
+
+							// Does it have a wildcard in it?
+							if (filename.Find('*') != -1  ||  filename.Find('?') != -1)
+							{
+								// Yes.  Run the globber.
+								glob.MatchPattern(filename);
+							}
+							else
+							{
+								glob.push_back(std::string(filename));
+							}
+
+							for (FileGlobList::iterator it = glob.begin(); it != glob.end(); ++it)
+							{
+								filename = (*it).c_str();
+								filename.Replace('/', '\\');
+
+								File* file = File::Create(filename);
+
+								// Insert it into the current project.
+								if (fileList.Add(file))
+								{
+									g_filesRefreshed = true;
+									localListRefreshed = true;
+								}
+								file->m_touched = true;
+
+								// Test the file to see if it is a project or workspace.
+								int dotPos = filename.ReverseFind('.');
+								if (dotPos != -1)
+								{
+									CString ext = filename.Mid(dotPos + 1);
+									ext.MakeLower();
+									if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
+										ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
+										ext == "vbproj"  ||  ext == "stproj"  ||  ext == "sln")
+										projectsToAdd.AddTail(filename);
+								}
+							}
+						}
+					}
+				}
+				
+				childNode = (XmlNode*)childNode->GetNextSiblingNode();
+			}
+		}
+
 		// Is it a File node?
-		if (node->GetName() == "File")
+		else if (node->GetName() == "File")
 		{
 			// Create and resolve the filename.
 			XmlNode::Attribute* attr = node->FindAttribute("RelPath");
@@ -634,53 +698,7 @@ void WorkspaceInfo::ReadCSProjFile(Project& prj, CFile* inFile)
 
 	if (vs2005)
 	{
-		XmlNode* itemGroupNode = prj.GetXmlData().Find("ItemGroup");
-		while (itemGroupNode)
-		{
-			XmlNode* childNode = (XmlNode*)itemGroupNode->GetFirstChildNode();
-			while (childNode)
-			{
-				if (childNode->GetName() == "Compile"  ||  childNode->GetName() == "Content"  ||  
-					childNode->GetName() == "EmbeddedResource"  ||  childNode->GetName() == "None"  ||
-					childNode->GetName() == "Ruby"  ||  childNode->GetName() == "EmbeddedRuby")
-				{
-					XmlNode::Attribute* attr = childNode->FindAttribute("Include");
-					if (attr)
-					{
-						CString filename = attr->GetValue();
-						WorkspaceInfo::ResolveFilename(rootPath, filename);
-						if (!filename.IsEmpty())
-						{
-							File* file = File::Create(filename);
-
-							// Insert it into the current project.
-							if (fileList.Add(file))
-							{
-								g_filesRefreshed = true;
-								localListRefreshed = true;
-							}
-							file->m_touched = true;
-
-							// Test the file to see if it is a project or workspace.
-							int dotPos = filename.ReverseFind('.');
-							if (dotPos != -1)
-							{
-								CString ext = filename.Mid(dotPos + 1);
-								ext.MakeLower();
-								if (ext == "dsp"  ||  ext == "dsw"  ||  ext == "vcp"  ||
-									ext == "vcw"  ||  ext == "vcproj"  ||  ext == "csproj"  ||
-									ext == "vbproj"  ||  ext == "stproj"  ||  ext == "sln")
-									projectsToAdd.AddTail(filename);
-							}
-						}
-					}
-				}
-				
-				childNode = (XmlNode*)childNode->GetNextSiblingNode();
-			}
-
-			itemGroupNode = ((XmlNode*)itemGroupNode->GetNextSiblingNode())->Find("ItemGroup");
-		}
+		RecurseCSProjNode(prj.GetXmlData().GetRootNode(), rootPath, fileList, localListRefreshed, projectsToAdd);
 	}
 	else
 	{
