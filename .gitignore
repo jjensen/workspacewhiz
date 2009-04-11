@@ -10,6 +10,8 @@
 *.wwdb
 *.WW
 UpgradeLog.XML
+build
+obj
 BinVSNet/WWhizInterface2D.mod
 BinVSNet/WWhizRegD.mod
 BinVSNet/WWhizTemplateManagerD.mod
