@@ -289,6 +289,8 @@ void CExtraFilesDialog::OnDblclkEpList()
 	CString str;
 	m_list.GetText(m_list.GetCurSel(), str);
 	m_filename.SetWindowText(str);
+
+	OnEpRemove();
 }
 
 void CExtraFilesDialog::OnComAbout() 
