@@ -177,6 +177,10 @@ void CompilerFiles::ProcessPaths(char* buffer)
 		{
 			pProjEng80->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
 		}
+		else if (pProjEng90)
+		{
+			pProjEng90->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
+		}
 
 		if (bstrResolvedDir == "")
 			bstrResolvedDir = lastPtr;
