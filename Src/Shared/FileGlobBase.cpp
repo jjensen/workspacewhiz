@@ -214,7 +214,11 @@ void FileGlobBase::MatchPattern( const char* inPattern )
 			char* ptr = buffer;
 			while ( *srcPtr != '@'  &&  *srcPtr != '\0' )
 			{
-				*ptr++ = *srcPtr++;
+				if (*srcPtr == '\\')
+					*ptr++ = '/';
+				else
+					*ptr++ = *srcPtr;
+				++srcPtr;
 			}
 
 			*ptr = 0;
