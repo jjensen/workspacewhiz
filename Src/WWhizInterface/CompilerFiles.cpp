@@ -187,9 +187,13 @@ void CompilerFiles::ProcessPaths(char* buffer)
 
 		CString dir(bstrResolvedDir);
 		dir.TrimRight('\\');
-		dir += "\\";
+		dir.Trim();
+		if (!dir.IsEmpty())
+		{
+			dir += "\\";
 
-		Add(dir);
+			Add(dir);
+		}
 #endif WWHIZ_VSNET
 
 		lastPtr = ptr;
