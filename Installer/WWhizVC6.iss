@@ -3,8 +3,8 @@
 
 [Setup]
 AppName=Workspace Whiz for Visual C++ 6
-AppVerName=Workspace Whiz 4.2 Beta for Visual C++ 6 - Build 1203
-AppVersion=4.2 Beta Build 1203
+AppVerName=Workspace Whiz 4.2 Beta for Visual C++ 6 - Build 1204
+AppVersion=4.2 Beta Build 1204
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
@@ -13,7 +13,7 @@ AppCopyright=Workspace Whiz 4.2 Beta for Visual C++ 6, Copyright © 1997-2008 Jos
 DefaultDirName={pf}\Workspace Whiz VC6
 DefaultGroupName=Workspace Whiz for Visual C++ 6
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz42_VC6_1203
+OutputBaseFilename=WorkspaceWhiz42_VC6_1204
 OutputDir=.
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
@@ -30,7 +30,7 @@ Source: "..\Bin\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Bin\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Bin\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
 ;Source: "..\Bin\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
-;Source: ".\WWhizInterface40VC6_1203.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: ".\WWhizInterface40VC6_1204.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\VC6"; Flags: uninsdeletekeyifempty
