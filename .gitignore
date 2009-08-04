@@ -1,10 +1,12 @@
 *.bak
+*.dll
 *.dtpl
 *.exp
 *.ilk
 *.lib
 *.ncb
 *.opt
+*.pdb
 *.suo
 *.user
 *.wwdb
