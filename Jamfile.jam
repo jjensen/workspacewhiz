@@ -1,5 +1,7 @@
 SubDir WWHIZ ;
 
+{
+
 Workspace WorkspaceWhiz :
 		WorkspaceWhiz
 		WWhizInterface
@@ -9,9 +11,33 @@ Workspace WorkspaceWhiz :
 		WWhizTemplates
 ;
 
+IncludeModule CopyDirectory ;
+
+if $(COMPILER) = vc6 {
+} else {
+	CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC90.CRT : $(MSVCNT)/redist/x86/Microsoft.VC90.CRT : * ;
+	CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC90.MFC : $(MSVCNT)/redist/x86/Microsoft.VC90.MFC ;
+}
+
+actions DownloadCtags 
+{
+	cd $(WWHIZ)
+	md ctags
+	cd ctags
+	wget http://prdownloads.sourceforge.net/ctags/ctags58.zip
+	unzip ctags58.zip
+}
+
+DownloadCtags $(WWHIZ)/ctags/ctags58/ctags.exe ;
+CopyFile WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/ctags.exe : $(WWHIZ)/ctags/ctags58/ctags.exe ;
+
+SubInclude WWHIZ Help ;
 SubInclude WWHIZ Src WorkspaceWhiz : WorkspaceWhiz ;
 SubInclude WWHIZ Src WWhizInterface : WWhizInterface ;
 SubInclude WWHIZ Src WWhizReg : WWhizReg ;
 SubInclude WWHIZ Src WWhizResources : WWhizResources ;
 SubInclude WWHIZ Src WWhizTemplateManager : WWhizTemplateManager ;
 SubInclude WWHIZ Src WWhizTemplates : WWhizTemplates ;
+
+}
+

@@ -7,10 +7,6 @@ workspace file list.  These extra files are usually not in the open
 Visual Studio workspace.  Extra files are very useful for external
 libraries the application uses.
 
-.topic IDC_COM_PREFERENCES
-Open the Preferences dialog.  From here, various parameters governing
-Workspace Whiz's operation may be manipulated.
-
 .topic IDC_COM_CURRENTFILE
 Perform various Visual Studio and shell operations from the File Context
 Menu on the current file.

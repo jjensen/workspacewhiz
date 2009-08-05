@@ -1,0 +1,188 @@
+SubDir WWHIZ Help ;
+
+{
+
+actions CompileHTMLHelp
+{
+	"$(ProgramFiles:J=$(SPACE))/HTML Help Workshop/hhc.exe" "$(2:\\)"
+	if %errorlevel% == 1 exit 0
+	exit 1
+}
+
+#actions lua FillInHTMLHelpTemplate
+#{
+#	local expand = require 'expand'
+#	CHM_FILE = [[$(CHM_FILE:\\)]]
+#	SEARCH_SOURCE = [[$(SEARCH_SOURCE:\\)]]
+#	local buffer = io.readall([[$(2)]])
+#	buffer = expand(buffer)
+#	io.writeall([[$(1)]], buffer)
+#}
+
+local SOURCE_HTML_HELP_FILES = 
+		Library
+		Acknowledgements.html
+		Bugs.html
+		CodeTemplates.html
+		CodeTemplates.png
+		CodeTemplatesKey.html
+		CodeTemplatesTemplateFileListDialog.html
+		CodeTemplatesTemplateSelectDialog.html
+		CommandSummary.html
+		CsHelp.txt
+		ExtraFiles.html
+		ExtraFiles.png
+		ExtraFilesDialog.html
+		FAQ.html
+		FileContextMenu.html
+		FileContextMenu.png
+		FileHistory.html
+		FileHistory.png
+		FileHistoryDialog.html
+		FileOpen.html
+		FileOpen.png
+		FileOpenDialog.html
+		FileOpenMatchingFiles.html
+		FileOpenNavigation.html
+		FindTag.html
+		FindTag.png
+		FindTagDialog.html
+		FindTagDisplay.html
+		FindTagMatchingTags.html
+		FindTagNavigation.html
+		FindTagRefresh.html
+		FindTagSearchAttributes.html
+		GlobalFileOpen.html
+		GlobalFileOpen.png
+		GlobalFileOpenDialog.html
+		GlobalFileOpenMatchingFiles.html
+		GlobalFileOpenNavigation.html
+		HeaderFlip.html
+		HelpIDs.h
+		History.html
+		History200.html
+		IconWWFileFindNext.png
+		IconWWFileFindPrev.png
+		IconWWFileGlobalOpen.png
+		IconWWFileOpen.png
+		IconWWHeaderFlip.png
+		IconWWHistoryBack.png
+		IconWWHistoryDlg.png
+		IconWWHistoryForward.png
+		IconWWTagCompleteDlg.png
+		IconWWTagCompleteNext.png
+		IconWWTagCompletePrev.png
+		IconWWTagCompleteRestore.png
+		IconWWTagFindAtCursor.png
+		IconWWTagFindAtCursorDlg.png
+		IconWWTagFindDlg.png
+		IconWWTagFindNext.png
+		IconWWTagFindPrev.png
+		IconWWTagFindSpecialDlg.png
+		IconWWTagFlip.png
+		IconWWTemplateComplete.png
+		IconWWTemplateSelect.png
+		Introduction.html
+		Jamfile.jam
+		License.html
+		Ordering.html
+		out.txt
+		Preferences.html
+		PreferencesHeaderFlip.html
+		PreferencesHeaderFlip.png
+		PreferencesKeyBindings.html
+		PreferencesKeyBindings1.png
+		PreferencesKeyBindings2.png
+		PreferencesKeyBindings3.png
+		PreferencesTags.html
+		PreferencesTags.png
+		TagComplete.html
+		TagComplete.png
+		TagCompleteUsage.html
+		TagContextMenu.html
+		TagContextMenu.png
+		TemplateFileList.png
+		TFCAdd.html
+		TFCCall.html
+		TFCCaret.html
+		TFCConfigAddFileSettings.html
+		TFCConfigAddToolSettings.html
+		TFCConfigCount.html
+		TFCConfigGet.html
+		TFCConfigRemoveFileSettings.html
+		TFCConfigRemoveToolSettings.html
+		TFCDate.html
+		TFCEnv.html
+		TFCExecuteCommand.html
+		TFCFileExt.html
+		TFCFileNew.html
+		TFCFilePath.html
+		TFCFileSave.html
+		TFCFileTitle.html
+		TFCFind.html
+		TFCGetPos.html
+		TFCGoto.html
+		TFCGUID.html
+		TFCLabel.html
+		TFCMakeDir.html
+		TFCMessageBox.html
+		TFCMoveTo.html
+		TFCProjectCount.html
+		TFCProjectFileAdd.html
+		TFCProjectGet.html
+		TFCProjectName.html
+		TFCProjectNew.html
+		TFCProjectPath.html
+		TFCReturn.html
+		TFCSel.html
+		TFCSet.html
+		TFCStrFind.html
+		TFCString.html
+		TFCStrLen.html
+		TFCStrLower.html
+		TFCStrSub.html
+		TFCStrUpper.html
+		TFCSub.html
+		TFCTime.html
+		TFSCode.html
+		TFSCodeConditionalExpressions.html
+		TFSCodeLoops.html
+		TFSDialog.html
+		TFSMemo.html
+		TFSParams.html
+		TF_Commands.html
+		TF_Header.html
+		TF_Sections.html
+		TF_Variables.html
+		WorkspaceWhiz.hhc
+		WorkspaceWhiz.hhk
+		WWhiz.css
+		WWhizLogo.jpg
+;
+
+SOURCE_HTML_HELP_FILES = $(SOURCE_HTML_HELP_FILES:G=<WorkspaceWhiz>) ;
+SEARCH on $(SOURCE_HTML_HELP_FILES) = $(SEARCH_SOURCE) ;
+
+local chmFile = <WorkspaceWhiz>WorkspaceWhiz.chm ;
+MakeLocate $(chmFile) : $(SEARCH_SOURCE) ;
+#MakeLocate $(chmFile) : $(LOCATE_TARGET) ;
+
+local hhp = <WorkspaceWhiz>WorkspaceWhiz.hhp ;
+SEARCH on $(hhp) = $(SEARCH_SOURCE) ;
+#MakeLocate $(hhp) : $(LOCATE_TARGET) ;
+
+#local inputhhptemplate = WorkspaceWhiz.hhp.template ;
+#SEARCH on $(inputhhptemplate) = $(WWHIZ)/Help ;
+
+#Depends $(chmFile) : $(outputhhp) : $(inputhhptemplate) : $(SOURCE_HTML_HELP_FILES) ;
+Depends WorkspaceWhiz : $(chmFile) : $(hhp) ;
+Includes $(hhp) : $(SOURCE_HTML_HELP_FILES) ;
+
+#CHM_FILE on $(hhp) = $(chmFile:T) ;
+#SEARCH_SOURCE on $(hhp) = $(SEARCH_SOURCE) ;
+#FillInHTMLHelpTemplate $(hhp) : $(inputhhptemplate) ;
+CompileHTMLHelp $(chmFile) : $(hhp) ;
+CopyFile WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/WorkspaceWhiz.chm : $(chmFile) ;
+
+}
+
