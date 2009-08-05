@@ -60,7 +60,7 @@ SourceGroup WWhizTemplateManager : "Third Party" : $(THIRD_PARTY_SRCS) ;
 IncludeDirectories WWhizTemplateManager : ../3rdParty ../Shared ;
 PrecompiledHeader WWhizTemplateManager : pchWWhizTemplateManager : $(SOURCE_FILES_PCH_SRCS) ;
 
-UseMFC WWhizTemplateManager : shared ;
+UseMFC WWhizTemplateManager : shared link ;
 
 local RES_SRCS = [ ResourceCompiler WWhizTemplateManager : WWhizTemplateManagerNet.rc ] ;
 

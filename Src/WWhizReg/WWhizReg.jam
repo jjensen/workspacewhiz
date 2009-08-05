@@ -68,7 +68,7 @@ SourceGroup : "Header Files" : $(HEADER_FILES_SRCS) ;
 SourceGroup : "Source Files" : $(SOURCE_FILES_NOPCH_SRCS) $(SOURCE_FILES_PCH_SRCS) ;
 SourceGroup : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC : shared ;
+UseMFC : shared link ;
 
 IncludeDirectories : ../3rdParty ../Shared ;
 PrecompiledHeader : pchWWhizReg : $(PCH_SRCS) ;

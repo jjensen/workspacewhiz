@@ -157,7 +157,7 @@ SourceGroup WorkspaceWhiz : Shared : $(SHARED_SRCS) ;
 SourceGroup WorkspaceWhiz : "Source Files" : $(SOURCE_FILES_SRCS) ;
 SourceGroup WorkspaceWhiz : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC WorkspaceWhiz : shared ;
+UseMFC WorkspaceWhiz : shared link ;
 
 IncludeDirectories WorkspaceWhiz : ../3rdParty ../Shared ;
 PrecompiledHeader WorkspaceWhiz : stdafx : $(PCH_SRCS) ;

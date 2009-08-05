@@ -74,7 +74,7 @@ SourceGroup WWhizInterface : Shared : $(SHARED_SRCS) ;
 SourceGroup WWhizInterface : "Source Files" : $(SOURCE_FILES_SRCS) ;
 SourceGroup WWhizInterface : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC WWhizInterface : shared ;
+UseMFC WWhizInterface : shared link ;
 
 IncludeDirectories WWhizInterface : ../3rdParty ../Shared ;
 PrecompiledHeader WWhizInterface : pchWWhizInterface : $(PCH_SRCS) ;

@@ -52,7 +52,7 @@ SourceGroup WWhizTemplates : Shared : $(SHARED_SRCS) ;
 SourceGroup WWhizTemplates : "Source Files" : $(SOURCE_FILES_SRCS) ;
 SourceGroup WWhizTemplates : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC WWhizTemplates : shared ;
+UseMFC WWhizTemplates : shared link ;
 
 IncludeDirectories WWhizTemplates : ../3rdParty ../Shared ;
 PrecompiledHeader WWhizTemplates : pchWWhizTemplates : $(SOURCE_FILES_PCH_SRCS) ;
