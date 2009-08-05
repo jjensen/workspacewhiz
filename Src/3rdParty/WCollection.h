@@ -1,6 +1,7 @@
 #pragma once
 
 #include <afx.h>
+#include <atlbase.h>
 
 #define WNEW DEBUG_NEW
 
