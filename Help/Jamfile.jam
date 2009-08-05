@@ -19,7 +19,7 @@ actions CompileHTMLHelp
 #	io.writeall([[$(1)]], buffer)
 #}
 
-local SOURCE_HTML_HELP_FILES = 
+local SOURCE_HTML_HELP_FILES =
 		Library
 		Acknowledgements.html
 		Bugs.html
@@ -86,7 +86,6 @@ local SOURCE_HTML_HELP_FILES =
 		Jamfile.jam
 		License.html
 		Ordering.html
-		out.txt
 		Preferences.html
 		PreferencesHeaderFlip.html
 		PreferencesHeaderFlip.png
