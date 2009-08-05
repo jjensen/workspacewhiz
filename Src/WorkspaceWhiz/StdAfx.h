@@ -26,7 +26,7 @@
 
 #ifndef _WIN32_WINNT		// Allow use of features specific to Windows NT 4 or later.
 #define _WIN32_WINNT 0x0400	// Change this to the appropriate value to target Windows 2000 or later.
-#endif						
+#endif
 
 #ifndef _WIN32_IE			// Allow use of features specific to IE 4.0 or later.
 #define _WIN32_IE 0x0400	// Change this to the appropriate value to target IE 5.0 or later.
@@ -45,9 +45,8 @@
 #include <afxcmn.h>
 #include <afxdlgs.h>
 #include <afxtempl.h>
-#include "WCollection.h"
-
 #include <atlbase.h>
+#include "WCollection.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

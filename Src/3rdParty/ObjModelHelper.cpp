@@ -17,7 +17,6 @@ CString ObjModelHelper::GetCurrentConfigName()
 
 	CComBSTR bstrConfig;
 	CComQIPtr<IConfigurationVC, &IID_IConfigurationVC> pConfigVC;
-//	CComQIPtr<IConfigurationEVC, &IID_IConfigurationEVC> pConfigEVC;
 	if (m_pDocumentsVC)
 	{
 		pConfigVC = pDispConfig;
@@ -25,12 +24,6 @@ CString ObjModelHelper::GetCurrentConfigName()
 			pConfigVC->get_Name(&bstrConfig);
 
 	}
-//	else if (m_pDocumentsEVC)
-//	{
-//		pConfigEVC = pDispConfig;
-//		if (pConfigEVC)
-//			pConfigEVC->get_Name(&bstrConfig);
-//	}
 	
 	CString configName = bstrConfig;
 	int dashPos = configName.Find('-');

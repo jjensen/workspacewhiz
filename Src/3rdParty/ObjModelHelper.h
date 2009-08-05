@@ -1,6 +1,7 @@
 #pragma once
 
 #include <afxdisp.h>
+#include <atlbase.h>
 
 #ifdef WWHIZ_VC6
 
@@ -37,7 +38,7 @@ public:
 	ObjModelHelper();
 
 	static bool VStudioExists();
-	
+
 #ifdef WWHIZ_VC6
 	static IApplication* GetInterface();
 	static void SetInterface(IApplication* pApplication);
@@ -47,7 +48,7 @@ public:
 	static CComPtr<EnvDTE::_DTE>& GetInterface();
 	static void SetInterface(CComPtr<EnvDTE::_DTE>& pDTE);
 #endif WWHIZ_VSNET
-	
+
 	static CString GetVersion();
 
 	void Reset();
@@ -73,7 +74,7 @@ public:
 	bool SaveAll();
 	static bool ExecuteCommand(CString command, CString args);
 	CString GetCurrentConfigName();
-		
+
 	bool IsTextDocument();
 	void ScrollToCenter();
 
@@ -217,7 +218,7 @@ inline bool ObjModelHelper::FindText(CString searchString, CStringArray& flagsAr
 	return (findReturn != 0);
 }
 
-		
+
 inline bool ObjModelHelper::FindText(CString searchString, CString flagStr)
 {
 	CStringArray strArray;
@@ -225,7 +226,7 @@ inline bool ObjModelHelper::FindText(CString searchString, CString flagStr)
 	return FindText(searchString, strArray);
 }
 
-		
+
 inline bool ObjModelHelper::FindText(CString searchString, long flags)
 {
 	short findReturn;
@@ -233,7 +234,7 @@ inline bool ObjModelHelper::FindText(CString searchString, long flags)
 	return (findReturn != 0);
 }
 
-		
+
 inline void ObjModelHelper::SelectLine()
 {
 	m_pTextSelection->SelectLine();
@@ -247,7 +248,7 @@ inline CString ObjModelHelper::GetText()
 	return CString(bstrLine);
 }
 
-	
+
 inline void ObjModelHelper::PutLanguage(LPCTSTR language)
 {
 	if (strcmp(language, "cpp") == 0)
@@ -267,7 +268,7 @@ inline void ObjModelHelper::GetPosition(long& x, long& y)
 	m_pTextSelection->get_CurrentLine(&y);
 }
 
-	
+
 inline bool ObjModelHelper::SetReadOnly(bool readOnly)
 {
 	bool succeeded = false;
@@ -292,14 +293,14 @@ inline void ObjModelHelper::MoveTo(int y, int x, bool extend)
 	m_pTextSelection->MoveTo(y, x, CComVariant(type));
 }
 
-		
+
 inline void ObjModelHelper::EndOfDocument(bool extend)
 {
 	long type = extend ? dsExtend : dsMove;
 	m_pTextSelection->EndOfDocument(CComVariant(type));
 }
 
-		
+
 inline void ObjModelHelper::Reset()
 {
 	m_pDispTextSelection = NULL;
@@ -404,7 +405,7 @@ inline bool ObjModelHelper::GetActiveDocument()
 	Reset();
 
 	g_pApplication->get_ActiveDocument(&m_pDispDocument);
-	
+
 	if (m_pDispDocument)
 	{
         SetupTextDocument();
@@ -588,7 +589,7 @@ inline bool ObjModelHelper::FindText(CString searchString, CStringArray& flagsAr
 	return (findReturn == VARIANT_TRUE);
 }
 
-		
+
 inline bool ObjModelHelper::FindText(CString searchString, CString flagStr)
 {
 	CStringArray strArray;
@@ -596,7 +597,7 @@ inline bool ObjModelHelper::FindText(CString searchString, CString flagStr)
 	return FindText(searchString, strArray);
 }
 
-		
+
 inline bool ObjModelHelper::FindText(CString searchString, long flags)
 {
 	short findReturn;
@@ -619,7 +620,7 @@ inline CString ObjModelHelper::GetText()
 	return CString(bstrLine);
 }
 
-	
+
 inline void ObjModelHelper::PutLanguage(LPCTSTR language)
 {
 	if (m_pTextDocument)
@@ -633,7 +634,7 @@ inline void ObjModelHelper::GetPosition(long& x, long& y)
 	m_pTextSelection->get_CurrentLine(&y);
 }
 
-	
+
 inline bool ObjModelHelper::SetReadOnly(bool readOnly)
 {
 	bool succeeded = false;
@@ -652,13 +653,13 @@ inline void ObjModelHelper::MoveTo(int line, int column, bool extend)
 	m_pTextSelection->MoveTo(line, column, extend ? VARIANT_TRUE : VARIANT_FALSE);
 }
 
-		
+
 inline void ObjModelHelper::EndOfDocument(bool extend)
 {
 	m_pTextSelection->EndOfDocument(extend ? VARIANT_TRUE : VARIANT_FALSE);
 }
 
-		
+
 inline void ObjModelHelper::Reset()
 {
 	m_pTextSelection = NULL;
@@ -761,7 +762,7 @@ inline bool ObjModelHelper::GetActiveDocument()
 
 	if (FAILED(g_pDTE->get_ActiveDocument(&m_pDocument)))
 		return false;
-	
+
 	if (m_pDocument)
 	{
         SetupTextDocument();
