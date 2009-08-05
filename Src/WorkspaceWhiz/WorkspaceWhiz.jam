@@ -106,9 +106,23 @@ local SOURCE_FILES_SRCS =
 		WorkspaceWhiz.cpp
 		WorkspaceWhiz.def
 		WWhizCommands.cpp
-		WWhizNet.idl
-		WWhizNetConnect.cpp
 ;
+
+if $(COMPILER) = vc6 {
+	SOURCE_FILES_SRCS +=
+			AddInInt.cpp
+			Commands.cpp
+			DSAddin.cpp
+			ToolbarWnd.cpp
+			WorkspaceWhiz.odl
+			WorkspaceWhiz.rc
+	;
+} else {
+	SOURCE_FILES_SRCS +=
+			WWhizNet.idl
+			WWhizNetConnect.cpp
+	;
+}
 
 local THIRD_PARTY_SRCS =
 		../3rdParty/BCMenu.cpp
@@ -173,6 +187,6 @@ Includes <WorkspaceWhiz>WWhizNet.rc : $(MIDL_SRCS) ;
 
 DefFile WorkspaceWhiz : WorkspaceWhiz.def ;
 
-Library WorkspaceWhiz : $(SRCS) $(RES_SRCS) : shared ;
+Library WorkspaceWhiz : $(SRCS) $(RES_SRCS) : shared regserver ;
 
 }
