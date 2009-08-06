@@ -2,23 +2,6 @@ SubDir WWHIZ Help ;
 
 {
 
-actions CompileHTMLHelp
-{
-	"$(ProgramFiles:J=$(SPACE))/HTML Help Workshop/hhc.exe" "$(2:\\)"
-	if %errorlevel% == 1 exit 0
-	exit 1
-}
-
-#actions lua FillInHTMLHelpTemplate
-#{
-#	local expand = require 'expand'
-#	CHM_FILE = [[$(CHM_FILE:\\)]]
-#	SEARCH_SOURCE = [[$(SEARCH_SOURCE:\\)]]
-#	local buffer = io.readall([[$(2)]])
-#	buffer = expand(buffer)
-#	io.writeall([[$(1)]], buffer)
-#}
-
 local SOURCE_HTML_HELP_FILES =
 		Library
 		Acknowledgements.html
@@ -159,8 +142,27 @@ local SOURCE_HTML_HELP_FILES =
 		WWhizLogo.jpg
 ;
 
+if ! $(TARGETINFO_LOCATE) {
+
 SOURCE_HTML_HELP_FILES = $(SOURCE_HTML_HELP_FILES:G=<WorkspaceWhiz>) ;
 SEARCH on $(SOURCE_HTML_HELP_FILES) = $(SEARCH_SOURCE) ;
+
+actions CompileHTMLHelp
+{
+	"$(ProgramFiles:J=$(SPACE))/HTML Help Workshop/hhc.exe" "$(2:\\)"
+	if %errorlevel% == 1 exit 0
+	exit 1
+}
+
+#actions lua FillInHTMLHelpTemplate
+#{
+#	local expand = require 'expand'
+#	CHM_FILE = [[$(CHM_FILE:\\)]]
+#	SEARCH_SOURCE = [[$(SEARCH_SOURCE:\\)]]
+#	local buffer = io.readall([[$(2)]])
+#	buffer = expand(buffer)
+#	io.writeall([[$(1)]], buffer)
+#}
 
 local chmFile = <WorkspaceWhiz>WorkspaceWhiz.chm ;
 MakeLocate $(chmFile) : $(SEARCH_SOURCE) ;
@@ -182,6 +184,10 @@ Includes $(hhp) : $(SOURCE_HTML_HELP_FILES) ;
 #FillInHTMLHelpTemplate $(hhp) : $(inputhhptemplate) ;
 CompileHTMLHelp $(chmFile) : $(hhp) ;
 CopyFile WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/WorkspaceWhiz.chm : $(chmFile) ;
+
+} # $(TARGETINFO_LOCATE)
+
+Project WWhizHelp : $(SOURCE_HTML_HELP_FILES) ;
 
 }
 

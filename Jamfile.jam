@@ -4,6 +4,7 @@ SubDir WWHIZ ;
 
 Workspace WorkspaceWhiz :
 		WorkspaceWhiz
+		WWhizHelp
 		WWhizInterface
 		WWhizReg
 		WWhizResources
@@ -19,6 +20,9 @@ if $(COMPILER) = vc6 {
 	CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC90.MFC : $(MSVCNT)/redist/x86/Microsoft.VC90.MFC ;
 }
 
+if ! $(TARGETINFO_LOCATE)
+{
+
 actions DownloadCtags 
 {
 	cd $(WWHIZ)
@@ -30,6 +34,8 @@ actions DownloadCtags
 
 DownloadCtags $(WWHIZ)/ctags/ctags58/ctags.exe ;
 CopyFile WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/ctags.exe : $(WWHIZ)/ctags/ctags58/ctags.exe ;
+
+}
 
 SubInclude WWHIZ Help ;
 SubInclude WWHIZ Src WorkspaceWhiz : WorkspaceWhiz ;
