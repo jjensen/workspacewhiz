@@ -3,8 +3,8 @@
 
 [Setup]
 AppName=Workspace Whiz for Visual Studio 200x
-AppVerName=Workspace Whiz 4.2 Beta for Visual Studio 200x - Build 1204
-AppVersion=4.2 Beta Build 1204
+AppVerName=Workspace Whiz 4.2 Beta for Visual Studio 200x - Build 1205
+AppVersion=4.2 Beta Build 1205
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
@@ -13,7 +13,7 @@ AppCopyright=Workspace Whiz 4.2 Beta for Visual Studio, Copyright © 1997-2008 Jo
 DefaultDirName={pf}\Workspace Whiz
 DefaultGroupName=Workspace Whiz for Visual Studio 200x
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz42_VS200x_1204
+OutputBaseFilename=WorkspaceWhiz42_VS200x_1205
 OutputDir=.
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
@@ -29,7 +29,7 @@ Source: "..\BinVSNet\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
 ;Source: "..\BinVSNet\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
-;Source: ".\WWhizInterface40NET_1204.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: ".\WWhizInterface40NET_1205.exe"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "..\BinVSNet\MFC71.dll"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "..\BinVSNet\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\BinVSNet\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion

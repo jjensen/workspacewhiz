@@ -171,29 +171,29 @@ SourceGroup WorkspaceWhiz : Shared : $(SHARED_SRCS) ;
 SourceGroup WorkspaceWhiz : "Source Files" : $(SOURCE_FILES_SRCS) ;
 SourceGroup WorkspaceWhiz : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC WorkspaceWhiz : shared link ;
+C.UseMFC WorkspaceWhiz : shared link ;
 
-IncludeDirectories WorkspaceWhiz : ../3rdParty ../Shared ;
-PrecompiledHeader WorkspaceWhiz : stdafx : $(PCH_SRCS) ;
+C.IncludeDirectories WorkspaceWhiz : ../3rdParty ../Shared ;
+C.PrecompiledHeader WorkspaceWhiz : stdafx : $(PCH_SRCS) ;
 
 local RES_SRCS ;
 
-IncludeModule Midl ;
+IncludeModule c/midl ;
 
 if $(COMPILER) = vc6 {
-	RcIncludeDirectories WorkspaceWhiz : WorkspaceWhiz.rc : $(LOCATE_SOURCE) ;
-	RES_SRCS = [ ResourceCompiler WorkspaceWhiz : WorkspaceWhiz.rc ] ;
-	local MIDL_SRCS = [ MidlCompiler WorkspaceWhiz : WorkspaceWhiz.odl ] ;
+	C.RcIncludeDirectories WorkspaceWhiz : WorkspaceWhiz.rc : $(LOCATE_SOURCE) ;
+	RES_SRCS = [ C.ResourceCompiler WorkspaceWhiz : WorkspaceWhiz.rc ] ;
+	local MIDL_SRCS = [ C.MidlCompiler WorkspaceWhiz : WorkspaceWhiz.odl ] ;
 	Includes <WorkspaceWhiz>WorkspaceWhiz.rc : $(MIDL_SRCS) ;
 } else {
-	RcIncludeDirectories WorkspaceWhiz : WWhizNet.rc : $(LOCATE_SOURCE) ;
-	RES_SRCS = [ ResourceCompiler WorkspaceWhiz : WWhizNet.rc ] ;
-	local MIDL_SRCS = [ MidlCompiler WorkspaceWhiz : WWhizNet.idl ] ;
+	C.RcIncludeDirectories WorkspaceWhiz : WWhizNet.rc : $(LOCATE_SOURCE) ;
+	RES_SRCS = [ C.ResourceCompiler WorkspaceWhiz : WWhizNet.rc ] ;
+	local MIDL_SRCS = [ C.MidlCompiler WorkspaceWhiz : WWhizNet.idl ] ;
 	Includes <WorkspaceWhiz>WWhizNet.rc : $(MIDL_SRCS) ;
 }
 
-DefFile WorkspaceWhiz : WorkspaceWhiz.def ;
+C.DefFile WorkspaceWhiz : WorkspaceWhiz.def ;
 
-Library WorkspaceWhiz : $(SRCS) $(RES_SRCS) : shared regserver ;
+C.Library WorkspaceWhiz : $(SRCS) $(RES_SRCS) : shared regserver ;
 
 }

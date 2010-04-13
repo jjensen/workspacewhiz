@@ -20,6 +20,7 @@ UpgradeLog.XML
 build
 ctags
 obj
+build*/
 BinVSNet/Microsoft.VC90*
 Output/
 Src/WorkspaceWhiz/WWhizNet.h

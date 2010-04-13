@@ -74,15 +74,15 @@ SourceGroup WWhizInterface : Shared : $(SHARED_SRCS) ;
 SourceGroup WWhizInterface : "Source Files" : $(SOURCE_FILES_SRCS) ;
 SourceGroup WWhizInterface : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC WWhizInterface : shared link ;
+C.UseMFC WWhizInterface : shared link ;
 
-IncludeDirectories WWhizInterface : ../3rdParty ../Shared ;
-PrecompiledHeader WWhizInterface : pchWWhizInterface : $(PCH_SRCS) ;
+C.IncludeDirectories WWhizInterface : ../3rdParty ../Shared ;
+C.PrecompiledHeader WWhizInterface : pchWWhizInterface : $(PCH_SRCS) ;
 
-local RES_SRCS = [ ResourceCompiler WWhizInterface : WWhizInterfaceNet.rc ] ;
+local RES_SRCS = [ C.ResourceCompiler WWhizInterface : WWhizInterfaceNet.rc ] ;
 
-OutputName WWhizInterface : WWhizInterface2 ;
-OutputSuffix WWhizInterface : .mod ;
-Library WWhizInterface : $(SRCS) $(RES_SRCS) : shared ;
+C.OutputName WWhizInterface : WWhizInterface2 ;
+C.OutputSuffix WWhizInterface : .mod ;
+C.Library WWhizInterface : $(SRCS) $(RES_SRCS) : shared ;
 
 }

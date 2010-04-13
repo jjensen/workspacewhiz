@@ -52,15 +52,15 @@ SourceGroup WWhizTemplates : Shared : $(SHARED_SRCS) ;
 SourceGroup WWhizTemplates : "Source Files" : $(SOURCE_FILES_SRCS) ;
 SourceGroup WWhizTemplates : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC WWhizTemplates : shared link ;
+C.UseMFC WWhizTemplates : shared link ;
 
-IncludeDirectories WWhizTemplates : ../3rdParty ../Shared ;
-PrecompiledHeader WWhizTemplates : pchWWhizTemplates : $(SOURCE_FILES_PCH_SRCS) ;
+C.IncludeDirectories WWhizTemplates : ../3rdParty ../Shared ;
+C.PrecompiledHeader WWhizTemplates : pchWWhizTemplates : $(SOURCE_FILES_PCH_SRCS) ;
 
-local RES_SRCS = [ ResourceCompiler WWhizTemplates : WWhizTemplateNet.rc ] ;
+local RES_SRCS = [ C.ResourceCompiler WWhizTemplates : WWhizTemplateNet.rc ] ;
 
-OutputSuffix WWhizTemplates : .dtpl : debug ;
-OutputSuffix WWhizTemplates : .tpl : release ;
-Library WWhizTemplates : $(SRCS) $(RES_SRCS) : shared ;
+C.OutputSuffix WWhizTemplates : .dtpl : debug ;
+C.OutputSuffix WWhizTemplates : .tpl : release ;
+C.Library WWhizTemplates : $(SRCS) $(RES_SRCS) : shared ;
 
 }

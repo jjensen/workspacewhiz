@@ -45,12 +45,12 @@ SourceGroup WWhizResources : "Header Files" : $(HEADER_FILES_SRCS) ;
 SourceGroup WWhizResources : "Resource Files" : $(RESOURCE_FILES_SRCS) ;
 SourceGroup WWhizResources : "Source Files" : $(SOURCE_FILES_SRCS) ;
 
-UseMFC WWhizResources : shared ;
+C.UseMFC WWhizResources : shared ;
 
-local RES_SRCS = [ ResourceCompiler WWhizResources : WWhizResources.rc ] ;
+local RES_SRCS = [ C.ResourceCompiler WWhizResources : WWhizResources.rc ] ;
 
-OutputPath WWhizResources : $(WWHIZ_OUTPUT_DIRECTORY)/1033 ;
-LinkFlags WWhizResources : /NOENTRY ;
-Library WWhizResources : $(SRCS) $(RES_SRCS) : shared nomanifest noexportlib ;
+C.OutputPath WWhizResources : $(WWHIZ_OUTPUT_DIRECTORY)/1033 ;
+C.LinkFlags WWhizResources : /NOENTRY ;
+C.Library WWhizResources : $(SRCS) $(RES_SRCS) : shared nomanifest noexportlib ;
 
 }

@@ -68,14 +68,14 @@ SourceGroup : "Header Files" : $(HEADER_FILES_SRCS) ;
 SourceGroup : "Source Files" : $(SOURCE_FILES_NOPCH_SRCS) $(SOURCE_FILES_PCH_SRCS) ;
 SourceGroup : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-UseMFC : shared link ;
+C.UseMFC : shared link ;
 
-IncludeDirectories : ../3rdParty ../Shared ;
-PrecompiledHeader : pchWWhizReg : $(PCH_SRCS) ;
+C.IncludeDirectories : ../3rdParty ../Shared ;
+C.PrecompiledHeader : pchWWhizReg : $(PCH_SRCS) ;
 
-local resFile = [ ResourceCompiler : WWhizRegNet.rc ] ;
+local resFile = [ C.ResourceCompiler : WWhizRegNet.rc ] ;
 
-OutputSuffix : .mod ;
-Library : $(SRCS) $(resFile) : shared ;
+C.OutputSuffix : .mod ;
+C.Library : $(SRCS) $(resFile) : shared ;
 
 }
