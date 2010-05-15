@@ -1035,7 +1035,7 @@ Project* WorkspaceInfo::AddHelper(CString projectName, CString ext, bool active,
 			{
 				ReadVCProjFile(*project);
 			}
-			else if (ext == "csproj"  ||  ext == "vbproj"  ||  ext == "stproj"  ||  ext == "ucproj")
+			else if (ext == "csproj"  ||  ext == "vbproj"  ||  ext == "stproj"  ||  ext == "ucproj"  ||  ext == "vcxproj")
 			{
 				ReadCSProjFile(*project);
 			}
