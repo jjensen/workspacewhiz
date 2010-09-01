@@ -37,6 +37,8 @@ CopyFile WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/ctags.exe : $(WWHIZ)/ctags/ct
 
 }
 
+C.Defines * : WINVER=0x0500 _WIN32_WINNT=0x0501 _WIN32_WINDOWS=0x0410 _WIN32_IE=0x0500 ;
+
 SubInclude WWHIZ Help ;
 SubInclude WWHIZ Src WorkspaceWhiz : WorkspaceWhiz ;
 SubInclude WWHIZ Src WWhizInterface : WWhizInterface ;
