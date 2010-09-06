@@ -85,4 +85,6 @@ C.OutputName WWhizInterface : WWhizInterface2 ;
 C.OutputSuffix WWhizInterface : .mod ;
 C.Library WWhizInterface : $(SRCS) $(RES_SRCS) : shared ;
 
+CopyFile WWhizInterface : $(WWHIZ_OUTPUT_DIRECTORY)/ctags.conf : $(SUBDIR)/ctags.conf ;
+
 }

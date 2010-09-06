@@ -3,19 +3,29 @@ ALL_LOCATE_TARGET ?= $(WWHIZ)/obj/$(COMPILER)/temp-$(PLATFORM)-$(CONFIG) ;
 DEPCACHE.standard ?= $(ALL_LOCATE_TARGET)/.depcache ;
 DEPCACHE ?= standard ;
 
+WWHIZ_OUTPUT_DIRECTORY = $(ALL_LOCATE_TARGET)/image ;
+
 IncludeModule CopyFile ;
 IncludeModule c/mfc ;
 IncludeModule c/win32resource ;
 
-if $(COMPILER) = vc6
+switch $(COMPILER.$(PLATFORM))
 {
-	C.Defines * : WWHIZ_VC6 ;
-	WWHIZ_OUTPUT_DIRECTORY ?= $(WWHIZ)/Bin ;
-}
-else
-{
-	C.Defines * : WWHIZ_VSNET ;
-	WWHIZ_OUTPUT_DIRECTORY ?= $(WWHIZ)/BinVSNet ;
+	case vc6 :
+		C.Defines * : WWHIZ_VC6 ;
+	
+	case vs2003 :
+		C.Defines * : WWHIZ_VSNET ;
+
+	case vs2005 :
+		C.Defines * : WWHIZ_VSNET ;
+
+	case vs2008 :
+		C.Defines * : WWHIZ_VSNET ;
+
+	case vs2010 :
+		C.Defines * : WWHIZ_VSNET ;
+		C.Defines * : WINVER=0x0500 _WIN32_WINNT=0x0501 _WIN32_WINDOWS=0x0410 _WIN32_IE=0x0500 ;
 }
 
 C.OutputPath * : $(WWHIZ_OUTPUT_DIRECTORY) ;

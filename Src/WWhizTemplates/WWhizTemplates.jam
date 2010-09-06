@@ -63,4 +63,8 @@ C.OutputSuffix WWhizTemplates : .dtpl : debug ;
 C.OutputSuffix WWhizTemplates : .tpl : release ;
 C.Library WWhizTemplates : $(SRCS) $(RES_SRCS) : shared ;
 
+CopyFile WWhizTemplates : $(WWHIZ_OUTPUT_DIRECTORY)/Templates/Tutorials.WWTpl : $(SUBDIR)/Tutorials.WWTpl ;
+CopyFile WWhizTemplates : $(WWHIZ_OUTPUT_DIRECTORY)/Templates/UsefulSamples.WWTpl : $(SUBDIR)/UsefulSamples.WWTpl ;
+CopyFile WWhizTemplates : $(WWHIZ_OUTPUT_DIRECTORY)/Templates/WWhizTemplateTest.WWTpl : $(SUBDIR)/WWhizTemplateTest.WWTpl ;
+
 }

@@ -14,10 +14,20 @@ Workspace WorkspaceWhiz :
 
 IncludeModule CopyDirectory ;
 
-if $(COMPILER) = vc6 {
-} else {
-	CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC90.CRT : $(MSVCNT)/redist/x86/Microsoft.VC90.CRT : * ;
-	CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC90.MFC : $(MSVCNT)/redist/x86/Microsoft.VC90.MFC ;
+switch $(COMPILER.$(PLATFORM)) {
+	case vc6 :
+
+	case vs2005 :
+		CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC80.CRT : $(MSVCNT)/redist/x86/Microsoft.VC80.CRT : * ;
+		CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC80.MFC : $(MSVCNT)/redist/x86/Microsoft.VC80.MFC ;
+	
+	case vs2008 :
+		CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC90.CRT : $(MSVCNT)/redist/x86/Microsoft.VC90.CRT : * ;
+		CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC90.MFC : $(MSVCNT)/redist/x86/Microsoft.VC90.MFC ;
+	
+	case vs2010 :
+		CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC100.CRT : $(MSVCNT)/redist/x86/Microsoft.VC100.CRT : * ;
+		CopyDirectory WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/Microsoft.VC100.MFC : $(MSVCNT)/redist/x86/Microsoft.VC100.MFC ;
 }
 
 if ! $(TARGETINFO_LOCATE)
@@ -37,8 +47,6 @@ DownloadCtags $(WWHIZ)/ctags/ctags58/ctags.exe ;
 CopyFile WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/ctags.exe : $(WWHIZ)/ctags/ctags58/ctags.exe ;
 
 }
-
-C.Defines * : WINVER=0x0500 _WIN32_WINNT=0x0501 _WIN32_WINDOWS=0x0410 _WIN32_IE=0x0500 ;
 
 SubInclude WWHIZ Help ;
 SubInclude WWHIZ Src WorkspaceWhiz : WorkspaceWhiz ;
