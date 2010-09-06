@@ -2,42 +2,45 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Workspace Whiz for Visual Studio 200x
-AppVerName=Workspace Whiz 4.2 Beta for Visual Studio 200x - Build 1205
-AppVersion=4.2 Beta Build 1205
+AppName=Workspace Whiz for Visual Studio 20xx
+AppVerName=Workspace Whiz 4.3 Beta for Visual Studio 20xx - Build {#BUILD_NUMBER}
+AppVersion=4.3 Beta Build {#BUILD_NUMBER}
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.2 Beta for Visual Studio, Copyright © 1997-2008 Joshua Jensen
+AppCopyright=Workspace Whiz 4.3 Beta for Visual Studio, Copyright © 1997-2010 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz
-DefaultGroupName=Workspace Whiz for Visual Studio 200x
+DefaultGroupName=Workspace Whiz for Visual Studio 20xx
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz42_VS200x_1205
-OutputDir=.
+OutputBaseFilename={#OUTPUT_BASE_FILENAME}
+OutputDir={#OUTPUT_DIRECTORY}
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
 
 [Files]
-Source: "..\BinVSNet\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: regserver ignoreversion
-Source: "..\BinVSNet\WWhizInterface2.mod"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\CTAGS.EXE"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\ctags.conf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\WWhizReg.mod"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\WWhizTemplateManager.mod"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
-;Source: "..\BinVSNet\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
-;Source: ".\WWhizInterface40NET_1205.exe"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "..\BinVSNet\MFC71.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "..\BinVSNet\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\BinVSNet\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC90.CRT\msvcr90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC90.CRT\msvcp90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC90.MFC\mfc90.dll"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
-Source: "..\BinVSNet\Microsoft.VC90.MFC\Microsoft.VC90.MFC.manifest"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: regserver ignoreversion
+Source: "{#BIN_LOCATION}\WWhizInterface2.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\CTAGS.EXE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\ctags.conf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizReg.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizTemplateManager.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
+;Source: ".\WWhizInterface40NET_{#BUILD_NUMBER}.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\MFC71.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC100.CRT\msvcr100.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC100.CRT\msvcp100.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC100.MFC\mfc100.dll"; DestDir: "{app}\Microsoft.VC100.MFC"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\Microsoft.VC90.CRT\msvcr90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\Microsoft.VC90.CRT\msvcp90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\Microsoft.VC90.MFC\mfc90.dll"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\Microsoft.VC90.MFC\Microsoft.VC90.MFC.manifest"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
@@ -144,6 +147,20 @@ uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspac
   end
 
   uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio 200x_is1';
+  RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
+  RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
+  if uninstallFileName <> '' then
+  begin
+    ch := StrGet(uninstallFileName, 1);
+    uninstallFileName := Copy(uninstallFileName, 2, Length(uninstallFileName) - 2);
+
+    if FileExists(uninstallFileName) then
+    begin
+      Exec(uninstallFileName, '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultCode);
+    end
+  end
+
+  uninstallRegKey := 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Workspace Whiz for Visual Studio 20xx_is1';
   RegQueryStringValue(HKLM, uninstallRegKey, 'Inno Setup: App Path', installPath);
   RegQueryStringValue(HKLM, uninstallRegKey, 'UninstallString', uninstallFileName);
   if uninstallFileName <> '' then

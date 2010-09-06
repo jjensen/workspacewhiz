@@ -55,6 +55,7 @@ SubInclude WWHIZ Src WWhizReg : WWhizReg ;
 SubInclude WWHIZ Src WWhizResources : WWhizResources ;
 SubInclude WWHIZ Src WWhizTemplateManager : WWhizTemplateManager ;
 SubInclude WWHIZ Src WWhizTemplates : WWhizTemplates ;
+SubInclude WWHIZ Installer ;
 
 }
 
