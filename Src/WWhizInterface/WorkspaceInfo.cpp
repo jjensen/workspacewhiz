@@ -536,7 +536,8 @@ void WorkspaceInfo::RecurseCSProjNode(
 			XmlNode* childNode = (XmlNode*)node->GetFirstChildNode();
 			while (childNode)
 			{
-				if (childNode->GetName() == "Compile"  ||  childNode->GetName() == "Content"  ||
+				if (childNode->GetName() == "ClCompile"  ||  childNode->GetName() == "ClInclude"  ||
+					childNode->GetName() == "Compile"  ||  childNode->GetName() == "Content"  ||
 					childNode->GetName() == "EmbeddedResource"  ||  childNode->GetName() == "None"  ||
 					childNode->GetName() == "Ruby"  ||  childNode->GetName() == "EmbeddedRuby")
 				{
