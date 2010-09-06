@@ -23,13 +23,14 @@ if $(COMPILER) = vc6 {
 if ! $(TARGETINFO_LOCATE)
 {
 
-actions DownloadCtags 
+actions screenoutput DownloadCtags 
 {
 	cd $(WWHIZ)
 	md ctags
 	cd ctags
+	del ctags58.zip
 	wget http://prdownloads.sourceforge.net/ctags/ctags58.zip
-	unzip ctags58.zip
+	unzip -o ctags58.zip
 }
 
 DownloadCtags $(WWHIZ)/ctags/ctags58/ctags.exe ;
