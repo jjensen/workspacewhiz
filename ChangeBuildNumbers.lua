@@ -1,15 +1,15 @@
-require "glob"
+require "filefind"
 
 oldBuildNumber, newBuildNumber = unpack(arg)
 
 function ReplaceBuildNumbers(globPath)
-	for index, fileName in ipairs(glob.match(globPath)) do
-		local str = io.readall(fileName)
+	for entry in filefind.glob(globPath) do
+		local str = io.readall(entry.filename)
 		local oldStr = str
 		str = str:gsub(oldBuildNumber, newBuildNumber)
 		if oldStr ~= str then
-			print(fileName)
-			io.writeall(fileName, str)
+			print(entry.filename)
+			io.writeall(entry.filename, str)
 		end
 	end
 end
