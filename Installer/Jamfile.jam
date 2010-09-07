@@ -1,14 +1,17 @@
 SubDir WWHIZ Installer ;
 
 if Installer in $(JAM_COMMAND_LINE_TARGETS)  ||  clean:Installer in $(JAM_COMMAND_LINE_TARGETS) {
-	INNO = [ W32_GETREG64 HKEY_LOCAL_MACHINE SOFTWARE Wow6432Node Microsoft Windows CurrentVersion Uninstall "Inno Setup 5_is1" InstallLocation ] ;
+	local wow6432node ;
+	if $(ProgramFiles(x86)) { wow6432node = Wow6432Node ; }
+
+	INNO = [ W32_GETREG64 HKEY_LOCAL_MACHINE SOFTWARE $(wow6432node) Microsoft Windows CurrentVersion Uninstall "Inno Setup 5_is1" InstallLocation ] ;
 	if ! $(INNO) {
 		Exit * Unable to find an InnoSetup installation.  The installer cannot be made. ;
 	}
-	
+
 	if $(COMPILER.$(PLATFORM)) = vc6 {
 		actions BuildInstaller {
-			"$(INNO)/iscc" $(WWHIZ)/Installer/WWhizVC6.iss
+			"$(INNO)/iscc" /dBUILD_NUMBER=$(BUILD_NUMBER) /dBIN_LOCATION=$(BIN_LOCATION) /dOUTPUT_BASE_FILENAME=$(OUTPUT_BASE_FILENAME) /dOUTPUT_DIRECTORY=$(OUTPUT_DIRECTORY) $(WWHIZ)/Installer/WWhizVC6.iss
 		}
 	} else {
 		actions BuildInstaller {
@@ -17,17 +20,22 @@ if Installer in $(JAM_COMMAND_LINE_TARGETS)  ||  clean:Installer in $(JAM_COMMAN
 	}
 
 	local buildNumber = 1206 ;
-	local installerExe = WorkspaceWhiz43_VS20xx_$(buildNumber).exe ;
+	local installerExe ;
+	if $(COMPILER.$(PLATFORM)) = vc6 {
+		installerExe = WorkspaceWhiz43_VC6_$(buildNumber).exe ;
+	} else {
+		installerExe = WorkspaceWhiz43_VS20xx_$(buildNumber).exe ;
+	}
 	local installerOutputDirectory = $(ALL_LOCATE_TARGET) ;
 	MakeLocate $(installerExe) : $(installerOutputDirectory) ;
-	
+
 	BUILD_NUMBER on $(installerExe) = $(buildNumber) ;
 	BIN_LOCATION on $(installerExe) = $(WWHIZ_OUTPUT_DIRECTORY) ;
 	OUTPUT_BASE_FILENAME on $(installerExe) = $(installerExe:B) ;
 	OUTPUT_DIRECTORY on $(installerExe) = $(ALL_LOCATE_TARGET) ;
-	
+
 	Depends Installer : $(installerExe) ;
-	
+
 	rule InstallerDepends TARGETS {
 		local target ;
 		for target in $(TARGETS) {

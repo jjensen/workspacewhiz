@@ -35,10 +35,10 @@ if ! $(TARGETINFO_LOCATE)
 
 actions screenoutput DownloadCtags 
 {
-	cd $(WWHIZ)
+	cd "$(WWHIZ:\\)"
 	md ctags
 	cd ctags
-	del ctags58.zip
+	del /Q ctags58.zip
 	wget http://prdownloads.sourceforge.net/ctags/ctags58.zip
 	unzip -o ctags58.zip
 }
@@ -51,6 +51,9 @@ CopyFile WorkspaceWhiz : $(WWHIZ_OUTPUT_DIRECTORY)/ctags.exe : $(WWHIZ)/ctags/ct
 SubInclude WWHIZ Help ;
 SubInclude WWHIZ Src WorkspaceWhiz : WorkspaceWhiz ;
 SubInclude WWHIZ Src WWhizInterface : WWhizInterface ;
+if $(COMPILER.$(PLATFORM)) = vc6 {
+	SubInclude WWHIZ Src WWhizInterfaceHelper : WWhizInterfaceHelper ;
+}
 SubInclude WWHIZ Src WWhizReg : WWhizReg ;
 SubInclude WWHIZ Src WWhizResources : WWhizResources ;
 SubInclude WWHIZ Src WWhizTemplateManager : WWhizTemplateManager ;

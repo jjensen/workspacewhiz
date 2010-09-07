@@ -14,7 +14,7 @@
 #include "WWhizTemplateManager.h"
 #include <atlbase.h>
 #include <initguid.h>
-#include "ObjModelGUID.h"
+//#include "ObjModelGUID.h"
 //#include <ObjModel\addguid.h>
 //#include <ObjModel\appguid.h>
 //#include <ObjModel\bldguid.h>
@@ -88,7 +88,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 	return TRUE;
 }
- 
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Debugging support

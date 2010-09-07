@@ -1,0 +1,27 @@
+{
+
+SubDir WWHIZ Src WWhizInterfaceHelper ;
+
+local SRCS =
+		Resource.h
+		StdAfx.cpp
+		StdAfx.h
+		WWhizInterfaceHelper.cpp
+		WWhizInterfaceHelper.def
+		WWhizInterfaceHelper.rc
+;
+
+C.UseMFC WWhizInterfaceHelper : shared link ;
+
+C.PrecompiledHeader WWhizInterfaceHelper : StdAfx : $(SRCS) ;
+
+local RES_SRCS = [ C.ResourceCompiler WWhizInterfaceHelper : WWhizInterfaceHelper.rc ] ;
+
+C.DefFile WWhizInterfaceHelper : WWhizInterfaceHelper.def ;
+
+C.OutputSuffix WWhizInterfaceHelper : .pkg ;
+local outputPkg = [ C.Library WWhizInterfaceHelper : $(SRCS) $(RES_SRCS) : shared ] ;
+
+CopyFile WWhizInterfaceHelper : $(MSVCNT)/../Common/MSDev98/Bin/IDE/WWhizInterfaceHelper.pkg : $(outputPkg[1]) ;
+
+}

@@ -108,22 +108,6 @@ local SOURCE_FILES_SRCS =
 		WWhizCommands.cpp
 ;
 
-if $(COMPILER) = vc6 {
-	SOURCE_FILES_SRCS +=
-			AddInInt.cpp
-			Commands.cpp
-			DSAddin.cpp
-			ToolbarWnd.cpp
-			WorkspaceWhiz.odl
-			WorkspaceWhiz.rc
-	;
-} else {
-	SOURCE_FILES_SRCS +=
-			WWhizNet.idl
-			WWhizNetConnect.cpp
-	;
-}
-
 local THIRD_PARTY_SRCS =
 		../3rdParty/BCMenu.cpp
 		../3rdParty/BCMenu.h
@@ -151,6 +135,28 @@ local THIRD_PARTY_SRCS =
 		../3rdParty/TreeCtrlEx.h
 		../3rdParty/WCollection.h
 ;
+
+if $(COMPILER.$(PLATFORM)) = vc6 {
+	SOURCE_FILES_SRCS +=
+			AddInInt.cpp
+			Commands.cpp
+			DSAddin.cpp
+			ToolbarWnd.cpp
+			WorkspaceWhiz.odl
+			WorkspaceWhiz.rc
+	;
+
+	THIRD_PARTY_SRCS +=
+		../3rdParty/AddInComm.h
+		../3rdParty/AICLoader.cpp
+		../3rdParty/AICLoader.h
+	;
+} else {
+	SOURCE_FILES_SRCS +=
+			WWhizNet.idl
+			WWhizNetConnect.cpp
+	;
+}
 
 local PCH_SRCS =
 		$(HEADER_FILES_SRCS)
@@ -180,11 +186,13 @@ local RES_SRCS ;
 
 IncludeModule c/midl ;
 
-if $(COMPILER) = vc6 {
+if $(COMPILER.$(PLATFORM)) = vc6 {
 	C.RcIncludeDirectories WorkspaceWhiz : WorkspaceWhiz.rc : $(LOCATE_SOURCE) ;
 	RES_SRCS = [ C.ResourceCompiler WorkspaceWhiz : WorkspaceWhiz.rc ] ;
 	local MIDL_SRCS = [ C.MidlCompiler WorkspaceWhiz : WorkspaceWhiz.odl ] ;
 	Includes <WorkspaceWhiz>WorkspaceWhiz.rc : $(MIDL_SRCS) ;
+	SRCS += $(MIDL_SRCS) ;
+	C.LinkPrebuiltLibraries WorkspaceWhiz : version ;
 } else {
 	C.RcIncludeDirectories WorkspaceWhiz : WWhizNet.rc : $(LOCATE_SOURCE) ;
 	RES_SRCS = [ C.ResourceCompiler WorkspaceWhiz : WWhizNet.rc ] ;

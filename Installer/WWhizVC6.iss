@@ -3,34 +3,34 @@
 
 [Setup]
 AppName=Workspace Whiz for Visual C++ 6
-AppVerName=Workspace Whiz 4.2 Beta for Visual C++ 6 - Build 1206
-AppVersion=4.2 Beta Build 1206
+AppVerName=Workspace Whiz 4.3 Beta for Visual C++ 6 - Build {#BUILD_NUMBER}
+AppVersion=4.3 Beta Build {#BUILD_NUMBER}
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.2 Beta for Visual C++ 6, Copyright © 1997-2008 Joshua Jensen
+AppCopyright=Workspace Whiz 4.3 Beta for Visual C++ 6, Copyright © 1997-2010 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz VC6
 DefaultGroupName=Workspace Whiz for Visual C++ 6
 DisableProgramGroupPage=yes
-OutputBaseFilename=WorkspaceWhiz42_VC6_1206
-OutputDir=.
+OutputBaseFilename={#OUTPUT_BASE_FILENAME}
+OutputDir={#OUTPUT_DIRECTORY}
 PrivilegesRequired=admin
 UsePreviousAppDir=yes
 
 [Files]
-Source: "..\Bin\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: regserver ignoreversion
-Source: "..\Bin\WWhizInterfaceHelper.pkg"; DestDir: "{reg:HKLM\Software\Microsoft\VisualStudio\6.0\Setup,VsCommonDir}\MSDev98\Bin\IDE"; Flags: ignoreversion
-Source: "..\Bin\WWhizInterface2.mod"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Bin\CTAGS.EXE"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Bin\ctags.conf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Bin\WWhizReg.mod"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Bin\WWhizTemplateManager.mod"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Bin\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Bin\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Bin\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
-;Source: "..\Bin\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
-;Source: ".\WWhizInterface40VC6_1206.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: regserver ignoreversion
+Source: "{#BIN_LOCATION}\WWhizInterfaceHelper.pkg"; DestDir: "{reg:HKLM\Software\Microsoft\VisualStudio\6.0\Setup,VsCommonDir}\MSDev98\Bin\IDE"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizInterface2.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\CTAGS.EXE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\ctags.conf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizReg.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizTemplateManager.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
+;Source: "{#BIN_LOCATION}\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
+;Source: ".\WWhizInterface40VC6_{#BUILD_NUMBER}.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\VC6"; Flags: uninsdeletekeyifempty
