@@ -27,8 +27,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,2,0,1204
- PRODUCTVERSION 4,2,0,1204
+ FILEVERSION 4,3,0,1206
+ PRODUCTVERSION 4,3,0,1206
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -45,12 +45,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", " "
             VALUE "FileDescription", "Workspace Whiz Code Templates"
-            VALUE "FileVersion", "4, 2, 0, 1204"
+            VALUE "FileVersion", "4, 3, 0, 1206"
             VALUE "InternalName", "Workspace Whiz Code Templates Library"
-            VALUE "LegalCopyright", "Copyright © 1997-2008 Joshua C. Jensen"
+            VALUE "LegalCopyright", "Copyright © 1997-2010 Joshua C. Jensen"
             VALUE "OriginalFilename", "WWhizTemplates.tpl"
             VALUE "ProductName", "Workspace Whiz Code Templates"
-            VALUE "ProductVersion", "4, 2, 0, 1204"
+            VALUE "ProductVersion", "4, 3, 0, 1206"
         END
     END
     BLOCK "VarFileInfo"

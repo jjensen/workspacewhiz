@@ -443,8 +443,8 @@ IDR_TOOLBAR_LARGE       BITMAP  MOVEABLE PURE   "res\\TBarLrge.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,0,0,1204
- PRODUCTVERSION 4,0,0,1204
+ FILEVERSION 4,3,0,1206
+ PRODUCTVERSION 4,3,0,1206
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -462,14 +462,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "WORKSPACEWHIZ.DLL\0"
-            VALUE "FileVersion", "4, 0, 0, 1204\0"
+            VALUE "FileVersion", "4, 3, 0, 1206\0"
             VALUE "InternalName", "Workspace Whiz\0"
-            VALUE "LegalCopyright", "Copyright (C) 1997-2007  Joshua C. Jensen\0"
+            VALUE "LegalCopyright", "Copyright © 1997-2010 Joshua C. Jensen\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "WORKSPACEWHIZ.DLL\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "Workspace Whiz Visual Studio Add-in\0"
-            VALUE "ProductVersion", "4, 0, 0, 1204\0"
+            VALUE "ProductVersion", "4, 3, 0, 1206\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -623,7 +623,7 @@ END
 
 STRINGTABLE DISCARDABLE
 BEGIN
-    AFX_IDS_APP_TITLE       "Workspace Whiz 4.0 RC5 Build 1204"
+    AFX_IDS_APP_TITLE       "Workspace Whiz 4.3 Beta 1 Build 1206"
 END
 
 #endif    // English (U.S.) resources
