@@ -871,6 +871,8 @@ void WorkspaceInfo::ReadSlnFile(Project& prj)
 
 		// Got the name isolated.  Add it.
 		CString projectPath = line.Mid(startPos, endPos - startPos);
+		if (projectPath.GetLength() == 0)
+			continue;
 		ResolveFilename(rootPath, projectPath);
 		Project* newlyAddedProject = AddHelper(projectPath, "", prj.IsActive());
 		if (newlyAddedProject)
