@@ -31,11 +31,7 @@ WWhizTemplateManager* __cdecl WWhizTemplateManagerCreate(
 	if (s_wwhizTemplateManager)
 		return s_wwhizTemplateManager;
 
-#ifdef _DEBUG
-	LPCTSTR filename = "WWhizTemplateManagerD.mod";
-#else
-	LPCTSTR filename = "WWhizTemplateManager.mod";
-#endif //_DEBUG
+	LPCTSTR filename = "WWhizTemplateManager.dll";
 	s_wwhizTemplateManagerInst = LoadLibrary(filename);
 	if (!s_wwhizTemplateManagerInst)
 	{

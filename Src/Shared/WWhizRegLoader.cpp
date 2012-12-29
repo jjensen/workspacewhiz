@@ -30,11 +30,8 @@ WWhizReg* __cdecl WWhizRegCreate(
 	if (s_wwhizReg)
 		return s_wwhizReg;
 
-#ifdef _DEBUG
-	LPCTSTR filename = "WWhizRegD.mod";
-#else
-	LPCTSTR filename = "WWhizReg.mod";
-#endif //_DEBUG
+	LPCTSTR filename = "WWhizReg.dll";
+
 	s_wwhizRegInst = LoadLibrary(filename);
 	if (!s_wwhizRegInst)
 	{

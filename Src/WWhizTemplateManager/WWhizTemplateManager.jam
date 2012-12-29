@@ -64,7 +64,6 @@ C.UseMFC WWhizTemplateManager : shared link ;
 
 local RES_SRCS = [ C.ResourceCompiler WWhizTemplateManager : WWhizTemplateManagerNet.rc ] ;
 
-C.OutputSuffix WWhizTemplateManager : .mod ;
 C.Library WWhizTemplateManager : $(SRCS) $(RES_SRCS) : shared ;
 
 }

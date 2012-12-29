@@ -75,7 +75,6 @@ C.PrecompiledHeader : pchWWhizReg : $(PCH_SRCS) ;
 
 local resFile = [ C.ResourceCompiler : WWhizRegNet.rc ] ;
 
-C.OutputSuffix : .mod ;
 C.Library : $(SRCS) $(resFile) : shared ;
 
 }

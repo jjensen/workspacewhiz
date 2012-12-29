@@ -77,11 +77,7 @@ WWhizInterface* __cdecl WWhizInterfaceCreate(HINSTANCE hInstance, MyApplicationT
 	if (wwhizPath[_tcslen(wwhizPath) - 1] != '\\')
 		_tcscat(wwhizPath, "\\");
 
-#ifdef _DEBUG
-	LPCTSTR filename = "WWhizInterface2D.mod";
-#else
-	LPCTSTR filename = "WWhizInterface2.mod";
-#endif //_DEBUG
+	LPCTSTR filename = "WWhizInterface2.dll";
 
 	// Get the module name and strip the module filename from it, leaving the
 	// module path.

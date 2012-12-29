@@ -68,11 +68,7 @@ TemplateManager::~TemplateManager()
 	}
 }
 
-#ifdef _DEBUG
-const LPCTSTR TEMPLATE_WILDCARD = "dtpl";
-#else
 const LPCTSTR TEMPLATE_WILDCARD = "tpl";
-#endif
 
 bool TemplateManager::LoadTplFile(const CString& filename)
 {

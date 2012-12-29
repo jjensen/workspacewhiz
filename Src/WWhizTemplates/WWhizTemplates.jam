@@ -59,8 +59,7 @@ C.PrecompiledHeader WWhizTemplates : pchWWhizTemplates : $(SOURCE_FILES_PCH_SRCS
 
 local RES_SRCS = [ C.ResourceCompiler WWhizTemplates : WWhizTemplateNet.rc ] ;
 
-C.OutputSuffix WWhizTemplates : .dtpl : debug ;
-C.OutputSuffix WWhizTemplates : .tpl : release ;
+C.OutputSuffix WWhizTemplates : .tpl ;
 C.Library WWhizTemplates : $(SRCS) $(RES_SRCS) : shared ;
 
 CopyFile WWhizTemplates : $(WWHIZ_OUTPUT_DIRECTORY)/Templates/Tutorials.WWTpl : $(SUBDIR)/Tutorials.WWTpl ;
