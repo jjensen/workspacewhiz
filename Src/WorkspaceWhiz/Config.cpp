@@ -24,7 +24,15 @@ void Config::LoadRegistry()
 {
 	// Get first time variable.
 	CString version = ObjModelHelper::GetVersion();
-	if (version == "7.10")
+	if (version == "11.0")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS1100FirstTime", true) != 0;
+	else if (version == "10.0")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS100FirstTime", true) != 0;
+	else if (version == "9.0")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS90FirstTime", true) != 0;
+	else if (version == "8.0")
+		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS80FirstTime", true) != 0;
+	else if (version == "7.10")
 		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS710FirstTime", true) != 0;
 	else if (version == "7.00")
 		m_dsFirstTime = AfxGetApp()->GetProfileInt("Config", "VS700FirstTime", true) != 0;
@@ -226,7 +234,15 @@ void Config::SaveRegistry_FirstTime()
 {
 	// Save first time variable.
 	CString version = ObjModelHelper::GetVersion();
-	if (version == "7.10")
+	if (version == "11.0")
+		AfxGetApp()->WriteProfileInt("Config", "VS110FirstTime", m_dsFirstTime);
+	else if (version == "10.0")
+		AfxGetApp()->WriteProfileInt("Config", "VS100FirstTime", m_dsFirstTime);
+	else if (version == "9.0")
+		AfxGetApp()->WriteProfileInt("Config", "VS90FirstTime", m_dsFirstTime);
+	else if (version == "8.0")
+		AfxGetApp()->WriteProfileInt("Config", "VS80FirstTime", m_dsFirstTime);
+	else if (version == "7.10")
 		AfxGetApp()->WriteProfileInt("Config", "VS710FirstTime", m_dsFirstTime);
 	else if (version == "7.00")
 		AfxGetApp()->WriteProfileInt("Config", "VS700FirstTime", m_dsFirstTime);
