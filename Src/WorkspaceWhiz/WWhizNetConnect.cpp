@@ -751,21 +751,6 @@ STDMETHODIMP CConnect::OnAddInsUpdate (SAFEARRAY ** /*custom*/ )
 STDMETHODIMP CConnect::OnStartupComplete (SAFEARRAY ** /*custom*/ )
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-
-	try
-	{
-		if (g_config.m_dsFirstTime)
-		{
-			WWhizCommands::WWOptions();
-		}
-
-		g_config.m_dsFirstTime = false;
-		g_config.SaveRegistry_FirstTime();
-	}
-	catch ( ... )
-	{
-	}
-
 	return S_OK;
 }
 

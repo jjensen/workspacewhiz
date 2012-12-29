@@ -24,7 +24,6 @@ public:
 
 	WArray<Keys> m_keys;
 
-	bool m_dsFirstTime;
 	bool m_useFindTagAtCursorDialog;
 	bool m_autoSaveAllPerTagCommand;
 
@@ -33,8 +32,6 @@ public:
 
 	void LoadRegistry();
 	void SaveRegistry();
-
-	void SaveRegistry_FirstTime();
 };
 
 

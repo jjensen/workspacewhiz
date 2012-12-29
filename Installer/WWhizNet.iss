@@ -38,12 +38,6 @@ Source: "{#BIN_LOCATION}\Microsoft.VC110.MFC\mfc110.dll"; DestDir: "{app}\Micros
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; ValueType: string; ValueName: "Path"; ValueData: "{app}"
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS700FirstTime"; ValueData: "1"
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS710FirstTime"; ValueData: "1"
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS80FirstTime"; ValueData: "1"
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS90FirstTime"; ValueData: "1"
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS100FirstTime"; ValueData: "1"
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS110FirstTime"; ValueData: "1"
 
 [INI]
 Filename: "{app}\WorkspaceWhiz.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://workspacewhiz.com/"
