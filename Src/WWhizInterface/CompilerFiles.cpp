@@ -17,6 +17,7 @@
 #ifdef WWHIZ_VSNET
 
 #include <atlsafe.h>
+#include "VCProjectEngine110.tlh"
 #include "VCProjectEngine100.tlh"
 #include "VCProjectEngine90.tlh"
 #include "VCProjectEngine70.tlh"
@@ -113,6 +114,8 @@ void CompilerFiles::ProcessPaths(char* buffer)
 	CComQIPtr<VCProjectEngineLibrary90::VCProject> cpProject90;
 	CComQIPtr<VCProjectEngineLibrary100::VCProjectEngine> pProjEng100;
 	CComQIPtr<VCProjectEngineLibrary100::VCProject> cpProject100;
+	CComQIPtr<VCProjectEngineLibrary110::VCProjectEngine> pProjEng110;
+	CComQIPtr<VCProjectEngineLibrary110::VCProject> cpProject110;
 
 	if (pProject)
 	{
@@ -157,6 +160,14 @@ void CompilerFiles::ProcessPaths(char* buffer)
 			if (!pProjEng100)
 				return;
 		}
+		else if (version == "11.0")
+		{
+			cpProject110 = pID;
+			cpProject110->get_VCProjectEngine(&pDispProjEngine);
+			pProjEng110 = pDispProjEngine;
+			if (!pProjEng110)
+				return;
+		}
 	}
 #endif WWHIZ_VSNET
 
@@ -195,6 +206,10 @@ void CompilerFiles::ProcessPaths(char* buffer)
 		else if (pProjEng100)
 		{
 			pProjEng100->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
+		}
+		else if (pProjEng110)
+		{
+			pProjEng110->Evaluate(CComBSTR(lastPtr), &bstrResolvedDir);
 		}
 
 		if (bstrResolvedDir == "")
@@ -466,6 +481,23 @@ Top:
 		pPlatforms->Item(CComVariant(bstrPlatformName), &pDispPlatform);
 
 		CComQIPtr<VCProjectEngineLibrary100::VCPlatform> pVCPlatform(pDispPlatform);
+
+		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
+		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
+	}
+	else if (version == "11.0")
+	{
+		CComQIPtr<VCProjectEngineLibrary110::VCProject> pVCProject(pDispatch);
+		pDispatch = NULL;
+
+		// Get the platform pointer...
+		CComPtr<IDispatch> pDispPlatforms;
+		pVCProject->get_Platforms(&pDispPlatforms);
+		CComQIPtr<VCProjectEngineLibrary110::IVCCollection> pPlatforms(pDispPlatforms);
+		CComPtr<IDispatch> pDispPlatform;
+		pPlatforms->Item(CComVariant(bstrPlatformName), &pDispPlatform);
+
+		CComQIPtr<VCProjectEngineLibrary110::VCPlatform> pVCPlatform(pDispPlatform);
 
 		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
 		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
