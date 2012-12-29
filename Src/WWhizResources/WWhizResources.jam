@@ -53,4 +53,6 @@ C.OutputPath WWhizResources : $(WWHIZ_OUTPUT_DIRECTORY)/1033 ;
 C.LinkFlags WWhizResources : /NOENTRY ;
 C.Library WWhizResources : $(SRCS) $(RES_SRCS) : shared nomanifest noexportlib ;
 
+Depends all : WWhizResources ;
+
 }

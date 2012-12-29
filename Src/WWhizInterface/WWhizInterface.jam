@@ -86,4 +86,6 @@ C.Library WWhizInterface : $(SRCS) $(RES_SRCS) : shared ;
 
 CopyFile WWhizInterface : $(WWHIZ_OUTPUT_DIRECTORY)/ctags.conf : $(SUBDIR)/ctags.conf ;
 
+Depends all : WWhizInterface ;
+
 }

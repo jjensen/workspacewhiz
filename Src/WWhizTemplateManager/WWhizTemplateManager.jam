@@ -66,4 +66,6 @@ local RES_SRCS = [ C.ResourceCompiler WWhizTemplateManager : WWhizTemplateManage
 
 C.Library WWhizTemplateManager : $(SRCS) $(RES_SRCS) : shared ;
 
+Depends all : WWhizTemplateManager ;
+
 }

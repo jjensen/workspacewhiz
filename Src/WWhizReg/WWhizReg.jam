@@ -62,19 +62,19 @@ local SRCS =
 		$(THIRD_PARTY_SRCS)
 ;
 
-ActiveProject WWhizReg ;
+SourceGroup WWhizReg : "Header Files" : $(HEADER_FILES_SRCS) ;
+SourceGroup WWhizReg : "Source Files" : $(SOURCE_FILES_NOPCH_SRCS) $(SOURCE_FILES_PCH_SRCS) ;
+SourceGroup WWhizReg : "Third Party" : $(THIRD_PARTY_SRCS) ;
 
-SourceGroup : "Header Files" : $(HEADER_FILES_SRCS) ;
-SourceGroup : "Source Files" : $(SOURCE_FILES_NOPCH_SRCS) $(SOURCE_FILES_PCH_SRCS) ;
-SourceGroup : "Third Party" : $(THIRD_PARTY_SRCS) ;
+C.UseMFC WWhizReg : shared link ;
 
-C.UseMFC : shared link ;
+C.IncludeDirectories WWhizReg : ../3rdParty ../Shared ;
+C.PrecompiledHeader WWhizReg : pchWWhizReg : $(PCH_SRCS) ;
 
-C.IncludeDirectories : ../3rdParty ../Shared ;
-C.PrecompiledHeader : pchWWhizReg : $(PCH_SRCS) ;
+local resFile = [ C.ResourceCompiler WWhizReg : WWhizRegNet.rc ] ;
 
-local resFile = [ C.ResourceCompiler : WWhizRegNet.rc ] ;
+C.Library WWhizReg : $(SRCS) $(resFile) : shared ;
 
-C.Library : $(SRCS) $(resFile) : shared ;
+Depends all : WWhizReg ;
 
 }
