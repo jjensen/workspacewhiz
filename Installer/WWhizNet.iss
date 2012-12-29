@@ -3,13 +3,13 @@
 
 [Setup]
 AppName=Workspace Whiz for Visual Studio 20xx
-AppVerName=Workspace Whiz 4.3 Beta for Visual Studio 20xx - Build {#BUILD_NUMBER}
+AppVerName=Workspace Whiz 4.4 Beta for Visual Studio 20xx - Build {#BUILD_NUMBER}
 AppVersion=4.3 Beta Build {#BUILD_NUMBER}
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.3 Beta for Visual Studio, Copyright © 1997-2010 Joshua Jensen
+AppCopyright=Workspace Whiz 4.4 Beta for Visual Studio, Copyright © 1997-2010 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz
 DefaultGroupName=Workspace Whiz for Visual Studio 20xx
 DisableProgramGroupPage=yes
@@ -20,27 +20,19 @@ UsePreviousAppDir=yes
 
 [Files]
 Source: "{#BIN_LOCATION}\WorkspaceWhiz.dll"; DestDir: "{app}"; Flags: regserver ignoreversion
-Source: "{#BIN_LOCATION}\WWhizInterface2.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizInterface2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\CTAGS.EXE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\ctags.conf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\WWhizReg.mod"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\WWhizTemplateManager.mod"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizReg.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\WWhizTemplateManager.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\WWhizTemplates.tpl"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
 ;Source: "{#BIN_LOCATION}\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
-;Source: ".\WWhizInterface40NET_{#BUILD_NUMBER}.exe"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "{#BIN_LOCATION}\MFC71.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "{#BIN_LOCATION}\msvcr71.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC100.CRT\msvcr100.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC100.CRT\msvcp100.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC100.MFC\mfc100.dll"; DestDir: "{app}\Microsoft.VC100.MFC"; Flags: ignoreversion
-;Source: "{#BIN_LOCATION}\Microsoft.VC90.CRT\msvcr90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
-;Source: "{#BIN_LOCATION}\Microsoft.VC90.CRT\msvcp90.dll"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
-;Source: "{#BIN_LOCATION}\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest"; DestDir: "{app}\Microsoft.VC90.CRT"; Flags: ignoreversion
-;Source: "{#BIN_LOCATION}\Microsoft.VC90.MFC\mfc90.dll"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
-;Source: "{#BIN_LOCATION}\Microsoft.VC90.MFC\Microsoft.VC90.MFC.manifest"; DestDir: "{app}\Microsoft.VC90.MFC"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcr110.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcp110.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC110.MFC\mfc110.dll"; DestDir: "{app}\Microsoft.VC100.MFC"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
@@ -48,8 +40,10 @@ Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; ValueType: string; ValueName
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS700FirstTime"; ValueData: "1"
 Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS710FirstTime"; ValueData: "1"
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS800FirstTime"; ValueData: "1"
-Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS900FirstTime"; ValueData: "1"
+Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS80FirstTime"; ValueData: "1"
+Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS90FirstTime"; ValueData: "1"
+Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS100FirstTime"; ValueData: "1"
+Root: HKCU; Subkey: "Software\Workspace Whiz\.NET\Config"; ValueType: dword; ValueName: "VS110FirstTime"; ValueData: "1"
 
 [INI]
 Filename: "{app}\WorkspaceWhiz.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://workspacewhiz.com/"

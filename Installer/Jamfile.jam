@@ -22,9 +22,9 @@ if Installer in $(JAM_COMMAND_LINE_TARGETS)  ||  clean:Installer in $(JAM_COMMAN
 	local buildNumber = 1207 ;
 	local installerExe ;
 	if $(COMPILER.$(PLATFORM)) = vc6 {
-		installerExe = WorkspaceWhiz43_VC6_$(buildNumber).exe ;
+		installerExe = WorkspaceWhiz44_VC6_$(buildNumber).exe ;
 	} else {
-		installerExe = WorkspaceWhiz43_VS20xx_$(buildNumber).exe ;
+		installerExe = WorkspaceWhiz44_VS20xx_$(buildNumber).exe ;
 	}
 	local installerOutputDirectory = $(ALL_LOCATE_TARGET) ;
 	MakeLocate $(installerExe) : $(installerOutputDirectory) ;
