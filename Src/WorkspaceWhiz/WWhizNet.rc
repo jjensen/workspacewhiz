@@ -53,8 +53,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,3,0,1206
- PRODUCTVERSION 4,3,0,1206
+ FILEVERSION 4,4,0,1207
+ PRODUCTVERSION 4,4,0,1207
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -70,12 +70,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Workspace Whiz"
-            VALUE "FileVersion", "4, 3, 0, 1206"
+            VALUE "FileVersion", "4, 4, 0, 1207"
             VALUE "InternalName", "Workspace Whiz"
             VALUE "LegalCopyright", "Copyright © 1997-2010 Joshua C. Jensen"
             VALUE "OriginalFilename", "WorkspaceWhiz.dll"
             VALUE "ProductName", "Workspace Whiz"
-            VALUE "ProductVersion", "4, 3, 0, 1206"
+            VALUE "ProductVersion", "4, 4, 0, 1207"
         END
     END
     BLOCK "VarFileInfo"
@@ -452,13 +452,13 @@ IDB_CI_WWTEMPLATECOMPLETE BITMAP                  "res\\IconWWTemplateComplete.b
 
 STRINGTABLE
 BEGIN
-    IDS_PROJNAME            "Workspace Whiz 4.3 Beta 1 Build 1206"
+    IDS_PROJNAME            "Workspace Whiz 4.4 Beta 1 Build 1207"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz 4.3 Beta 1 Build 1206"
-    IDS_WORKSPACEWHIZ_DESCRIPTION
+    IDS_WORKSPACEWHIZ_LONGNAME "Workspace Whiz 4.4 Beta 1 Build 1207"
+    IDS_WORKSPACEWHIZ_DESCRIPTION 
                             "Adds many useful workspace-related functions, such as an incremental file open, code templates, tag matching, etc."
     IDS_PREFDLG_CAPTION     "Workspace Whiz - Options"
 END
