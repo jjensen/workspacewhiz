@@ -282,6 +282,25 @@ void UnregisterAllCommands110(CComPtr<EnvDTE80::DTE2>& pDTE)
 		UnregisterCommand(pCommands, commandName);
 	}
 }
+
+
+void UnregisterAllCommands120(CComPtr<EnvDTE80::DTE2>& pDTE)
+{
+	CComPtr<EnvDTE::Commands> pCommands;
+	pDTE->get_Commands(&pCommands);
+
+	// Unregister all previously registered commands.
+	UnregisterCommand(pCommands, L"WorkspaceFileOpen");
+
+	for (int curCommand = 0; curCommand < WWhizCommands::GetCommandCount(); ++curCommand)
+	{
+		const WWhizCommands::CommandInfo* commandInfo = WWhizCommands::GetCommand(curCommand);
+		CStringW commandName = commandInfo->m_name;
+		UnregisterCommand(pCommands, commandName);
+	}
+}
+
+
 CComBSTR version;
 
 
@@ -295,7 +314,7 @@ void CConnect::FreeEvents()
 			delete m_SolutionEventsSink70;
 			m_SolutionEventsSink70 = NULL;
 		}
-		else if (version = "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0")
+		else if (version = "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0"  ||  version == "12.0")
 		{
 			m_SolutionEventsSink80->DispEventUnadvise((IUnknown*)pSolutionEvents.p);
 			delete m_SolutionEventsSink80;
@@ -312,7 +331,7 @@ void CConnect::FreeEvents()
 			delete m_DocumentEventsSink70;
 			m_DocumentEventsSink70 = NULL;
 		}
-		else if (version = "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0")
+		else if (version = "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0"  ||  version == "12.0")
 		{
 			m_DocumentEventsSink80->DispEventUnadvise((IUnknown*)pDocumentEvents.p);
 			delete m_DocumentEventsSink80;
@@ -492,7 +511,7 @@ STDMETHODIMP CConnect::OnConnection(IDispatch *pApplication,
 				}
 			}
 		}
-		else if (version == "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0")
+		else if (version == "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0"  ||  version == "12.0")
 		{
 			CComQIPtr<Microsoft_VisualStudio_CommandBars::_CommandBars> pCommandBars;
 			CComPtr<Microsoft_VisualStudio_CommandBars::CommandBar> pCommandBar;
@@ -668,7 +687,7 @@ STDMETHODIMP CConnect::OnConnection(IDispatch *pApplication,
 				m_WindowEventsSink.DispEventAdvise((IUnknown*)pWindowEvents.p);
 			}*/
 		}
-		else if (version == "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0")
+		else if (version == "8.0"  ||  version == "9.0"  ||  version == "10.0"  ||  version == "11.0"  ||  version == "12.0")
 		{
 			// Register the event systems.
 			if(SUCCEEDED(pEvents->get_SolutionEvents((EnvDTE::_SolutionEvents**)&pSolutionEvents)))

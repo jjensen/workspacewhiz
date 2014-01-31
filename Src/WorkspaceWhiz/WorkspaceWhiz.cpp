@@ -425,6 +425,42 @@ void ConnectAndUnregisterAllCommands110()
 	}
 }
 
+
+extern void UnregisterAllCommands120(CComPtr<EnvDTE80::DTE2>& pDTE);
+
+void ConnectAndUnregisterAllCommands120()
+{
+	// Create the shell and get an interface to it.
+	CComPtr<EnvDTE80::DTE2> pDTE;
+	pDTE.CoCreateInstance(CComBSTR("VisualStudio.DTE.12.0"), 0, CLSCTX_ALL);
+	//	HRESULT hr = CoCreateInstance(__uuidof(EnvDTE80::DTE2), NULL, CLSCTX_LOCAL_SERVER,
+	//		__uuidof(EnvDTE80::DTE2), reinterpret_cast<void**>(&pDTE));
+	if (pDTE)
+	{
+		UnregisterAllCommands120(pDTE);
+
+		CComPtr<Microsoft_VisualStudio_CommandBars::_CommandBars> pCommandBars;
+		CComPtr<Microsoft_VisualStudio_CommandBars::CommandBar> pCommandBar;
+
+		// Get the set of command bars for the application.
+		CComPtr<IDispatch> pDisp;
+
+		pDisp = NULL;
+		pDTE->get_CommandBars((EnvDTE::_CommandBars**)&pDisp);
+		pCommandBars = pDisp;
+		if (pCommandBars)
+		{
+			// See if the Workspace Whiz toolbar has been created.
+			HRESULT hr = pCommandBars->get_Item(CComVariant(L"Workspace Whiz"), &pCommandBar);
+			if (SUCCEEDED(hr))
+			{
+				hr = pCommandBar->Delete();
+				int hi = 5;
+			}
+		}
+	}
+}
+
 #endif WWHIZ_VSNET
 
 // by exporting DllRegisterServer, you can use regsvr32.exe
@@ -687,9 +723,28 @@ STDAPI DllRegisterServer(void)
 		}
 	}
 
-	if (devKey.Open(HKEY_CURRENT_USER, s_regBasePath + "\\11.0\\PreloadAddinState") == ERROR_SUCCESS)
+	if (devKey.Open(HKEY_CURRENT_USER, s_regBasePath + "\\12.0") == ERROR_SUCCESS)
 	{
-		devKey.SetDWORDValue("WWhizNet.Connect", 1);
+		// Auto create the addins key if it isn't already there.
+		if (devKey.Create(HKEY_CURRENT_USER, s_regBasePath + "\\12.0\\AddIns") == ERROR_SUCCESS)
+		{
+			// Create the WorkspaceWhiz.DSAddin.1 key.
+			if (devKey.Create(HKEY_CURRENT_USER, s_regBasePath + "\\12.0\\AddIns\\WWhizNet.Connect") == ERROR_SUCCESS)
+			{
+				// Remove all old entries.
+				devKey.SetStringValue(_T("SatelliteDLLPath"), modulePath);
+				//				devKey.SetStringValue("SatelliteDLLName", moduleShortName);
+				devKey.SetStringValue(_T("SatelliteDLLName"), _T("WWhizResources.dll"));
+				devKey.SetDWORDValue(_T("LoadBehavior"), 3);
+				devKey.SetStringValue(_T("FriendlyName"), _T("Workspace Whiz - A Visual Studio Add-in"));
+				devKey.SetStringValue(_T("Description"), _T("Adds useful code navigation and completion capabilities to Visual Studio"));
+			}
+		}
+	}
+
+	if (devKey.Open(HKEY_CURRENT_USER, s_regBasePath + "\\12.0\\PreloadAddinState") == ERROR_SUCCESS)
+	{
+		devKey.SetDWORDValue(_T("WWhizNet.Connect"), 1);
 	}
 #endif WWHIZ_VSNET
 
@@ -814,6 +869,12 @@ STDAPI DllUnregisterServer(void)
 		// Remove all old entries.
 		key.RecurseDeleteKey("WWhizNet.Connect");
 	}
+
+	if (key.Open(HKEY_LOCAL_MACHINE, s_regBasePath + "\\12.0\\AddIns") == ERROR_SUCCESS)
+	{
+		// Remove all old entries.
+		key.RecurseDeleteKey("WWhizNet.Connect");
+	}
 #endif WWHIZ_VSNET
 
 	// Remove the registry entry.
@@ -864,6 +925,7 @@ STDAPI DllUnregisterServer(void)
 	ConnectAndUnregisterAllCommands90();
 	ConnectAndUnregisterAllCommands100();
 	ConnectAndUnregisterAllCommands110();
+	ConnectAndUnregisterAllCommands120();
 
 	return S_OK;
 #endif WWHIZ_VSNET

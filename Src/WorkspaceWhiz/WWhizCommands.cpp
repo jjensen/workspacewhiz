@@ -26,7 +26,7 @@ Config g_config;
 static WWhizCommands::CommandInfo s_commandList[] =
 {
 	{ L"WWOptions",						"",						true,  false, IDB_CI_WWOPTIONS				  },
-	{ L"WWFileOpen",					"Ctrl+O",				true,  false, IDB_CI_WWFILEOPEN               },
+	{ L"WWFileOpen",					"Alt+Shift+O",			true,  false, IDB_CI_WWFILEOPEN               },
 	{ L"WWFileGlobalOpen",				"Ctrl+Shift+O",			true,  false, IDB_CI_WWFILEGLOBALOPEN         },
 	{ L"WWHeaderFlip",					"Ctrl+L",				true,  true,  IDB_CI_WWHEADERFLIP             },
 	{ L"WWFileFindPrev",				"",						true,  false, IDB_CI_WWFILEFINDPREV           },
@@ -34,7 +34,7 @@ static WWhizCommands::CommandInfo s_commandList[] =
 	{ L"WWHistoryBack",					"Ctrl+Alt+Left Arrow",	true,  true,  IDB_CI_WWHISTORYBACK            },
 	{ L"WWHistoryForward",				"Ctrl+Alt+Right Arrow",	true,  true,  IDB_CI_WWHISTORYFORWARD         },
 	{ L"WWHistoryDlg",					"",						true,  false, IDB_CI_WWHISTORYDLG             },
-	{ L"WWTagFindDlg",					"Ctrl+D",				true,  false, IDB_CI_WWTAGFINDDLG             },
+	{ L"WWTagFindDlg",					"Alt+Shift+D",			true,  false, IDB_CI_WWTAGFINDDLG             },
 	{ L"WWTagFindSpecialDlg",			"Ctrl+Shift+D",			true,  false, IDB_CI_WWTAGFINDSPECIALDLG      },
 	{ L"WWTagFlip",						"Ctrl+Shift+Space",		true,  true,  IDB_CI_WWTAGFLIP                },
 	{ L"WWTagFindAtCursor",				"Ctrl+Space",			true,  true,  IDB_CI_WWTAGFINDATCURSOR        },
@@ -46,7 +46,7 @@ static WWhizCommands::CommandInfo s_commandList[] =
 	{ L"WWTagCompleteRestore",			"Ctrl+Alt+Enter",		true,  true,  IDB_CI_WWTAGCOMPLETERESTORE     },
 	{ L"WWTagCompleteDlg",				"Ctrl+Alt+Shift+Enter",	true,  true,  IDB_CI_WWTAGCOMPLETEDLG         },
 	{ L"WWTemplateSelect",				"Ctrl+Shift+T",			true,  false, IDB_CI_WWTEMPLATESELECT         },
-	{ L"WWTemplateComplete",			"Ctrl+T",				true,  false, IDB_CI_WWTEMPLATECOMPLETE       },
+	{ L"WWTemplateComplete",			"",						true,  false, IDB_CI_WWTEMPLATECOMPLETE       },
 //	{ L"WWPreviousFunction",			"Ctrl+Alt+Up Arrow",	true,  true,  IDB_CI_WWHISTORYBACK            },
 //	{ L"WWNextFunction",				"Ctrl+Alt+Down Arrow",	true,  true,  IDB_CI_WWHISTORYFORWARD         },
 };

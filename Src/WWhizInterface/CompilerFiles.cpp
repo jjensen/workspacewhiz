@@ -17,6 +17,7 @@
 #ifdef WWHIZ_VSNET
 
 #include <atlsafe.h>
+#include "VCProjectEngine120.tlh"
 #include "VCProjectEngine110.tlh"
 #include "VCProjectEngine100.tlh"
 #include "VCProjectEngine90.tlh"
@@ -116,6 +117,8 @@ void CompilerFiles::ProcessPaths(char* buffer)
 	CComQIPtr<VCProjectEngineLibrary100::VCProject> cpProject100;
 	CComQIPtr<VCProjectEngineLibrary110::VCProjectEngine> pProjEng110;
 	CComQIPtr<VCProjectEngineLibrary110::VCProject> cpProject110;
+	CComQIPtr<VCProjectEngineLibrary120::VCProjectEngine> pProjEng120;
+	CComQIPtr<VCProjectEngineLibrary120::VCProject> cpProject120;
 
 	if (pProject)
 	{
@@ -166,6 +169,14 @@ void CompilerFiles::ProcessPaths(char* buffer)
 			cpProject110->get_VCProjectEngine(&pDispProjEngine);
 			pProjEng110 = pDispProjEngine;
 			if (!pProjEng110)
+				return;
+		}
+		else if (version == "12.0")
+		{
+			cpProject120 = pID;
+			cpProject120->get_VCProjectEngine(&pDispProjEngine);
+			pProjEng120 = pDispProjEngine;
+			if (!pProjEng120)
 				return;
 		}
 	}
@@ -498,6 +509,23 @@ Top:
 		pPlatforms->Item(CComVariant(bstrPlatformName), &pDispPlatform);
 
 		CComQIPtr<VCProjectEngineLibrary110::VCPlatform> pVCPlatform(pDispPlatform);
+
+		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
+		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);
+	}
+	else if (version == "12.0")
+	{
+		CComQIPtr<VCProjectEngineLibrary120::VCProject> pVCProject(pDispatch);
+		pDispatch = NULL;
+
+		// Get the platform pointer...
+		CComPtr<IDispatch> pDispPlatforms;
+		pVCProject->get_Platforms(&pDispPlatforms);
+		CComQIPtr<VCProjectEngineLibrary120::IVCCollection> pPlatforms(pDispPlatforms);
+		CComPtr<IDispatch> pDispPlatform;
+		pPlatforms->Item(CComVariant(bstrPlatformName), &pDispPlatform);
+
+		CComQIPtr<VCProjectEngineLibrary120::VCPlatform> pVCPlatform(pDispPlatform);
 
 		pVCPlatform->get_IncludeDirectories(&bstrIncludeDirectories);
 		pVCPlatform->get_SourceDirectories(&bstrSourceDirectories);

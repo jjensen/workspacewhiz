@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Building</title>
+	<link rel="stylesheet" type="text/css" href="default.css" />
+</head>
+<body>
+
+<h1>Building</h1>
+<h2>Prerequisites</h2>
+
+<ol>
+    <li>Download and install <em>HTML Help Workshop</em> from http://msdn.microsoft.com/en-us/library/ms669985(VS.85).aspx.</li>
+    <li>Download and install <em>InnoSetup's ISPack</em> from http://innosetup.com/.</li>
+    <li>Download the latest snapshot of the <em>JamPlus</em> binaries from http://jamplus.org. Unzip it into a directory.</li>
+    <li>Download <em>Wget</em>. One location to grab it from is http://users.ugent.be/~bpuype/wget/. Put the <code>wget.exe</code> in your PATH.</li>
+    <li>Download <em>unzip</em> from http://www.info-zip.org/UnZip.html. Put the <code>unzip.exe</code> in your <code>PATH</code>.</li>
+</ol>
+
+
+<h2>Building Workspace Whiz</h2>
+
+<ol>
+    <li>Run the <code>CreateJamVS2010Workspace.bat</code> (or <code>CreateJamVS2008Workspace.bat</code> or <code>CreateJamVC6Workspace.bat</code>) script in the <strong>Workspace Whiz</strong> main directory after putting the <code>jamplus\bin\ntx86</code> directory in your <code>PATH</code> (or modifying the <code>CreateJamVS2010Workspace.bat</code> script to point to that directory).</li>
+    <li>Navigate to <code>build2010\_workspace.vs2010_\` and open</code>WorkspaceWhiz.sln` within Visual Studio 2010.</li>
+    <li>Build the solution.</li>
+</ol>
+
+
+<h2>Building the Workspace Whiz installer</h2>
+
+<ol>
+    <li>Build the <strong>Installer</strong> project in the solution.</li>
+</ol>
+
+
+<h1>Debugging</h1>
+
+<p>It takes two instances of Visual Studio in order to debug Workspace Whiz. The first instance contains the Workspace Whiz solution, and it must not have the Workspace Whiz add-in active. The second instance is launched by the first instance and will be running Workspace Whiz.</p>
+
+<p>Before launching the first instance of Visual Studio, run the following at the command line:</p>
+
+<pre><code>[d:\workspacewhiz]cd build2010\win32-release\image
+[d:\workspacewhiz\build2010\win32-release\image]regsvr32 /u WorkspaceWhizD.dll
+[d:\workspacewhiz\build2010\win32-release\image]regsvr32 /u WorkspaceWhiz.dll
+</code></pre>
+
+<ol>
+    <li>Launch Visual Studio.</li>
+    <li>Load the Workspace Whiz solution.</li>
+    <li>Build the solution. It will automatically register Workspace Whiz as an add-in within Visual Studio.</li>
+    <li>Right click on the <strong>WorkspaceWhiz</strong> project in the <em>Solution Explorer</em>. Choose <strong>Properties</strong>.</li>
+    <li>In the <em>Debugging</em> tab, choose <strong>Command</strong> and press the down arrow. Choose <strong>Browse</strong>. Browse for <code>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe</code>. Click <strong>OK</strong>.</li>
+    <li>Debug.</li>
+</ol>
+
+<p>Building the solution will automatically register the Workspace Whiz add-in with Visual Studio.</p>
+
+
+
+
+
+</body></html>

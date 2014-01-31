@@ -203,7 +203,7 @@ if $(COMPILER.$(PLATFORM)) = vc6 {
 C.DefFile WorkspaceWhiz : WorkspaceWhiz.def ;
 C.Defines WorkspaceWhiz : _USRDLL ;
 
-C.Library WorkspaceWhiz : $(SRCS) $(RES_SRCS) : shared regserver ;
+C.Library WorkspaceWhiz : $(SRCS) $(RES_SRCS) : shared ; #regserver ;
 
 Depends all : WorkspaceWhiz ;
 

@@ -4,7 +4,7 @@
 [Setup]
 AppName=Workspace Whiz for Visual Studio 20xx
 AppVerName=Workspace Whiz 4.4 Beta for Visual Studio 20xx - Build {#BUILD_NUMBER}
-AppVersion=4.3 Beta Build {#BUILD_NUMBER}
+AppVersion=4.4 Beta Build {#BUILD_NUMBER}
 AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
@@ -30,9 +30,9 @@ Source: "{#BIN_LOCATION}\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignorevers
 Source: "{#BIN_LOCATION}\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
 ;Source: "{#BIN_LOCATION}\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcr110.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcp110.dll"; DestDir: "{app}\Microsoft.VC100.CRT"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC110.MFC\mfc110.dll"; DestDir: "{app}\Microsoft.VC100.MFC"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcr110.dll"; DestDir: "{app}\Microsoft.VC110.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcp110.dll"; DestDir: "{app}\Microsoft.VC110.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC110.MFC\mfc110.dll"; DestDir: "{app}\Microsoft.VC110.MFC"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
