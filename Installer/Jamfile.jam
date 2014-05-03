@@ -19,7 +19,7 @@ if Installer in $(JAM_COMMAND_LINE_TARGETS)  ||  clean:Installer in $(JAM_COMMAN
 		}
 	}
 
-	local buildNumber = 1207 ;
+	local buildNumber = 1208 ;
 	local installerExe ;
 	if $(COMPILER.$(PLATFORM)) = vc6 {
 		installerExe = WorkspaceWhiz44_VC6_$(buildNumber).exe ;
