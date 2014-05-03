@@ -1,33 +1,31 @@
-import "glob"
+local filefind = require 'filefind'
 
-oldNumber = arg[1]
-newNumber = arg[2]
+local oldNumber, newNumber = ...
 
 function LoadFile(fileName)
-	local file = io.open(fileName, "rt")
+	local file = io.open(fileName, "rb")
 	local str = file:read("*a")
 	file:close()
 	return str
 end
 
 function SaveFile(fileName, str)
-	local file = io.open(fileName, "wt")
+	local file = io.open(fileName, "wb")
 	file:write(str)
 	file:close()
 end
 
-function ReplaceNumbers(globPath)
-	local files = glob.match(globPath)
-
-	for index, fileName in files do
-		print(fileName)
-		local str = LoadFile(fileName)
+function ReplaceNumbers(wildcard)
+	for entry in filefind.glob(wildcard) do
+		print(entry.filename)
+		local str = LoadFile(entry.filename)
 		str = str:gsub(oldNumber, newNumber)
-		SaveFile(fileName, str)
+		SaveFile(entry.filename, str)
 	end
 end
 
 ReplaceNumbers("**.html")
 ReplaceNumbers("**.cpp")
 ReplaceNumbers("**.h")
+ReplaceNumbers("**.rc")
 
