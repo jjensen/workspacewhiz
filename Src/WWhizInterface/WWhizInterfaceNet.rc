@@ -47,7 +47,7 @@ BEGIN
             VALUE "FileDescription", "Workspace Whiz Interface Library"
             VALUE "FileVersion", "4, 4, 0, 1208"
             VALUE "InternalName", "Workspace Whiz Interface Library"
-            VALUE "LegalCopyright", "Copyright © 1997-2010 Joshua C. Jensen"
+            VALUE "LegalCopyright", "Copyright © 1997-2014 Joshua C. Jensen"
             VALUE "OriginalFilename", "WWhizInterface.dll"
             VALUE "ProductName", "Workspace Whiz Interface Library"
             VALUE "ProductVersion", "4, 4, 0, 1208"

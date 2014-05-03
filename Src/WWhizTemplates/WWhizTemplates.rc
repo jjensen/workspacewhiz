@@ -49,7 +49,7 @@ BEGIN
             VALUE "FileDescription", "Workspace Whiz Code Templates\0"
             VALUE "FileVersion", "4, 3, 0, 1206\0"
             VALUE "InternalName", "Workspace Whiz Code Templates Library\0"
-            VALUE "LegalCopyright", "Copyright © 1997-2010 Joshua C. Jensen\0"
+            VALUE "LegalCopyright", "Copyright © 1997-2014 Joshua C. Jensen\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "WWhizTemplates.tpl\0"
             VALUE "PrivateBuild", "\0"

@@ -464,7 +464,7 @@ BEGIN
             VALUE "FileDescription", "WORKSPACEWHIZ.DLL\0"
             VALUE "FileVersion", "4, 3, 0, 1206\0"
             VALUE "InternalName", "Workspace Whiz\0"
-            VALUE "LegalCopyright", "Copyright © 1997-2010 Joshua C. Jensen\0"
+            VALUE "LegalCopyright", "Copyright © 1997-2014 Joshua C. Jensen\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "WORKSPACEWHIZ.DLL\0"
             VALUE "PrivateBuild", "\0"
