@@ -4,7 +4,7 @@ oldBuildNumber, newBuildNumber = unpack(arg)
 
 function ReplaceBuildNumbers(globPath)
 	for entry in filefind.glob(globPath) do
-		local file = io.open(entry.filename)
+		local file = io.open(entry.filename, 'rb')
 		local str = file:read('*a')
 		file:close()
 		local oldStr = str
