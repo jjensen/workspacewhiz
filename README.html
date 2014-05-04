@@ -13,7 +13,7 @@
 <ol>
     <li>Download and install <em>HTML Help Workshop</em> from http://msdn.microsoft.com/en-us/library/ms669985(VS.85).aspx.</li>
     <li>Download and install <em>InnoSetup's ISPack</em> from http://innosetup.com/.</li>
-    <li>Download the latest snapshot of the <em>JamPlus</em> binaries from http://jamplus.org. Unzip it into a directory.</li>
+    <li>Download the latest nextgen snapshot of the <em>JamPlus</em> binaries from http://jamplus.org. Unzip it into a directory.</li>
     <li>Download <em>Wget</em>. One location to grab it from is http://users.ugent.be/~bpuype/wget/. Put the <code>wget.exe</code> in your PATH.</li>
     <li>Download <em>unzip</em> from http://www.info-zip.org/UnZip.html. Put the <code>unzip.exe</code> in your <code>PATH</code>.</li>
 </ol>
@@ -22,8 +22,9 @@
 <h2>Building Workspace Whiz</h2>
 
 <ol>
-    <li>Run the <code>CreateJamVS2010Workspace.bat</code> (or <code>CreateJamVS2008Workspace.bat</code> or <code>CreateJamVC6Workspace.bat</code>) script in the <strong>Workspace Whiz</strong> main directory after putting the <code>jamplus\bin\ntx86</code> directory in your <code>PATH</code> (or modifying the <code>CreateJamVS2010Workspace.bat</code> script to point to that directory).</li>
-    <li>Navigate to <code>build2010\_workspace.vs2010_\` and open</code>WorkspaceWhiz.sln` within Visual Studio 2010.</li>
+    <li>Add JamPlus' binaries directory to your PATH (alter the <code>c:\jamplus</code> based on where JamPlus was unzipped): <code>set PATH=c:\jamplus\bin\win32;%PATH%</code></li>
+    <li>Run the <code>CreateJamVS2010Workspace.bat</code> (or any of the other <code>CreateJam*Workspace.bat</code> batch files dependent on which IDE you have) script in the <strong>Workspace Whiz</strong> main directory.</li>
+    <li>Within Visual Studio, navigate to <code>buildxx\_workspace.xx_\` (replace the</code>xx<code>with the IDE version your are building for) and open</code>WorkspaceWhiz.sln`.</li>
     <li>Build the solution.</li>
 </ol>
 
@@ -41,9 +42,9 @@
 
 <p>Before launching the first instance of Visual Studio, run the following at the command line:</p>
 
-<pre><code>[d:\workspacewhiz]cd build2010\win32-release\image
-[d:\workspacewhiz\build2010\win32-release\image]regsvr32 /u WorkspaceWhizD.dll
-[d:\workspacewhiz\build2010\win32-release\image]regsvr32 /u WorkspaceWhiz.dll
+<pre><code>[d:\workspacewhiz]cd buildxx\win32-release\image
+[d:\workspacewhiz\buildxx\win32-release\image]regsvr32 /u WorkspaceWhizD.dll
+[d:\workspacewhiz\buildxx\win32-release\image]regsvr32 /u WorkspaceWhiz.dll
 </code></pre>
 
 <ol>
@@ -51,7 +52,7 @@
     <li>Load the Workspace Whiz solution.</li>
     <li>Build the solution. It will automatically register Workspace Whiz as an add-in within Visual Studio.</li>
     <li>Right click on the <strong>WorkspaceWhiz</strong> project in the <em>Solution Explorer</em>. Choose <strong>Properties</strong>.</li>
-    <li>In the <em>Debugging</em> tab, choose <strong>Command</strong> and press the down arrow. Choose <strong>Browse</strong>. Browse for <code>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe</code>. Click <strong>OK</strong>.</li>
+    <li>In the <em>Debugging</em> tab, choose <strong>Command</strong> and press the down arrow. Choose <strong>Browse</strong>. Browse for your IDE's equivalent of <code>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe</code>. Click <strong>OK</strong>.</li>
     <li>Debug.</li>
 </ol>
 
