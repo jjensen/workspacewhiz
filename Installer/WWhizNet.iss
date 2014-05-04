@@ -9,7 +9,7 @@ AppPublisher=Joshua Jensen
 AppPublisherURL=http://workspacewhiz.com/
 AppSupportURL=http://workspacewhiz.com/
 AppUpdatesURL=http://workspacewhiz.com/
-AppCopyright=Workspace Whiz 4.4 Beta for Visual Studio, Copyright © 1997-2010 Joshua Jensen
+AppCopyright=Workspace Whiz 4.4 Beta for Visual Studio, Copyright © 1997-2014 Joshua Jensen
 DefaultDirName={pf}\Workspace Whiz
 DefaultGroupName=Workspace Whiz for Visual Studio 20xx
 DisableProgramGroupPage=yes
@@ -30,9 +30,9 @@ Source: "{#BIN_LOCATION}\WorkspaceWhiz.chm"; DestDir: "{app}"; Flags: ignorevers
 Source: "{#BIN_LOCATION}\Templates\*"; DestDir: "{app}\Templates"; Flags: ignoreversion
 ;Source: "{#BIN_LOCATION}\TemplateCommands\WWhizPickDirTemplate.tpl"; DestDir: "{app}\TemplateCommands"; Flags: ignoreversion
 Source: "{#BIN_LOCATION}\1033\WWhizResources.dll"; DestDir: "{app}\1033"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcr110.dll"; DestDir: "{app}\Microsoft.VC110.CRT"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC110.CRT\msvcp110.dll"; DestDir: "{app}\Microsoft.VC110.CRT"; Flags: ignoreversion
-Source: "{#BIN_LOCATION}\Microsoft.VC110.MFC\mfc110.dll"; DestDir: "{app}\Microsoft.VC110.MFC"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC120.CRT\msvcr120.dll"; DestDir: "{app}\Microsoft.VC120.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC120.CRT\msvcp120.dll"; DestDir: "{app}\Microsoft.VC120.CRT"; Flags: ignoreversion
+Source: "{#BIN_LOCATION}\Microsoft.VC120.MFC\mfc120.dll"; DestDir: "{app}\Microsoft.VC120.MFC"; Flags: ignoreversion
 
 [Registry]
 Root: HKLM; Subkey: "Software\Workspace Whiz\.NET"; Flags: uninsdeletekeyifempty
